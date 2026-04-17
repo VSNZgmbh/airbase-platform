@@ -3,30 +3,9 @@ import Stripe from "stripe";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { bookings, flights, permits } from "@/lib/db/schema";
+import { requiresBernBelpPermit } from "@/lib/geo";
 
 export const runtime = "nodejs";
-
-// Bern-Belp Airport coordinates
-const BERN_BELP_LAT = 46.9141;
-const BERN_BELP_LNG = 7.4977;
-
-// Conservative buffer: 10 km covers the Bern-Belp CTR (approx 3–5 NM radius).
-// TODO (M3 — COO input required): This check only tests route *endpoints*, not the
-// full route segment. Operations whose route transits the CTR without endpoints inside
-// the buffer will be missed. Correct fix: intersect route waypoints (stored in
-// flights.flightPlanJson after dispatch) against the official Bern-Belp CTR polygon
-// (ICAO AIP AD 2-LSZB). Awaiting COO sign-off on regulatory threshold — see subtask.
-const BERN_BELP_CTR_BUFFER_KM = 10;
-
-function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLng = ((lng2 - lng1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
 
 export async function POST(req: NextRequest) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -120,31 +99,28 @@ export async function POST(req: NextRequest) {
         },
       ];
 
-      // M3 interim: use conservative 10 km buffer (covers Bern-Belp CTR)
-      // for both delivery and pickup endpoints.
-      const checkPoints: Array<{ lat: string | null; lng: string | null; label: string }> = [
-        { lat: booking.deliveryLat, lng: booking.deliveryLng, label: "Lieferort" },
-        { lat: booking.pickupLat ?? null, lng: booking.pickupLng ?? null, label: "Abflugort" },
-      ];
+      // M3: CTR polygon intersection check (FOCA/BAZL compliance).
+      // Triggers a permit whenever the straight-line route transits the
+      // Bern-Belp CTR (LSZB, 5 NM radius), including routes whose endpoints
+      // lie outside the CTR but whose path crosses it (e.g. Münsingen → Thun).
+      const pickupLng = booking.pickupLng ? parseFloat(booking.pickupLng) : null;
+      const pickupLat = booking.pickupLat ? parseFloat(booking.pickupLat) : null;
+      const deliveryLng = booking.deliveryLng ? parseFloat(booking.deliveryLng) : null;
+      const deliveryLat = booking.deliveryLat ? parseFloat(booking.deliveryLat) : null;
 
-      for (const point of checkPoints) {
-        if (!point.lat || !point.lng) continue;
-        const dist = haversineKm(
-          parseFloat(point.lat),
-          parseFloat(point.lng),
-          BERN_BELP_LAT,
-          BERN_BELP_LNG
-        );
-        if (dist <= BERN_BELP_CTR_BUFFER_KM) {
-          const alreadyAdded = permitsToCreate.some((p) => p.authority === "Flughafen Bern-Belp");
-          if (!alreadyAdded) {
-            permitsToCreate.push({
-              flightId: flight.id,
-              authority: "Flughafen Bern-Belp",
-              notes: `${point.label} liegt ${dist.toFixed(1)} km vom Flughafen Bern-Belp (konservativer CTR-Puffer 10 km) — Bewilligung erforderlich`,
-            });
-          }
-        }
+      if (
+        pickupLng !== null &&
+        pickupLat !== null &&
+        deliveryLng !== null &&
+        deliveryLat !== null &&
+        requiresBernBelpPermit(pickupLng, pickupLat, deliveryLng, deliveryLat)
+      ) {
+        permitsToCreate.push({
+          flightId: flight.id,
+          authority: "Flughafen Bern-Belp",
+          notes:
+            "Route schneidet Bern-Belp CTR (LSZB, 5 NM) — Bewilligung gemäss FOCA/BAZL erforderlich",
+        });
       }
 
       await tx.insert(permits).values(
