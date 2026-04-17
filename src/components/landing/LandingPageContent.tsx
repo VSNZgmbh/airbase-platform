@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Leaf, Wind, Zap, Shield } from "lucide-react";
+import { ArrowRight, Leaf, Wind, Zap, Shield, MapPin } from "lucide-react";
 import {
   motion,
   useScroll,
@@ -12,9 +12,10 @@ import {
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
 // ── Design system ────────────────────────────────────────────────────────────
-// Swiss Modernism 2.0 × Space Tech Aerospace palette
-// Bg: #080811  Surface: #0F172A  Border: #1E293B
-// Text: #F8FAFC  Muted: #94A3B8  Brand: #D32F2F  Green: #22C55E
+// Swiss Modernism 2.0 × Light Glassmorphism edition
+// Bg: #FFFFFF / #F8FAFC  Surface: rgba(255,255,255,0.7)
+// Text: #0F172A  Muted: #64748B  Brand: #D32F2F  Green: #16A34A
+// Glassmorphism: backdrop-blur(16px), rgba(255,255,255,0.65), border rgba(255,255,255,0.4)
 
 // ── Animation constants ──────────────────────────────────────────────────────
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
@@ -52,6 +53,23 @@ const stagger = (delay = 0.08) => ({
   visible: { transition: { staggerChildren: delay } },
 });
 
+// ── Glassmorphism style helper ───────────────────────────────────────────────
+const glass = {
+  background: "rgba(255,255,255,0.65)",
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  border: "1px solid rgba(255,255,255,0.45)",
+  boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
+};
+
+const glassDark = {
+  background: "rgba(15,23,42,0.55)",
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  border: "1px solid rgba(255,255,255,0.15)",
+  boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+};
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export function LandingPageContent({ locale }: { locale: string }) {
@@ -65,12 +83,11 @@ export function LandingPageContent({ locale }: { locale: string }) {
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const heroContentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
   const heroContentY = useTransform(scrollYProgress, [0, 0.6], ["0%", "-10%"]);
-  const droneY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
 
   return (
     <main
       className="min-h-screen overflow-x-hidden"
-      style={{ background: "#080811", color: "#F8FAFC" }}
+      style={{ background: "#F8FAFC", color: "#0F172A" }}
       lang={locale}
     >
 
@@ -78,10 +95,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 border-b"
         style={{
-          background: "rgba(8,8,17,0.88)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderColor: "#1E293B",
+          ...glass,
+          borderColor: "rgba(255,255,255,0.5)",
         }}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -97,12 +112,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <span className="italic font-normal text-white/80">air</span>
-              <span className="font-black text-white uppercase">BASE</span>
+              <span className="italic font-normal" style={{ color: "#64748B" }}>air</span>
+              <span className="font-black uppercase" style={{ color: "#0F172A" }}>BASE</span>
               <span className="font-black text-3xl leading-none ml-0.5" style={{ color: "#D32F2F" }}>+</span>
             </motion.a>
 
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#94A3B8" }}>
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#64748B" }}>
               {["HOME", "DIENSTLEISTUNGEN", "AIRBASE APP", "ÜBER UNS", "KONTAKT"].map((label, i) => (
                 <motion.a
                   key={label}
@@ -113,7 +128,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     : label === "KONTAKT" ? "#kontakt"
                     : "#"
                   }
-                  className="hover:text-white transition-colors"
+                  className="hover:text-gray-900 transition-colors"
                   style={label === "DIENSTLEISTUNGEN" ? { color: "#D32F2F" } : {}}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -128,7 +143,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             <div className="flex items-center gap-3">
               <LanguageSwitcher currentLocale={locale} />
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.4 }}>
-                <Link href="/sign-in" className="text-sm hidden sm:block transition-colors" style={{ color: "#94A3B8" }}>
+                <Link href="/sign-in" className="text-sm hidden sm:block transition-colors" style={{ color: "#64748B" }}>
                   Anmelden
                 </Link>
               </motion.div>
@@ -152,38 +167,35 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </motion.header>
 
-      {/* ── 2. Hero ── */}
+      {/* ── 2. Hero — mountain panorama with drones ── */}
       <section
         ref={heroRef}
         className="relative min-h-screen pt-16 flex flex-col overflow-hidden"
       >
-        {/* Cinematic backdrop */}
+        {/* Mountain panorama backdrop */}
         <motion.div
           className="absolute inset-0 will-change-transform"
-          style={{
-            y: bgY,
-            scale: 1.12,
-          }}
+          style={{ y: bgY, scale: 1.12 }}
         >
           <Image
-            src="/images/flycart-scene-1.jpg"
-            alt="DJI FlyCart drone over alpine landscape"
+            src="/images/hero-drones.jpg"
+            alt="Alpine mountain panorama with drones"
             fill
             priority
             className="object-cover object-center"
           />
-          {/* Dark overlay — deep space grade */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(8,8,17,0.85) 0%, rgba(8,8,17,0.55) 60%, rgba(8,8,17,0.75) 100%)" }} />
+          {/* Light overlay — airy, premium */}
+          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.65) 0%, rgba(15,23,42,0.35) 60%, rgba(15,23,42,0.50) 100%)" }} />
         </motion.div>
 
         {/* Bottom fade into page */}
-        <div className="absolute inset-x-0 bottom-0 h-64 pointer-events-none" style={{ background: "linear-gradient(to top, #080811 0%, transparent 100%)" }} />
+        <div className="absolute inset-x-0 bottom-0 h-64 pointer-events-none" style={{ background: "linear-gradient(to top, #F8FAFC 0%, transparent 100%)" }} />
 
         {/* Swiss cross pattern */}
         <motion.div
           className="absolute inset-0 flex items-end justify-center pb-16 pointer-events-none select-none overflow-hidden"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.08 }}
+          animate={{ opacity: 0.06 }}
           transition={{ delay: 1.2, duration: 1.5 }}
         >
           <div className="flex gap-20">
@@ -209,8 +221,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             {/* Left: Tagline + service words */}
             <div className="max-w-xl z-10">
               <motion.p
-                className="italic text-xl mb-4"
-                style={{ color: "rgba(248,250,252,0.75)" }}
+                className="italic text-xl mb-4 text-white/80"
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.8, ease }}
@@ -227,12 +238,11 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 {["Transport", "Landwirtschaft", "Reinigung", "Bau"].map((service, i) => (
                   <motion.h2
                     key={service}
-                    className="font-black leading-tight"
+                    className="font-black leading-tight text-white"
                     style={{
                       fontSize: "clamp(3rem, 7vw, 6rem)",
-                      color: "#F8FAFC",
                       fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                      textShadow: "0 4px 32px rgba(0,0,0,0.6)",
+                      textShadow: "0 4px 32px rgba(0,0,0,0.4)",
                     }}
                     variants={{
                       hidden: { opacity: 0, x: -60, skewX: 5 },
@@ -265,8 +275,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
                   <a
                     href="#dienstleistungen"
-                    className="inline-flex items-center gap-2 font-bold text-sm px-6 py-4 rounded border transition-colors"
-                    style={{ color: "#F8FAFC", borderColor: "rgba(248,250,252,0.3)", background: "rgba(248,250,252,0.08)" }}
+                    className="inline-flex items-center gap-2 font-bold text-sm px-6 py-4 rounded transition-colors text-white"
+                    style={glassDark}
                   >
                     Mehr erfahren
                   </a>
@@ -274,55 +284,27 @@ export function LandingPageContent({ locale }: { locale: string }) {
               </motion.div>
             </div>
 
-            {/* Right: Animated drone PNG */}
+            {/* Right: frosted glass stat card */}
             <motion.div
               className="hidden lg:block relative"
-              style={{ y: droneY }}
               initial={{ opacity: 0, x: 80, scale: 0.85 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 0.8, duration: 1.0, ease }}
             >
-              {/* Glow behind drone */}
-              <div
-                className="absolute inset-0 rounded-full pointer-events-none"
-                style={{
-                  background: "radial-gradient(ellipse, rgba(211,47,47,0.25) 0%, transparent 70%)",
-                  transform: "scale(1.4)",
-                  filter: "blur(40px)",
-                }}
-              />
-              {/* Floating animation wrapper */}
               <motion.div
-                animate={{ y: [0, -18, 0] }}
-                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
+                className="rounded-3xl p-8 text-white"
+                style={glassDark}
+                animate={{ y: [0, -10, 0] }}
+                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
               >
-                {/* Rotor blur rings */}
-                <motion.div
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 pointer-events-none"
-                  style={{ width: 520, height: 24 }}
-                  animate={{ scaleX: [1, 1.04, 1] }}
-                  transition={{ repeat: Infinity, duration: 0.15, ease: "linear" }}
-                >
-                  <div className="w-full h-full rounded-full" style={{ background: "rgba(148,163,184,0.12)", filter: "blur(6px)" }} />
-                </motion.div>
-
-                <Image
-                  src="/images/dji-flycart-100.png"
-                  alt="DJI FlyCart 100 heavy-lift drone"
-                  width={520}
-                  height={360}
-                  className="relative z-10 drop-shadow-2xl"
-                  style={{ filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.6))" }}
-                  priority
-                />
-
-                {/* Shadow on ground */}
-                <motion.div
-                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
-                  style={{ width: 280, height: 24, background: "rgba(0,0,0,0.45)", filter: "blur(18px)" }}
-                  animate={{ scaleX: [1, 0.88, 1], opacity: [0.45, 0.3, 0.45] }}
-                  transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
-                />
+                <div className="text-6xl font-black mb-2" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: "#D32F2F" }}>10&quot;</div>
+                <div className="text-xl font-bold text-white mb-1">Offerte innert</div>
+                <div className="text-xl font-bold text-white mb-4">10 Sekunden</div>
+                <div className="text-sm text-white/70">Kein Warten. Kein Formular.</div>
+                <div className="mt-4 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-sm text-green-300 font-semibold">Jetzt aktiv</span>
+                </div>
               </motion.div>
             </motion.div>
           </div>
@@ -347,7 +329,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
       {/* ── 3. Value Strip ── */}
       <motion.section
         className="py-6 border-y"
-        style={{ background: "#0F172A", borderColor: "#1E293B" }}
+        style={{ background: "#FFFFFF", borderColor: "#E2E8F0" }}
         variants={fadeIn}
         initial="hidden"
         whileInView="visible"
@@ -368,8 +350,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </motion.section>
 
-      {/* ── 4. Services ── */}
-      <section id="dienstleistungen" className="py-24" style={{ background: "#080811" }}>
+      {/* ── 4. Services — glassmorphism cards over image backgrounds ── */}
+      <section id="dienstleistungen" className="py-24" style={{ background: "#F8FAFC" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -390,7 +372,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               className="font-black"
               style={{
                 fontSize: "clamp(2rem, 4vw, 3.25rem)",
-                color: "#F8FAFC",
+                color: "#0F172A",
                 fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
               }}
               variants={fadeUp}
@@ -411,25 +393,25 @@ export function LandingPageContent({ locale }: { locale: string }) {
               {
                 title: "Transport",
                 img: "/images/flycart-lastendrohne.webp",
-                desc: "Kein Weg? Kein Problem. Wir liefern Güter direkt dorthin, wo keine Strasse führt — schnell, sicher und kosteneffizient, überall in der Schweiz.",
+                desc: "Kein Weg? Kein Problem. Wir liefern Güter direkt dorthin, wo keine Strasse führt — schnell, sicher und kosteneffizient.",
                 href: "/book?type=TRANSPORT",
               },
               {
                 title: "Landwirtschaft",
                 img: "/images/flycart-ingenieurverkehr.webp",
-                desc: "Mehr Ertrag, weniger Aufwand. Unsere Drohnen bringen Dünger, Saatgut und Pflanzenschutz präzise auf den Quadratmeter — schonend für Boden und Kultur.",
+                desc: "Mehr Ertrag, weniger Aufwand. Unsere Drohnen bringen Dünger, Saatgut und Pflanzenschutz präzise auf den Quadratmeter.",
                 href: "/book?type=LANDWIRTSCHAFT",
               },
               {
                 title: "Reinigung",
                 img: "/images/flycart-scene-2.webp",
-                desc: "Fassaden, Dächer, Solaranlagen — gereinigt ohne Gerüst. Unsere Drohnen erreichen, was Menschen nicht erreichen können. Sicher, schnell, kostensparend.",
+                desc: "Fassaden, Dächer, Solaranlagen — gereinigt ohne Gerüst. Unsere Drohnen erreichen, was Menschen nicht erreichen können.",
                 href: "/book?type=REINIGUNG",
               },
               {
                 title: "Bau",
                 img: "/images/flycart-notfalltransport.webp",
-                desc: "Kein Kran. Keine Strassensperrung. Material, Werkzeug und Ausrüstung kommen per Drohne — direkt auf Ihre Baustelle, egal wo sie liegt.",
+                desc: "Kein Kran. Keine Strassensperrung. Material, Werkzeug und Ausrüstung kommen per Drohne — direkt auf Ihre Baustelle.",
                 href: "/book?type=BAU",
               },
             ].map((service) => (
@@ -437,13 +419,9 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 key={service.title}
                 variants={fadeUp}
                 transition={{ duration: 0.6, ease }}
-                whileHover={{
-                  y: -10,
-                  borderColor: "#D32F2F",
-                  transition: { duration: 0.25 },
-                }}
-                className="group rounded-2xl overflow-hidden flex flex-col border cursor-default"
-                style={{ background: "#0F172A", borderColor: "#1E293B" }}
+                whileHover={{ y: -10, transition: { duration: 0.25 } }}
+                className="group rounded-2xl overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-shadow"
+                style={{ background: "#FFFFFF", border: "1px solid #E2E8F0" }}
               >
                 {/* Service image */}
                 <div className="relative h-44 overflow-hidden">
@@ -453,8 +431,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,23,42,0.9) 0%, transparent 60%)" }} />
-                  <div className="absolute bottom-3 left-4">
+                  {/* Glassmorphism title overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4" style={glassDark}>
                     <h3 className="font-black text-white text-xl" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
                       {service.title}
                     </h3>
@@ -462,7 +440,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 </div>
 
                 <div className="p-5 flex flex-col flex-1">
-                  <p className="text-sm leading-relaxed flex-1" style={{ color: "#94A3B8" }}>{service.desc}</p>
+                  <p className="text-sm leading-relaxed flex-1" style={{ color: "#64748B" }}>{service.desc}</p>
                   <Link
                     href={service.href}
                     className="inline-flex items-center gap-2 font-bold text-sm mt-5 transition-all group-hover:gap-3"
@@ -477,7 +455,124 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 5. Speed Promise ── */}
+      {/* ── 5. Drone Showcase — DJI FlyCart 100 with flycart-scene-1 background ── */}
+      <section className="relative py-32 overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/flycart-scene-1.jpg"
+            alt="DJI FlyCart 100 in action"
+            fill
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0" style={{ background: "rgba(15,23,42,0.45)" }} />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            {/* Left: Floating drone PNG */}
+            <motion.div
+              className="flex-shrink-0"
+              initial={{ opacity: 0, x: -60, scale: 0.85 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              viewport={vp}
+              transition={{ duration: 0.9, ease }}
+            >
+              {/* Glow */}
+              <div className="relative">
+                <div
+                  className="absolute inset-0 rounded-full pointer-events-none"
+                  style={{
+                    background: "radial-gradient(ellipse, rgba(211,47,47,0.3) 0%, transparent 70%)",
+                    transform: "scale(1.6)",
+                    filter: "blur(50px)",
+                  }}
+                />
+                <motion.div
+                  animate={{ y: [0, -18, 0] }}
+                  transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
+                >
+                  {/* Rotor blur ring */}
+                  <motion.div
+                    className="absolute -top-4 left-1/2 -translate-x-1/2 pointer-events-none"
+                    style={{ width: 480, height: 24 }}
+                    animate={{ scaleX: [1, 1.04, 1] }}
+                    transition={{ repeat: Infinity, duration: 0.15, ease: "linear" }}
+                  >
+                    <div className="w-full h-full rounded-full" style={{ background: "rgba(255,255,255,0.15)", filter: "blur(6px)" }} />
+                  </motion.div>
+
+                  <Image
+                    src="/images/dji-flycart-100.png"
+                    alt="DJI FlyCart 100 heavy-lift drone"
+                    width={480}
+                    height={340}
+                    className="relative z-10 drop-shadow-2xl"
+                    style={{ filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.5))" }}
+                  />
+
+                  <motion.div
+                    className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+                    style={{ width: 260, height: 22, background: "rgba(0,0,0,0.4)", filter: "blur(18px)" }}
+                    animate={{ scaleX: [1, 0.88, 1], opacity: [0.4, 0.25, 0.4] }}
+                    transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
+                  />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Right: glassmorphism info card */}
+            <motion.div
+              className="flex-1"
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.8, ease }}
+            >
+              <div className="rounded-3xl p-8 lg:p-12" style={glassDark}>
+                <p className="text-sm font-black uppercase tracking-widest mb-4" style={{ color: "#D32F2F" }}>
+                  Unsere Flotte
+                </p>
+                <h2
+                  className="font-black mb-4 text-white"
+                  style={{
+                    fontSize: "clamp(1.75rem, 3vw, 2.75rem)",
+                    fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                  }}
+                >
+                  DJI FlyCart 100
+                </h2>
+                <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
+                  Die leistungsstärkste Drohne ihrer Klasse. 100 kg Nutzlast, 10 km Reichweite, vollautomatisch und BAZL-zertifiziert für den kommerziellen Einsatz in der Schweiz.
+                </p>
+                <div className="grid grid-cols-3 gap-4 mb-8">
+                  {[
+                    { value: "100kg", label: "Nutzlast" },
+                    { value: "10km", label: "Reichweite" },
+                    { value: "0g", label: "CO₂" },
+                  ].map((spec) => (
+                    <div key={spec.label} className="rounded-2xl p-4 text-center" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                      <div className="font-black text-2xl text-white mb-1" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{spec.value}</div>
+                      <div className="text-xs" style={{ color: "rgba(248,250,252,0.6)" }}>{spec.label}</div>
+                    </div>
+                  ))}
+                </div>
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    href="/book"
+                    className="inline-flex items-center gap-2 font-black px-8 py-4 rounded text-white"
+                    style={{ background: "#D32F2F" }}
+                  >
+                    JETZT BUCHEN <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. Speed Promise ── */}
       <motion.section
         className="py-20 overflow-hidden"
         style={{ background: "#D32F2F" }}
@@ -488,8 +583,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            className="font-black mb-3 tabular-nums"
-            style={{ fontSize: "clamp(4rem, 12vw, 8rem)", color: "#F8FAFC", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+            className="font-black mb-3 tabular-nums text-white"
+            style={{ fontSize: "clamp(4rem, 12vw, 8rem)", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
             initial={{ scale: 0.3, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={vp}
@@ -509,7 +604,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           </motion.h2>
           <motion.p
             className="text-lg max-w-xl mx-auto mb-8"
-            style={{ color: "rgba(248,250,252,0.8)" }}
+            style={{ color: "rgba(248,250,252,0.85)" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={vp}
@@ -527,8 +622,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             <Link
               href="/book"
-              className="inline-flex items-center gap-2 font-black px-8 py-4 rounded transition-colors text-lg"
-              style={{ background: "#F8FAFC", color: "#D32F2F" }}
+              className="inline-flex items-center gap-2 font-black px-8 py-4 rounded text-lg"
+              style={{ background: "#FFFFFF", color: "#D32F2F" }}
             >
               JETZT BUCHEN <ArrowRight className="w-5 h-5" />
             </Link>
@@ -536,9 +631,20 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </motion.section>
 
-      {/* ── 6. Sustainability / Emissions ── */}
-      <section id="nachhaltigkeit" className="py-24 border-b" style={{ background: "#080811", borderColor: "#1E293B" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── 7. Sustainability / Emissions — with background image + glassmorphism ── */}
+      <section id="nachhaltigkeit" className="relative py-24 overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/flycart-scene-2.webp"
+            alt="Drohne im Alpeneinsatz"
+            fill
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0" style={{ background: "rgba(240,253,244,0.88)" }} />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
 
             {/* Left: Stats + copy */}
@@ -550,7 +656,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             >
               <motion.p
                 className="text-sm font-black uppercase tracking-widest mb-4"
-                style={{ color: "#22C55E" }}
+                style={{ color: "#16A34A" }}
                 variants={slideLeft}
                 transition={{ duration: 0.5, ease }}
               >
@@ -560,7 +666,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 className="font-black mb-6"
                 style={{
                   fontSize: "clamp(2rem, 4vw, 3rem)",
-                  color: "#F8FAFC",
+                  color: "#0F172A",
                   fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
                 variants={slideLeft}
@@ -570,14 +676,14 @@ export function LandingPageContent({ locale }: { locale: string }) {
               </motion.h2>
               <motion.p
                 className="text-lg leading-relaxed mb-8"
-                style={{ color: "#94A3B8" }}
+                style={{ color: "#475569" }}
                 variants={slideLeft}
                 transition={{ duration: 0.6, ease }}
               >
-                Elektrisch betriebene Drohnen produzieren im Betrieb null direkte CO₂-Emissionen. Kein Diesel, kein Lärm, kein Stau — sondern die sauberste Art, Güter von A nach B zu bringen. In der Schweiz, wo saubere Energie und intakte Natur kein Luxus, sondern Identität sind.
+                Elektrisch betriebene Drohnen produzieren im Betrieb null direkte CO₂-Emissionen. Kein Diesel, kein Lärm, kein Stau — die sauberste Art, Güter zu transportieren.
               </motion.p>
 
-              {/* Stats */}
+              {/* Stats with glassmorphism */}
               <motion.div
                 className="grid grid-cols-2 gap-4"
                 variants={stagger(0.1)}
@@ -595,29 +701,26 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     key={stat.label}
                     variants={scaleUp}
                     transition={{ duration: 0.5, ease }}
-                    whileHover={{
-                      borderColor: "#22C55E",
-                      transition: { duration: 0.2 },
-                    }}
-                    className="rounded-xl p-5 border"
-                    style={{ background: "#0F172A", borderColor: "#1E293B" }}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                    className="rounded-xl p-5"
+                    style={glass}
                   >
-                    <div className="flex items-center gap-2 mb-2" style={{ color: "#22C55E" }}>
+                    <div className="flex items-center gap-2 mb-2" style={{ color: "#16A34A" }}>
                       {stat.icon}
                     </div>
                     <div
                       className="font-black text-3xl mb-1"
-                      style={{ color: "#F8FAFC", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                     >
                       {stat.value}
                     </div>
-                    <div className="text-sm" style={{ color: "#94A3B8" }}>{stat.label}</div>
+                    <div className="text-sm" style={{ color: "#64748B" }}>{stat.label}</div>
                   </motion.div>
                 ))}
               </motion.div>
             </motion.div>
 
-            {/* Right: Drone image + sustainability badges */}
+            {/* Right: Glassmorphism card */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, x: 60, scale: 0.9 }}
@@ -625,50 +728,48 @@ export function LandingPageContent({ locale }: { locale: string }) {
               viewport={vp}
               transition={{ duration: 0.8, ease }}
             >
-              {/* Green glow */}
-              <div
-                className="absolute inset-0 rounded-3xl pointer-events-none"
-                style={{
-                  background: "radial-gradient(ellipse at center, rgba(34,197,94,0.12) 0%, transparent 70%)",
-                  filter: "blur(30px)",
-                }}
-              />
-
-              <div className="relative rounded-3xl overflow-hidden" style={{ border: "1px solid #1E293B" }}>
-                <Image
-                  src="/images/flycart-scene-2.webp"
-                  alt="Drohne im Alpeneinsatz — emissionsfrei"
-                  width={600}
-                  height={400}
-                  className="w-full object-cover"
-                  style={{ height: 340 }}
-                />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(8,8,17,0.85) 0%, transparent 50%)" }} />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <p className="font-black text-white text-lg" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
-                    Grüne Logistik beginnt in der Luft.
-                  </p>
-                  <p className="text-sm mt-1" style={{ color: "#94A3B8" }}>DJI FlyCart 100 — Elektrisch. Präzise. Zukunftsweisend.</p>
+              <div className="relative rounded-3xl overflow-hidden p-8" style={glass}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: "#16A34A" }}>
+                    <Leaf className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-black text-lg" style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>Swiss Green Flight</p>
+                    <p className="text-sm" style={{ color: "#64748B" }}>Zertifiziert · Emissionsfrei</p>
+                  </div>
+                </div>
+                <p className="text-lg leading-relaxed mb-6" style={{ color: "#334155" }}>
+                  In der Schweiz, wo saubere Energie und intakte Natur kein Luxus, sondern Identität sind, setzt airBASE neue Standards für grüne Logistik.
+                </p>
+                <div className="rounded-xl overflow-hidden">
+                  <Image
+                    src="/images/flycart-ingenieurverkehr.webp"
+                    alt="Grüne Drohnenlogistik"
+                    width={500}
+                    height={240}
+                    className="w-full object-cover"
+                    style={{ height: 200 }}
+                  />
                 </div>
               </div>
 
               {/* Floating badge */}
               <motion.div
                 className="absolute -top-4 -right-4 rounded-2xl px-4 py-3 flex items-center gap-2 shadow-xl"
-                style={{ background: "#0F172A", border: "1px solid #22C55E" }}
+                style={glass}
                 animate={{ y: [0, -8, 0] }}
                 transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
               >
-                <Leaf className="w-5 h-5" style={{ color: "#22C55E" }} />
-                <span className="font-black text-sm text-white">Swiss Green Flight</span>
+                <Leaf className="w-5 h-5" style={{ color: "#16A34A" }} />
+                <span className="font-black text-sm" style={{ color: "#0F172A" }}>Swiss Green Flight</span>
               </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── 7. How It Works ── */}
-      <section className="py-24" style={{ background: "#0D1117" }}>
+      {/* ── 8. How It Works ── */}
+      <section className="py-24" style={{ background: "#FFFFFF" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -689,7 +790,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               className="font-black"
               style={{
                 fontSize: "clamp(2rem, 4vw, 3rem)",
-                color: "#F8FAFC",
+                color: "#0F172A",
                 fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
               }}
               variants={fadeUp}
@@ -709,7 +810,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               viewport={vp}
               transition={{ duration: 1.2, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
             />
-            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px" style={{ background: "#1E293B" }} />
+            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px" style={{ background: "#E2E8F0" }} />
 
             <motion.div
               className="contents"
@@ -733,19 +834,19 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 >
                   <motion.div
                     className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10 border-2"
-                    style={{ background: "#0D1117", borderColor: "#D32F2F" }}
-                    whileHover={{ scale: 1.15, boxShadow: "0 0 0 6px rgba(211,47,47,0.15)" }}
+                    style={{ background: "#FFFFFF", borderColor: "#D32F2F" }}
+                    whileHover={{ scale: 1.15, boxShadow: "0 0 0 6px rgba(211,47,47,0.12)" }}
                     transition={spring}
                   >
                     <span className="font-black text-lg" style={{ color: "#D32F2F" }}>{item.step}</span>
                   </motion.div>
                   <h3
                     className="font-black text-xl mb-2"
-                    style={{ color: "#F8FAFC", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                    style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "#94A3B8" }}>{item.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#64748B" }}>{item.desc}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -753,8 +854,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 8. Portal Entry Points ── */}
-      <section id="app" className="py-24 border-t" style={{ background: "#080811", borderColor: "#1E293B" }}>
+      {/* ── 9. Portal Entry Points ── */}
+      <section id="app" className="py-24 border-t" style={{ background: "#F8FAFC", borderColor: "#E2E8F0" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -775,7 +876,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               className="font-black"
               style={{
                 fontSize: "clamp(2rem, 4vw, 3rem)",
-                color: "#F8FAFC",
+                color: "#0F172A",
                 fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
               }}
               variants={fadeUp}
@@ -785,7 +886,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             </motion.h2>
             <motion.p
               className="text-lg mt-4 max-w-xl mx-auto"
-              style={{ color: "#94A3B8" }}
+              style={{ color: "#64748B" }}
               variants={fadeUp}
               transition={{ duration: 0.6, ease }}
             >
@@ -829,11 +930,10 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 transition={{ duration: 0.6, ease }}
                 whileHover={{
                   y: -8,
-                  borderColor: "#D32F2F",
                   transition: { duration: 0.25 },
                 }}
-                className="rounded-2xl p-8 text-center border-2"
-                style={{ background: "#0F172A", borderColor: "#1E293B" }}
+                className="rounded-2xl p-8 text-center shadow-md hover:shadow-xl transition-shadow"
+                style={{ ...glass, border: "1px solid rgba(255,255,255,0.6)" }}
               >
                 <motion.div
                   className="text-5xl mb-6"
@@ -843,19 +943,17 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   {portal.icon}
                 </motion.div>
                 <h3
-                  className="font-black text-2xl mb-3 text-white"
-                  style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                  className="font-black text-2xl mb-3"
+                  style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                 >
                   {portal.title}
                 </h3>
-                <p className="leading-relaxed mb-6" style={{ color: "#94A3B8" }}>{portal.desc}</p>
+                <p className="leading-relaxed mb-6" style={{ color: "#64748B" }}>{portal.desc}</p>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
                   <Link
                     href={portal.href}
-                    className="inline-flex items-center justify-center gap-2 font-bold px-6 py-3 rounded text-sm text-white transition-colors"
-                    style={{ background: "#1E293B" }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#D32F2F"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#1E293B"; }}
+                    className="inline-flex items-center justify-center gap-2 font-bold px-6 py-3 rounded text-sm transition-colors text-white"
+                    style={{ background: "#D32F2F" }}
                   >
                     {portal.cta} <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -866,8 +964,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 9. Swiss Identity ── */}
-      <section id="ueber-uns" className="py-20 border-t" style={{ background: "#0D1117", borderColor: "#1E293B" }}>
+      {/* ── 10. Swiss Identity ── */}
+      <section id="ueber-uns" className="py-20 border-t" style={{ background: "#FFFFFF", borderColor: "#E2E8F0" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.span
             className="text-6xl inline-block"
@@ -883,7 +981,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             className="font-black mt-6 mb-4"
             style={{
               fontSize: "clamp(2rem, 4vw, 3rem)",
-              color: "#F8FAFC",
+              color: "#0F172A",
               fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
             }}
             initial={{ opacity: 0, y: 30 }}
@@ -896,7 +994,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
           <motion.p
             className="text-lg max-w-2xl mx-auto leading-relaxed"
-            style={{ color: "#94A3B8" }}
+            style={{ color: "#64748B" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={vp}
@@ -921,12 +1019,10 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 transition={{ type: "spring", stiffness: 280, damping: 22 }}
                 whileHover={{
                   scale: 1.08,
-                  borderColor: "#D32F2F",
-                  color: "#D32F2F",
                   transition: { duration: 0.15 },
                 }}
-                className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full cursor-default border"
-                style={{ borderColor: "#1E293B", color: "#94A3B8" }}
+                className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full cursor-default border shadow-sm"
+                style={{ borderColor: "#E2E8F0", color: "#475569", background: "#FFFFFF" }}
               >
                 <span className="w-2 h-2 rounded-full" style={{ background: "#D32F2F" }} />
                 {badge}
@@ -936,9 +1032,182 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 10. Franchise ── */}
-      <section className="py-24 border-t" style={{ background: "#080811", borderColor: "#1E293B" }}>
+      {/* ── 11. Swiss Map — HQ & Bases ── */}
+      <section className="relative py-24 overflow-hidden" style={{ background: "#F1F5F9" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            variants={stagger(0.12)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={vp}
+          >
+            <motion.p
+              className="text-sm font-black uppercase tracking-widest mb-3"
+              style={{ color: "#D32F2F" }}
+              variants={fadeUp}
+              transition={{ duration: 0.5, ease }}
+            >
+              Unser Netzwerk
+            </motion.p>
+            <motion.h2
+              className="font-black"
+              style={{
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                color: "#0F172A",
+                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+              }}
+              variants={fadeUp}
+              transition={{ duration: 0.6, ease }}
+            >
+              Heimatbasis Berner Oberland.
+            </motion.h2>
+            <motion.p
+              className="text-lg mt-4 max-w-xl mx-auto"
+              style={{ color: "#64748B" }}
+              variants={fadeUp}
+              transition={{ duration: 0.6, ease }}
+            >
+              Hauptsitz in Wilderswil — operational im Herzen der Schweizer Alpen. Korridor: Interlaken → Grindelwald → Lauterbrunnen → Brienz.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            className="relative rounded-3xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={vp}
+            transition={{ duration: 0.8, ease }}
+          >
+            {/* Map image */}
+            <div className="relative" style={{ height: 480 }}>
+              <Image
+                src="/images/swiss-map.webp"
+                alt="Schweiz Karte — airBASE Netzwerk"
+                fill
+                className="object-cover object-center"
+              />
+
+              {/* Glassmorphism overlay at bottom */}
+              <div
+                className="absolute inset-x-0 bottom-0 h-32"
+                style={{ background: "linear-gradient(to top, rgba(241,245,249,0.95) 0%, transparent 100%)" }}
+              />
+
+              {/* HQ Marker — Wilderswil */}
+              <motion.div
+                className="absolute"
+                style={{ top: "52%", left: "47%" }}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={vp}
+                transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 15 }}
+              >
+                {/* Pulse rings */}
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    width: 60,
+                    height: 60,
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    background: "rgba(211,47,47,0.2)",
+                    border: "2px solid rgba(211,47,47,0.4)",
+                  }}
+                  animate={{ scale: [1, 2.2, 1], opacity: [0.7, 0, 0.7] }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeOut" }}
+                />
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    background: "rgba(211,47,47,0.25)",
+                    border: "1px solid rgba(211,47,47,0.5)",
+                  }}
+                  animate={{ scale: [1, 1.8, 1], opacity: [0.8, 0, 0.8] }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeOut", delay: 0.4 }}
+                />
+
+                {/* HQ dot */}
+                <div
+                  className="relative rounded-full z-10"
+                  style={{
+                    width: 18,
+                    height: 18,
+                    background: "#D32F2F",
+                    border: "3px solid #FFFFFF",
+                    boxShadow: "0 0 0 2px #D32F2F, 0 4px 12px rgba(211,47,47,0.5)",
+                  }}
+                />
+
+                {/* HQ Label — glassmorphism tooltip */}
+                <motion.div
+                  className="absolute left-6 -top-8 rounded-xl px-3 py-2 whitespace-nowrap"
+                  style={glass}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={vp}
+                  transition={{ delay: 0.9, duration: 0.5, ease }}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5" style={{ color: "#D32F2F" }} />
+                    <span className="font-black text-xs" style={{ color: "#0F172A" }}>HQ — Wilderswil</span>
+                  </div>
+                  <div className="text-xs mt-0.5" style={{ color: "#64748B" }}>Mittelweg 9, 3812</div>
+                </motion.div>
+              </motion.div>
+
+              {/* Glassmorphism info card top-left */}
+              <motion.div
+                className="absolute top-6 left-6 rounded-2xl p-5"
+                style={glass}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={vp}
+                transition={{ delay: 0.6, duration: 0.6, ease }}
+              >
+                <p className="font-black text-sm mb-3" style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+                  airBASE Swiss
+                </p>
+                <div className="space-y-1.5">
+                  {[
+                    { label: "Hauptsitz", value: "Wilderswil, Berner Oberland" },
+                    { label: "Korridor", value: "Interlaken → Grindelwald" },
+                    { label: "Status", value: "Operationell 2025", dot: true },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center gap-2">
+                      {item.dot && <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse flex-shrink-0" />}
+                      <span className="text-xs" style={{ color: "#475569" }}>
+                        <span className="font-semibold">{item.label}:</span> {item.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── 12. Franchise — with background image ── */}
+      <section className="relative py-24 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/flycart-lastendrohne.webp"
+            alt="Drohnenflotte"
+            fill
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0" style={{ background: "rgba(248,250,252,0.92)" }} />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               variants={stagger(0.1)}
@@ -958,7 +1227,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 className="font-black mb-6"
                 style={{
                   fontSize: "clamp(2rem, 4vw, 3rem)",
-                  color: "#F8FAFC",
+                  color: "#0F172A",
                   fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
                 variants={slideLeft}
@@ -968,13 +1237,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
               </motion.h2>
               <motion.p
                 className="text-lg leading-relaxed mb-8"
-                style={{ color: "#94A3B8" }}
+                style={{ color: "#475569" }}
                 variants={slideLeft}
                 transition={{ duration: 0.6, ease }}
               >
                 airBASE ist mehr als ein Unternehmen — es ist ein Netzwerk. Wir bauen die führende
-                Drohnenlogistik-Franchise Europas und suchen unternehmerische Partner, die unsere
-                Technologie, Marke und bewährten Prozesse in ihrer Region einsetzen möchten.
+                Drohnenlogistik-Franchise Europas und suchen unternehmerische Partner.
               </motion.p>
               <motion.div
                 variants={slideLeft}
@@ -986,7 +1254,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   href="#kontakt"
                   className="inline-flex items-center gap-2 font-black px-8 py-4 rounded border-2 transition-colors"
                   style={{ borderColor: "#D32F2F", color: "#D32F2F" }}
-                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#D32F2F"; el.style.color = "#F8FAFC"; }}
+                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#D32F2F"; el.style.color = "#FFFFFF"; }}
                   onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "transparent"; el.style.color = "#D32F2F"; }}
                 >
                   FRANCHISE-ANFRAGE <ArrowRight className="w-5 h-5" />
@@ -1014,11 +1282,10 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   transition={{ duration: 0.5, ease }}
                   whileHover={{
                     x: 6,
-                    borderColor: "#D32F2F",
                     transition: { duration: 0.2 },
                   }}
-                  className="flex items-start gap-3 p-4 rounded-xl border"
-                  style={{ background: "#0F172A", borderColor: "#1E293B" }}
+                  className="flex items-start gap-3 p-4 rounded-xl"
+                  style={glass}
                 >
                   <motion.span
                     className="font-black text-lg leading-none mt-0.5"
@@ -1028,7 +1295,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   >
                     +
                   </motion.span>
-                  <span className="text-sm leading-relaxed" style={{ color: "#94A3B8" }}>{item}</span>
+                  <span className="text-sm leading-relaxed" style={{ color: "#475569" }}>{item}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -1036,8 +1303,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 11. Contact ── */}
-      <section id="kontakt" className="py-24 border-t" style={{ background: "#0D1117", borderColor: "#1E293B" }}>
+      {/* ── 13. Contact ── */}
+      <section id="kontakt" className="py-24 border-t" style={{ background: "#FFFFFF", borderColor: "#E2E8F0" }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-12"
@@ -1058,7 +1325,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               className="font-black mb-4"
               style={{
                 fontSize: "clamp(2rem, 4vw, 3rem)",
-                color: "#F8FAFC",
+                color: "#0F172A",
                 fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
               }}
               variants={fadeUp}
@@ -1068,7 +1335,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             </motion.h2>
             <motion.p
               className="text-lg"
-              style={{ color: "#94A3B8" }}
+              style={{ color: "#64748B" }}
               variants={fadeUp}
               transition={{ duration: 0.6, ease }}
             >
@@ -1076,7 +1343,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             </motion.p>
             <motion.p
               className="mt-2 text-sm"
-              style={{ color: "#64748B" }}
+              style={{ color: "#94A3B8" }}
               variants={fadeUp}
               transition={{ duration: 0.6, ease }}
             >
@@ -1102,42 +1369,42 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ duration: 0.5, ease }}
             >
               <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: "#94A3B8" }}>Name *</label>
+                <label className="block text-sm font-semibold mb-2" style={{ color: "#475569" }}>Name *</label>
                 <input
                   type="text"
                   required
-                  className="w-full rounded-xl px-4 py-3 placeholder-gray-600 focus:outline-none transition-colors"
-                  style={{ background: "#0F172A", border: "1px solid #1E293B", color: "#F8FAFC" }}
+                  className="w-full rounded-xl px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all"
+                  style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A" }}
                   placeholder="Ihr Name"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: "#94A3B8" }}>Unternehmen</label>
+                <label className="block text-sm font-semibold mb-2" style={{ color: "#475569" }}>Unternehmen</label>
                 <input
                   type="text"
-                  className="w-full rounded-xl px-4 py-3 placeholder-gray-600 focus:outline-none transition-colors"
-                  style={{ background: "#0F172A", border: "1px solid #1E293B", color: "#F8FAFC" }}
+                  className="w-full rounded-xl px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all"
+                  style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A" }}
                   placeholder="Ihr Unternehmen"
                 />
               </div>
             </motion.div>
             <motion.div variants={fadeUp} transition={{ duration: 0.5, ease }}>
-              <label className="block text-sm font-semibold mb-2" style={{ color: "#94A3B8" }}>E-Mail *</label>
+              <label className="block text-sm font-semibold mb-2" style={{ color: "#475569" }}>E-Mail *</label>
               <input
                 type="email"
                 required
-                className="w-full rounded-xl px-4 py-3 placeholder-gray-600 focus:outline-none transition-colors"
-                style={{ background: "#0F172A", border: "1px solid #1E293B", color: "#F8FAFC" }}
+                className="w-full rounded-xl px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all"
+                style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A" }}
                 placeholder="ihre@email.ch"
               />
             </motion.div>
             <motion.div variants={fadeUp} transition={{ duration: 0.5, ease }}>
-              <label className="block text-sm font-semibold mb-2" style={{ color: "#94A3B8" }}>Nachricht *</label>
+              <label className="block text-sm font-semibold mb-2" style={{ color: "#475569" }}>Nachricht *</label>
               <textarea
                 required
                 rows={5}
-                className="w-full rounded-xl px-4 py-3 placeholder-gray-600 focus:outline-none transition-colors resize-none"
-                style={{ background: "#0F172A", border: "1px solid #1E293B", color: "#F8FAFC" }}
+                className="w-full rounded-xl px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 transition-all resize-none"
+                style={{ background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A" }}
                 placeholder="Beschreiben Sie Ihr Anliegen..."
               />
             </motion.div>
@@ -1148,9 +1415,9 @@ export function LandingPageContent({ locale }: { locale: string }) {
             >
               <motion.button
                 type="submit"
-                className="inline-flex items-center gap-2 font-black px-10 py-4 rounded text-lg text-white transition-colors"
+                className="inline-flex items-center gap-2 font-black px-10 py-4 rounded text-lg text-white"
                 style={{ background: "#D32F2F" }}
-                whileHover={{ scale: 1.04, boxShadow: "0 10px 30px rgba(211,47,47,0.35)" }}
+                whileHover={{ scale: 1.04, boxShadow: "0 10px 30px rgba(211,47,47,0.3)" }}
                 whileTap={{ scale: 0.97 }}
               >
                 NACHRICHT SENDEN <ArrowRight className="w-5 h-5" />
@@ -1160,10 +1427,10 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 12. Footer ── */}
+      {/* ── 14. Footer ── */}
       <motion.footer
         className="py-16 border-t"
-        style={{ background: "#030308", borderColor: "#1E293B" }}
+        style={{ background: "#F1F5F9", borderColor: "#E2E8F0" }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={vp}
@@ -1178,11 +1445,11 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ delay: 0.1, duration: 0.6, ease }}
             >
               <a href="#" className="flex items-center gap-1 text-2xl tracking-tight select-none mb-3">
-                <span className="italic font-normal text-white/70">air</span>
-                <span className="font-black text-white uppercase">BASE</span>
+                <span className="italic font-normal" style={{ color: "#94A3B8" }}>air</span>
+                <span className="font-black uppercase" style={{ color: "#0F172A" }}>BASE</span>
                 <span className="font-black text-3xl leading-none ml-0.5" style={{ color: "#D32F2F" }}>+</span>
               </a>
-              <p className="text-sm" style={{ color: "#475569" }}>Drohnenlogistik. Made in Switzerland.</p>
+              <p className="text-sm" style={{ color: "#94A3B8" }}>Drohnenlogistik. Made in Switzerland.</p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
@@ -1229,15 +1496,15 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   transition={{ delay: 0.1 + colIdx * 0.08, duration: 0.5, ease }}
                 >
                   <h4
-                    className="font-black text-white mb-3 uppercase text-xs tracking-widest"
-                    style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                    className="font-black mb-3 uppercase text-xs tracking-widest"
+                    style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                   >
                     {col.heading}
                   </h4>
-                  <ul className="space-y-2" style={{ color: "#475569" }}>
+                  <ul className="space-y-2" style={{ color: "#94A3B8" }}>
                     {col.links.map((link) => (
                       <li key={link.label}>
-                        <a href={link.href} className="hover:text-white transition-colors">
+                        <a href={link.href} className="hover:text-gray-900 transition-colors">
                           {link.label}
                         </a>
                       </li>
@@ -1250,7 +1517,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
           <div
             className="border-t pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
-            style={{ borderColor: "#1E293B", color: "#334155" }}
+            style={{ borderColor: "#E2E8F0", color: "#94A3B8" }}
           >
             <span>© {new Date().getFullYear()} airBASE — Alle Rechte vorbehalten.</span>
             <span>BAZL-konform · SORA-zertifiziert · Made in Switzerland 🇨🇭</span>
