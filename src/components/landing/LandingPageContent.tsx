@@ -74,15 +74,22 @@ const glassDark = {
 
 export function LandingPageContent({ locale }: { locale: string }) {
   const heroRef = useRef<HTMLElement>(null);
+  const swissRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
+  const { scrollYProgress: swissScrollProgress } = useScroll({
+    target: swissRef,
+    offset: ["start end", "end start"],
+  });
+
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const heroContentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
   const heroContentY = useTransform(scrollYProgress, [0, 0.6], ["0%", "-10%"]);
+  const swissBgY = useTransform(swissScrollProgress, [0, 1], ["-15%", "15%"]);
 
   return (
     <main
@@ -463,7 +470,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 5. Drone Showcase — DJI FlyCart 100 ── */}
+      {/* ── 5. Drone Showcase — Airbase T100 ── */}
       <section className="relative py-32 overflow-hidden" style={{ background: "#FFFFFF" }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -501,7 +508,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
                   <Image
                     src="/images/dji-flycart-100.png"
-                    alt="DJI FlyCart 100 heavy-lift drone"
+                    alt="Airbase T100 heavy-lift drone"
                     width={620}
                     height={440}
                     className="relative z-10 drop-shadow-2xl"
@@ -537,7 +544,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                   }}
                 >
-                  DJI FlyCart 100
+                  Airbase T100
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
                   Die leistungsstärkste Drohne ihrer Klasse. 100 kg Nutzlast, 10 km Reichweite, vollautomatisch und BAZL-zertifiziert für den kommerziellen Einsatz in der Schweiz.
@@ -630,15 +637,15 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
       {/* ── 7. Sustainability / Emissions — with background image + glassmorphism ── */}
       <section id="nachhaltigkeit" className="relative py-24 overflow-hidden">
-        {/* Background image — drone over green field (agriculture) */}
+        {/* Background image — green landscape (no color overlay) */}
         <div className="absolute inset-0">
           <Image
-            src="/images/flycart-ingenieurverkehr.webp"
-            alt="Drohne sprüht über grünes Feld"
+            src="/images/flycart-lastendrohne.webp"
+            alt="Drohne über grüner Landschaft"
             fill
             className="object-cover object-center"
           />
-          <div className="absolute inset-0" style={{ background: "rgba(240,253,244,0.85)" }} />
+          <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.35)" }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -653,7 +660,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             >
               <motion.p
                 className="text-sm font-black uppercase tracking-widest mb-4"
-                style={{ color: "#16A34A" }}
+                style={{ color: "#4ADE80" }}
                 variants={slideLeft}
                 transition={{ duration: 0.5, ease }}
               >
@@ -663,7 +670,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 className="font-black mb-6"
                 style={{
                   fontSize: "clamp(2rem, 4vw, 3rem)",
-                  color: "#0F172A",
+                  color: "#FFFFFF",
                   fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 }}
                 variants={slideLeft}
@@ -673,7 +680,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               </motion.h2>
               <motion.p
                 className="text-lg leading-relaxed mb-8"
-                style={{ color: "#475569" }}
+                style={{ color: "rgba(248,250,252,0.85)" }}
                 variants={slideLeft}
                 transition={{ duration: 0.6, ease }}
               >
@@ -962,8 +969,23 @@ export function LandingPageContent({ locale }: { locale: string }) {
       </section>
 
       {/* ── 10. Swiss Identity ── */}
-      <section id="ueber-uns" className="py-20 border-t" style={{ background: "#FFFFFF", borderColor: "#E2E8F0" }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section ref={swissRef} id="ueber-uns" className="relative py-20 overflow-hidden">
+        {/* Parallax background image */}
+        <motion.div
+          className="absolute inset-0 w-full"
+          style={{ y: swissBgY, scale: 1.15 }}
+        >
+          <Image
+            src="/images/flycart-scene-1.jpg"
+            alt="Drohne über Schweizer Alpenlandschaft"
+            fill
+            className="object-cover object-center"
+          />
+        </motion.div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0" style={{ background: "rgba(15,23,42,0.62)" }} />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.span
             className="text-6xl inline-block"
             initial={{ opacity: 0, scale: 0.4, rotate: -20 }}
@@ -978,7 +1000,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             className="font-black mt-6 mb-4"
             style={{
               fontSize: "clamp(2rem, 4vw, 3rem)",
-              color: "#0F172A",
+              color: "#FFFFFF",
               fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
             }}
             initial={{ opacity: 0, y: 30 }}
@@ -991,7 +1013,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
           <motion.p
             className="text-lg max-w-2xl mx-auto leading-relaxed"
-            style={{ color: "#64748B" }}
+            style={{ color: "rgba(248,250,252,0.85)" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={vp}
@@ -1019,7 +1041,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   transition: { duration: 0.15 },
                 }}
                 className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full cursor-default border shadow-sm"
-                style={{ borderColor: "#E2E8F0", color: "#475569", background: "#FFFFFF" }}
+                style={{ borderColor: "rgba(255,255,255,0.3)", color: "#FFFFFF", background: "rgba(255,255,255,0.15)" }}
               >
                 <span className="w-2 h-2 rounded-full" style={{ background: "#D32F2F" }} />
                 {badge}
