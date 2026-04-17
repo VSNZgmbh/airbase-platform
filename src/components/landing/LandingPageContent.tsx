@@ -95,8 +95,9 @@ export function LandingPageContent({ locale }: { locale: string }) {
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 border-b"
         style={{
-          ...glass,
-          borderColor: "rgba(255,255,255,0.5)",
+          background: "#FFFFFF",
+          borderColor: "#E2E8F0",
+          boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
         }}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -112,8 +113,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <span className="italic font-normal" style={{ color: "#64748B" }}>air</span>
-              <span className="font-black uppercase" style={{ color: "#0F172A" }}>BASE</span>
+              <span className="italic font-normal" style={{ color: "#D32F2F" }}>air</span>
+              <span className="font-black uppercase" style={{ color: "#D32F2F" }}>BASE</span>
               <span className="font-black text-3xl leading-none ml-0.5" style={{ color: "#D32F2F" }}>+</span>
             </motion.a>
 
@@ -221,7 +222,13 @@ export function LandingPageContent({ locale }: { locale: string }) {
             {/* Left: Tagline + service words */}
             <div className="max-w-xl z-10">
               <motion.p
-                className="italic text-xl mb-4 text-white/80"
+                className="font-black text-white mb-6"
+                style={{
+                  fontSize: "clamp(1.4rem, 2.8vw, 2rem)",
+                  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                  textShadow: "0 2px 16px rgba(0,0,0,0.4)",
+                  letterSpacing: "-0.01em",
+                }}
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.8, ease }}
@@ -230,7 +237,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               </motion.p>
 
               <motion.div
-                className="space-y-1"
+                className="space-y-0"
                 variants={stagger(0.1)}
                 initial="hidden"
                 animate="visible"
@@ -238,11 +245,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 {["Transport", "Landwirtschaft", "Reinigung", "Bau"].map((service, i) => (
                   <motion.h2
                     key={service}
-                    className="font-black leading-tight text-white"
+                    className="font-black text-white"
                     style={{
                       fontSize: "clamp(3rem, 7vw, 6rem)",
                       fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                       textShadow: "0 4px 32px rgba(0,0,0,0.4)",
+                      lineHeight: "0.95",
                     }}
                     variants={{
                       hidden: { opacity: 0, x: -60, skewX: 5 },
@@ -455,19 +463,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 5. Drone Showcase — DJI FlyCart 100 with flycart-scene-1 background ── */}
-      <section className="relative py-32 overflow-hidden">
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/images/flycart-scene-1.jpg"
-            alt="DJI FlyCart 100 in action"
-            fill
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0" style={{ background: "rgba(15,23,42,0.45)" }} />
-        </div>
-
+      {/* ── 5. Drone Showcase — DJI FlyCart 100 ── */}
+      <section className="relative py-32 overflow-hidden" style={{ background: "#FFFFFF" }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* Left: Floating drone PNG */}
@@ -495,7 +492,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   {/* Rotor blur ring */}
                   <motion.div
                     className="absolute -top-4 left-1/2 -translate-x-1/2 pointer-events-none"
-                    style={{ width: 480, height: 24 }}
+                    style={{ width: 620, height: 24 }}
                     animate={{ scaleX: [1, 1.04, 1] }}
                     transition={{ repeat: Infinity, duration: 0.15, ease: "linear" }}
                   >
@@ -505,10 +502,10 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   <Image
                     src="/images/dji-flycart-100.png"
                     alt="DJI FlyCart 100 heavy-lift drone"
-                    width={480}
-                    height={340}
+                    width={620}
+                    height={440}
                     className="relative z-10 drop-shadow-2xl"
-                    style={{ filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.5))" }}
+                    style={{ filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.3))" }}
                   />
 
                   <motion.div
@@ -529,7 +526,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               viewport={vp}
               transition={{ duration: 0.8, ease }}
             >
-              <div className="rounded-3xl p-8 lg:p-12" style={glassDark}>
+              <div className="rounded-3xl p-8 lg:p-12" style={{ background: "#0F172A", boxShadow: "0 20px 60px rgba(15,23,42,0.18)" }}>
                 <p className="text-sm font-black uppercase tracking-widest mb-4" style={{ color: "#D32F2F" }}>
                   Unsere Flotte
                 </p>
@@ -551,7 +548,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     { value: "10km", label: "Reichweite" },
                     { value: "0g", label: "CO₂" },
                   ].map((spec) => (
-                    <div key={spec.label} className="rounded-2xl p-4 text-center" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                    <div key={spec.label} className="rounded-2xl p-4 text-center" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
                       <div className="font-black text-2xl text-white mb-1" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{spec.value}</div>
                       <div className="text-xs" style={{ color: "rgba(248,250,252,0.6)" }}>{spec.label}</div>
                     </div>
@@ -633,15 +630,15 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
       {/* ── 7. Sustainability / Emissions — with background image + glassmorphism ── */}
       <section id="nachhaltigkeit" className="relative py-24 overflow-hidden">
-        {/* Background image */}
+        {/* Background image — drone over green field (agriculture) */}
         <div className="absolute inset-0">
           <Image
-            src="/images/flycart-scene-2.webp"
-            alt="Drohne im Alpeneinsatz"
+            src="/images/flycart-ingenieurverkehr.webp"
+            alt="Drohne sprüht über grünes Feld"
             fill
             className="object-cover object-center"
           />
-          <div className="absolute inset-0" style={{ background: "rgba(240,253,244,0.88)" }} />
+          <div className="absolute inset-0" style={{ background: "rgba(240,253,244,0.85)" }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -743,7 +740,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 </p>
                 <div className="rounded-xl overflow-hidden">
                   <Image
-                    src="/images/flycart-ingenieurverkehr.webp"
+                    src="/images/flycart-scene-2.webp"
                     alt="Grüne Drohnenlogistik"
                     width={500}
                     height={240}
@@ -1073,19 +1070,19 @@ export function LandingPageContent({ locale }: { locale: string }) {
           </motion.div>
 
           <motion.div
-            className="relative rounded-3xl overflow-hidden shadow-2xl"
+            className="relative rounded-3xl shadow-2xl"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={vp}
             transition={{ duration: 0.8, ease }}
           >
-            {/* Map image */}
-            <div className="relative" style={{ height: 480 }}>
+            {/* Map image — freestanding, fully visible */}
+            <div className="relative" style={{ height: 520, background: "#F8FAFC" }}>
               <Image
                 src="/images/swiss-map.webp"
                 alt="Schweiz Karte — airBASE Netzwerk"
                 fill
-                className="object-cover object-center"
+                className="object-contain"
               />
 
               {/* Glassmorphism overlay at bottom */}
