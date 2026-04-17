@@ -277,7 +277,65 @@ export const invoices = pgTable("invoices", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const tenantPricingConfig = pgTable("tenant_pricing_config", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  franchiseTenantId: uuid("franchise_tenant_id")
+    .notNull()
+    .unique()
+    .references(() => franchiseTenants.id),
+  baseRateCHFPerKm: decimal("base_rate_chf_per_km", {
+    precision: 8,
+    scale: 2,
+  }).notNull().default("12.00"),
+  weightFreeKg: decimal("weight_free_kg", { precision: 6, scale: 2 }).notNull().default("20"),
+  weightSurchargeCHFPerKg: decimal("weight_surcharge_chf_per_kg", {
+    precision: 6,
+    scale: 2,
+  }).notNull().default("0.50"),
+  hubPickupSurchargeCHF: decimal("hub_pickup_surcharge_chf", {
+    precision: 8,
+    scale: 2,
+  }).notNull().default("25.00"),
+  customPickupCHFPerKm: decimal("custom_pickup_chf_per_km", {
+    precision: 6,
+    scale: 2,
+  }).notNull().default("2.00"),
+  minimumBookingCHF: decimal("minimum_booking_chf", {
+    precision: 8,
+    scale: 2,
+  }).notNull().default("120.00"),
+  vatPercent: decimal("vat_percent", { precision: 4, scale: 2 }).notNull().default("8.10"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const tenantServiceAreas = pgTable("tenant_service_areas", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  franchiseTenantId: uuid("franchise_tenant_id")
+    .notNull()
+    .references(() => franchiseTenants.id),
+  name: text("name").notNull(),
+  // GeoJSON polygon or center+radius
+  geoJson: jsonb("geo_json"),
+  centerLat: decimal("center_lat", { precision: 10, scale: 7 }),
+  centerLng: decimal("center_lng", { precision: 10, scale: 7 }),
+  radiusKm: decimal("radius_km", { precision: 6, scale: 2 }),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // ─── Relations ────────────────────────────────────────────────────────────────
+
+export const franchiseTenantsRelations = relations(franchiseTenants, ({ one, many }) => ({
+  pricingConfig: one(tenantPricingConfig, {
+    fields: [franchiseTenants.id],
+    references: [tenantPricingConfig.franchiseTenantId],
+  }),
+  serviceAreas: many(tenantServiceAreas),
+  pilots: many(pilots),
+  drones: many(drones),
+  hubs: many(airbaseHubs),
+}));
 
 export const customersRelations = relations(customers, ({ many, one }) => ({
   bookings: many(bookings),

@@ -3,12 +3,48 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { db } from "@/lib/db";
+import { eq } from "drizzle-orm";
+import { franchiseTenants } from "@/lib/db/schema";
+
+/**
+ * Resolve the franchise tenant ID for the current request.
+ * Priority:
+ *  1. Clerk user publicMetadata.franchiseTenantId (for franchise admins/pilots)
+ *  2. X-Tenant-Slug request header (for internal tooling)
+ *  3. DEFAULT_TENANT_SLUG env var (for demo / single-tenant deployments)
+ */
+async function resolveTenantId(userId: string | null): Promise<string | null> {
+  // Try from Clerk user metadata
+  if (userId) {
+    try {
+      const client = await clerkClient();
+      const user = await client.users.getUser(userId);
+      const meta = user.publicMetadata as { franchiseTenantId?: string };
+      if (meta.franchiseTenantId) return meta.franchiseTenantId;
+    } catch {
+      // Clerk not configured or user lookup failed — fall through
+    }
+  }
+
+  // Fall back to env-configured default tenant slug
+  const defaultSlug = process.env.DEFAULT_TENANT_SLUG;
+  if (defaultSlug) {
+    const tenant = await db.query.franchiseTenants.findFirst({
+      where: eq(franchiseTenants.slug, defaultSlug),
+    }).catch(() => null);
+    if (tenant) return tenant.id;
+  }
+
+  return null;
+}
 
 export const createTRPCContext = async () => {
   const { userId } = await auth();
+  const tenantId = await resolveTenantId(userId);
   return {
     db,
     userId,
+    tenantId,
   };
 };
 
@@ -85,4 +121,39 @@ export const pilotProcedure = t.procedure
       throw new TRPCError({ code: "FORBIDDEN", message: "Pilot role required" });
     }
     return next({ ctx: { ...ctx, userId: ctx.userId } });
+  });
+
+/**
+ * Procedure that requires a resolved tenant context.
+ * Injects `tenantId` as non-nullable.
+ */
+export const tenantProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.tenantId) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Tenant context required. Set DEFAULT_TENANT_SLUG or ensure user has franchiseTenantId in Clerk metadata.",
+      });
+    }
+    return next({ ctx: { ...ctx, tenantId: ctx.tenantId } });
+  });
+
+/**
+ * Procedure for franchise admins — requires auth + operator role + tenant.
+ */
+export const franchiseAdminProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    if (!ctx.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    const role = await getUserRole(ctx.userId);
+    if (role !== "operator" && role !== "admin") {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Franchise admin role required" });
+    }
+    if (!ctx.tenantId) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "No tenant assigned to this user" });
+    }
+    return next({ ctx: { ...ctx, userId: ctx.userId, tenantId: ctx.tenantId } });
   });

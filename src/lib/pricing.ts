@@ -24,11 +24,22 @@ export const PRICING_CONFIG = {
 
 export type PickupOption = "CUSTOMER_LOCATION" | "AIRBASE_HUB" | "CUSTOM_PICKUP";
 
+export interface TenantPricingOverrides {
+  baseRateCHFPerKm?: number;
+  weightFreeKg?: number;
+  weightSurchargeCHFPerKg?: number;
+  hubPickupSurchargeCHF?: number;
+  customPickupCHFPerKm?: number;
+  minimumBookingCHF?: number;
+  vatPercent?: number;
+}
+
 export interface PriceInput {
   routeDistanceKm: number;
   payloadWeightKg: number;
   pickupOption: PickupOption;
   pickupDistanceFromHubKm?: number; // required for CUSTOM_PICKUP
+  tenantOverrides?: TenantPricingOverrides;
 }
 
 export interface PriceBreakdown {
@@ -43,35 +54,45 @@ export interface PriceBreakdown {
 }
 
 export function calculatePrice(input: PriceInput): PriceBreakdown {
-  const { routeDistanceKm, payloadWeightKg, pickupOption, pickupDistanceFromHubKm } =
+  const { routeDistanceKm, payloadWeightKg, pickupOption, pickupDistanceFromHubKm, tenantOverrides } =
     input;
 
+  const cfg = {
+    BASE_RATE_CHF_PER_KM: tenantOverrides?.baseRateCHFPerKm ?? PRICING_CONFIG.BASE_RATE_CHF_PER_KM,
+    WEIGHT_FREE_KG: tenantOverrides?.weightFreeKg ?? PRICING_CONFIG.WEIGHT_FREE_KG,
+    WEIGHT_SURCHARGE_CHF_PER_KG: tenantOverrides?.weightSurchargeCHFPerKg ?? PRICING_CONFIG.WEIGHT_SURCHARGE_CHF_PER_KG,
+    HUB_PICKUP_SURCHARGE_CHF: tenantOverrides?.hubPickupSurchargeCHF ?? PRICING_CONFIG.HUB_PICKUP_SURCHARGE_CHF,
+    CUSTOM_PICKUP_CHF_PER_KM: tenantOverrides?.customPickupCHFPerKm ?? PRICING_CONFIG.CUSTOM_PICKUP_CHF_PER_KM,
+    MINIMUM_BOOKING_CHF: tenantOverrides?.minimumBookingCHF ?? PRICING_CONFIG.MINIMUM_BOOKING_CHF,
+    VAT_PERCENT: tenantOverrides?.vatPercent ?? PRICING_CONFIG.VAT_PERCENT,
+  };
+
   // Base price: distance × rate
-  const basePrice = routeDistanceKm * PRICING_CONFIG.BASE_RATE_CHF_PER_KM;
+  const basePrice = routeDistanceKm * cfg.BASE_RATE_CHF_PER_KM;
 
   // Weight surcharge: extra kg above free tier
-  const extraKg = Math.max(0, payloadWeightKg - PRICING_CONFIG.WEIGHT_FREE_KG);
-  const weightSurcharge = extraKg * PRICING_CONFIG.WEIGHT_SURCHARGE_CHF_PER_KG;
+  const extraKg = Math.max(0, payloadWeightKg - cfg.WEIGHT_FREE_KG);
+  const weightSurcharge = extraKg * cfg.WEIGHT_SURCHARGE_CHF_PER_KG;
 
   // Pickup surcharge
   let pickupSurcharge = 0;
   if (pickupOption === "AIRBASE_HUB") {
-    pickupSurcharge = PRICING_CONFIG.HUB_PICKUP_SURCHARGE_CHF;
+    pickupSurcharge = cfg.HUB_PICKUP_SURCHARGE_CHF;
   } else if (pickupOption === "CUSTOM_PICKUP") {
     const hubDistance = pickupDistanceFromHubKm ?? 0;
-    pickupSurcharge = hubDistance * PRICING_CONFIG.CUSTOM_PICKUP_CHF_PER_KM;
+    pickupSurcharge = hubDistance * cfg.CUSTOM_PICKUP_CHF_PER_KM;
   }
 
   // Subtotal before VAT, apply minimum
   let subtotal = basePrice + weightSurcharge + pickupSurcharge;
-  subtotal = Math.max(subtotal, PRICING_CONFIG.MINIMUM_BOOKING_CHF);
+  subtotal = Math.max(subtotal, cfg.MINIMUM_BOOKING_CHF);
 
   // Round to 2 decimal places
   subtotal = Math.round(subtotal * 100) / 100;
 
   // VAT
   const vatAmount =
-    Math.round(subtotal * (PRICING_CONFIG.VAT_PERCENT / 100) * 100) / 100;
+    Math.round(subtotal * (cfg.VAT_PERCENT / 100) * 100) / 100;
   const total = Math.round((subtotal + vatAmount) * 100) / 100;
 
   return {
@@ -79,7 +100,7 @@ export function calculatePrice(input: PriceInput): PriceBreakdown {
     weightSurcharge: Math.round(weightSurcharge * 100) / 100,
     pickupSurcharge: Math.round(pickupSurcharge * 100) / 100,
     subtotal,
-    vatPercent: PRICING_CONFIG.VAT_PERCENT,
+    vatPercent: cfg.VAT_PERCENT,
     vatAmount,
     total,
     currency: "CHF",
