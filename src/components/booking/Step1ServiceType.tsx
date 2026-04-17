@@ -20,7 +20,7 @@ export function Step1ServiceType({ data, onNext }: Props) {
   const canProceed = serviceType && serviceSubtype;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Leistung wählen</h2>
       <p className="text-gray-500 mb-8">
         Wählen Sie den gewünschten Dienst und den Einsatztyp.

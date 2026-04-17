@@ -136,7 +136,7 @@ export function PilotDashboard() {
           <div key={flight.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
             {/* Header */}
             <div
-              className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-4 sm:p-6 cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={() => setExpandedId(isExpanded ? null : flight.id)}
             >
               <div className="flex items-start gap-4 min-w-0">
@@ -191,7 +191,7 @@ export function PilotDashboard() {
 
             {/* Expanded detail */}
             {isExpanded && (
-              <div className="border-t border-gray-100 p-6 space-y-6">
+              <div className="border-t border-gray-100 p-4 sm:p-6 space-y-6">
                 {/* Flight details grid */}
                 <div className="grid sm:grid-cols-2 gap-4 text-sm">
                   <div className="flex items-start gap-3">
@@ -293,7 +293,7 @@ export function PilotDashboard() {
 
                 {/* Post-flight form */}
                 {isPostFlightOpen && (
-                  <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 space-y-5">
+                  <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 sm:p-6 space-y-5">
                     <h4 className="font-semibold text-gray-900">Post-Flight-Log</h4>
 
                     {/* Safety checklist */}
@@ -389,7 +389,7 @@ export function PilotDashboard() {
                       <p className="text-sm text-red-600">{submitMutation.error.message}</p>
                     )}
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-3">
                       <button
                         onClick={() => {
                           const weight = parseFloat(form.actualWeightKg);

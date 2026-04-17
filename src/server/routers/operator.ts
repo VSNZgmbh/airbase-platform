@@ -4,6 +4,8 @@ import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, operatorProcedure } from "@/lib/trpc/server";
 import { bookings, customers } from "@/lib/db/schema";
 import Stripe from "stripe";
+import { sendEmail } from "@/lib/email";
+import { BookingConfirmation } from "@/emails/BookingConfirmation";
 
 function getStripe(): Stripe {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -137,7 +139,6 @@ export const operatorRouter = createTRPCRouter({
         });
         stripeSessionUrl = session.url;
         stripeSessionId = session.id;
-        // TODO: Email stripeSessionUrl to customer (email provider not yet configured)
         console.log(`[Operator] Stripe checkout created for ${booking.identifier}: ${stripeSessionUrl}`);
       } catch (err) {
         console.error("[Operator] Stripe checkout creation failed:", err);
@@ -177,6 +178,23 @@ export const operatorRouter = createTRPCRouter({
         });
       }
 
+      // Send payment link email to customer
+      if (booking.customer?.email && stripeSessionUrl) {
+        sendEmail({
+          to: booking.customer.email,
+          subject: `Ihr Angebot für ${booking.identifier} — Zahlung ausstehend`,
+          template: BookingConfirmation,
+          props: {
+            customerName: `${booking.customer.firstName} ${booking.customer.lastName}`,
+            bookingIdentifier: booking.identifier,
+            serviceType: booking.serviceType,
+            requestedDate: booking.requestedDate?.toString() ?? "",
+            totalCHF: booking.totalCHF ?? "0",
+            paymentUrl: stripeSessionUrl,
+          },
+        }).catch((err) => console.error("[Email] Failed to send approval email:", err));
+      }
+
       return { booking: updated, paymentUrl: stripeSessionUrl };
     }),
 
@@ -213,7 +231,6 @@ export const operatorRouter = createTRPCRouter({
         .where(eq(bookings.id, input.bookingId))
         .returning();
 
-      // TODO: Email rejection reason to customer (email provider not yet configured)
       console.log(`[Operator] Booking ${booking.identifier} rejected: ${input.reason}`);
 
       return updated;

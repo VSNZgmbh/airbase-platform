@@ -38,7 +38,7 @@ export function Step5PriceSummary({ data, onNext, onBack }: Props) {
   });
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Ihr Angebot</h2>
       <p className="text-gray-500 mb-8">
         Prüfen Sie Ihre Angaben und den berechneten Preis.

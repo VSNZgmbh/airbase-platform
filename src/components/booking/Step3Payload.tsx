@@ -27,7 +27,7 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
   const canProceed = weight && validation?.valid;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Nutzlast</h2>
       <p className="text-gray-500 mb-8">
         Angaben zur zu transportierenden Fracht.

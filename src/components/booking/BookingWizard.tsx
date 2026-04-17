@@ -37,8 +37,8 @@ export function BookingWizard() {
   return (
     <div>
       {/* Step indicator */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
+      <div className="mb-8 overflow-x-auto -mx-1 px-1">
+        <div className="flex items-center justify-between min-w-[320px]">
           {STEPS.map((step, idx) => (
             <div key={step.id} className="flex items-center flex-1">
               <div className="flex flex-col items-center">

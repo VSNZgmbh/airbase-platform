@@ -34,7 +34,7 @@ export function Step2DateTime({ data, onNext, onBack }: Props) {
   const quickDates = Array.from({ length: 14 }, (_, i) => addDays(minDate, i));
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Datum & Uhrzeit</h2>
       <p className="text-gray-500 mb-8">
         Buchungen sind mindestens 48 Stunden im Voraus erforderlich.

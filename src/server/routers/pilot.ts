@@ -2,7 +2,10 @@ import { z } from "zod";
 import { eq, asc, and, ne, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, pilotProcedure } from "@/lib/trpc/server";
-import { flights, pilots, bookings, invoices } from "@/lib/db/schema";
+import { flights, pilots, bookings, invoices, customers } from "@/lib/db/schema";
+import { sendEmail } from "@/lib/email";
+import { PostFlightInvoice } from "@/emails/PostFlightInvoice";
+import { format } from "date-fns";
 
 export const pilotRouter = createTRPCRouter({
   // Get flights assigned to the logged-in pilot
@@ -148,10 +151,37 @@ export const pilotRouter = createTRPCRouter({
         return { flight: updatedFlight, booking, invoice };
       });
 
-      // TODO: Send invoice PDF to customer email (email provider not yet configured)
       console.log(
         `[Pilot] Post-flight submitted for flight ${input.flightId}. Invoice ${result.invoice.invoiceNumber} generated.`
       );
+
+      // Send invoice email to customer (fire-and-forget)
+      const customer = await ctx.db.query.customers.findFirst({
+        where: eq(customers.id, result.booking.customerId),
+      });
+      if (customer?.email) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://airbase.one";
+        const reportUrl = `${appUrl}/api/reports/flight/${input.flightId}`;
+        sendEmail({
+          to: customer.email,
+          subject: `Rechnung ${result.invoice.invoiceNumber} — Ihr Flug ist abgeschlossen`,
+          template: PostFlightInvoice,
+          props: {
+            customerName: `${customer.firstName} ${customer.lastName}`,
+            bookingIdentifier: result.booking.identifier,
+            invoiceNumber: result.invoice.invoiceNumber,
+            serviceType: result.booking.serviceType,
+            flightDate: format(now, "d. MMMM yyyy"),
+            subtotalCHF: result.invoice.amountCHF,
+            vatCHF: result.invoice.vatAmountCHF,
+            totalCHF: result.invoice.totalCHF,
+            dueDate: result.invoice.dueDate
+              ? format(result.invoice.dueDate, "d. MMMM yyyy")
+              : "—",
+            reportUrl,
+          },
+        }).catch((err) => console.error("[Email] Failed to send invoice email:", err));
+      }
 
       return result;
     }),

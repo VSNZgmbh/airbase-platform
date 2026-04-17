@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { OperatorDashboard } from "@/components/operator/OperatorDashboard";
+import { BarChart2 } from "lucide-react";
 
 export const metadata = {
   title: "Operator Dashboard — Airbase",
@@ -33,7 +34,16 @@ export default async function OperatorPage() {
               OPERATOR
             </span>
           </Link>
-          <UserButton afterSignOutUrl="/" />
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <BarChart2 className="w-4 h-4" />
+              Analytics
+            </Link>
+            <UserButton afterSignOutUrl="/" />
+          </div>
         </div>
       </header>
 
