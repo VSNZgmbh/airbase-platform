@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq, desc } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, operatorProcedure } from "@/lib/trpc/server";
 import { bookings, customers } from "@/lib/db/schema";
@@ -103,12 +103,15 @@ export const operatorRouter = createTRPCRouter({
       }
 
       const totalCHF = parseFloat(booking.totalCHF ?? "0");
+
+      // M1: Do not silently swallow Stripe errors. If session creation fails the
+      // booking stays 'pending' and the operator sees an actionable error message.
+      const stripe = getStripe();
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
       let stripeSessionUrl: string | null = null;
       let stripeSessionId: string | null = null;
 
       try {
-        const stripe = getStripe();
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ["card"],
           line_items: [
@@ -138,10 +141,19 @@ export const operatorRouter = createTRPCRouter({
         console.log(`[Operator] Stripe checkout created for ${booking.identifier}: ${stripeSessionUrl}`);
       } catch (err) {
         console.error("[Operator] Stripe checkout creation failed:", err);
-        // If Stripe not configured, proceed with approval without payment link
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Stripe-Zahlungslink konnte nicht erstellt werden. Bitte prüfen Sie die Stripe-Konfiguration und versuchen Sie es erneut.",
+        });
       }
 
       const currentMeta = (booking.metadata as Record<string, unknown>) ?? {};
+
+      // M4: Atomic check-and-update: WHERE clause includes status = 'pending' so a
+      // concurrent approval request that already moved the row to 'quoted' will return
+      // 0 rows, preventing double-Stripe-session creation from persisting and surfacing
+      // a clear conflict error to the second operator.
       const [updated] = await ctx.db
         .update(bookings)
         .set({
@@ -154,8 +166,16 @@ export const operatorRouter = createTRPCRouter({
           },
           updatedAt: new Date(),
         })
-        .where(eq(bookings.id, input.bookingId))
+        .where(and(eq(bookings.id, input.bookingId), eq(bookings.status, "pending")))
         .returning();
+
+      if (!updated) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message:
+            "Diese Buchung wurde bereits bearbeitet. Bitte laden Sie die Seite neu.",
+        });
+      }
 
       return { booking: updated, paymentUrl: stripeSessionUrl };
     }),

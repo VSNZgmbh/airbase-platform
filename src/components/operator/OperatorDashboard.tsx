@@ -45,6 +45,9 @@ export function OperatorDashboard() {
 
   const approveMutation = trpc.operator.approveBooking.useMutation({
     onSuccess: () => refetch(),
+    onError: () => {
+      // Error is surfaced via approveMutation.error below the approve button
+    },
   });
   const rejectMutation = trpc.operator.rejectBooking.useMutation({
     onSuccess: () => {
@@ -252,27 +255,35 @@ export function OperatorDashboard() {
 
                     {/* Actions */}
                     {booking.status === "pending" && (
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() =>
-                            approveMutation.mutate({
-                              bookingId: booking.id,
-                              operatorNotes: operatorNotes[booking.id] ?? booking.operatorNotes ?? undefined,
-                            })
-                          }
-                          disabled={approveMutation.isPending}
-                          className="flex items-center gap-2 px-5 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors disabled:opacity-50"
-                        >
-                          <CheckCircle2 className="w-4 h-4" />
-                          {approveMutation.isPending ? "Wird genehmigt..." : "Genehmigen & Zahlungslink senden"}
-                        </button>
-                        <button
-                          onClick={() => setRejectBookingId(booking.id)}
-                          className="flex items-center gap-2 px-5 py-3 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 border border-red-200 transition-colors"
-                        >
-                          <XCircle className="w-4 h-4" />
-                          Ablehnen
-                        </button>
+                      <div className="space-y-3">
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() =>
+                              approveMutation.mutate({
+                                bookingId: booking.id,
+                                operatorNotes: operatorNotes[booking.id] ?? booking.operatorNotes ?? undefined,
+                              })
+                            }
+                            disabled={approveMutation.isPending}
+                            className="flex items-center gap-2 px-5 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors disabled:opacity-50"
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                            {approveMutation.isPending ? "Wird genehmigt..." : "Genehmigen & Zahlungslink senden"}
+                          </button>
+                          <button
+                            onClick={() => setRejectBookingId(booking.id)}
+                            className="flex items-center gap-2 px-5 py-3 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 border border-red-200 transition-colors"
+                          >
+                            <XCircle className="w-4 h-4" />
+                            Ablehnen
+                          </button>
+                        </div>
+                        {approveMutation.error && (
+                          <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                            <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                            <p className="text-sm text-red-700">{approveMutation.error.message}</p>
+                          </div>
+                        )}
                       </div>
                     )}
 

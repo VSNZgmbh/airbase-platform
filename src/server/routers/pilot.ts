@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, and, ne, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, pilotProcedure } from "@/lib/trpc/server";
 import { flights, pilots, bookings, invoices } from "@/lib/db/schema";
@@ -73,62 +73,86 @@ export const pilotRouter = createTRPCRouter({
       }
 
       const now = new Date();
-
-      // Update flight record
-      const [updatedFlight] = await ctx.db
-        .update(flights)
-        .set({
-          status: "completed",
-          actualArrival: now,
-          notes: JSON.stringify({
-            actualWeightKg: input.actualWeightKg,
-            flightDurationMinutes: input.flightDurationMinutes,
-            notes: input.notes ?? "",
-            submittedAt: now.toISOString(),
-          }),
-          incidentReport: input.incidentReport ?? null,
-          updatedAt: now,
-        })
-        .where(eq(flights.id, input.flightId))
-        .returning();
-
-      // Update booking status to completed
-      const [updatedBooking] = await ctx.db
-        .update(bookings)
-        .set({ status: "completed", updatedAt: now })
-        .where(eq(bookings.id, flight.bookingId))
-        .returning();
-
-      // Generate invoice
       const year = now.getFullYear();
-      const invoiceCount = await ctx.db.$count(invoices);
-      const invoiceNumber = `INV-${year}-${String(invoiceCount + 1).padStart(4, "0")}`;
 
-      const booking = updatedBooking;
-      const subtotalCHF = booking.subtotalCHF ?? "0";
-      const vatAmountCHF = booking.vatAmountCHF ?? "0";
-      const totalCHF = booking.totalCHF ?? "0";
+      // C2 + atomicity: wrap all mutations in a transaction.
+      // Advisory lock serialises invoice number generation across concurrent requests,
+      // preventing duplicate invoice numbers under the UNIQUE constraint.
+      // Atomic WHERE on flights.status guards against a double-submit race.
+      const result = await ctx.db.transaction(async (tx) => {
+        // Acquire transaction-level advisory lock — released automatically at tx end.
+        await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext('airbase_invoice_seq'))`);
 
-      const dueDate = new Date(now);
-      dueDate.setDate(dueDate.getDate() + 30);
+        // m1: store structured post-flight data in flightPlanJson (queryable jsonb),
+        // keep notes column for human-readable free text only.
+        const [updatedFlight] = await tx
+          .update(flights)
+          .set({
+            status: "completed",
+            actualArrival: now,
+            flightPlanJson: {
+              postFlight: {
+                actualWeightKg: input.actualWeightKg,
+                flightDurationMinutes: input.flightDurationMinutes,
+                submittedAt: now.toISOString(),
+              },
+            },
+            notes: input.notes ?? null,
+            incidentReport: input.incidentReport ?? null,
+            updatedAt: now,
+          })
+          // C2: atomic guard — only succeeds if the flight is not already completed.
+          .where(and(eq(flights.id, input.flightId), ne(flights.status, "completed")))
+          .returning();
 
-      const [invoice] = await ctx.db
-        .insert(invoices)
-        .values({
-          bookingId: booking.id,
-          customerId: booking.customerId,
-          status: "sent",
-          invoiceNumber,
-          amountCHF: subtotalCHF,
-          vatAmountCHF: vatAmountCHF,
-          totalCHF: totalCHF,
-          dueDate,
-        })
-        .returning();
+        if (!updatedFlight) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Flug konnte nicht abgeschlossen werden — möglicherweise bereits abgeschlossen.",
+          });
+        }
+
+        const [updatedBooking] = await tx
+          .update(bookings)
+          .set({ status: "completed", updatedAt: now })
+          .where(eq(bookings.id, flight.bookingId))
+          .returning();
+
+        // C2: Generate invoice number atomically inside the locked transaction.
+        // Using MAX over the year prefix avoids a separate sequence table or migration.
+        const seqRows = await tx.execute(
+          sql`SELECT COALESCE(MAX(CAST(SPLIT_PART(invoice_number, '-', 3) AS INTEGER)), 0) AS max_seq
+              FROM invoices
+              WHERE invoice_number LIKE ${`INV-${year}-%`}`
+        ) as Array<{ max_seq: number }>;
+        const nextSeq = (seqRows[0]?.max_seq ?? 0) + 1;
+        const invoiceNumber = `INV-${year}-${String(nextSeq).padStart(4, "0")}`;
+
+        const booking = updatedBooking;
+        const dueDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+        const [invoice] = await tx
+          .insert(invoices)
+          .values({
+            bookingId: booking.id,
+            customerId: booking.customerId,
+            status: "sent",
+            invoiceNumber,
+            amountCHF: booking.subtotalCHF ?? "0",
+            vatAmountCHF: booking.vatAmountCHF ?? "0",
+            totalCHF: booking.totalCHF ?? "0",
+            dueDate,
+          })
+          .returning();
+
+        return { flight: updatedFlight, booking, invoice };
+      });
 
       // TODO: Send invoice PDF to customer email (email provider not yet configured)
-      console.log(`[Pilot] Post-flight submitted for flight ${input.flightId}. Invoice ${invoiceNumber} generated.`);
+      console.log(
+        `[Pilot] Post-flight submitted for flight ${input.flightId}. Invoice ${result.invoice.invoiceNumber} generated.`
+      );
 
-      return { flight: updatedFlight, booking, invoice };
+      return result;
     }),
 });
