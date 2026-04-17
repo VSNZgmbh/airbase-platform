@@ -4,16 +4,17 @@ import { requiresBernBelpPermit, LSZB_CTR } from "./geo";
 /**
  * Unit tests for requiresBernBelpPermit() — safety-critical BAZL/FOCA gate.
  *
- * CTR definition: circular approximation centered at [7.497°E, 46.900°N],
- * radius 9.26 km (5 NM). See AIR-88 for a known ~1.6 km offset from the
- * actual LSZB ARP — these tests validate the implemented approximation.
+ * CTR definition: circular approximation centered at [7.4989°E, 46.9142°N]
+ * (best-known LSZB ARP from ICAO/Eurocontrol public databases), radius 11 km
+ * (interim conservative buffer pending official CTR polygon sourcing).
+ * See AIR-89 for COO determination; AIR-88 for coordinate discrepancy background.
  */
 
 describe("requiresBernBelpPermit()", () => {
   /**
    * Route Münsingen → Thun.
-   * Münsingen [7.564, 46.874] lies inside the CTR (~5.9 km from center),
-   * Thun [7.628, 46.754] lies outside (~19 km from center).
+   * Münsingen [7.564, 46.874] lies inside the CTR (~6.7 km from new ARP center),
+   * Thun [7.628, 46.754] lies outside (~20 km from center).
    * The route originates inside the CTR → permit required.
    *
    * Note: the QA spec listed [7.653, 46.874] for Münsingen, which is outside
@@ -25,7 +26,7 @@ describe("requiresBernBelpPermit()", () => {
 
   /**
    * Route Thun → Spiez.
-   * Both endpoints are south-east of the CTR, well outside the 9.26 km radius.
+   * Both endpoints are south-east of the CTR, well outside the 11 km radius.
    * No intersection → no permit required.
    */
   it("returns false when route is entirely outside CTR (Thun → Spiez)", () => {
@@ -36,14 +37,14 @@ describe("requiresBernBelpPermit()", () => {
    * Pickup point is the CTR center — unambiguously inside.
    */
   it("returns true when pickup is inside CTR", () => {
-    expect(requiresBernBelpPermit(7.497, 46.9, 7.677, 46.69)).toBe(true);
+    expect(requiresBernBelpPermit(7.4989, 46.9142, 7.677, 46.69)).toBe(true);
   });
 
   /**
    * Delivery point is the CTR center — unambiguously inside.
    */
   it("returns true when delivery is inside CTR", () => {
-    expect(requiresBernBelpPermit(7.628, 46.754, 7.497, 46.9)).toBe(true);
+    expect(requiresBernBelpPermit(7.628, 46.754, 7.4989, 46.9142)).toBe(true);
   });
 
   /**
@@ -77,6 +78,6 @@ describe("requiresBernBelpPermit()", () => {
    * inside the CTR — must still return true.
    */
   it("returns true for degenerate route with both endpoints inside CTR", () => {
-    expect(requiresBernBelpPermit(7.497, 46.9, 7.497, 46.9)).toBe(true);
+    expect(requiresBernBelpPermit(7.4989, 46.9142, 7.4989, 46.9142)).toBe(true);
   });
 });
