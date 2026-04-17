@@ -1,22 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #f0f4ff;
-  --color-brand-100: #e0e9ff;
-  --color-brand-200: #c7d7fe;
-  --color-brand-300: #a5bbfc;
-  --color-brand-400: #8196f8;
-  --color-brand-500: #6272f1;
-  --color-brand-600: #4f56e5;
-  --color-brand-700: #4244ca;
-  --color-brand-800: #3638a3;
-  --color-brand-900: #303581;
-  --color-brand-950: #1d1f4c;
+  /* Airbase.one brand: deep navy + sky blue */
+  --color-brand-50:  #f0faff;
+  --color-brand-100: #e0f5ff;
+  --color-brand-200: #bae8ff;
+  --color-brand-300: #7bcfe8;
+  --color-brand-400: #3ab8d4;
+  --color-brand-500: #00B4D8;
+  --color-brand-600: #0093b8;
+  --color-brand-700: #006fa8;
+  --color-brand-800: #161C2E;
+  --color-brand-900: #0D1120;
+  --color-brand-950: #0A0E1A;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0A0E1A;
+  --foreground: #ffffff;
+  --surface: #161C2E;
+  --muted: #8892A4;
+  --accent: #00B4D8;
+  --success: #22C55E;
 }
 
 body {

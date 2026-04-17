@@ -6,17 +6,19 @@ import { TRPCProvider } from "@/lib/trpc/provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Airbase — Drohnentransport Schweiz",
+  title: "Airbase.one — Drohnen-Gütertransport Schweiz",
   description:
-    "Schneller, zuverlässiger Drohnentransport in der Schweiz. Buchen Sie jetzt Ihren LASTENFLUG mit dem FlyCart 100.",
+    "LASTENFLUG: Schwere Lasten per Drohne transportieren. Bis 100 kg Nutzlast. SORA-zertifiziert. BAZL-konform. Für Bau, Alpine Logistik & Notfallversorgung in der Schweiz.",
   metadataBase: new URL("https://airbase.one"),
   openGraph: {
-    title: "Airbase — Drohnentransport Schweiz",
-    description: "Buchen Sie jetzt Ihren Drohnentransport",
+    title: "Airbase.one — Schweizer Drohnen-Logistik",
+    description:
+      "Der fortschrittlichste Drohnen-Transportservice der Schweiz. Bis 100 kg Nutzlast.",
     url: "https://airbase.one",
-    siteName: "Airbase",
+    siteName: "Airbase.one",
     locale: "de_CH",
     type: "website",
+    images: [{ url: "/og-image.jpg" }],
   },
 };
 
