@@ -1,40 +1,26 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-50: #f0f4ff;
+  --color-brand-100: #e0e9ff;
+  --color-brand-200: #c7d7fe;
+  --color-brand-300: #a5bbfc;
+  --color-brand-400: #8196f8;
+  --color-brand-500: #6272f1;
+  --color-brand-600: #4f56e5;
+  --color-brand-700: #4244ca;
+  --color-brand-800: #3638a3;
+  --color-brand-900: #303581;
+  --color-brand-950: #1d1f4c;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans, system-ui, sans-serif);
-}
-
-/* Booking wizard step indicator */
-.step-indicator {
-  @apply flex items-center gap-2;
-}
-
-.step-dot {
-  @apply w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all;
-}
-
-.step-dot.active {
-  @apply bg-brand-600 text-white;
-}
-
-.step-dot.completed {
-  @apply bg-brand-500 text-white;
-}
-
-.step-dot.inactive {
-  @apply bg-gray-200 text-gray-500;
+  font-family: system-ui, sans-serif;
 }
