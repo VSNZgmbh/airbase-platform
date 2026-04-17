@@ -22,7 +22,7 @@ export function Step6Confirm({ data, onBack }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
 
-  const routeDistanceKm = 10;
+  const routeDistanceKm = data.routeDistanceKm ?? 10;
   const price = calculatePrice({
     routeDistanceKm,
     payloadWeightKg: data.payloadWeightKg ?? 0,

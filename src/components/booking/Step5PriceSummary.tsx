@@ -28,14 +28,13 @@ const PICKUP_LABELS: Record<string, string> = {
 };
 
 export function Step5PriceSummary({ data, onNext, onBack }: Props) {
-  // Use estimated distance (10 km placeholder; Google Maps needed for real calc)
-  const routeDistanceKm = 10;
+  const routeDistanceKm = data.routeDistanceKm ?? 10;
 
   const price = calculatePrice({
     routeDistanceKm,
     payloadWeightKg: data.payloadWeightKg ?? 0,
     pickupOption: (data.pickupOption ?? "CUSTOMER_LOCATION") as PickupOption,
-    pickupDistanceFromHubKm: 5, // placeholder
+    pickupDistanceFromHubKm: 5, // placeholder for Option C hub surcharge
   });
 
   return (
@@ -103,7 +102,7 @@ export function Step5PriceSummary({ data, onNext, onBack }: Props) {
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-100">
           <h3 className="font-semibold text-gray-900">Preisübersicht</h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            Geschätzte Strecke: {routeDistanceKm} km (wird mit Google Maps verifiziert)
+            Flugroute (Luftlinie): {routeDistanceKm} km
           </p>
         </div>
         <div className="px-6 py-4 space-y-3">

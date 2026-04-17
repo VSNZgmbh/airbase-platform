@@ -85,7 +85,7 @@ export function Step4Location({ data, onNext, onBack }: Props) {
 
   const mapDivRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
-  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | google.maps.Marker | null>(null);
+  const markerRef = useRef<google.maps.Marker | null>(null);
   const deliveryInputRef = useRef<HTMLInputElement>(null);
   const pickupInputRef = useRef<HTMLInputElement>(null);
   const deliveryAutocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -125,9 +125,7 @@ export function Step4Location({ data, onNext, onBack }: Props) {
   const placeMarker = useCallback((lat: number, lng: number) => {
     if (!mapRef.current) return;
     if (markerRef.current) {
-      if (markerRef.current instanceof google.maps.Marker) {
-        markerRef.current.setPosition({ lat, lng });
-      }
+      markerRef.current.setPosition({ lat, lng });
     } else {
       const marker = new google.maps.Marker({
         position: { lat, lng },
