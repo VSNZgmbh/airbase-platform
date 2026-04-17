@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { db } from "@/lib/db";
@@ -53,4 +53,36 @@ export const protectedProcedure = t.procedure
         userId: ctx.userId,
       },
     });
+  });
+
+async function getUserRole(userId: string): Promise<string | undefined> {
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  return (user.publicMetadata as { role?: string })?.role;
+}
+
+export const operatorProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    if (!ctx.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    const role = await getUserRole(ctx.userId);
+    if (role !== "operator") {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Operator role required" });
+    }
+    return next({ ctx: { ...ctx, userId: ctx.userId } });
+  });
+
+export const pilotProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    if (!ctx.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    const role = await getUserRole(ctx.userId);
+    if (role !== "pilot") {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Pilot role required" });
+    }
+    return next({ ctx: { ...ctx, userId: ctx.userId } });
   });

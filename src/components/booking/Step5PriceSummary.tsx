@@ -108,7 +108,7 @@ export function Step5PriceSummary({ data, onNext, onBack }: Props) {
         <div className="px-6 py-4 space-y-3">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">
-              Grundtarif ({routeDistanceKm} km × CHF 8.50)
+              Grundtarif ({routeDistanceKm} km × CHF 12.00)
             </span>
             <span className="font-medium">{formatCHF(price.basePrice)}</span>
           </div>

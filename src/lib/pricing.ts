@@ -2,7 +2,7 @@
  * Airbase Pricing Engine
  *
  * Rates (Phase 1 — subject to board approval):
- *   Base rate:          CHF 8.50 / km
+ *   Base rate:          CHF 12.00 / km
  *   Weight surcharge:   CHF 0.50 / kg above 20 kg
  *   Pickup surcharges:
  *     Option A (customer location):  CHF 0
@@ -13,7 +13,7 @@
  */
 
 export const PRICING_CONFIG = {
-  BASE_RATE_CHF_PER_KM: 8.5,
+  BASE_RATE_CHF_PER_KM: 12.0,
   WEIGHT_FREE_KG: 20,
   WEIGHT_SURCHARGE_CHF_PER_KG: 0.5,
   HUB_PICKUP_SURCHARGE_CHF: 25,
