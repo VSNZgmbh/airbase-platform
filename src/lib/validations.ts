@@ -35,7 +35,10 @@ export const bookingStep4Schema = z.object({
   pickupLat: z.number().optional(),
   pickupLng: z.number().optional(),
   pickupAddress: z.string().optional(),
-  hubId: z.string().uuid().optional(),
+  hubId: z.string().optional(),
+
+  // Calculated route distance (straight-line, km) — used for pricing
+  routeDistanceKm: z.number().optional(),
 });
 
 export const createBookingSchema = z.object({
