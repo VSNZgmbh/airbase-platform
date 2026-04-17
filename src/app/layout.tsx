@@ -22,18 +22,28 @@ export const metadata: Metadata = {
   },
 };
 
+const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
+const isClerkConfigured =
+  clerkKey.startsWith("pk_") &&
+  clerkKey !== "pk_test_placeholder" &&
+  clerkKey.length > 20;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <ClerkProvider>
-      <html lang="de">
-        <body>
-          <TRPCProvider>{children}</TRPCProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+  const content = (
+    <html lang="de">
+      <body>
+        <TRPCProvider>{children}</TRPCProvider>
+      </body>
+    </html>
   );
+
+  if (isClerkConfigured) {
+    return <ClerkProvider>{content}</ClerkProvider>;
+  }
+
+  return content;
 }
