@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Mountain, Zap, Package, Factory } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getLocale } from "next-intl/server";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
@@ -7,33 +7,37 @@ export default async function LandingPage() {
   const locale = await getLocale();
 
   return (
-    <main className="min-h-screen bg-[#0A0E1A] text-white" lang={locale}>
+    <main className="min-h-screen bg-white text-gray-900" lang={locale}>
 
       {/* ── 1. Navigation ── */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0A0E1A]/95 backdrop-blur border-b border-white/10">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <a href="#" className="font-bold text-xl tracking-tight">
-              AIRBASE<span className="text-[#00B4D8]">.ONE</span>
+            {/* Logo */}
+            <a href="#" className="flex items-center gap-1 text-2xl tracking-tight select-none">
+              <span className="italic font-normal text-gray-900">air</span>
+              <span className="font-black text-gray-900 uppercase">BASE</span>
+              <span className="text-[#D32F2F] font-black text-3xl leading-none ml-0.5">+</span>
             </a>
-            <nav className="hidden md:flex items-center gap-8 text-sm text-white/70">
-              <a href="#dienste" className="hover:text-white transition-colors">Dienste</a>
-              <a href="#so-funktionierts" className="hover:text-white transition-colors">Wie es funktioniert</a>
-              <a href="#anwendungen" className="hover:text-white transition-colors">Anwendungsfälle</a>
-              <a href="#sicherheit" className="hover:text-white transition-colors">Sicherheit</a>
-              <a href="#partner" className="hover:text-white transition-colors">Partner werden</a>
-              <a href="#kontakt" className="hover:text-white transition-colors">Kontakt</a>
+
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+              <a href="#" className="hover:text-gray-900 transition-colors">HOME</a>
+              <a href="#dienstleistungen" className="text-[#D32F2F] hover:text-[#b71c1c] transition-colors">DIENSTLEISTUNGEN</a>
+              <a href="#app" className="hover:text-gray-900 transition-colors">AIRBASE APP</a>
+              <a href="#ueber-uns" className="hover:text-gray-900 transition-colors">ÜBER UNS</a>
+              <a href="#kontakt" className="hover:text-gray-900 transition-colors">KONTAKT</a>
             </nav>
+
             <div className="flex items-center gap-3">
               <LanguageSwitcher currentLocale={locale} />
-              <Link href="/sign-in" className="text-sm text-white/70 hover:text-white transition-colors">
+              <Link href="/sign-in" className="text-sm text-gray-500 hover:text-gray-900 transition-colors hidden sm:block">
                 Anmelden
               </Link>
               <Link
                 href="/book"
-                className="inline-flex items-center gap-2 bg-[#00B4D8] text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-[#0093b8] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#D32F2F] text-white text-sm font-bold px-4 py-2 rounded hover:bg-[#b71c1c] transition-colors"
               >
-                JETZT BUCHEN <ArrowRight className="w-4 h-4" />
+                JETZT BUCHEN
               </Link>
             </div>
           </div>
@@ -41,264 +45,288 @@ export default async function LandingPage() {
       </header>
 
       {/* ── 2. Hero ── */}
-      <section className="pt-32 pb-28 relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00B4D8]/10 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute top-40 right-0 w-[600px] h-[600px] bg-[#00B4D8]/5 rounded-full blur-3xl pointer-events-none" />
+      <section
+        className="relative min-h-screen pt-16 flex flex-col"
+        style={{
+          backgroundImage: "url('/images/hero-drones.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Bottom fade to white */}
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-white via-white/60 to-transparent pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-flex items-center gap-2 bg-[#00B4D8]/10 text-[#00B4D8] text-xs font-semibold px-3 py-1.5 rounded-full mb-8 border border-[#00B4D8]/20">
-            <span className="w-2 h-2 bg-[#22C55E] rounded-full animate-pulse" />
-            Jetzt verfügbar in der Schweiz & Österreich
+        {/* Swiss cross watermark pattern */}
+        <div className="absolute inset-0 flex items-end justify-center pb-16 pointer-events-none select-none overflow-hidden">
+          <div className="flex gap-16 opacity-15">
+            {[...Array(6)].map((_, i) => (
+              <span key={i} className="text-white text-6xl font-black leading-none">+</span>
+            ))}
           </div>
+        </div>
 
-          <h1 className="text-5xl sm:text-7xl font-bold leading-[1.05] mb-8 max-w-3xl" style={{ hyphens: "auto" }} lang="de">
-            Schwere Lasten.
-            <br />
-            <span className="text-[#00B4D8]">Luftweg.</span>
-            <br />
-            Präzise geliefert.
-          </h1>
+        {/* Hero content */}
+        <div className="relative flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center">
+          <div className="flex w-full items-center justify-between pt-24 pb-40">
+            {/* Left: Tagline + services */}
+            <div className="max-w-xl">
+              <p className="text-white/90 italic text-xl mb-4 drop-shadow-md">
+                Wir fliegen wenn andere stehen bleiben
+              </p>
+              <div className="space-y-1">
+                {["Transport", "Landwirtschaft", "Reinigung", "Bau"].map((service) => (
+                  <h2
+                    key={service}
+                    className="text-white font-black leading-tight drop-shadow-lg"
+                    style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
+                  >
+                    {service}
+                  </h2>
+                ))}
+              </div>
+            </div>
 
-          <p className="text-xl text-white/70 mb-10 max-w-xl leading-relaxed">
-            Der fortschrittlichste Drohnen-Transportservice der Schweiz. Bis zu
-            100 kg Nutzlast — direkt zum Einsatzort.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/book"
-              className="inline-flex items-center justify-center gap-2 bg-[#00B4D8] text-white font-bold px-8 py-4 rounded-xl hover:bg-[#0093b8] transition-colors text-lg"
-            >
-              JETZT BUCHEN <ArrowRight className="w-5 h-5" />
-            </Link>
-            <a
-              href="#so-funktionierts"
-              className="inline-flex items-center justify-center gap-2 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/5 transition-colors text-lg"
-            >
-              Mehr erfahren ↓
-            </a>
+            {/* Right: CTA */}
+            <div className="hidden md:block">
+              <Link
+                href="/book"
+                className="inline-block border-2 border-[#D32F2F] text-[#D32F2F] bg-white/10 backdrop-blur-sm font-black text-2xl px-10 py-5 rounded hover:bg-[#D32F2F] hover:text-white transition-all duration-200 tracking-wider drop-shadow-lg"
+              >
+                JETZT BUCHEN
+              </Link>
+            </div>
           </div>
+        </div>
+
+        {/* Mobile CTA */}
+        <div className="relative md:hidden text-center pb-32 px-4">
+          <Link
+            href="/book"
+            className="inline-block border-2 border-[#D32F2F] text-[#D32F2F] bg-white/20 backdrop-blur-sm font-black text-xl px-8 py-4 rounded hover:bg-[#D32F2F] hover:text-white transition-all duration-200"
+          >
+            JETZT BUCHEN
+          </Link>
         </div>
       </section>
 
-      {/* ── 3. Trust Bar / Key Stats ── */}
-      <section className="py-12 border-y border-white/10 bg-[#161C2E]">
+      {/* ── 3. Value Strip ── */}
+      <section className="py-8 bg-white border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 text-center">
+          <p className="text-[#D32F2F] font-bold text-lg sm:text-xl tracking-wide">
+            nachhaltig — schnell — sicher — geringe Kosten — Offerte innert 10 Sekunden
+          </p>
+        </div>
+      </section>
+
+      {/* ── 4. Services ── */}
+      <section id="dienstleistungen" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="text-center mb-16">
+            <p className="text-[#D32F2F] text-sm font-bold uppercase tracking-widest mb-3">Unsere Dienstleistungen</p>
+            <h2 className="text-4xl sm:text-5xl font-black text-gray-900">Was wir für Sie tun</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: "🏔️", value: "100 kg", label: "Max. Nutzlast" },
-              { icon: "📍", value: "CH & AT", label: "Einsatzgebiet" },
-              { icon: "✅", value: "SORA", label: "Zertifizierter Betrieb" },
-              { icon: "⚡", value: "15 min", label: "Ø Lieferzeit" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-bold text-[#00B4D8]">{stat.value}</div>
-                <div className="text-sm text-white/50 mt-1">{stat.label}</div>
+              {
+                title: "Transport",
+                icon: "📦",
+                desc: "Schwere Güter direkt ans Ziel — ohne Strasse, ohne Stau. Bis 100 kg Nutzlast, überall in der Schweiz.",
+                href: "/book?type=TRANSPORT",
+              },
+              {
+                title: "Landwirtschaft",
+                icon: "🌾",
+                desc: "Präzise Ausbringung von Dünger, Saatgut und Pflanzenschutzmitteln. Effizient, schonend, digital.",
+                href: "/book?type=LANDWIRTSCHAFT",
+              },
+              {
+                title: "Reinigung",
+                icon: "✨",
+                desc: "Fassaden, Solaranlagen, schwer zugängliche Flächen — Drohnenreinigung sicher und kostengünstig.",
+                href: "/book?type=REINIGUNG",
+              },
+              {
+                title: "Bau",
+                icon: "🏗️",
+                desc: "Baumaterial, Werkzeug und Ausrüstung direkt auf die Baustelle — kein Kran, keine Sperrung.",
+                href: "/book?type=BAU",
+              },
+            ].map((service) => (
+              <div
+                key={service.title}
+                className="group border border-gray-200 rounded-2xl p-8 hover:border-[#D32F2F] hover:shadow-lg transition-all duration-200 flex flex-col"
+              >
+                <div className="text-4xl mb-4">{service.icon}</div>
+                <h3 className="text-2xl font-black text-gray-900 mb-3">{service.title}</h3>
+                <p className="text-gray-600 leading-relaxed flex-1">{service.desc}</p>
+                <Link
+                  href={service.href}
+                  className="inline-flex items-center gap-2 text-[#D32F2F] font-bold text-sm mt-6 group-hover:gap-3 transition-all"
+                >
+                  Buchen <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 4. LASTENFLUG Service Overview ── */}
-      <section id="dienste" className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-16">
-            <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Unser Service</p>
-            <h2 className="text-4xl font-bold mb-4">LASTENFLUG</h2>
-            <p className="text-white/60 text-lg italic">Drohnen-Gütertransport für anspruchsvolle Umgebungen</p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <p className="text-white/70 text-lg leading-relaxed mb-6">
-                Mit dem <span className="text-white font-semibold">FlyCart 100</span> betreiben wir
-                einen der leistungsfähigsten Transportdrohnen der Welt. 100 kg Nutzlast,
-                präzise Steuerung, alle Wetterbedingungen meisterbar.
-              </p>
-              <p className="text-white/70 text-lg leading-relaxed">
-                Ob Baumaterial auf der Baustelle, medizinische Güter in abgelegenen Orten
-                oder schwere Ausrüstung für alpine Projekte — LASTENFLUG bringt Ihre Ladung
-                dorthin, wo kein LKW hinkommt.
-              </p>
-            </div>
-
-            <div className="grid gap-4">
-              {[
-                {
-                  title: "Einmalige Lieferung",
-                  desc: "Einzelauftrag — punktgenau, schnell, zuverlässig",
-                  href: "/book?type=LASTENFLUG&subtype=EINMALIGE_LIEFERUNG",
-                  cta: "Jetzt buchen",
-                },
-                {
-                  title: "Langzeit-Einsatz",
-                  desc: "Dauerbeauftragung für laufende Projekte mit festen Flugrouten",
-                  href: "/book?type=LASTENFLUG&subtype=LANGZEIT_EINSATZ",
-                  cta: "Angebot anfragen",
-                },
-              ].map((card) => (
-                <div key={card.title} className="bg-[#161C2E] border border-white/10 rounded-2xl p-6 hover:border-[#00B4D8]/40 transition-colors group">
-                  <h3 className="font-bold text-lg mb-2">{card.title}</h3>
-                  <p className="text-white/60 text-sm mb-4">{card.desc}</p>
-                  <Link
-                    href={card.href}
-                    className="inline-flex items-center gap-2 text-[#00B4D8] text-sm font-semibold group-hover:gap-3 transition-all"
-                  >
-                    {card.cta} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. CTA Banner ── */}
-      <section className="py-20 bg-gradient-to-r from-[#00B4D8]/20 to-[#0093b8]/10 border-y border-[#00B4D8]/20">
+      {/* ── 5. Speed Promise ── */}
+      <section className="py-16 bg-[#D32F2F] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Bereit für Ihren ersten Drohnenflug?
-          </h2>
-          <p className="text-white/70 text-lg mb-8">
-            Jetzt Angebot anfordern — in weniger als 3 Minuten.
+          <div className="text-7xl font-black mb-4">10"</div>
+          <h2 className="text-3xl font-black mb-4">Offerte innert 10 Sekunden</h2>
+          <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">
+            Kein Warten. Kein Formular. Kein Anruf. Einfach buchen — Preis sofort, Drohne folgt.
           </p>
           <Link
             href="/book"
-            className="inline-flex items-center gap-2 bg-[#00B4D8] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#0093b8] transition-colors text-lg"
+            className="inline-flex items-center gap-2 bg-white text-[#D32F2F] font-black px-8 py-4 rounded hover:bg-gray-100 transition-colors text-lg"
           >
             JETZT BUCHEN <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </section>
 
-      {/* ── 6. How It Works (4 steps) ── */}
-      <section id="so-funktionierts" className="py-24 bg-[#161C2E]">
+      {/* ── 6. How It Works ── */}
+      <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Ablauf</p>
-            <h2 className="text-4xl font-bold">So einfach funktioniert LASTENFLUG</h2>
+            <p className="text-[#D32F2F] text-sm font-bold uppercase tracking-widest mb-3">Ablauf</p>
+            <h2 className="text-4xl font-black text-gray-900">So einfach funktioniert airBASE</h2>
           </div>
 
           <div className="grid md:grid-cols-4 gap-8 relative">
-            {/* Connecting line (desktop) */}
-            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-[#00B4D8]/20" />
-
+            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-gray-200" />
             {[
-              {
-                step: "01",
-                title: "Buchen",
-                desc: "Konfigurieren Sie Ihren Auftrag online: Service-Typ, Datum, Gewicht, Standort.",
-              },
-              {
-                step: "02",
-                title: "Genehmigen",
-                desc: "Unser Operatoren-Team prüft Ihre Anfrage, plant den Flug und holt Genehmigungen ein.",
-              },
-              {
-                step: "03",
-                title: "Fliegen",
-                desc: "Der zertifizierte Pilot führt den Flug sicher und präzise durch. Live-Tracking inklusive.",
-              },
-              {
-                step: "04",
-                title: "Abrechnen",
-                desc: "Nach dem Flug erhalten Sie automatisch Ihre Rechnung mit vollständigem Flugbericht.",
-              },
+              { step: "01", title: "Buchen", desc: "Wählen Sie Ihren Service-Typ, Datum und Standort. Preis sofort." },
+              { step: "02", title: "Bestätigen", desc: "Unser Team prüft die Anfrage und plant den Flug für Sie." },
+              { step: "03", title: "Fliegen", desc: "Zertifizierter Pilot führt den Flug durch. Live-Tracking inklusive." },
+              { step: "04", title: "Rechnung", desc: "Vollständiger Flugbericht und Rechnung automatisch per E-Mail." },
             ].map((item) => (
               <div key={item.step} className="relative text-center">
-                <div className="w-16 h-16 bg-[#00B4D8]/10 border border-[#00B4D8]/30 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                  <span className="text-[#00B4D8] font-bold text-lg">{item.step}</span>
+                <div className="w-16 h-16 bg-white border-2 border-[#D32F2F] rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
+                  <span className="text-[#D32F2F] font-black text-lg">{item.step}</span>
                 </div>
-                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+                <h3 className="font-black text-xl text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 7. Use Cases (4 cards) ── */}
-      <section id="anwendungen" className="py-24">
+      {/* ── 7. Portal Entry Points ── */}
+      <section id="app" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Anwendungen</p>
-            <h2 className="text-4xl font-bold">Wo LASTENFLUG eingesetzt wird</h2>
+            <p className="text-[#D32F2F] text-sm font-bold uppercase tracking-widest mb-3">airBASE APP</p>
+            <h2 className="text-4xl font-black text-gray-900">Ihr persönliches Portal</h2>
+            <p className="text-gray-600 text-lg mt-4 max-w-xl mx-auto">
+              Drei separate Portale — für Kunden, Piloten und Administratoren.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                icon: <Package className="w-6 h-6" />,
-                title: "Bauwirtschaft & Infrastruktur",
-                body: "Lieferung von Baumaterial, Werkzeug und Ausrüstung direkt auf die Baustelle — ohne Kraneinsatz, ohne Straßensperrung.",
-                detail: "Typische Güter: Betonschalungen, Bewehrungsstahl, Werkzeugkisten, Schutzausrüstung",
+                title: "Kundenportal",
+                desc: "Buchungen verwalten, Flugstatus verfolgen, Rechnungen einsehen.",
+                icon: "👤",
+                href: "/dashboard",
+                cta: "Zum Kundenportal",
               },
               {
-                icon: <Mountain className="w-6 h-6" />,
-                title: "Alpine Logistik & Bergprojekte",
-                body: "Versorgung von Bauprojekten, Hütten, Forschungsstationen und Rettungsteams in unwegsamem Gelände.",
-                detail: "Dort wo Fahrzeuge scheitern, fliegt LASTENFLUG.",
+                title: "Administratorportal",
+                desc: "Aufträge koordinieren, Piloten zuweisen, Flotten- und Preismanagement.",
+                icon: "⚙️",
+                href: "/operator",
+                cta: "Zum Operatorenportal",
               },
               {
-                icon: <Zap className="w-6 h-6" />,
-                title: "Notfall & kritische Versorgung",
-                body: "Schnelle Lieferung von medizinischen Gütern, Treibstoff, Lebensmitteln und Ausrüstung bei zeitkritischen Einsätzen.",
-                detail: "Jede Minute zählt — Drohnen liefern ohne Stau.",
+                title: "Pilotenportal",
+                desc: "Flugaufträge annehmen, Wetter prüfen, NOTAMs einsehen, Bericht einreichen.",
+                icon: "🛩️",
+                href: "/pilot",
+                cta: "Zum Pilotenportal",
               },
-              {
-                icon: <Factory className="w-6 h-6" />,
-                title: "Industrie, Energie & Remote-Standorte",
-                body: "Ersatzteile, Instrumente und Materialien für Energieanlagen, Windparks, Sendemasten und Industriebauten in abgelegenen Gebieten.",
-                detail: "",
-              },
-            ].map((card) => (
-              <div key={card.title} className="bg-[#161C2E] border border-white/10 rounded-2xl p-8 hover:border-[#00B4D8]/30 transition-colors">
-                <div className="w-12 h-12 bg-[#00B4D8]/10 rounded-xl flex items-center justify-center mb-6 text-[#00B4D8]">
-                  {card.icon}
-                </div>
-                <h3 className="font-bold text-xl mb-3">{card.title}</h3>
-                <p className="text-white/60 leading-relaxed mb-3">{card.body}</p>
-                {card.detail && (
-                  <p className="text-white/40 text-sm italic">{card.detail}</p>
-                )}
+            ].map((portal) => (
+              <div
+                key={portal.title}
+                className="border-2 border-gray-200 rounded-2xl p-8 hover:border-[#D32F2F] transition-colors group text-center"
+              >
+                <div className="text-5xl mb-6">{portal.icon}</div>
+                <h3 className="text-2xl font-black text-gray-900 mb-3">{portal.title}</h3>
+                <p className="text-gray-600 leading-relaxed mb-6">{portal.desc}</p>
+                <Link
+                  href={portal.href}
+                  className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-bold px-6 py-3 rounded hover:bg-[#D32F2F] transition-colors text-sm group"
+                >
+                  {portal.cta} <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 8. Safety & Compliance ── */}
-      <section id="sicherheit" className="py-24 bg-[#161C2E]">
+      {/* ── 8. Swiss Identity ── */}
+      <section className="py-20 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="text-6xl">🇨🇭</span>
+          <h2 className="text-4xl font-black text-gray-900 mt-6 mb-4">
+            Schweizer Qualität. Für die Lüfte.
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            airBASE ist ein Schweizer Drohnentechnologieunternehmen. Wir verbinden modernste
+            Technologie mit Schweizer Präzision, Zuverlässigkeit und dem Anspruch, der beste
+            Drohnenservice Europas zu werden.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 mt-10">
+            {["SORA-zertifiziert", "BAZL-konform", "Swiss Made", "Berner Oberland"].map((badge) => (
+              <span
+                key={badge}
+                className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-semibold px-4 py-2 rounded-full"
+              >
+                <span className="w-2 h-2 bg-[#D32F2F] rounded-full" />
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 9. Franchise ── */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Compliance</p>
-              <h2 className="text-4xl font-bold mb-6">
-                Sicherheit & Compliance —<br />auf höchstem Niveau
-              </h2>
-              <p className="text-white/70 text-lg leading-relaxed">
-                Alle LASTENFLUG-Operationen werden gemäss den strengsten europäischen
-                Drohnenvorschriften durchgeführt. Wir arbeiten eng mit dem{" "}
-                <span className="text-white font-semibold">BAZL (Bundesamt für Zivilluftfahrt)</span>{" "}
-                zusammen und halten alle SORA-Anforderungen ein.
+              <p className="text-[#D32F2F] text-sm font-bold uppercase tracking-widest mb-4">Franchise</p>
+              <h2 className="text-4xl font-black text-gray-900 mb-6">Expandieren Sie mit uns</h2>
+              <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                airBASE wird zur führenden Drohnen-Logistik-Franchise Europas. Wir suchen operative
+                Partner in der Schweiz und weiteren Märkten, die unsere Technologie, Marke und
+                Prozesse lizenzieren möchten.
               </p>
+              <a
+                href="#kontakt"
+                className="inline-flex items-center gap-2 border-2 border-[#D32F2F] text-[#D32F2F] font-black px-8 py-4 rounded hover:bg-[#D32F2F] hover:text-white transition-colors"
+              >
+                FRANCHISE-ANFRAGE <ArrowRight className="w-5 h-5" />
+              </a>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-3">
               {[
-                "SORA-zertifizierter Betrieb",
-                "BAZL-konform (Schweiz)",
-                "Zertifizierte Fernpiloten",
-                "Vollständige Flug- & Risikoanalyse",
-                "Echtzeit-Luftraumüberwachung",
-                "Versichert & haftpflichtgedeckt",
+                "Vollständige technologische Infrastruktur (Buchungssystem, Dashboard, App)",
+                "Marken- und Marketingunterstützung",
+                "Regulatorisches Know-how & Lizenzunterstützung",
+                "Schulung & Zertifizierung für Piloten und Operatoren",
+                "Gemeinsame Wachstumsstrategie",
               ].map((item) => (
-                <div key={item} className="flex items-center gap-3 bg-[#0A0E1A] border border-white/10 rounded-xl px-4 py-3">
-                  <CheckCircle className="w-5 h-5 text-[#22C55E] flex-shrink-0" />
-                  <span className="text-sm text-white/80">{item}</span>
+                <div key={item} className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <span className="text-[#D32F2F] font-black text-lg leading-none mt-0.5">+</span>
+                  <span className="text-gray-700 text-sm leading-relaxed">{item}</span>
                 </div>
               ))}
             </div>
@@ -306,133 +334,65 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ── 9. Franchise Teaser ── */}
-      <section id="partner" className="py-24 bg-gradient-to-br from-[#0A0E1A] to-[#161C2E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Franchise</p>
-            <h2 className="text-4xl font-bold mb-6">Expandieren Sie mit uns</h2>
-            <p className="text-white/70 text-lg leading-relaxed mb-8">
-              airbase.one wird zur führenden Drohnen-Logistik-Franchise Europas. Wir suchen
-              operative Partner in der Schweiz, Österreich und weiteren Märkten, die unsere
-              Technologie, Marke und Prozesse lizenzieren möchten.
-            </p>
-
-            <div className="mb-10">
-              <h3 className="font-bold text-white mb-4">Was wir bieten:</h3>
-              <ul className="space-y-3">
-                {[
-                  "Vollständige technologische Infrastruktur (Buchungssystem, Dashboard, App)",
-                  "Marken- und Marketingunterstützung",
-                  "Regulatorisches Know-how & Lizenzunterstützung",
-                  "Schulung & Zertifizierung für Piloten und Operatoren",
-                  "Gemeinsame Wachstumsstrategie",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-white/70">
-                    <span className="w-1.5 h-1.5 bg-[#00B4D8] rounded-full mt-2 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <p className="text-white/50 italic mb-8">
-              Bereit, Marktführer in Ihrer Region zu werden?
-            </p>
-
-            <a
-              href="#kontakt"
-              className="inline-flex items-center gap-2 border border-[#00B4D8] text-[#00B4D8] font-bold px-8 py-4 rounded-xl hover:bg-[#00B4D8] hover:text-white transition-colors"
-            >
-              FRANCHISE-ANFRAGE STELLEN <ArrowRight className="w-5 h-5" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 10. About / Swiss Quality ── */}
-      <section className="py-24 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Über uns</p>
-          <h2 className="text-4xl font-bold mb-6">
-            Schweizer Präzision. Für die Lüfte.
-          </h2>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed mb-4">
-            airbase.one ist ein Schweizer Drohnen-Logistikunternehmen mit dem Ziel, Gütertransport
-            zu revolutionieren. Wir verbinden modernste Drohnentechnologie mit der Schweizer
-            Tradition von Präzision, Zuverlässigkeit und Qualität.
-          </p>
-          <p className="text-white/50 text-lg max-w-xl mx-auto">
-            Wir glauben, dass die Zukunft der Logistik in der Luft liegt — und wir bauen sie heute.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 11. Contact ── */}
-      <section id="kontakt" className="py-24 bg-[#161C2E]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── 10. Contact ── */}
+      <section id="kontakt" className="py-24 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-[#00B4D8] text-sm font-semibold uppercase tracking-widest mb-4">Kontakt</p>
-            <h2 className="text-4xl font-bold mb-4">Kontakt aufnehmen</h2>
-            <p className="text-white/60 text-lg">
-              Haben Sie Fragen oder möchten Sie einen grossen Auftrag besprechen?
-              Wir melden uns innerhalb von 24 Stunden.
+            <p className="text-[#D32F2F] text-sm font-bold uppercase tracking-widest mb-3">Kontakt</p>
+            <h2 className="text-4xl font-black text-gray-900 mb-4">Kontakt aufnehmen</h2>
+            <p className="text-gray-600 text-lg">
+              Fragen oder grosser Auftrag? Wir melden uns innerhalb von 24 Stunden.
             </p>
-            <p className="text-white/50 mt-2 text-sm">
+            <p className="text-gray-500 mt-2 text-sm">
               E-Mail:{" "}
-              <a href="mailto:info@airbase.one" className="text-[#00B4D8] hover:underline">
+              <a href="mailto:info@airbase.one" className="text-[#D32F2F] hover:underline font-semibold">
                 info@airbase.one
-              </a>{" "}
-              · Standort: Schweiz
+              </a>
             </p>
           </div>
 
-          <form
-            action="mailto:info@airbase.one"
-            method="get"
-            className="space-y-4"
-          >
+          <form action="mailto:info@airbase.one" method="get" className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-white/60 mb-2">Name *</label>
+                <label className="block text-sm text-gray-700 font-semibold mb-2">Name *</label>
                 <input
                   type="text"
                   required
-                  className="w-full bg-[#0A0E1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#00B4D8] transition-colors"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#D32F2F] transition-colors"
                   placeholder="Ihr Name"
                 />
               </div>
               <div>
-                <label className="block text-sm text-white/60 mb-2">Unternehmen</label>
+                <label className="block text-sm text-gray-700 font-semibold mb-2">Unternehmen</label>
                 <input
                   type="text"
-                  className="w-full bg-[#0A0E1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#00B4D8] transition-colors"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#D32F2F] transition-colors"
                   placeholder="Ihr Unternehmen"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm text-white/60 mb-2">E-Mail *</label>
+              <label className="block text-sm text-gray-700 font-semibold mb-2">E-Mail *</label>
               <input
                 type="email"
                 required
-                className="w-full bg-[#0A0E1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#00B4D8] transition-colors"
+                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#D32F2F] transition-colors"
                 placeholder="ihre@email.ch"
               />
             </div>
             <div>
-              <label className="block text-sm text-white/60 mb-2">Nachricht *</label>
+              <label className="block text-sm text-gray-700 font-semibold mb-2">Nachricht *</label>
               <textarea
                 required
                 rows={5}
-                className="w-full bg-[#0A0E1A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#00B4D8] transition-colors resize-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#D32F2F] transition-colors resize-none"
                 placeholder="Wie können wir Ihnen helfen?"
               />
             </div>
             <div className="text-center pt-2">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 bg-[#00B4D8] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#0093b8] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#D32F2F] text-white font-black px-10 py-4 rounded hover:bg-[#b71c1c] transition-colors text-lg"
               >
                 NACHRICHT SENDEN <ArrowRight className="w-5 h-5" />
               </button>
@@ -441,45 +401,48 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ── 12. Footer ── */}
-      <footer className="bg-[#0A0E1A] border-t border-white/10 py-16">
+      {/* ── 11. Footer ── */}
+      <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between gap-10">
+          <div className="flex flex-col md:flex-row justify-between gap-10 mb-12">
             <div>
-              <a href="#" className="font-bold text-xl tracking-tight block mb-3">
-                AIRBASE<span className="text-[#00B4D8]">.ONE</span>
+              <a href="#" className="flex items-center gap-1 text-2xl tracking-tight select-none mb-3">
+                <span className="italic font-normal text-white">air</span>
+                <span className="font-black text-white uppercase">BASE</span>
+                <span className="text-[#D32F2F] font-black text-3xl leading-none ml-0.5">+</span>
               </a>
-              <p className="text-white/40 text-sm max-w-xs">
-                Schweizer Drohnen-Logistik
-              </p>
+              <p className="text-gray-400 text-sm">Schweizer Drohnentechnologie</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
               <div>
-                <h4 className="font-semibold text-white mb-3">Dienste</h4>
-                <ul className="space-y-2 text-white/50">
-                  <li><a href="#dienste" className="hover:text-white transition-colors">LASTENFLUG</a></li>
-                  <li><Link href="/book" className="hover:text-white transition-colors">Jetzt buchen</Link></li>
-                  <li><Link href="/dashboard" className="hover:text-white transition-colors">Meine Buchungen</Link></li>
+                <h4 className="font-black text-white mb-3 uppercase text-xs tracking-widest">Dienste</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#dienstleistungen" className="hover:text-white transition-colors">Transport</a></li>
+                  <li><a href="#dienstleistungen" className="hover:text-white transition-colors">Landwirtschaft</a></li>
+                  <li><a href="#dienstleistungen" className="hover:text-white transition-colors">Reinigung</a></li>
+                  <li><a href="#dienstleistungen" className="hover:text-white transition-colors">Bau</a></li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-white mb-3">Sicherheit</h4>
-                <ul className="space-y-2 text-white/50">
-                  <li><a href="#sicherheit" className="hover:text-white transition-colors">Compliance</a></li>
-                  <li><a href="#sicherheit" className="hover:text-white transition-colors">SORA & BAZL</a></li>
+                <h4 className="font-black text-white mb-3 uppercase text-xs tracking-widest">Portale</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><Link href="/dashboard" className="hover:text-white transition-colors">Kundenportal</Link></li>
+                  <li><Link href="/operator" className="hover:text-white transition-colors">Operatorenportal</Link></li>
+                  <li><Link href="/pilot" className="hover:text-white transition-colors">Pilotenportal</Link></li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-white mb-3">Franchise</h4>
-                <ul className="space-y-2 text-white/50">
-                  <li><a href="#partner" className="hover:text-white transition-colors">Partner werden</a></li>
-                  <li><a href="#kontakt" className="hover:text-white transition-colors">Anfrage stellen</a></li>
+                <h4 className="font-black text-white mb-3 uppercase text-xs tracking-widest">Unternehmen</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#ueber-uns" className="hover:text-white transition-colors">Über uns</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Franchise</a></li>
+                  <li><a href="#kontakt" className="hover:text-white transition-colors">Kontakt</a></li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-white mb-3">Rechtliches</h4>
-                <ul className="space-y-2 text-white/50">
+                <h4 className="font-black text-white mb-3 uppercase text-xs tracking-widest">Rechtliches</h4>
+                <ul className="space-y-2 text-gray-400">
                   <li><a href="#" className="hover:text-white transition-colors">AGB</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Datenschutz</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Impressum</a></li>
@@ -488,8 +451,8 @@ export default async function LandingPage() {
             </div>
           </div>
 
-          <div className="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/30">
-            <span>© {new Date().getFullYear()} airbase.one — Alle Rechte vorbehalten.</span>
+          <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+            <span>© {new Date().getFullYear()} airBASE — Alle Rechte vorbehalten.</span>
             <span>BAZL-konform · SORA-zertifiziert · Made in Switzerland 🇨🇭</span>
           </div>
         </div>
