@@ -2,6 +2,8 @@ export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { TRPCProvider } from "@/lib/trpc/provider";
 import "./globals.css";
 
@@ -28,15 +30,20 @@ const isClerkConfigured =
   clerkKey !== "pk_test_placeholder" &&
   clerkKey.length > 20;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   const content = (
-    <html lang="de">
+    <html lang={locale}>
       <body>
-        <TRPCProvider>{children}</TRPCProvider>
+        <NextIntlClientProvider messages={messages}>
+          <TRPCProvider>{children}</TRPCProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

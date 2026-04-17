@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "services": "Services",
+    "howItWorks": "Comment ça marche",
+    "useCases": "Cas d'usage",
+    "safety": "Sécurité",
+    "franchise": "Devenir partenaire",
+    "contact": "Contact",
+    "signIn": "Se connecter",
+    "bookNow": "RÉSERVER"
+  },
+  "hero": {
+    "badge": "Disponible en Suisse & Autriche",
+    "headline1": "Charges lourdes.",
+    "headline2": "Par voie aérienne.",
+    "headline3": "Livrées avec précision.",
+    "sub": "Le service de transport par drone le plus avancé de Suisse. Jusqu'à 100 kg de charge utile — livré directement sur site.",
+    "cta": "RÉSERVER",
+    "learnMore": "En savoir plus"
+  },
+  "booking": {
+    "step1": "Choisir le service",
+    "step2": "Entrer les détails",
+    "step3": "Confirmer",
+    "serviceType": "Type de service",
+    "pickupAddress": "Lieu de départ",
+    "deliveryAddress": "Adresse de livraison",
+    "payloadWeight": "Charge utile (kg)",
+    "payloadDescription": "Description de la charge",
+    "scheduledDate": "Date souhaitée",
+    "notes": "Notes",
+    "next": "Suivant",
+    "back": "Retour",
+    "submit": "Envoyer la demande"
+  },
+  "dashboard": {
+    "myBookings": "Mes réservations",
+    "status": "Statut",
+    "date": "Date",
+    "destination": "Destination",
+    "weight": "Poids",
+    "price": "Prix",
+    "noBookings": "Aucune réservation trouvée"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Soumettre"
+  }
+}

@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Mountain, Zap, Package, Factory } from "lucide-react";
+import { getLocale } from "next-intl/server";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const locale = await getLocale();
+
   return (
-    <main className="min-h-screen bg-[#0A0E1A] text-white" lang="de">
+    <main className="min-h-screen bg-[#0A0E1A] text-white" lang={locale}>
 
       {/* ── 1. Navigation ── */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0A0E1A]/95 backdrop-blur border-b border-white/10">
@@ -21,6 +25,7 @@ export default function LandingPage() {
               <a href="#kontakt" className="hover:text-white transition-colors">Kontakt</a>
             </nav>
             <div className="flex items-center gap-3">
+              <LanguageSwitcher currentLocale={locale} />
               <Link href="/sign-in" className="text-sm text-white/70 hover:text-white transition-colors">
                 Anmelden
               </Link>

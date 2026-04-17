@@ -15,6 +15,7 @@ import {
   ChevronUp,
   ClipboardList,
 } from "lucide-react";
+import { WeatherBadge } from "./WeatherBadge";
 
 const FLIGHT_STATUS_LABELS: Record<string, { label: string; color: string }> = {
   scheduled: { label: "Geplant", color: "bg-blue-100 text-blue-700" },
@@ -178,6 +179,18 @@ export function PilotDashboard() {
                       </>
                     )}
                   </div>
+                  {flight.status !== "completed" &&
+                    flight.status !== "aborted" &&
+                    booking?.deliveryLat &&
+                    booking?.deliveryLng && (
+                      <div className="mt-2" onClick={(e) => e.stopPropagation()}>
+                        <WeatherBadge
+                          lat={parseFloat(booking.deliveryLat)}
+                          lng={parseFloat(booking.deliveryLng)}
+                          datetime={flight.scheduledDeparture ? new Date(flight.scheduledDeparture).toISOString() : undefined}
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
               <div className="flex-shrink-0">

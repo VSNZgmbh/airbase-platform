@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "services": "Dienste",
+    "howItWorks": "Wie es funktioniert",
+    "useCases": "Anwendungsfälle",
+    "safety": "Sicherheit",
+    "franchise": "Partner werden",
+    "contact": "Kontakt",
+    "signIn": "Anmelden",
+    "bookNow": "JETZT BUCHEN"
+  },
+  "hero": {
+    "badge": "Jetzt verfügbar in der Schweiz & Österreich",
+    "headline1": "Schwere Lasten.",
+    "headline2": "Luftweg.",
+    "headline3": "Präzise geliefert.",
+    "sub": "Der fortschrittlichste Drohnen-Transportservice der Schweiz. Bis zu 100 kg Nutzlast — direkt zum Einsatzort.",
+    "cta": "JETZT BUCHEN",
+    "learnMore": "Mehr erfahren"
+  },
+  "booking": {
+    "step1": "Dienst wählen",
+    "step2": "Details eingeben",
+    "step3": "Bestätigen",
+    "serviceType": "Diensttyp",
+    "pickupAddress": "Abflugort",
+    "deliveryAddress": "Lieferadresse",
+    "payloadWeight": "Nutzlast (kg)",
+    "payloadDescription": "Beschreibung der Ladung",
+    "scheduledDate": "Wunschtermin",
+    "notes": "Anmerkungen",
+    "next": "Weiter",
+    "back": "Zurück",
+    "submit": "Anfrage senden"
+  },
+  "dashboard": {
+    "myBookings": "Meine Buchungen",
+    "status": "Status",
+    "date": "Datum",
+    "destination": "Zielort",
+    "weight": "Gewicht",
+    "price": "Preis",
+    "noBookings": "Keine Buchungen vorhanden"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "loading": "Wird geladen...",
+    "error": "Fehler",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Absenden"
+  }
+}

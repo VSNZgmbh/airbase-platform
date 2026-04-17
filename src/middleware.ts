@@ -6,6 +6,7 @@ const isProtectedRoute = createRouteMatcher([
   "/operator(.*)",
   "/pilot(.*)",
   "/admin(.*)",
+  "/franchise(.*)",
 ]);
 
 // Check if Clerk is properly configured (valid key format, not placeholder)

@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "services": "Services",
+    "howItWorks": "How it works",
+    "useCases": "Use cases",
+    "safety": "Safety",
+    "franchise": "Become a partner",
+    "contact": "Contact",
+    "signIn": "Sign in",
+    "bookNow": "BOOK NOW"
+  },
+  "hero": {
+    "badge": "Now available in Switzerland & Austria",
+    "headline1": "Heavy loads.",
+    "headline2": "By air.",
+    "headline3": "Delivered precisely.",
+    "sub": "Switzerland's most advanced drone transport service. Up to 100 kg payload — delivered directly to the site.",
+    "cta": "BOOK NOW",
+    "learnMore": "Learn more"
+  },
+  "booking": {
+    "step1": "Choose service",
+    "step2": "Enter details",
+    "step3": "Confirm",
+    "serviceType": "Service type",
+    "pickupAddress": "Pickup location",
+    "deliveryAddress": "Delivery address",
+    "payloadWeight": "Payload weight (kg)",
+    "payloadDescription": "Payload description",
+    "scheduledDate": "Preferred date",
+    "notes": "Notes",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Send request"
+  },
+  "dashboard": {
+    "myBookings": "My Bookings",
+    "status": "Status",
+    "date": "Date",
+    "destination": "Destination",
+    "weight": "Weight",
+    "price": "Price",
+    "noBookings": "No bookings found"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Error",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit"
+  }
+}
