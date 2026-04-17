@@ -2,8 +2,9 @@ import * as turf from "@turf/turf";
 
 /**
  * Bern-Belp CTR (LSZB) — circular approximation (5 NM = 9.26 km radius).
- * Center: LSZB ARP [7.497°E, 46.900°N].
- * Replace with exact ICAO AIP AD 2-LSZB polygon once sourced.
+ * Center: provisional approximation (~1.6 km from actual LSZB ARP).
+ * Replace with verified ICAO AIP AD 2-LSZB ARP coordinates once sourced by COO.
+ * See AIR-88 for tracking of the coordinate discrepancy and COO confirmation.
  */
 export const LSZB_CTR = turf.circle([7.497, 46.9], 9.26, {
   units: "kilometers",
