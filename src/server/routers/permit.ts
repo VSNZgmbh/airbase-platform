@@ -9,7 +9,7 @@ import { assessSora } from "@/lib/sora";
  * Permit Router — Phase 5 Automation Engine
  *
  * Manages permit applications for BAZL/FOCA, Bern-Belp CTR,
- * and municipal authorities for VOLTAIR T100 drone operations.
+ * and municipal authorities for DJI FlyCart 30 drone operations.
  */
 export const permitRouter = createTRPCRouter({
   /**
@@ -140,7 +140,7 @@ export const permitRouter = createTRPCRouter({
           pickupAddress: booking.pickupAddress ?? "",
           routeDistanceKm: booking.routeDistanceKm ?? "0",
           payloadWeightKg: booking.payloadWeightKg,
-          droneModel: flight.drone?.model ?? "AIRBASE T100",
+          droneModel: flight.drone?.model ?? "DJI FlyCart 30",
           droneSerial: flight.drone?.serialNumber ?? "—",
           pilotName: flight.pilot
             ? `${flight.pilot.firstName} ${flight.pilot.lastName}`
@@ -304,7 +304,7 @@ BETRIEBSDETAILS:
 LUFTFAHRZEUG:
   Modell:             ${p.droneModel}
   Seriennummer:       ${p.droneSerial}
-  MTOW:               170 kg
+  MTOW:               95 kg
   Betriebskategorie:  SPECIFIC (gemäss EU-UAS-Verordnung 2019/945)
 
 PILOT:
@@ -342,7 +342,7 @@ GEPLANTE OPERATION:
 
 LUFTFAHRZEUG:
   Typ:           UAS (Unbemannte Luftfahrtanlage) — ${p.droneModel}
-  MTOW:          170 kg
+  MTOW:          95 kg
   Serien-Nr.:    ${p.droneSerial}
 
 PILOT:

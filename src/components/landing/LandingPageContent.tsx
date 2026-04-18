@@ -468,7 +468,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 5. Drone Showcase — AIRBASE T100 ── */}
+      {/* ── 5. Drone Showcase — DJI FlyCart 30 ── */}
       <section className="relative py-32 overflow-hidden" style={{ background: "#FFFFFF" }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -506,7 +506,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
                   <Image
                     src="/images/dji-flycart-100.png"
-                    alt="AIRBASE T100 heavy-lift drone"
+                    alt="DJI FlyCart 30 heavy-lift drone"
                     width={620}
                     height={440}
                     className="relative z-10 drop-shadow-2xl"
@@ -542,15 +542,15 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                   }}
                 >
-                  AIRBASE T100
+                  DJI FlyCart 30
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
-                  Die leistungsstärkste Drohne ihrer Klasse. 100 kg Nutzlast, 10 km Reichweite, vollautomatisch und BAZL-zertifiziert für den kommerziellen Einsatz in der Schweiz.
+                  Die leistungsstärkste Lastendrohne ihrer Klasse. Bis 40 kg Nutzlast, 28 km Reichweite, SORA-zertifiziert und BAZL-konform für den kommerziellen Einsatz in der Schweiz.
                 </p>
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {[
-                    { value: "100kg", label: "Nutzlast" },
-                    { value: "10km", label: "Reichweite" },
+                    { value: "40kg", label: "Nutzlast" },
+                    { value: "28km", label: "Reichweite" },
                     { value: "0g", label: "CO₂" },
                   ].map((spec) => (
                     <div key={spec.label} className="rounded-2xl p-4 text-center" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>

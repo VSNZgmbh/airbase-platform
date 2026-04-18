@@ -47,7 +47,7 @@ export function Step1ServiceType({ data, onNext }: Props) {
             <div>
               <div className="font-semibold text-gray-900">LASTENFLUG</div>
               <div className="text-sm text-gray-500">
-                Frachttransport bis 100 kg mit AIRBASE T100
+                Frachttransport bis 40 kg mit DJI FlyCart 30
               </div>
             </div>
             {serviceType === "LASTENFLUG" && (

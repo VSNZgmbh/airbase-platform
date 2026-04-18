@@ -32,9 +32,9 @@ interface Props {
   onBack: () => void;
 }
 
-type PickupOption = "CUSTOMER_LOCATION" | "VOLTAIR_HUB" | "CUSTOM_PICKUP";
+type PickupOption = "CUSTOMER_LOCATION" | "AIRBASE_HUB" | "CUSTOM_PICKUP";
 
-const VOLTAIR_HUBS = [
+const AIRBASE_HUBS = [
   { id: "hub-wilderswil", name: "AIRBASE HQ Wilderswil", address: "Mittelweg 9, 3812 Wilderswil", lat: 46.6553, lng: 7.8675 },
   { id: "hub-interlaken", name: "AIRBASE Hub Interlaken", address: "Interlaken, BE", lat: 46.6863, lng: 7.8632 },
   { id: "hub-grindelwald", name: "AIRBASE Hub Grindelwald", address: "Grindelwald, BE", lat: 46.6243, lng: 8.0413 },
@@ -226,8 +226,8 @@ export function Step4Location({ data, onNext, onBack }: Props) {
     let originLat: number;
     let originLng: number;
 
-    if (pickupOption === "VOLTAIR_HUB" && selectedHub) {
-      const hub = VOLTAIR_HUBS.find((h) => h.id === selectedHub);
+    if (pickupOption === "AIRBASE_HUB" && selectedHub) {
+      const hub = AIRBASE_HUBS.find((h) => h.id === selectedHub);
       if (!hub) return;
       originLat = hub.lat;
       originLng = hub.lng;
@@ -236,7 +236,7 @@ export function Step4Location({ data, onNext, onBack }: Props) {
       originLng = pickupLng;
     } else if (pickupOption === "CUSTOMER_LOCATION") {
       // Use nearest hub as proxy origin (pilot comes from hub area)
-      const nearest = VOLTAIR_HUBS.reduce((a, b) =>
+      const nearest = AIRBASE_HUBS.reduce((a, b) =>
         haversineKm(deliveryLat, deliveryLng, a.lat, a.lng) <
         haversineKm(deliveryLat, deliveryLng, b.lat, b.lng)
           ? a
@@ -259,7 +259,7 @@ export function Step4Location({ data, onNext, onBack }: Props) {
     deliveryLat !== 0 &&
     deliveryLng !== 0 &&
     (pickupOption === "CUSTOMER_LOCATION" ||
-      (pickupOption === "VOLTAIR_HUB" && selectedHub) ||
+      (pickupOption === "AIRBASE_HUB" && selectedHub) ||
       (pickupOption === "CUSTOM_PICKUP" && pickupAddress && pickupLat && pickupLng));
 
   const handleNext = () => {
@@ -408,9 +408,9 @@ export function Step4Location({ data, onNext, onBack }: Props) {
           {/* Option B */}
           <button
             type="button"
-            onClick={() => setPickupOption("VOLTAIR_HUB")}
+            onClick={() => setPickupOption("AIRBASE_HUB")}
             className={`w-full flex items-start gap-3 sm:gap-4 p-4 rounded-xl border-2 text-left transition-all ${
-              pickupOption === "VOLTAIR_HUB"
+              pickupOption === "AIRBASE_HUB"
                 ? "border-brand-500 bg-brand-50"
                 : "border-gray-200 hover:border-gray-300"
             }`}
@@ -433,9 +433,9 @@ export function Step4Location({ data, onNext, onBack }: Props) {
             </div>
           </button>
 
-          {pickupOption === "VOLTAIR_HUB" && (
+          {pickupOption === "AIRBASE_HUB" && (
             <div className="ml-4 sm:ml-14 space-y-2">
-              {VOLTAIR_HUBS.map((hub) => (
+              {AIRBASE_HUBS.map((hub) => (
                 <button
                   key={hub.id}
                   type="button"

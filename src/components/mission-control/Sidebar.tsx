@@ -14,7 +14,7 @@ import {
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/pilot", label: "Mission Control", icon: Navigation },
-  { href: "/franchise", label: "Fleet Status", icon: Plane },
+  { href: "/admin/fleet", label: "Fleet Status", icon: Plane },
   { href: "/safety", label: "Compliance", icon: ShieldCheck },
   { href: "/admin", label: "Analytics", icon: BarChart3 },
   { href: "/operator", label: "Settings", icon: Settings },
@@ -65,7 +65,7 @@ export function Sidebar() {
       <div className="px-5 pb-6">
         <div className="bg-brand-50 rounded-xl p-4 flex flex-col items-center">
           <Plane className="w-10 h-10 text-brand-500 mb-2 -rotate-45" />
-          <span className="text-[10px] font-bold text-brand-600 tracking-wider">FLYCART 100</span>
+          <span className="text-[10px] font-bold text-brand-600 tracking-wider">FLYCART 30</span>
         </div>
       </div>
     </aside>

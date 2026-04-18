@@ -1,12 +1,12 @@
 /**
- * VOLTAIR Pricing Engine
+ * AIRBASE Pricing Engine
  *
  * Rates (Phase 5 update):
  *   Base rate:          CHF 12.00 / km
  *   Weight surcharge:   CHF 0.50 / kg above 20 kg
  *   Pickup surcharges:
  *     Option A (customer location):  CHF 0
- *     Option B (VOLTAIR hub):         CHF 25 flat
+ *     Option B (AIRBASE hub):         CHF 25 flat
  *     Option C (custom pickup):       CHF 2 / km from nearest hub
  *   SORA airspace surcharge: CHF 0–200 based on SAIL level
  *   Rush surcharge:     CHF 80 (same/next day or outside 08–17)
@@ -26,7 +26,7 @@ export const PRICING_CONFIG = {
   RUSH_SURCHARGE_CHF: 80,
 } as const;
 
-export type PickupOption = "CUSTOMER_LOCATION" | "VOLTAIR_HUB" | "CUSTOM_PICKUP";
+export type PickupOption = "CUSTOMER_LOCATION" | "AIRBASE_HUB" | "CUSTOM_PICKUP";
 
 export interface TenantPricingOverrides {
   baseRateCHFPerKm?: number;
@@ -95,7 +95,7 @@ export function calculatePrice(input: PriceInput): PriceBreakdown {
 
   // Pickup surcharge
   let pickupSurcharge = 0;
-  if (pickupOption === "VOLTAIR_HUB") {
+  if (pickupOption === "AIRBASE_HUB") {
     pickupSurcharge = cfg.HUB_PICKUP_SURCHARGE_CHF;
   } else if (pickupOption === "CUSTOM_PICKUP") {
     const hubDistance = pickupDistanceFromHubKm ?? 0;
@@ -174,13 +174,6 @@ export const FLYCART_30 = {
   IP_RATING: "IP55",
   OPERATING_TEMP_MIN_C: -20,
   OPERATING_TEMP_MAX_C: 45,
-} as const;
-
-/** @deprecated Use FLYCART_30 instead */
-export const FLYCART_100 = {
-  MAX_PAYLOAD_KG: FLYCART_30.MAX_PAYLOAD_KG,
-  MAX_RANGE_KM: FLYCART_30.MAX_RANGE_KM,
-  CRUISE_SPEED_KMH: FLYCART_30.CRUISE_SPEED_KMH,
 } as const;
 
 export function validatePayload(weightKg: number): {

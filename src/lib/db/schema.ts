@@ -36,7 +36,7 @@ export const serviceSubtypeEnum = pgEnum("service_subtype", [
 
 export const pickupOptionEnum = pgEnum("pickup_option", [
   "CUSTOMER_LOCATION",
-  "VOLTAIR_HUB",
+  "AIRBASE_HUB",
   "CUSTOM_PICKUP",
 ]);
 
@@ -132,7 +132,7 @@ export const pilots = pgTable("pilots", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const voltairHubs = pgTable("voltair_hubs", {
+export const airbaseHubs = pgTable("airbase_hubs", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   address: text("address").notNull(),
@@ -184,7 +184,7 @@ export const bookings = pgTable("bookings", {
   pickupLat: decimal("pickup_lat", { precision: 10, scale: 7 }),
   pickupLng: decimal("pickup_lng", { precision: 10, scale: 7 }),
   pickupAddress: text("pickup_address"),
-  hubId: uuid("hub_id").references(() => voltairHubs.id),
+  hubId: uuid("hub_id").references(() => airbaseHubs.id),
 
   // Route
   routeDistanceKm: decimal("route_distance_km", { precision: 8, scale: 2 }),
@@ -338,7 +338,7 @@ export const franchiseTenantsRelations = relations(franchiseTenants, ({ one, man
   serviceAreas: many(tenantServiceAreas),
   pilots: many(pilots),
   drones: many(drones),
-  hubs: many(voltairHubs),
+  hubs: many(airbaseHubs),
 }));
 
 export const customersRelations = relations(customers, ({ many, one }) => ({
@@ -354,9 +354,9 @@ export const bookingsRelations = relations(bookings, ({ one, many }) => ({
     fields: [bookings.customerId],
     references: [customers.id],
   }),
-  hub: one(voltairHubs, {
+  hub: one(airbaseHubs, {
     fields: [bookings.hubId],
-    references: [voltairHubs.id],
+    references: [airbaseHubs.id],
   }),
   flights: many(flights),
   invoices: many(invoices),

@@ -1,15 +1,15 @@
 /**
- * VOLTAIR SORA (Specific Operations Risk Assessment) Engine
+ * AIRBASE SORA (Specific Operations Risk Assessment) Engine
  *
- * Implements a simplified SORA v2.5 assessment for the VOLTAIR T100 drone
- * (MTOW 170 kg) operating in Swiss airspace, primarily the Berner Oberland corridors.
+ * Implements a simplified SORA v2.5 assessment for the DJI FlyCart 30
+ * (MTOW 95 kg) operating in Swiss airspace, primarily the Berner Oberland corridors.
  *
  * Reference: EASA SORA v2.5 (AMC1 UAS.SPEC.040) and BAZL Betriebshandbuch.
  *
  * IMPORTANT: This is a decision-support tool, not a certified assessment tool.
  * All flights require operator sign-off and may require official BAZL authorization.
  *
- * T100 note: At MTOW 170 kg, all operations fall into the SPECIFIC category
+ * DJI FlyCart 30: At MTOW 95 kg, all operations fall into the SPECIFIC category
  * and require a SORA assessment + BAZL operator authorisation.
  */
 
@@ -74,14 +74,14 @@ const SAIL_TABLE: Record<GRCLevel, Record<ARCLevel, SAILLevel>> = {
 
 /**
  * SORA Operational Category.
- * All T100 operations are SPECIFIC (MTOW > 25 kg) and require BAZL authorisation.
+ * All DJI FlyCart 30 operations are SPECIFIC (MTOW > 25 kg) and require BAZL authorisation.
  */
 export type SoraCategory = "OPEN_A1" | "OPEN_A2" | "OPEN_A3" | "SPECIFIC" | "CERTIFIED";
 
 // ─── Berner Oberland Corridors ────────────────────────────────────────────────
 
 /**
- * Pre-defined Berner Oberland delivery corridors used by VOLTAIR.
+ * Pre-defined Berner Oberland delivery corridors used by AIRBASE.
  * Each corridor has a baseline GRC based on terrain characteristics.
  */
 export const BERNER_OBERLAND_CORRIDORS = [
@@ -142,7 +142,7 @@ export interface SoraResult {
   grc: GRCLevel;
   arc: ARCLevel;
   sail: SAILLevel;
-  /** Always SPECIFIC for T100 */
+  /** Always SPECIFIC for DJI FlyCart 30 */
   category: "SPECIFIC";
   /** BAZL/FOCA permit required */
   requiresBazlPermit: boolean;
@@ -264,7 +264,7 @@ export function assessSora(input: SoraInput): SoraResult {
     pickupLng, pickupLat, deliveryLng, deliveryLat
   );
 
-  // T100 at 170 kg MTOW: ALWAYS SPECIFIC category + requires BAZL operator authorisation
+  // DJI FlyCart 30 at 95 kg MTOW: ALWAYS SPECIFIC category + requires BAZL operator authorisation
   const requiresBazlPermit = true;
 
   const riskFactors: string[] = [];
@@ -274,7 +274,7 @@ export function assessSora(input: SoraInput): SoraResult {
   if (arc === "c" || arc === "d") riskFactors.push("Kontrollierter Luftraum — CTR-Freigabe nötig");
   if (requiresBernBelpClearance) riskFactors.push("Route kreuzt Bern-Belp CTR (LSZB)");
   if (sail === "V" || sail === "VI") riskFactors.push(`SAIL ${sail} — Hohe Sicherheitsanforderungen`);
-  riskFactors.push("AIRBASE T100 (170 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
+  riskFactors.push("DJI FlyCart 30 (95 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
 
   // Overall risk
   let overallRisk: SoraResult["overallRisk"];
@@ -288,7 +288,7 @@ export function assessSora(input: SoraInput): SoraResult {
     {
       authority: "BAZL/FOCA",
       type: "SPECIFIC_AUTHORISATION",
-      description: "Betriebsgenehmigung für SPECIFIC-Kategorie UAS (T100, 170 kg MTOW)",
+      description: "Betriebsgenehmigung für SPECIFIC-Kategorie UAS (DJI FlyCart 30, 95 kg MTOW)",
       isMandatory: true,
     },
   ];

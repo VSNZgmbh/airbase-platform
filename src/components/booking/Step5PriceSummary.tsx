@@ -23,7 +23,7 @@ const SUBTYPE_LABELS: Record<string, string> = {
 
 const PICKUP_LABELS: Record<string, string> = {
   CUSTOMER_LOCATION: "Kundeneigener Abflugort (Option A)",
-  VOLTAIR_HUB: "AIRBASE Hub (Option B)",
+  AIRBASE_HUB: "AIRBASE Hub (Option B)",
   CUSTOM_PICKUP: "Individueller Abflugort (Option C)",
 };
 

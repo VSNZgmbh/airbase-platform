@@ -1,7 +1,7 @@
 /**
  * Safety Router — LUC Self-Authorization Engine + Safety Dashboard
  *
- * Implements the core of VOLTAIR's LUC (Light UAS Operator Certificate) system.
+ * Implements the core of AIRBASE's LUC (Light UAS Operator Certificate) system.
  * Operators with LUC can self-authorize flights instead of waiting for BAZL approval.
  *
  * Authorization logic:

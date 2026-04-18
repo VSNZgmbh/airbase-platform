@@ -11,7 +11,7 @@
 export const DEMO_BOOKINGS = [
   {
     id: "b001",
-    identifier: "VLT-2026-001",
+    identifier: "AIR-2026-001",
     serviceType: "LASTENFLUG",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "in_progress",
@@ -33,7 +33,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b002",
-    identifier: "VLT-2026-002",
+    identifier: "AIR-2026-002",
     serviceType: "BERGLOGISTIK",
     serviceSubtype: "LANGZEIT_EINSATZ",
     status: "confirmed",
@@ -55,7 +55,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b003",
-    identifier: "VLT-2026-003",
+    identifier: "AIR-2026-003",
     serviceType: "SOLARPANEL_REINIGUNG",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "completed",
@@ -77,7 +77,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b004",
-    identifier: "VLT-2026-004",
+    identifier: "AIR-2026-004",
     serviceType: "BAUMATERIAL",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "confirmed",
@@ -99,7 +99,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b005",
-    identifier: "VLT-2026-005",
+    identifier: "AIR-2026-005",
     serviceType: "NOTFALLTRANSPORT",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "completed",
@@ -121,7 +121,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b006",
-    identifier: "VLT-2026-006",
+    identifier: "AIR-2026-006",
     serviceType: "SAATGUT",
     serviceSubtype: "LANGZEIT_EINSATZ",
     status: "in_progress",
@@ -143,7 +143,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b007",
-    identifier: "VLT-2026-007",
+    identifier: "AIR-2026-007",
     serviceType: "EXPRESS_ERSATZTEILE",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "pending",
@@ -165,7 +165,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b008",
-    identifier: "VLT-2026-008",
+    identifier: "AIR-2026-008",
     serviceType: "INSPEKTION",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "completed",
@@ -187,7 +187,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b009",
-    identifier: "VLT-2026-009",
+    identifier: "AIR-2026-009",
     serviceType: "LASTENFLUG",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "quoted",
@@ -209,7 +209,7 @@ export const DEMO_BOOKINGS = [
   },
   {
     id: "b010",
-    identifier: "VLT-2026-010",
+    identifier: "AIR-2026-010",
     serviceType: "BERGLOGISTIK",
     serviceSubtype: "EINMALIGE_LIEFERUNG",
     status: "draft",
