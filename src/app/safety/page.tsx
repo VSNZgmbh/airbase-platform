@@ -19,28 +19,28 @@ export default async function SafetyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a]">
-      <header className="bg-[#0d1224]/80 backdrop-blur-xl border-b border-white/[0.06] sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <header className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <div className="w-8 h-8 bg-gradient-to-br from-brand-600 to-brand-700 rounded-lg flex items-center justify-center shadow-lg shadow-brand-500/15">
               <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="font-bold text-xl text-white">VOLTAIR</span>
-            <span className="text-[10px] font-bold bg-emerald-500/15 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 tracking-wider">
+            <span className="font-bold text-xl text-gray-900">VOLTAIR</span>
+            <span className="text-[10px] font-bold bg-brand-50 text-brand-600 px-2.5 py-1 rounded-full border border-brand-200 tracking-wider">
               LUC SAFETY
             </span>
           </Link>
           <div className="flex items-center gap-4">
             <Link
               href="/operator"
-              className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
             >
               Buchungen
             </Link>
             <Link
               href="/admin"
-              className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
             >
               Analytics
             </Link>
@@ -51,14 +51,14 @@ export default async function SafetyPage() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8 flex items-start gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/25">
+          <div className="w-12 h-12 bg-brand-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-brand-500/20">
             <ShieldCheck className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">LUC Safety Dashboard</h1>
-            <p className="text-gray-400 mt-1 text-sm">
-              Light UAS Operator Certificate — Selbst-Autorisierungssystem f&uuml;r Flugfreigaben.
-              Alle Entscheidungen werden f&uuml;r BAZL-Audits protokolliert.
+            <h1 className="text-2xl font-bold text-gray-900">LUC Safety Dashboard</h1>
+            <p className="text-gray-500 mt-1 text-sm">
+              Light UAS Operator Certificate — Selbst-Autorisierungssystem für Flugfreigaben.
+              Alle Entscheidungen werden für BAZL-Audits protokolliert.
             </p>
           </div>
         </div>
