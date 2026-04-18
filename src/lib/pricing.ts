@@ -1,13 +1,15 @@
 /**
  * Airbase Pricing Engine
  *
- * Rates (Phase 1 — subject to board approval):
+ * Rates (Phase 5 update):
  *   Base rate:          CHF 12.00 / km
  *   Weight surcharge:   CHF 0.50 / kg above 20 kg
  *   Pickup surcharges:
  *     Option A (customer location):  CHF 0
  *     Option B (Airbase hub):         CHF 25 flat
  *     Option C (custom pickup):       CHF 2 / km from nearest hub
+ *   SORA airspace surcharge: CHF 0–200 based on SAIL level
+ *   Rush surcharge:     CHF 80 (same/next day or outside 08–17)
  *   Minimum booking:    CHF 120
  *   VAT:                8.1% (Swiss standard rate)
  */
@@ -20,6 +22,8 @@ export const PRICING_CONFIG = {
   CUSTOM_PICKUP_CHF_PER_KM: 2,
   MINIMUM_BOOKING_CHF: 120,
   VAT_PERCENT: 8.1,
+  /** Rush booking surcharge (same/next day or off-hours) */
+  RUSH_SURCHARGE_CHF: 80,
 } as const;
 
 export type PickupOption = "CUSTOMER_LOCATION" | "AIRBASE_HUB" | "CUSTOM_PICKUP";
@@ -40,12 +44,20 @@ export interface PriceInput {
   pickupOption: PickupOption;
   pickupDistanceFromHubKm?: number; // required for CUSTOM_PICKUP
   tenantOverrides?: TenantPricingOverrides;
+  /** CHF surcharge for SORA airspace complexity (from soraAirspaceSurchargeCHF()) */
+  soraAirspaceSurchargeCHF?: number;
+  /** Whether this is a rush booking (same/next day or outside standard hours) */
+  isRushBooking?: boolean;
 }
 
 export interface PriceBreakdown {
   basePrice: number;
   weightSurcharge: number;
   pickupSurcharge: number;
+  /** SORA airspace complexity surcharge (CHF) */
+  soraSurchargeCHF: number;
+  /** Rush booking surcharge (CHF) */
+  rushSurchargeCHF: number;
   subtotal: number;
   vatPercent: number;
   vatAmount: number;
@@ -54,8 +66,15 @@ export interface PriceBreakdown {
 }
 
 export function calculatePrice(input: PriceInput): PriceBreakdown {
-  const { routeDistanceKm, payloadWeightKg, pickupOption, pickupDistanceFromHubKm, tenantOverrides } =
-    input;
+  const {
+    routeDistanceKm,
+    payloadWeightKg,
+    pickupOption,
+    pickupDistanceFromHubKm,
+    tenantOverrides,
+    soraAirspaceSurchargeCHF: soraSurcharge = 0,
+    isRushBooking,
+  } = input;
 
   const cfg = {
     BASE_RATE_CHF_PER_KM: tenantOverrides?.baseRateCHFPerKm ?? PRICING_CONFIG.BASE_RATE_CHF_PER_KM,
@@ -83,8 +102,14 @@ export function calculatePrice(input: PriceInput): PriceBreakdown {
     pickupSurcharge = hubDistance * cfg.CUSTOM_PICKUP_CHF_PER_KM;
   }
 
+  // SORA airspace complexity surcharge
+  const soraSurchargeCHF = Math.round((soraSurcharge ?? 0) * 100) / 100;
+
+  // Rush booking surcharge (same/next day or outside 08:00–17:00)
+  const rushSurchargeCHF = isRushBooking ? PRICING_CONFIG.RUSH_SURCHARGE_CHF : 0;
+
   // Subtotal before VAT, apply minimum
-  let subtotal = basePrice + weightSurcharge + pickupSurcharge;
+  let subtotal = basePrice + weightSurcharge + pickupSurcharge + soraSurchargeCHF + rushSurchargeCHF;
   subtotal = Math.max(subtotal, cfg.MINIMUM_BOOKING_CHF);
 
   // Round to 2 decimal places
@@ -99,6 +124,8 @@ export function calculatePrice(input: PriceInput): PriceBreakdown {
     basePrice: Math.round(basePrice * 100) / 100,
     weightSurcharge: Math.round(weightSurcharge * 100) / 100,
     pickupSurcharge: Math.round(pickupSurcharge * 100) / 100,
+    soraSurchargeCHF,
+    rushSurchargeCHF,
     subtotal,
     vatPercent: cfg.VAT_PERCENT,
     vatAmount,

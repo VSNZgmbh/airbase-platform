@@ -15,7 +15,19 @@ import {
   ExternalLink,
   Copy,
   ClipboardCheck,
+  ShieldCheck,
+  ShieldAlert,
+  FileText,
+  Zap,
 } from "lucide-react";
+
+const PERMIT_STATUS_LABELS: Record<string, { label: string; color: string }> = {
+  not_required: { label: "Nicht nötig", color: "bg-gray-100 text-gray-500" },
+  pending: { label: "Ausstehend", color: "bg-yellow-100 text-yellow-700" },
+  submitted: { label: "Eingereicht", color: "bg-blue-100 text-blue-700" },
+  approved: { label: "Genehmigt", color: "bg-green-100 text-green-700" },
+  rejected: { label: "Abgelehnt", color: "bg-red-100 text-red-600" },
+};
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   draft: { label: "Entwurf", color: "bg-gray-100 text-gray-600" },
@@ -36,6 +48,8 @@ export function OperatorDashboard() {
   const [rejectReason, setRejectReason] = useState("");
   const [operatorNotes, setOperatorNotes] = useState<Record<string, string>>({});
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+  const [permitFlightId, setPermitFlightId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"bookings" | "permits">("bookings");
 
   const { data: bookings, isLoading, refetch } = trpc.operator.listBookings.useQuery({
     limit: 50,
@@ -60,6 +74,22 @@ export function OperatorDashboard() {
     onSuccess: () => refetch(),
   });
 
+  const { data: allPermits, refetch: refetchPermits } = trpc.permit.list.useQuery(
+    { limit: 50, offset: 0 },
+    { enabled: activeTab === "permits" }
+  );
+
+  const generatePermitsMutation = trpc.permit.generateForFlight.useMutation({
+    onSuccess: () => {
+      setPermitFlightId(null);
+      refetchPermits();
+    },
+  });
+
+  const updatePermitStatusMutation = trpc.permit.updateStatus.useMutation({
+    onSuccess: () => refetchPermits(),
+  });
+
   function copyToClipboard(url: string) {
     navigator.clipboard.writeText(url).then(() => {
       setCopiedUrl(url);
@@ -82,6 +112,118 @@ export function OperatorDashboard() {
 
   return (
     <div>
+      {/* Main navigation tabs */}
+      <div className="flex gap-2 mb-6 border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab("bookings")}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-colors -mb-px ${
+            activeTab === "bookings"
+              ? "border-brand-600 text-brand-600"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          <Clock className="w-4 h-4" />
+          Buchungen
+        </button>
+        <button
+          onClick={() => setActiveTab("permits")}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-colors -mb-px ${
+            activeTab === "permits"
+              ? "border-brand-600 text-brand-600"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          <FileText className="w-4 h-4" />
+          Bewilligungen (SORA)
+        </button>
+      </div>
+
+      {/* Permits tab */}
+      {activeTab === "permits" && (
+        <div className="space-y-4">
+          {!allPermits?.length ? (
+            <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center">
+              <ShieldCheck className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-500">Keine Bewilligungen vorhanden.</p>
+              <p className="text-sm text-gray-400 mt-1">
+                Bewilligungen werden automatisch generiert, wenn Flüge bestätigt werden.
+              </p>
+            </div>
+          ) : (
+            allPermits.map((permit) => {
+              const statusCfg = PERMIT_STATUS_LABELS[permit.status] ?? PERMIT_STATUS_LABELS.pending;
+              const booking = permit.flight?.booking;
+              return (
+                <div key={permit.id} className="bg-white rounded-2xl border border-gray-200 p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-gray-900">{permit.authority}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${statusCfg.color}`}>
+                          {statusCfg.label}
+                        </span>
+                      </div>
+                      {booking && (
+                        <p className="text-sm text-gray-500">
+                          {booking.identifier} · {booking.deliveryAddress ?? "—"}
+                        </p>
+                      )}
+                      {permit.referenceNumber && (
+                        <p className="text-xs text-green-600 font-medium mt-0.5">
+                          Ref: {permit.referenceNumber}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex gap-2 flex-shrink-0">
+                      {permit.status === "pending" && (
+                        <button
+                          onClick={() =>
+                            updatePermitStatusMutation.mutate({
+                              permitId: permit.id,
+                              status: "submitted",
+                            })
+                          }
+                          disabled={updatePermitStatusMutation.isPending}
+                          className="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                        >
+                          Als eingereicht markieren
+                        </button>
+                      )}
+                      {permit.status === "submitted" && (
+                        <button
+                          onClick={() =>
+                            updatePermitStatusMutation.mutate({
+                              permitId: permit.id,
+                              status: "approved",
+                            })
+                          }
+                          disabled={updatePermitStatusMutation.isPending}
+                          className="px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 disabled:opacity-50"
+                        >
+                          Als genehmigt markieren
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  {permit.notes && permit.notes.length > 0 && (
+                    <details className="mt-3">
+                      <summary className="text-xs text-blue-600 cursor-pointer hover:text-blue-700 font-medium">
+                        Gesuchstext anzeigen
+                      </summary>
+                      <pre className="mt-2 bg-gray-50 border border-gray-100 rounded-lg p-3 text-xs text-gray-700 whitespace-pre-wrap font-mono overflow-x-auto">
+                        {permit.notes}
+                      </pre>
+                    </details>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
+
+      {activeTab === "bookings" && (
+      <>
       {/* Status filter tabs */}
       <div className="flex gap-2 mb-6 flex-wrap">
         {([undefined, "pending", "quoted", "confirmed", "completed", "cancelled"] as (BookingStatus | undefined)[]).map(
@@ -195,6 +337,43 @@ export function OperatorDashboard() {
                         </div>
                       )}
                     </div>
+
+                    {/* SORA / Pricing breakdown */}
+                    {(booking.soraSurchargeCHF || booking.rushSurchargeCHF) && (
+                      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm">
+                        <div className="flex items-center gap-2 mb-3">
+                          <ShieldAlert className="w-4 h-4 text-blue-600" />
+                          <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide">
+                            SORA & Zuschläge
+                          </p>
+                        </div>
+                        <div className="space-y-1.5">
+                          {parseFloat(booking.soraSurchargeCHF ?? "0") > 0 && (
+                            <div className="flex justify-between text-blue-800">
+                              <span>Luftraum-Komplexität (SORA)</span>
+                              <span className="font-semibold">
+                                {formatCHF(parseFloat(booking.soraSurchargeCHF!))}
+                              </span>
+                            </div>
+                          )}
+                          {parseFloat(booking.rushSurchargeCHF ?? "0") > 0 && (
+                            <div className="flex justify-between text-blue-800">
+                              <div className="flex items-center gap-1">
+                                <Zap className="w-3 h-3" />
+                                <span>Rush-Buchung</span>
+                              </div>
+                              <span className="font-semibold">
+                                {formatCHF(parseFloat(booking.rushSurchargeCHF!))}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex justify-between text-blue-900 font-bold border-t border-blue-200 pt-1.5 mt-1.5">
+                            <span>Total</span>
+                            <span>{formatCHF(parseFloat(booking.totalCHF ?? "0"))}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Payment URL if exists */}
                     {paymentUrl && (
@@ -329,6 +508,8 @@ export function OperatorDashboard() {
             );
           })}
         </div>
+      )}
+      </>
       )}
     </div>
   );

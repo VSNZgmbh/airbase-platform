@@ -199,6 +199,10 @@ export const bookings = pgTable("bookings", {
     precision: 10,
     scale: 2,
   }),
+  /** Phase 5: SORA airspace complexity surcharge */
+  soraSurchargeCHF: decimal("sora_surcharge_chf", { precision: 10, scale: 2 }).default("0"),
+  /** Phase 5: Rush booking surcharge */
+  rushSurchargeCHF: decimal("rush_surcharge_chf", { precision: 10, scale: 2 }).default("0"),
   subtotalCHF: decimal("subtotal_chf", { precision: 10, scale: 2 }),
   vatPercent: decimal("vat_percent", { precision: 4, scale: 2 }).default(
     "8.10"
@@ -372,6 +376,13 @@ export const flightsRelations = relations(flights, ({ one, many }) => ({
     references: [pilots.id],
   }),
   permits: many(permits),
+}));
+
+export const permitsRelations = relations(permits, ({ one }) => ({
+  flight: one(flights, {
+    fields: [permits.flightId],
+    references: [flights.id],
+  }),
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({

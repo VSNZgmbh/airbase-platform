@@ -7,6 +7,7 @@ import { analyticsRouter } from "./routers/analytics";
 import { weatherRouter } from "./routers/weather";
 import { notamRouter } from "./routers/notam";
 import { tenantRouter } from "./routers/tenant";
+import { permitRouter } from "./routers/permit";
 
 export const appRouter = createTRPCRouter({
   booking: bookingRouter,
@@ -17,6 +18,7 @@ export const appRouter = createTRPCRouter({
   weather: weatherRouter,
   notam: notamRouter,
   tenant: tenantRouter,
+  permit: permitRouter,
 });
 
 export type AppRouter = typeof appRouter;

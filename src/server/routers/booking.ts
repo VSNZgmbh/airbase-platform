@@ -9,6 +9,7 @@ import {
 import { bookings, customers, airbaseHubs } from "@/lib/db/schema";
 import { createBookingSchema } from "@/lib/validations";
 import { calculatePrice, type PickupOption } from "@/lib/pricing";
+import { assessSora, soraAirspaceSurchargeCHF, isRushBooking } from "@/lib/sora";
 
 export const bookingRouter = createTRPCRouter({
   // Get all hubs (for pickup option B)
@@ -36,13 +37,30 @@ export const bookingRouter = createTRPCRouter({
         customer = newCustomer;
       }
 
-      // Calculate pricing
-      const routeDistanceKm = 10; // TODO: Calculate from Google Maps API
+      // Calculate pricing with SORA + rush surcharges
+      const routeDistanceKm = input.routeDistanceKm ?? 10;
+
+      // SORA assessment (if coordinates available)
+      let soraSurcharge = 0;
+      if (input.pickupLat && input.pickupLng && input.deliveryLat && input.deliveryLng) {
+        const soraResult = assessSora({
+          pickupLng: input.pickupLng,
+          pickupLat: input.pickupLat,
+          deliveryLng: input.deliveryLng,
+          deliveryLat: input.deliveryLat,
+        });
+        soraSurcharge = soraAirspaceSurchargeCHF(soraResult.sail);
+      }
+
+      const rush = isRushBooking(input.requestedDate, input.requestedTimeFrom);
+
       const price = calculatePrice({
         routeDistanceKm,
         payloadWeightKg: input.payloadWeightKg,
         pickupOption: input.pickupOption as PickupOption,
         pickupDistanceFromHubKm: 0,
+        soraAirspaceSurchargeCHF: soraSurcharge,
+        isRushBooking: rush,
       });
 
       // Generate booking identifier
@@ -76,6 +94,8 @@ export const bookingRouter = createTRPCRouter({
           basePriceCHF: String(price.basePrice),
           weightSurchargeCHF: String(price.weightSurcharge),
           pickupSurchargeCHF: String(price.pickupSurcharge),
+          soraSurchargeCHF: String(price.soraSurchargeCHF),
+          rushSurchargeCHF: String(price.rushSurchargeCHF),
           subtotalCHF: String(price.subtotal),
           vatPercent: String(price.vatPercent),
           vatAmountCHF: String(price.vatAmount),
