@@ -407,25 +407,29 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 title: "Transport",
                 img: "/images/flycart-lastendrohne.webp",
                 desc: "Kein Weg? Kein Problem. Wir liefern Güter direkt dorthin, wo keine Strasse führt — schnell, sicher und kosteneffizient.",
-                href: "/book?type=TRANSPORT",
+                href: "/book",
+                comingSoon: false,
               },
               {
                 title: "Landwirtschaft",
                 img: "/images/flycart-ingenieurverkehr.webp",
                 desc: "Mehr Ertrag, weniger Aufwand. Unsere Drohnen bringen Dünger, Saatgut und Pflanzenschutz präzise auf den Quadratmeter.",
-                href: "/book?type=LANDWIRTSCHAFT",
+                href: "#dienstleistungen",
+                comingSoon: true,
               },
               {
                 title: "Reinigung",
                 img: "/images/flycart-scene-2.webp",
                 desc: "Fassaden, Dächer, Solaranlagen — gereinigt ohne Gerüst. Unsere Drohnen erreichen, was Menschen nicht erreichen können.",
-                href: "/book?type=REINIGUNG",
+                href: "#dienstleistungen",
+                comingSoon: true,
               },
               {
                 title: "Bau",
                 img: "/images/flycart-notfalltransport.webp",
                 desc: "Kein Kran. Keine Strassensperrung. Material, Werkzeug und Ausrüstung kommen per Drohne — direkt auf Ihre Baustelle.",
-                href: "/book?type=BAU",
+                href: "#dienstleistungen",
+                comingSoon: true,
               },
             ].map((service) => (
               <motion.div
@@ -433,7 +437,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 variants={fadeUp}
                 transition={{ duration: 0.6, ease }}
                 whileHover={{ y: -10, transition: { duration: 0.25 } }}
-                className="group rounded-2xl overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-shadow"
+                className={`group rounded-2xl overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-shadow ${service.comingSoon ? "opacity-80" : ""}`}
                 style={{ background: "#FFFFFF", border: "1px solid #E2E8F0" }}
               >
                 {/* Service image */}
@@ -442,8 +446,14 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     src={service.img}
                     alt={service.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className={`object-cover transition-transform duration-500 group-hover:scale-105 ${service.comingSoon ? "grayscale-[30%]" : ""}`}
                   />
+                  {/* Coming Soon badge */}
+                  {service.comingSoon && (
+                    <div className="absolute top-3 right-3 z-20 rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider text-white" style={{ background: "#64748B" }}>
+                      Coming Soon
+                    </div>
+                  )}
                   {/* Glassmorphism title overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-4" style={glassDark}>
                     <h3 className="font-black text-white text-xl" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
@@ -454,13 +464,22 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
                 <div className="p-5 flex flex-col flex-1">
                   <p className="text-sm leading-relaxed flex-1" style={{ color: "#64748B" }}>{service.desc}</p>
-                  <Link
-                    href={service.href}
-                    className="inline-flex items-center gap-2 font-bold text-sm mt-5 transition-all group-hover:gap-3"
-                    style={{ color: "#D32F2F" }}
-                  >
-                    Buchen <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  {service.comingSoon ? (
+                    <span
+                      className="inline-flex items-center gap-2 font-bold text-sm mt-5"
+                      style={{ color: "#94A3B8" }}
+                    >
+                      Bald verfügbar
+                    </span>
+                  ) : (
+                    <Link
+                      href={service.href}
+                      className="inline-flex items-center gap-2 font-bold text-sm mt-5 transition-all group-hover:gap-3"
+                      style={{ color: "#D32F2F" }}
+                    >
+                      Buchen <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             ))}
