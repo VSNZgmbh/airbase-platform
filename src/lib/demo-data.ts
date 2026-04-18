@@ -246,6 +246,7 @@ export const DEMO_PILOTS = [
 export const DEMO_DRONES = [
   {
     id: "d001", model: "DJI FlyCart 100", serialNumber: "FC100-2024-CH-0042",
+    specificationStatus: "manufacturer_specs_pending_certification" as const,
     maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
     isActive: true, totalFlights: 312, hoursFlown: 847, utilization: 72,
     // Battery wear (DB2000, max 1'500 cycles, 12 months)
@@ -259,6 +260,7 @@ export const DEMO_DRONES = [
   },
   {
     id: "d002", model: "DJI FlyCart 100", serialNumber: "FC100-2025-CH-0018",
+    specificationStatus: "manufacturer_specs_pending_certification" as const,
     maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
     isActive: true, totalFlights: 186, hoursFlown: 503, utilization: 84,
     batteryCyclesUsed: 372, batteryCyclesMax: 1500, batteryHealthPct: 94,
@@ -269,6 +271,7 @@ export const DEMO_DRONES = [
   },
   {
     id: "d003", model: "DJI FlyCart 100", serialNumber: "FC100-2024-CH-0091",
+    specificationStatus: "manufacturer_specs_pending_certification" as const,
     maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
     isActive: true, totalFlights: 428, hoursFlown: 762, utilization: 68,
     batteryCyclesUsed: 856, batteryCyclesMax: 1500, batteryHealthPct: 82,
@@ -279,6 +282,7 @@ export const DEMO_DRONES = [
   },
   {
     id: "d004", model: "DJI FlyCart 100", serialNumber: "FC100-2025-CH-0007",
+    specificationStatus: "manufacturer_specs_pending_certification" as const,
     maxPayloadKg: 100, maxRangeKm: 12, batteryMode: "single" as const,
     isActive: true, totalFlights: 94, hoursFlown: 255, utilization: 56,
     batteryCyclesUsed: 188, batteryCyclesMax: 1500, batteryHealthPct: 97,
@@ -289,6 +293,7 @@ export const DEMO_DRONES = [
   },
   {
     id: "d005", model: "DJI FlyCart 100", serialNumber: "FC100-2024-CH-0063",
+    specificationStatus: "manufacturer_specs_pending_certification" as const,
     maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
     isActive: false, totalFlights: 201, hoursFlown: 546, utilization: 0,
     batteryCyclesUsed: 402, batteryCyclesMax: 1500, batteryHealthPct: 91,

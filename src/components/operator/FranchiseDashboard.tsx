@@ -83,6 +83,9 @@ function FleetOverview() {
           <p className="text-[10px] text-gray-300 mt-0.5">{drones.length} Drohnen registriert</p>
         </div>
       </div>
+      <div className="bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 mb-3 text-[10px] text-amber-800">
+        <strong>Hinweis:</strong> Herstellerangaben — vorbehaltlich EASA/BAZL-Typenzulassung
+      </div>
       <div className="grid grid-cols-2 gap-3">
         {drones.map((drone) => {
           const d = drone as (typeof DEMO_DRONES)[0];

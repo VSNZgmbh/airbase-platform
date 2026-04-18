@@ -189,6 +189,11 @@ export function Step6Confirm({ data, onBack }: Props) {
             </label>
           </div>
 
+          {/* Certification disclaimer */}
+          <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 mb-6 text-sm text-amber-800">
+            <strong>Hinweis:</strong> Herstellerangaben — vorbehaltlich EASA/BAZL-Typenzulassung
+          </div>
+
           {createBooking.error && (
             <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-4 text-sm text-red-700">
               Fehler: {createBooking.error.message}
