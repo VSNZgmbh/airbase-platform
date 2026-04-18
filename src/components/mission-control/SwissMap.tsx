@@ -1,6 +1,7 @@
 "use client";
 
-import { DEMO_BOOKINGS, DEMO_FRANCHISE_PARTNERS } from "@/lib/demo-data";
+import { DEMO_BOOKINGS, DEMO_FRANCHISE_PARTNERS, DEMO_AIRSPACE_TRAFFIC } from "@/lib/demo-data";
+import type { AirspaceTraffic } from "@/lib/airspace";
 
 // Swiss map SVG outline (simplified topographic path)
 const SWISS_PATH =
@@ -63,10 +64,42 @@ function getDronePosition(pickup: { x: number; y: number }, delivery: { x: numbe
   };
 }
 
-export function SwissMap({ compact = false, showHubs = true, showZones = true }: {
+// Map lat/lng to SVG coordinates (approximate projection for Swiss region)
+function geoToSvg(lat: number, lng: number): { x: number; y: number } | null {
+  // Bounding box: roughly lat 45.8–47.8, lng 5.9–10.5
+  const minLat = 45.8, maxLat = 47.8, minLng = 5.9, maxLng = 10.5;
+  if (lat < minLat || lat > maxLat || lng < minLng || lng > maxLng) return null;
+  const x = 40 + ((lng - minLng) / (maxLng - minLng)) * 380;
+  const y = 20 + ((maxLat - lat) / (maxLat - minLat)) * 100;
+  return { x, y };
+}
+
+// Aircraft shape paths for SVG markers
+const AIRCRAFT_SHAPES: Record<string, (x: number, y: number, heading: number) => string> = {
+  helicopter: (x, y) => `M${x},${y - 3} L${x + 2.5},${y + 1.5} L${x},${y + 0.5} L${x - 2.5},${y + 1.5}Z`,
+  fixed_wing: (x, y) => `M${x},${y - 4} L${x + 3},${y + 2} L${x},${y + 1} L${x - 3},${y + 2}Z`,
+  glider: (x, y) => `M${x},${y - 3} L${x + 4},${y} L${x},${y + 2} L${x - 4},${y}Z`,
+  paraglider: (x, y) => `M${x - 2.5},${y - 1.5} Q${x},${y - 3.5} ${x + 2.5},${y - 1.5} L${x},${y + 2}Z`,
+  drone: (x, y) => `M${x},${y - 2.5} L${x + 2},${y} L${x},${y + 2.5} L${x - 2},${y}Z`,
+  balloon: (x, y) => `M${x},${y - 3} A2.5,3 0 1,1 ${x},${y + 0.5} L${x - 1},${y + 3} L${x + 1},${y + 3}Z`,
+  unknown: (x, y) => `M${x},${y - 2} L${x + 2},${y} L${x},${y + 2} L${x - 2},${y}Z`,
+};
+
+const CATEGORY_COLORS: Record<string, string> = {
+  helicopter: "#7C3AED",
+  fixed_wing: "#2563EB",
+  glider: "#059669",
+  paraglider: "#D97706",
+  drone: "#DC2626",
+  balloon: "#EC4899",
+  unknown: "#6B7280",
+};
+
+export function SwissMap({ compact = false, showHubs = true, showZones = true, showAirTraffic = false }: {
   compact?: boolean;
   showHubs?: boolean;
   showZones?: boolean;
+  showAirTraffic?: boolean;
 }) {
   const activeFlights = DEMO_BOOKINGS.filter((b) => b.status === "in_progress" || b.status === "confirmed");
   const inAirFlights = DEMO_BOOKINGS.filter((b) => b.status === "in_progress");
@@ -199,6 +232,32 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true }:
             );
           })}
 
+          {/* Third-party air traffic overlay */}
+          {showAirTraffic && DEMO_AIRSPACE_TRAFFIC.map((aircraft) => {
+            const pos = geoToSvg(aircraft.lat, aircraft.lng);
+            if (!pos) return null;
+            const color = CATEGORY_COLORS[aircraft.category] ?? "#6B7280";
+            const shapeFn = AIRCRAFT_SHAPES[aircraft.category] ?? AIRCRAFT_SHAPES.unknown;
+
+            return (
+              <g key={aircraft.id}>
+                {/* Detection radius ring */}
+                <circle cx={pos.x} cy={pos.y} r={5} fill={color} opacity={0.08}>
+                  <animate attributeName="r" values="4;7;4" dur="2.5s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.12;0.04;0.12" dur="2.5s" repeatCount="indefinite" />
+                </circle>
+                {/* Aircraft shape */}
+                <path d={shapeFn(pos.x, pos.y, aircraft.headingDeg)} fill={color} stroke="white" strokeWidth={0.5} opacity={0.85} />
+                {/* Callsign label */}
+                {aircraft.callsign && !compact && (
+                  <text x={pos.x + 5} y={pos.y - 4} className="text-[4.5px] font-bold" fill={color} opacity={0.8}>
+                    {aircraft.callsign}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+
           {/* Key city labels */}
           {[
             { name: "Bern", ...LOCATIONS["Bern"] },
@@ -224,7 +283,7 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true }:
 
       {/* Map Legend */}
       {!compact && (
-        <div className="px-5 pb-3 flex items-center gap-4 text-[9px] text-gray-400">
+        <div className="px-5 pb-3 flex items-center gap-4 text-[9px] text-gray-400 flex-wrap">
           <div className="flex items-center gap-1.5">
             <svg width="10" height="10"><polygon points="5,1 8,5 5,9 2,5" fill="#D32F2F" /></svg>
             <span>HQ</span>
@@ -245,6 +304,27 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true }:
             <svg width="8" height="8"><circle cx="4" cy="4" r="3" fill="#D32F2F" /><circle cx="4" cy="4" r="1.5" fill="white" /></svg>
             <span>Ziel</span>
           </div>
+          {showAirTraffic && (
+            <>
+              <span className="text-gray-200">|</span>
+              <div className="flex items-center gap-1.5">
+                <svg width="8" height="8"><polygon points="4,0 7,3 4,5 1,3" fill="#7C3AED" stroke="white" strokeWidth="0.5" /></svg>
+                <span>Heli</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <svg width="8" height="8"><polygon points="4,0 7,4 4,3 1,4" fill="#2563EB" stroke="white" strokeWidth="0.5" /></svg>
+                <span>Flugzeug</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <svg width="8" height="8"><polygon points="4,1 8,4 4,6 0,4" fill="#059669" stroke="white" strokeWidth="0.5" /></svg>
+                <span>Segelfl.</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <svg width="8" height="8"><path d="M1.5,2.5 Q4,0 6.5,2.5 L4,7Z" fill="#D97706" stroke="white" strokeWidth="0.5" /></svg>
+                <span>Gleitsch.</span>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

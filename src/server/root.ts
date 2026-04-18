@@ -9,6 +9,7 @@ import { notamRouter } from "./routers/notam";
 import { tenantRouter } from "./routers/tenant";
 import { permitRouter } from "./routers/permit";
 import { safetyRouter } from "./routers/safety";
+import { airspaceRouter } from "./routers/airspace";
 
 export const appRouter = createTRPCRouter({
   booking: bookingRouter,
@@ -21,6 +22,7 @@ export const appRouter = createTRPCRouter({
   tenant: tenantRouter,
   permit: permitRouter,
   safety: safetyRouter,
+  airspace: airspaceRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { WeatherBadge } from "./WeatherBadge";
 import { MissionControlLayout, SwissMap, KeyMetrics } from "@/components/mission-control";
+import { ProximityWarning } from "@/components/airspace/ProximityWarning";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -818,7 +819,7 @@ export function PilotDashboard() {
         <div className="grid grid-cols-[1fr_380px] gap-5">
           {/* Left: Map + Metrics + Current Mission + Weather */}
           <div className="flex flex-col gap-5">
-            <SwissMap compact />
+            <SwissMap compact showAirTraffic />
             <KeyMetrics items={[
               { label: "Zugewiesene Flüge", value: flights.length, animate: true },
               { label: "Aktiv", value: activeCount, animate: true },
@@ -827,6 +828,8 @@ export function PilotDashboard() {
             ]} />
             <ActiveMissionDetail flight={activeFlightOrFirst} />
             <DroneStatusPanel drone={activeFlightOrFirst?.drone ?? DEMO_DRONES[0]} />
+            {/* Proximity Alerts — DAA (Detect and Avoid) */}
+            <ProximityWarning />
             <WeatherAirspacePanel />
             <MaintenancePanel />
           </div>

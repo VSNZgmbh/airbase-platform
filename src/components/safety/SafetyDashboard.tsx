@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MissionControlLayout, SwissMap, KeyMetrics } from "@/components/mission-control";
 import { DEMO_AUTHORIZATIONS, DEMO_AREA_DATA, DEMO_INCIDENTS, DEMO_FLIGHTS } from "@/lib/demo-data";
+import { AirspaceMonitor } from "@/components/airspace/AirspaceMonitor";
 import { trpc } from "@/lib/trpc/client";
 import {
   ResponsiveContainer,
@@ -254,6 +255,8 @@ function LUCProtocol() {
     { label: "SORA-Bewertung durchgeführt", status: "ok" },
     { label: "BAZL-Genehmigung erteilt", status: "ok" },
     { label: "Versicherungsnachweis aktuell", status: "ok" },
+    { label: "DAA aktiv (SafeSky + INVOLI)", status: "ok" },
+    { label: "Luftraumüberwachung redundant", status: "ok" },
   ];
 
   return (
@@ -840,8 +843,8 @@ export function SafetyDashboard() {
         <div className="grid grid-cols-[1fr_360px] gap-5">
           {/* Left column */}
           <div className="flex flex-col gap-5">
-            {/* Map with airspace overlays */}
-            <SwissMap />
+            {/* Map with airspace overlays + live air traffic */}
+            <SwissMap showAirTraffic />
 
             {/* Key Metrics */}
             <KeyMetrics
@@ -862,6 +865,9 @@ export function SafetyDashboard() {
 
           {/* Right column */}
           <div className="flex flex-col gap-5">
+            {/* Live Airspace Monitoring (SafeSky + INVOLI) */}
+            <AirspaceMonitor />
+
             {/* AI Risk Traffic Light */}
             <AIRiskTrafficLight />
 
