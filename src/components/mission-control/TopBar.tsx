@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Battery, Signal, Wifi } from "lucide-react";
+import { Battery } from "lucide-react";
+import { ConnectionStatus } from "./ConnectionStatus";
 
 export function TopBar() {
   const [time, setTime] = useState("");
@@ -24,20 +25,15 @@ export function TopBar() {
         <span className="font-mono text-lg font-bold text-gray-900 tracking-wider">{time}</span>
         <span className="text-xs text-gray-400 font-medium">UTC+2</span>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <div className="flex items-center gap-1.5">
           <Battery className="w-4 h-4 text-gray-400" />
           <span className="text-xs font-semibold text-gray-500">95%</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <Signal className="w-4 h-4 text-brand-500" />
-          <span className="text-xs font-semibold text-gray-500">4G+</span>
+        <div className="border-l border-gray-100 pl-3">
+          <ConnectionStatus />
         </div>
-        <div className="flex items-center gap-1.5">
-          <Wifi className="w-4 h-4 text-brand-500" />
-          <span className="text-xs font-semibold text-gray-500">Stabil</span>
-        </div>
-        <div className="flex items-center gap-2 ml-2 pl-4 border-l border-gray-100">
+        <div className="flex items-center gap-2 ml-1 pl-3 border-l border-gray-100">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500" />
