@@ -233,12 +233,12 @@ function DroneStatusPanel({ drone }: { drone: any }) {
         <p className="text-[10px] text-gray-300 mt-0.5">{d.serialNumber} · {d.batteryMode === "dual" ? "Dual" : "Einzel"}-Batterie</p>
       </div>
       <div className="p-4 space-y-3">
-        {/* Battery DB2000 */}
+        {/* Battery DB2160 */}
         <div className="bg-gray-50 rounded-xl p-3">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1.5">
               <Battery className="w-3.5 h-3.5 text-gray-400" />
-              DB2000 Batterie (38&apos;000 mAh)
+              DB2160 Batterie (41 Ah / 52 V)
             </span>
             <span className={`text-[10px] font-bold ${d.batteryHealthPct >= 90 ? "text-emerald-600" : d.batteryHealthPct >= 80 ? "text-amber-600" : "text-red-600"}`}>
               {d.batteryHealthPct}% Gesundheit
@@ -253,16 +253,16 @@ function DroneStatusPanel({ drone }: { drone: any }) {
               style={{ width: `${batteryPct}%` }} />
           </div>
           <p className="text-[9px] text-gray-400 mt-1">
-            Installiert: {new Date(d.batteryInstalledDate).toLocaleDateString("de-CH")} · Ladedauer: {d.batteryMode === "dual" ? "2.5h" : "2.0h"}
+            Installiert: {new Date(d.batteryInstalledDate).toLocaleDateString("de-CH")} · Schnellladung: 9 min (12/15 kW)
           </p>
         </div>
 
-        {/* Propeller 54" Carbon */}
+        {/* Propeller 62" Carbon */}
         <div className="bg-gray-50 rounded-xl p-3">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1.5">
               <Navigation className="w-3.5 h-3.5 text-gray-400" />
-              Propeller 54&quot; Carbon-Composite
+              Propeller 62&quot; Carbon-Composite
             </span>
             <span className={`text-[10px] font-bold ${propellerPct > 75 ? "text-amber-600" : "text-emerald-600"}`}>
               {Math.round(100 - propellerPct)}% Restleben
@@ -286,7 +286,7 @@ function DroneStatusPanel({ drone }: { drone: any }) {
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1.5">
               <Wrench className="w-3.5 h-3.5 text-gray-400" />
-              8x Motoren (100x33mm, 4kW)
+              8x Motoren (155×16mm, 60 KV)
             </span>
             <span className={`text-[10px] font-bold ${flightsToInspection <= 10 ? "text-amber-600" : "text-emerald-600"}`}>
               {flightsToInspection > 0 ? `${flightsToInspection} Flüge bis Inspektion` : "Inspektion fällig!"}
@@ -309,8 +309,8 @@ function DroneStatusPanel({ drone }: { drone: any }) {
             <p className="text-xs font-bold text-gray-700">{d.maxRangeKm} km</p>
           </div>
           <div className="text-center bg-gray-50 rounded-lg p-2">
-            <p className="text-[9px] text-gray-400">Flugzeit ({d.batteryMode === "dual" ? "30 kg" : "leer"})</p>
-            <p className="text-xs font-bold text-gray-700">{d.batteryMode === "dual" ? "18" : "15"} min</p>
+            <p className="text-[9px] text-gray-400">Flugzeit (149.9 kg)</p>
+            <p className="text-xs font-bold text-gray-700">{d.batteryMode === "dual" ? "14" : "7"} min</p>
           </div>
         </div>
       </div>

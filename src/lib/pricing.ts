@@ -142,21 +142,20 @@ export function formatCHF(amount: number): string {
   }).format(amount);
 }
 
-// DJI FlyCart 100 — Real specs (released Dec 2025)
-// Sources: dronedj.com, dronelife.com, newsshooter.com
-// Single-battery mode: 100 kg payload, 12 km range
-// Dual-battery mode:   85 kg payload, 26 km range
+// DJI FlyCart 100 — Real specs (Source: dji.com/flycart-100/specs)
+// Single-battery mode: 100 kg payload, 6 km range, 7 min flight time
+// Dual-battery mode:   85 kg payload, 12 km range, 14 min flight time
 export const FLYCART_100 = {
   MODEL: "DJI FlyCart 100",
   MAX_PAYLOAD_KG: 100,               // Single-battery mode max
   MAX_PAYLOAD_DUAL_KG: 85,           // Dual-battery mode max
-  MAX_RANGE_KM: 26,                  // Dual-battery, empty
-  MAX_RANGE_LOADED_KM: 12,           // Dual-battery, loaded
+  MAX_RANGE_KM: 12,                  // Dual-battery, at 149.9 kg MTOW
+  MAX_RANGE_SINGLE_KM: 6,            // Single-battery, at 149.9 kg MTOW
   CRUISE_SPEED_KMH: 54,              // 15 m/s
   MAX_SPEED_KMH: 72,                 // 20 m/s
-  SINGLE_AXIS_LIFT_KG: 82,           // Single-axis lift capacity
-  MTOW_KG: 149.9,                    // Max takeoff weight
-  ROTOR_SYSTEM: "Coaxial 4-axis",    // 8 rotor blades
+  EMPTY_WEIGHT_KG: 55.2,             // With lifting system
+  MTOW_KG: 170,                      // Global max takeoff weight (150 kg in some countries)
+  ROTOR_SYSTEM: "Coaxial 4-axis",    // 8 rotor blades, 62" propellers
   PROPELLER_SIZE_INCH: 62,           // Carbon fiber composite
   MOTOR_COUNT: 8,                     // 4-axis coaxial, 8 blades
   MAX_ALTITUDE_M: 6000,              // Operating altitude

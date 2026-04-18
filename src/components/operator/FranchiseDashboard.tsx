@@ -131,8 +131,8 @@ function FleetOverview() {
               {/* Wear tracking */}
               {hasBatteryData && (
                 <div className="border-t border-gray-50 pt-2 mt-2">
-                  <WearBar label="DB2000 Batterie" icon={<Battery className="w-2.5 h-2.5" />} value={d.batteryCyclesUsed} max={d.batteryCyclesMax} unit="Zyklen" warnAt={70} />
-                  <WearBar label="Propeller 54&quot;" icon={<RotateCcw className="w-2.5 h-2.5" />} value={d.propellerHours} max={d.propellerMaxHours} unit="h" warnAt={75} />
+                  <WearBar label="DB2160 Batterie (41 Ah)" icon={<Battery className="w-2.5 h-2.5" />} value={d.batteryCyclesUsed} max={d.batteryCyclesMax} unit="Zyklen" warnAt={70} />
+                  <WearBar label="Propeller 62&quot;" icon={<RotateCcw className="w-2.5 h-2.5" />} value={d.propellerHours} max={d.propellerMaxHours} unit="h" warnAt={75} />
                   <div className="flex items-center justify-between text-[9px] mt-1">
                     <span className="text-gray-400">Batterie-Zustand</span>
                     <span className={`font-bold ${d.batteryHealthPct >= 90 ? "text-emerald-600" : d.batteryHealthPct >= 80 ? "text-amber-600" : "text-red-600"}`}>{d.batteryHealthPct}%</span>

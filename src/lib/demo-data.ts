@@ -1,12 +1,15 @@
 // ─── Demo Data for AIRBASE Platform ──────────────────────────────────────────
-// Based on real DJI FlyCart 100 specs (released Dec 2025)
-// Sources: dronedj.com, dronelife.com, newsshooter.com
+// Based on real DJI FlyCart 100 specs — Source: dji.com/flycart-100/specs
+// MTOW: 170 kg (150 kg in CH/EU regulatory context)
+// Leergewicht: 55.2 kg (Lifting) / 60.2 kg (Winch)
 // Max Nutzlast: 100 kg (Einzelbatterie) / 85 kg (Dualbatterie)
-// Reichweite: 26 km (leer) / 12 km (beladen)
-// MTOW: 149.9 kg · Einzelachsen-Lift: 82 kg
-// Propeller: 62" Carbon · Koaxial 4-Achsen, 8 Rotorblätter
+// Reichweite: 12 km (Dual-Batterie) / 6 km (Einzel-Batterie) bei 149.9 kg MTOW
+// Flugzeit: 14 min (Dual) / 7 min (Einzel) bei 149.9 kg MTOW
+// Batterie: DB2160 · 41 Ah · 52 V · 1'500 Zyklen · 9 min Schnellladung
+// Propeller: 62" (1574.8 mm) Carbon-Composite · Koaxial 4-Achsen, 8 Rotorblätter
+// Motoren: 155×16 mm Stator · 60 rpm/V KV
 // IP55 · Betriebstemperatur: -20°C bis 40°C · Windresistenz: 12 m/s
-// Sicherheit: LiDAR, mmWave Radar, 5-Richtungs-Vision, Fallschirm
+// Sicherheit: LiDAR, mmWave Radar, 5-Richtungs-Vision, Fallschirm E2MSF-100A (≤7 m/s)
 // Liefermethoden: Winde (30m) + Elektrohaken · Hot-Swap Batterien
 
 export const DEMO_BOOKINGS = [
@@ -240,19 +243,19 @@ export const DEMO_PILOTS = [
   { id: "p005", firstName: "Thomas", lastName: "Steiner", email: "t.steiner@airbase.one", licenseNumber: "CH-RPL-2024-0203", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: false, isActive: false, totalFlights: 89, hoursFlown: 242 },
 ];
 
-// DJI FlyCart 100 fleet — real specs (released Dec 2025)
-// Dual-battery: 85 kg payload, 26 km range
-// Single-battery: 100 kg payload, 12 km range
+// DJI FlyCart 100 fleet — real specs (Source: dji.com/flycart-100/specs)
+// Dual-battery: 85 kg payload, 12 km range, 14 min flight time
+// Single-battery: 100 kg payload, 6 km range, 7 min flight time
 export const DEMO_DRONES = [
   {
     id: "d001", model: "DJI FlyCart 100", serialNumber: "FC100-2024-CH-0042",
     specificationStatus: "manufacturer_specs_pending_certification" as const,
-    maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
+    maxPayloadKg: 85, maxRangeKm: 12, batteryMode: "dual" as const,
     isActive: true, totalFlights: 312, hoursFlown: 847, utilization: 72,
-    // Battery wear (DB2000, max 1'500 cycles, 12 months)
+    // Battery wear (DB2160, 41 Ah/52 V, max 1'500 cycles, 12 months)
     batteryCyclesUsed: 624, batteryCyclesMax: 1500, batteryHealthPct: 89,
     batteryInstalledDate: "2024-06-15",
-    // Propeller wear (54" carbon, replace at 1'000h or 36 months)
+    // Propeller wear (62" carbon, replace at 1'000h or 36 months)
     propellerHours: 847, propellerMaxHours: 1000, propellerInstalledDate: "2024-06-15",
     // Motor inspection (every 100 flights / 50h)
     lastMotorInspectionFlights: 280, nextMotorInspectionFlights: 350,
@@ -261,7 +264,7 @@ export const DEMO_DRONES = [
   {
     id: "d002", model: "DJI FlyCart 100", serialNumber: "FC100-2025-CH-0018",
     specificationStatus: "manufacturer_specs_pending_certification" as const,
-    maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
+    maxPayloadKg: 85, maxRangeKm: 12, batteryMode: "dual" as const,
     isActive: true, totalFlights: 186, hoursFlown: 503, utilization: 84,
     batteryCyclesUsed: 372, batteryCyclesMax: 1500, batteryHealthPct: 94,
     batteryInstalledDate: "2025-01-10",
@@ -272,7 +275,7 @@ export const DEMO_DRONES = [
   {
     id: "d003", model: "DJI FlyCart 100", serialNumber: "FC100-2024-CH-0091",
     specificationStatus: "manufacturer_specs_pending_certification" as const,
-    maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
+    maxPayloadKg: 85, maxRangeKm: 12, batteryMode: "dual" as const,
     isActive: true, totalFlights: 428, hoursFlown: 762, utilization: 68,
     batteryCyclesUsed: 856, batteryCyclesMax: 1500, batteryHealthPct: 82,
     batteryInstalledDate: "2024-03-01",
@@ -283,7 +286,7 @@ export const DEMO_DRONES = [
   {
     id: "d004", model: "DJI FlyCart 100", serialNumber: "FC100-2025-CH-0007",
     specificationStatus: "manufacturer_specs_pending_certification" as const,
-    maxPayloadKg: 100, maxRangeKm: 12, batteryMode: "single" as const,
+    maxPayloadKg: 100, maxRangeKm: 6, batteryMode: "single" as const,
     isActive: true, totalFlights: 94, hoursFlown: 255, utilization: 56,
     batteryCyclesUsed: 188, batteryCyclesMax: 1500, batteryHealthPct: 97,
     batteryInstalledDate: "2025-04-20",
@@ -294,7 +297,7 @@ export const DEMO_DRONES = [
   {
     id: "d005", model: "DJI FlyCart 100", serialNumber: "FC100-2024-CH-0063",
     specificationStatus: "manufacturer_specs_pending_certification" as const,
-    maxPayloadKg: 85, maxRangeKm: 26, batteryMode: "dual" as const,
+    maxPayloadKg: 85, maxRangeKm: 12, batteryMode: "dual" as const,
     isActive: false, totalFlights: 201, hoursFlown: 546, utilization: 0,
     batteryCyclesUsed: 402, batteryCyclesMax: 1500, batteryHealthPct: 91,
     batteryInstalledDate: "2024-09-01",
@@ -432,16 +435,16 @@ export const DEMO_INVOICES = [
 
 // ─── Maintenance Schedule (based on DJI FlyCart 100 Maintenance Manual) ───────
 // Motor inspection: after 100 flights, then every 50 flight hours
-// Propeller: replace at 1'000h or 36 months, inspect daily for wear lines
-// Battery DB2000: 1'500 cycles max, health check at 500/1000 cycles
+// Propeller: 62" (1574.8 mm) carbon — replace at 1'000h or 36 months, inspect daily
+// Battery DB2160: 41 Ah · 52 V · 1'500 cycles max, health check at 500/1000 cycles
 // Annual BAZL/FOCA certification required for commercial LUC operations
 export const DEMO_MAINTENANCE = [
-  { id: "m001", droneId: "d001", droneModel: "DJI FlyCart 100", type: "scheduled", task: "50h-Motor-Inspektion: 8x Motoren (100x33mm Stator), Koaxial-Antrieb prüfen, Lagerprüfung", scheduledAt: "2026-04-22T08:00:00Z", status: "upcoming", estimatedHours: 4, spec: "DJI Wartungshandbuch: alle 50 Flugstunden nach Erstinspektion" },
-  { id: "m002", droneId: "d002", droneModel: "DJI FlyCart 100", type: "scheduled", task: "DB2000 Batterie-Zykluscheck (372/1'500 Zyklen): Zellbalance, Kapazitätstest, Ladeelektronik", scheduledAt: "2026-04-25T09:00:00Z", status: "upcoming", estimatedHours: 2, spec: "DB2000 Lebensdauer: 1'500 Zyklen oder 12 Monate" },
-  { id: "m003", droneId: "d003", droneModel: "DJI FlyCart 100", type: "preventive", task: "Propeller-Verschleissprüfung (762/1'000h): 62\" Carbon-Composite auf Risse, Verschleisslinien prüfen", scheduledAt: "2026-04-19T14:00:00Z", status: "upcoming", estimatedHours: 1.5, spec: "Propeller-Austausch bei 1'000h oder 36 Monaten" },
+  { id: "m001", droneId: "d001", droneModel: "DJI FlyCart 100", type: "scheduled", task: "50h-Motor-Inspektion: 8x Motoren (155×16mm Stator, 60 KV), Koaxial-Antrieb prüfen, Lagerprüfung", scheduledAt: "2026-04-22T08:00:00Z", status: "upcoming", estimatedHours: 4, spec: "DJI Wartungshandbuch: alle 50 Flugstunden nach Erstinspektion" },
+  { id: "m002", droneId: "d002", droneModel: "DJI FlyCart 100", type: "scheduled", task: "DB2160 Batterie-Zykluscheck (372/1'500 Zyklen): Zellbalance, Kapazitätstest 41 Ah/52 V, Ladeelektronik", scheduledAt: "2026-04-25T09:00:00Z", status: "upcoming", estimatedHours: 2, spec: "DB2160 Lebensdauer: 1'500 Zyklen oder 12 Monate" },
+  { id: "m003", droneId: "d003", droneModel: "DJI FlyCart 100", type: "preventive", task: "Propeller-Verschleissprüfung (762/1'000h): 62\" (1574.8mm) Carbon-Composite auf Risse, Verschleisslinien prüfen", scheduledAt: "2026-04-19T14:00:00Z", status: "upcoming", estimatedHours: 1.5, spec: "Propeller-Austausch bei 1'000h oder 36 Monaten" },
   { id: "m004", droneId: "d004", droneModel: "DJI FlyCart 100", type: "scheduled", task: "100-Flug-Erstinspektion: Komplettcheck Motoren, Propeller, Avionik, IP55-Dichtung, Failsafe-Test", scheduledAt: "2026-04-20T08:00:00Z", status: "upcoming", estimatedHours: 6, spec: "DJI Wartungshandbuch: Erstinspektion nach 100 Flügen" },
-  { id: "m005", droneId: "d005", droneModel: "DJI FlyCart 100", type: "repair", task: "Propeller-Ersatz (2x 62\" Carbon) nach Landefehler + Strukturprüfung Landegestell", scheduledAt: "2026-04-20T10:00:00Z", status: "in_progress", estimatedHours: 5, spec: "Beschädigte Propeller sofort ersetzen (DJI Wartungshandbuch)" },
-  { id: "m006", droneId: "d001", droneModel: "DJI FlyCart 100", type: "scheduled", task: "DB2000 Batterie-Austausch fällig: 624/1'500 Zyklen, Installiert seit 15.06.2024 (>12 Monate)", scheduledAt: "2026-06-15T08:00:00Z", status: "upcoming", estimatedHours: 1, spec: "DB2000 max. 12 Monate Lebensdauer — Austausch erforderlich" },
+  { id: "m005", droneId: "d005", droneModel: "DJI FlyCart 100", type: "repair", task: "Propeller-Ersatz (2x 62\"/1574.8mm Carbon-Composite) nach Landefehler + Strukturprüfung Landegestell", scheduledAt: "2026-04-20T10:00:00Z", status: "in_progress", estimatedHours: 5, spec: "Beschädigte Propeller sofort ersetzen (DJI Wartungshandbuch)" },
+  { id: "m006", droneId: "d001", droneModel: "DJI FlyCart 100", type: "scheduled", task: "DB2160 Batterie-Austausch fällig: 624/1'500 Zyklen, Installiert seit 15.06.2024 (>12 Monate)", scheduledAt: "2026-06-15T08:00:00Z", status: "upcoming", estimatedHours: 1, spec: "DB2160 (41 Ah/52 V) max. 12 Monate Lebensdauer — Austausch erforderlich" },
   { id: "m007", droneId: "d004", droneModel: "DJI FlyCart 100", type: "scheduled", task: "Jährliche BAZL-Zertifizierungsprüfung: LUC-Konformität, Flugtauglichkeit, Sicherheitssysteme", scheduledAt: "2026-05-02T08:00:00Z", status: "upcoming", estimatedHours: 8, spec: "Jährlich erforderlich für kommerzielle LUC-Operationen (BAZL/FOCA)" },
 ];
 
@@ -451,7 +454,7 @@ export const DEMO_INCIDENTS = [
   { id: "inc002", date: "2026-04-15T09:45:00Z", title: "GPS-Signalverlust über Lauterbrunnen Tal", category: "technical", severity: "medium", status: "under_review", pilot: "Sarah Weber", drone: "DJI FlyCart 100 (FC100-2024-CH-0042)", description: "Temporärer GPS-Signalverlust (8 Sekunden) in engem Tal. INS-Backup übernahm — 4-Achsen-Koaxial-Redundanz sicherte Flug, kein Abbruch." },
   { id: "inc003", date: "2026-04-12T16:30:00Z", title: "Unerwartete Windböe bei Landung Kandersteg", category: "weather", severity: "medium", status: "resolved", pilot: "Marco Brunner", drone: "DJI FlyCart 100 (FC100-2025-CH-0007)", description: "Windböe von 45 km/h während Landeanflug (IP55-Gehäuse, Betriebsgrenze: 12 m/s). Landung abgebrochen, zweiter Anflug erfolgreich." },
   { id: "inc004", date: "2026-04-10T11:00:00Z", title: "Near-Miss mit Helikopter bei Wengen", category: "airspace", severity: "high", status: "under_review", pilot: "Elena Fischer", drone: "DJI FlyCart 100 (FC100-2024-CH-0042)", description: "REGA-Helikopter in 200m Entfernung gesichtet. Automatischer Abstieg eingeleitet. NOTAM war nicht aktuell." },
-  { id: "inc005", date: "2026-04-08T07:15:00Z", title: "DB2000 Batterie-Warnung unter 15% im Flug", category: "technical", severity: "medium", status: "resolved", pilot: "Thomas Steiner", drone: "DJI FlyCart 100 (FC100-2024-CH-0063)", description: "Unerwartet hoher DB2000-Batterieverbrauch bei Gegenwind (38'000 mAh Kapazität). Automatische Notlandung auf Zwischenlandeplatz erfolgreich." },
+  { id: "inc005", date: "2026-04-08T07:15:00Z", title: "DB2160 Batterie-Warnung unter 15% im Flug", category: "technical", severity: "medium", status: "resolved", pilot: "Thomas Steiner", drone: "DJI FlyCart 100 (FC100-2024-CH-0063)", description: "Unerwartet hoher DB2160-Batterieverbrauch bei Gegenwind (41 Ah / 52 V Kapazität). Automatische Notlandung auf Zwischenlandeplatz erfolgreich." },
 ];
 
 // ─── Emissions Data ──────────────────────────────────────────────────────────
