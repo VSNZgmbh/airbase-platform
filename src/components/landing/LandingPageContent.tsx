@@ -468,7 +468,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 5. Drone Showcase — DJI FlyCart 30 ── */}
+      {/* ── 5. Drone Showcase — DJI FlyCart 100 ── */}
       <section className="relative py-32 overflow-hidden" style={{ background: "#FFFFFF" }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -506,7 +506,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
                   <Image
                     src="/images/dji-flycart-100.png"
-                    alt="DJI FlyCart 30 heavy-lift drone"
+                    alt="DJI FlyCart 100 heavy-lift drone"
                     width={620}
                     height={440}
                     className="relative z-10 drop-shadow-2xl"
@@ -542,7 +542,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                   }}
                 >
-                  DJI FlyCart 30
+                  DJI FlyCart 100
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
                   Die leistungsstärkste Lastendrohne ihrer Klasse. Bis 40 kg Nutzlast, 28 km Reichweite, SORA-zertifiziert und BAZL-konform für den kommerziellen Einsatz in der Schweiz.

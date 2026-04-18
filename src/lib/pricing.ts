@@ -142,11 +142,11 @@ export function formatCHF(amount: number): string {
   }).format(amount);
 }
 
-// DJI FlyCart 30 — Real specs (source: dji.com/flycart-30/specs)
+// DJI FlyCart 100 — Real specs (source: dji.com/flycart-100/specs)
 // Single-battery mode: 40 kg payload, 12 km range, 15 min flight
 // Dual-battery mode:   30 kg payload, 28 km range, 29 min flight
-export const FLYCART_30 = {
-  MODEL: "DJI FlyCart 30",
+export const FLYCART_100 = {
+  MODEL: "DJI FlyCart 100",
   MAX_PAYLOAD_KG: 40,               // Single-battery mode max
   MAX_PAYLOAD_DUAL_KG: 30,          // Dual-battery mode max
   MAX_RANGE_KM: 28,                 // Dual-battery mode
@@ -183,10 +183,10 @@ export function validatePayload(weightKg: number): {
   if (weightKg <= 0) {
     return { valid: false, error: "Gewicht muss grösser als 0 kg sein." };
   }
-  if (weightKg > FLYCART_30.MAX_PAYLOAD_KG) {
+  if (weightKg > FLYCART_100.MAX_PAYLOAD_KG) {
     return {
       valid: false,
-      error: `DJI FlyCart 30 Maximalnutzlast: ${FLYCART_30.MAX_PAYLOAD_KG} kg (Einzelbatterie). Bitte wenden Sie sich für Überlasten an uns.`,
+      error: `DJI FlyCart 100 Maximalnutzlast: ${FLYCART_100.MAX_PAYLOAD_KG} kg (Einzelbatterie). Bitte wenden Sie sich für Überlasten an uns.`,
     };
   }
   return { valid: true };

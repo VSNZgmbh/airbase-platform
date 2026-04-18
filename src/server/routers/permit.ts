@@ -9,7 +9,7 @@ import { assessSora } from "@/lib/sora";
  * Permit Router — Phase 5 Automation Engine
  *
  * Manages permit applications for BAZL/FOCA, Bern-Belp CTR,
- * and municipal authorities for DJI FlyCart 30 drone operations.
+ * and municipal authorities for DJI FlyCart 100 drone operations.
  */
 export const permitRouter = createTRPCRouter({
   /**
@@ -140,7 +140,7 @@ export const permitRouter = createTRPCRouter({
           pickupAddress: booking.pickupAddress ?? "",
           routeDistanceKm: booking.routeDistanceKm ?? "0",
           payloadWeightKg: booking.payloadWeightKg,
-          droneModel: flight.drone?.model ?? "DJI FlyCart 30",
+          droneModel: flight.drone?.model ?? "DJI FlyCart 100",
           droneSerial: flight.drone?.serialNumber ?? "—",
           pilotName: flight.pilot
             ? `${flight.pilot.firstName} ${flight.pilot.lastName}`

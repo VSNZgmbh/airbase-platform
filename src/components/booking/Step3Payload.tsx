@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Package, AlertTriangle, ChevronRight, ChevronLeft, Info } from "lucide-react";
-import { validatePayload, FLYCART_30 } from "@/lib/pricing";
+import { validatePayload, FLYCART_100 } from "@/lib/pricing";
 import type { BookingData } from "./BookingWizard";
 
 interface Props {
@@ -37,9 +37,9 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
       <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
         <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-blue-800">
-          <strong>DJI FlyCart 30:</strong> Max. Nutzlast{" "}
-          {FLYCART_30.MAX_PAYLOAD_KG} kg · Max. Reichweite {FLYCART_30.MAX_RANGE_KM} km ·{" "}
-          Reisegeschwindigkeit {FLYCART_30.CRUISE_SPEED_KMH} km/h
+          <strong>DJI FlyCart 100:</strong> Max. Nutzlast{" "}
+          {FLYCART_100.MAX_PAYLOAD_KG} kg · Max. Reichweite {FLYCART_100.MAX_RANGE_KM} km ·{" "}
+          Reisegeschwindigkeit {FLYCART_100.CRUISE_SPEED_KMH} km/h
         </div>
       </div>
 
@@ -52,7 +52,7 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
           <input
             type="number"
             min="0.1"
-            max={FLYCART_30.MAX_PAYLOAD_KG}
+            max={FLYCART_100.MAX_PAYLOAD_KG}
             step="0.1"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
@@ -71,11 +71,11 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
         </div>
 
         {/* Weight visualization */}
-        {weightNum > 0 && weightNum <= FLYCART_30.MAX_PAYLOAD_KG && (
+        {weightNum > 0 && weightNum <= FLYCART_100.MAX_PAYLOAD_KG && (
           <div className="mt-3">
             <div className="flex justify-between text-xs text-gray-500 mb-1">
               <span>0 kg</span>
-              <span>{FLYCART_30.MAX_PAYLOAD_KG} kg max</span>
+              <span>{FLYCART_100.MAX_PAYLOAD_KG} kg max</span>
             </div>
             <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
@@ -87,12 +87,12 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
                     : "bg-green-400"
                 }`}
                 style={{
-                  width: `${(weightNum / FLYCART_30.MAX_PAYLOAD_KG) * 100}%`,
+                  width: `${(weightNum / FLYCART_100.MAX_PAYLOAD_KG) * 100}%`,
                 }}
               />
             </div>
             <p className="text-sm text-gray-500 mt-1">
-              {((weightNum / FLYCART_30.MAX_PAYLOAD_KG) * 100).toFixed(0)}% der
+              {((weightNum / FLYCART_100.MAX_PAYLOAD_KG) * 100).toFixed(0)}% der
               Maximalkapazität
             </p>
           </div>

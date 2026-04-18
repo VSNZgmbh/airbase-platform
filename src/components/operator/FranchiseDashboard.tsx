@@ -79,7 +79,7 @@ function FleetOverview() {
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flottenübersicht — DJI FlyCart 30</h3>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flottenübersicht — DJI FlyCart 100</h3>
           <p className="text-[10px] text-gray-300 mt-0.5">{drones.length} Drohnen registriert</p>
         </div>
       </div>

@@ -195,7 +195,7 @@ function WeatherAirspacePanel() {
   );
 }
 
-// ─── Drone Status / Wear Tracking (DJI FlyCart 30 real specs) ────────────────
+// ─── Drone Status / Wear Tracking (DJI FlyCart 100 real specs) ────────────────
 
 function DroneStatusPanel({ drone }: { drone: any }) {
   if (!drone) return null;
@@ -210,7 +210,7 @@ function DroneStatusPanel({ drone }: { drone: any }) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-5 py-3 border-b border-gray-50">
-        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Drohnen-Verschleiss — DJI FlyCart 30</h3>
+        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Drohnen-Verschleiss — DJI FlyCart 100</h3>
         <p className="text-[10px] text-gray-300 mt-0.5">{d.serialNumber} · {d.batteryMode === "dual" ? "Dual" : "Einzel"}-Batterie</p>
       </div>
       <div className="p-4 space-y-3">

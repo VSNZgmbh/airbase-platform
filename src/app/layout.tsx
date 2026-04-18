@@ -10,12 +10,12 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "AIRBASE — Drohnen-Gütertransport Schweiz",
   description:
-    "LASTENFLUG: Schwere Lasten per Drohne transportieren. Bis 40 kg Nutzlast. DJI FlyCart 30. SORA-zertifiziert. BAZL-konform. Für Bau, Alpine Logistik & Notfallversorgung in der Schweiz.",
+    "LASTENFLUG: Schwere Lasten per Drohne transportieren. Bis 40 kg Nutzlast. DJI FlyCart 100. SORA-zertifiziert. BAZL-konform. Für Bau, Alpine Logistik & Notfallversorgung in der Schweiz.",
   metadataBase: new URL("https://airbase.one"),
   openGraph: {
     title: "AIRBASE — Schweizer Drohnen-Logistik",
     description:
-      "Der fortschrittlichste Drohnen-Transportservice der Schweiz. DJI FlyCart 30 — bis 40 kg Nutzlast.",
+      "Der fortschrittlichste Drohnen-Transportservice der Schweiz. DJI FlyCart 100 — bis 40 kg Nutzlast.",
     url: "https://airbase.one",
     siteName: "AIRBASE",
     locale: "de_CH",

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FLYCART_30 } from "./pricing";
+import { FLYCART_100 } from "./pricing";
 
 export const bookingStep1Schema = z.object({
   serviceType: z.enum(["LASTENFLUG"]),
@@ -17,8 +17,8 @@ export const bookingStep3Schema = z.object({
     .number()
     .min(0.1, "Gewicht muss grösser als 0 sein")
     .max(
-      FLYCART_30.MAX_PAYLOAD_KG,
-      `Maximalnutzlast: ${FLYCART_30.MAX_PAYLOAD_KG} kg`
+      FLYCART_100.MAX_PAYLOAD_KG,
+      `Maximalnutzlast: ${FLYCART_100.MAX_PAYLOAD_KG} kg`
     ),
   payloadDescription: z.string().optional(),
   isDangerousGoods: z.boolean().default(false),
