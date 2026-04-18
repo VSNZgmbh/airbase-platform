@@ -184,7 +184,7 @@ export function Step6Confirm({ data, onBack }: Props) {
                 <a href="/datenschutz" className="text-brand-600 hover:underline">
                   Datenschutzerklärung
                 </a>{" "}
-                von Airbase Aviation GmbH.
+                von VSNZ GmbH.
               </span>
             </label>
           </div>

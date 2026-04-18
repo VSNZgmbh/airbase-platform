@@ -1484,7 +1484,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               <a href="#" className="flex items-center gap-1 text-2xl tracking-tight select-none mb-3">
                 <span className="font-black uppercase tracking-tight" style={{ color: "#0F172A" }}>AIRBASE</span>
               </a>
-              <p className="text-sm" style={{ color: "#94A3B8" }}>Airbase Aviation GmbH · Drohnenlogistik. Made in Switzerland.</p>
+              <p className="text-sm" style={{ color: "#94A3B8" }}>VSNZ GmbH · Drohnenlogistik. Made in Switzerland.</p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
@@ -1554,7 +1554,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             className="border-t pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
             style={{ borderColor: "#E2E8F0", color: "#94A3B8" }}
           >
-            <span>© {new Date().getFullYear()} Airbase Aviation GmbH — Alle Rechte vorbehalten.</span>
+            <span>© {new Date().getFullYear()} VSNZ GmbH — Alle Rechte vorbehalten.</span>
             <span>BAZL-konform · SORA-geprüft · Made in Switzerland 🇨🇭</span>
           </div>
         </div>

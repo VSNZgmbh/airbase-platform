@@ -216,7 +216,7 @@ export function FlightReport({ data }: { data: FlightReportData }) {
   return (
     <Document
       title={`AIRBASE Flugbericht — ${data.bookingIdentifier}`}
-      author="Airbase Aviation GmbH"
+      author="VSNZ GmbH"
       subject="Drohnenflug-Bericht"
     >
       <Page size="A4" style={styles.page}>
@@ -406,7 +406,7 @@ export function FlightReport({ data }: { data: FlightReportData }) {
         {/* Footer */}
         <View style={styles.footer} fixed>
           <Text style={styles.footerText}>
-            Airbase Aviation GmbH · Drohnenlogistik Schweiz · airbase.one
+            VSNZ GmbH · Drohnenlogistik Schweiz · airbase.one
           </Text>
           <Text style={styles.footerText} render={({ pageNumber, totalPages }) =>
             `Seite ${pageNumber} / ${totalPages}`

@@ -288,7 +288,7 @@ Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
 Gesuchsteller:
-  Airbase Aviation GmbH
+  VSNZ GmbH
   Drohnenlogistik Schweiz
   airbase.one
 
@@ -315,12 +315,12 @@ SORA-BEWERTUNG:
   ARC (Air Risk):     ${p.arcScore}
   Kategorie:          ${p.soraCategory}
 
-Das Unternehmen Airbase Aviation GmbH verfügt über eine gültige BAZL-Betriebsgenehmigung (gemäss LFG SR 748.0 / LFV SR 748.01) und alle notwendigen Versicherungen gemäss schweizerischem Recht.
+Das Unternehmen VSNZ GmbH verfügt über eine gültige BAZL-Betriebsgenehmigung (gemäss LFG SR 748.0 / LFV SR 748.01) und alle notwendigen Versicherungen gemäss schweizerischem Recht.
 
 Wir bitten um Genehmigung des oben beschriebenen Betriebs und stehen für Rückfragen zur Verfügung.
 
 Mit freundlichen Grüssen
-Airbase Aviation GmbH — Operations Team
+VSNZ GmbH — Operations Team
 ops@airbase.one | +41 XX XXX XX XX`;
   }
 
@@ -330,7 +330,7 @@ An: ${p.authority}
 Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
-GESUCHSTELLER: Airbase Aviation GmbH — airbase.one
+GESUCHSTELLER: VSNZ GmbH — airbase.one
 
 GEPLANTE OPERATION:
   Datum:         ${dateStr}
@@ -352,7 +352,7 @@ Wir ersuchen hiermit um eine vorübergehende Freigabe für die Durchquerung des 
 
 Die Operation erfolgt in Übereinstimmung mit dem BAZL-Betriebsgenehmigungsregime (LFG SR 748.0 / LFV SR 748.01) und der SORA-Bewertung (GRC ${p.grcScore} / ARC ${p.arcScore}).
 
-Airbase Aviation GmbH — Operations
+VSNZ GmbH — Operations
 ops@airbase.one`;
   }
 
@@ -362,7 +362,7 @@ An: ${p.authority}
 Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
-GESUCHSTELLER: Airbase Aviation GmbH — airbase.one
+GESUCHSTELLER: VSNZ GmbH — airbase.one
 
 GEPLANTE OPERATION:
   Einsatz:       ${p.serviceType}
@@ -374,6 +374,6 @@ GEPLANTE OPERATION:
 
 Die Operation erfolgt gemäss BAZL-Betriebsgenehmigungsregime (LFG SR 748.0 / LFV SR 748.01) und SORA-Bewertung (GRC ${p.grcScore}) mit allen notwendigen Sicherheitsmassnahmen.
 
-Airbase Aviation GmbH — Operations
+VSNZ GmbH — Operations
 ops@airbase.one`;
 }
