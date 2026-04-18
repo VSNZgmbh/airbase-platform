@@ -1,6 +1,6 @@
 "use client";
 
-import { DEMO_BOOKINGS } from "@/lib/demo-data";
+import { DEMO_BOOKINGS, DEMO_FRANCHISE_PARTNERS } from "@/lib/demo-data";
 
 // Swiss map SVG outline (simplified topographic path)
 const SWISS_PATH =
@@ -23,12 +23,30 @@ const LOCATIONS: Record<string, { x: number; y: number }> = {
   "Thun": { x: 210, y: 70 },
   "Spiez": { x: 215, y: 75 },
   "Kandersteg": { x: 200, y: 82 },
+  "Stechelberg": { x: 220, y: 82 },
   "Bern": { x: 195, y: 60 },
   "Zürich": { x: 265, y: 42 },
   "Basel": { x: 220, y: 30 },
   "Luzern": { x: 260, y: 55 },
   "Genf": { x: 100, y: 85 },
 };
+
+// Franchise hub locations
+const FRANCHISE_HUBS = [
+  { name: "HQ Wilderswil", x: 225, y: 74, isHQ: true },
+  { name: "Hub Interlaken", x: 230, y: 72, isHQ: false },
+  { name: "Hub Grindelwald", x: 245, y: 65, isHQ: false },
+  { name: "Hub Lauterbrunnen", x: 222, y: 78, isHQ: false },
+  { name: "Hub Brienz", x: 255, y: 68, isHQ: false },
+  { name: "Hub Thun", x: 210, y: 70, isHQ: false },
+];
+
+// Active flight zones (restricted/active operations areas)
+const FLIGHT_ZONES = [
+  { cx: 235, cy: 72, rx: 18, ry: 12, label: "Zone Alpha" },
+  { cx: 250, cy: 66, rx: 12, ry: 8, label: "Zone Bravo" },
+  { cx: 218, cy: 79, rx: 10, ry: 7, label: "Zone Charlie" },
+];
 
 function getLocationFromAddress(address: string): { x: number; y: number } | null {
   for (const [name, pos] of Object.entries(LOCATIONS)) {
@@ -37,8 +55,21 @@ function getLocationFromAddress(address: string): { x: number; y: number } | nul
   return null;
 }
 
-export function SwissMap({ compact = false }: { compact?: boolean }) {
+// Simulated live drone positions along routes
+function getDronePosition(pickup: { x: number; y: number }, delivery: { x: number; y: number }, progress: number) {
+  return {
+    x: pickup.x + (delivery.x - pickup.x) * progress,
+    y: pickup.y + (delivery.y - pickup.y) * progress,
+  };
+}
+
+export function SwissMap({ compact = false, showHubs = true, showZones = true }: {
+  compact?: boolean;
+  showHubs?: boolean;
+  showZones?: boolean;
+}) {
   const activeFlights = DEMO_BOOKINGS.filter((b) => b.status === "in_progress" || b.status === "confirmed");
+  const inAirFlights = DEMO_BOOKINGS.filter((b) => b.status === "in_progress");
   const h = compact ? 180 : 280;
 
   return (
@@ -46,7 +77,9 @@ export function SwissMap({ compact = false }: { compact?: boolean }) {
       <div className="px-5 pt-4 pb-2 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide">Live Airspace Operations</h3>
-          <p className="text-xs text-gray-400 mt-0.5">{activeFlights.length} aktive Flüge im Berner Oberland</p>
+          <p className="text-xs text-gray-400 mt-0.5">
+            {inAirFlights.length} aktive Flüge &middot; {FRANCHISE_HUBS.length} Standorte &middot; Berner Oberland
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
@@ -70,13 +103,47 @@ export function SwissMap({ compact = false }: { compact?: boolean }) {
           {/* Swiss outline */}
           <path d={SWISS_PATH} fill="#fef2f2" stroke="#D32F2F" strokeWidth={1.5} strokeLinejoin="round" opacity={0.8} />
 
-          {/* Airspace zones (red overlays) */}
-          <ellipse cx={230} cy={75} rx={45} ry={25} fill="#D32F2F" opacity={0.12} />
-          <ellipse cx={230} cy={75} rx={30} ry={18} fill="#D32F2F" opacity={0.08} />
-          <ellipse cx={265} cy={50} rx={20} ry={12} fill="#D32F2F" opacity={0.06} />
+          {/* Active flight zones (red overlays) */}
+          {showZones && FLIGHT_ZONES.map((zone, i) => (
+            <g key={`zone-${i}`}>
+              <ellipse cx={zone.cx} cy={zone.cy} rx={zone.rx} ry={zone.ry} fill="#D32F2F" stroke="#D32F2F" strokeWidth={0.5} strokeDasharray="3,2" opacity={0.15}>
+                <animate attributeName="opacity" values="0.08;0.15;0.08" dur="3s" repeatCount="indefinite" />
+              </ellipse>
+              {!compact && (
+                <text x={zone.cx} y={zone.cy - zone.ry - 2} textAnchor="middle" className="text-[5px] fill-brand-400 font-bold uppercase">
+                  {zone.label}
+                </text>
+              )}
+            </g>
+          ))}
 
-          {/* Active flight markers */}
-          {activeFlights.map((flight, i) => {
+          {/* Franchise hub markers */}
+          {showHubs && FRANCHISE_HUBS.map((hub) => (
+            <g key={hub.name}>
+              {hub.isHQ ? (
+                <>
+                  {/* HQ — larger diamond marker */}
+                  <polygon
+                    points={`${hub.x},${hub.y - 6} ${hub.x + 5},${hub.y} ${hub.x},${hub.y + 6} ${hub.x - 5},${hub.y}`}
+                    fill="#D32F2F"
+                    stroke="white"
+                    strokeWidth={1.5}
+                  />
+                  <text x={hub.x} y={hub.y - 9} textAnchor="middle" className="text-[6px] fill-brand-600 font-bold">
+                    HQ
+                  </text>
+                </>
+              ) : (
+                <>
+                  {/* Hub — small square marker */}
+                  <rect x={hub.x - 2.5} y={hub.y - 2.5} width={5} height={5} fill="white" stroke="#D32F2F" strokeWidth={1} rx={1} />
+                </>
+              )}
+            </g>
+          ))}
+
+          {/* Active flight routes & markers */}
+          {activeFlights.map((flight) => {
             const pickup = flight.pickupAddress ? getLocationFromAddress(flight.pickupAddress) : null;
             const delivery = flight.deliveryAddress ? getLocationFromAddress(flight.deliveryAddress) : null;
 
@@ -92,11 +159,9 @@ export function SwissMap({ compact = false }: { compact?: boolean }) {
                 )}
                 {/* Pickup marker */}
                 {pickup && (
-                  <g>
-                    <circle cx={pickup.x} cy={pickup.y} r={4} fill="white" stroke="#D32F2F" strokeWidth={1.5} />
-                  </g>
+                  <circle cx={pickup.x} cy={pickup.y} r={3.5} fill="white" stroke="#D32F2F" strokeWidth={1.5} />
                 )}
-                {/* Delivery marker (pulsing for in_progress) */}
+                {/* Delivery marker */}
                 {delivery && (
                   <g>
                     {flight.status === "in_progress" && (
@@ -105,8 +170,29 @@ export function SwissMap({ compact = false }: { compact?: boolean }) {
                         <animate attributeName="opacity" values="0.2;0.05;0.2" dur="2s" repeatCount="indefinite" />
                       </circle>
                     )}
-                    <circle cx={delivery.x} cy={delivery.y} r={4} fill="#D32F2F" />
-                    <circle cx={delivery.x} cy={delivery.y} r={2} fill="white" />
+                    <circle cx={delivery.x} cy={delivery.y} r={3.5} fill="#D32F2F" />
+                    <circle cx={delivery.x} cy={delivery.y} r={1.5} fill="white" />
+                  </g>
+                )}
+                {/* Live drone position (simulated for in_progress flights) */}
+                {flight.status === "in_progress" && pickup && delivery && (
+                  <g>
+                    {(() => {
+                      const pos = getDronePosition(pickup, delivery, 0.6);
+                      return (
+                        <>
+                          <circle cx={pos.x} cy={pos.y} r={6} fill="#D32F2F" opacity={0.2}>
+                            <animate attributeName="r" values="4;8;4" dur="1.5s" repeatCount="indefinite" />
+                          </circle>
+                          <polygon
+                            points={`${pos.x},${pos.y - 4} ${pos.x + 3},${pos.y + 2} ${pos.x},${pos.y + 1} ${pos.x - 3},${pos.y + 2}`}
+                            fill="#D32F2F"
+                            stroke="white"
+                            strokeWidth={0.5}
+                          />
+                        </>
+                      );
+                    })()}
                   </g>
                 )}
               </g>
@@ -118,7 +204,10 @@ export function SwissMap({ compact = false }: { compact?: boolean }) {
             { name: "Bern", ...LOCATIONS["Bern"] },
             { name: "Interlaken", ...LOCATIONS["Interlaken"] },
             { name: "Thun", ...LOCATIONS["Thun"] },
-            { name: "Luzern", ...LOCATIONS["Luzern"] },
+            ...(compact ? [] : [
+              { name: "Luzern", ...LOCATIONS["Luzern"] },
+              { name: "Brienz", ...LOCATIONS["Brienz"] },
+            ]),
           ].map((city) => (
             <text
               key={city.name}
@@ -132,6 +221,32 @@ export function SwissMap({ compact = false }: { compact?: boolean }) {
           ))}
         </svg>
       </div>
+
+      {/* Map Legend */}
+      {!compact && (
+        <div className="px-5 pb-3 flex items-center gap-4 text-[9px] text-gray-400">
+          <div className="flex items-center gap-1.5">
+            <svg width="10" height="10"><polygon points="5,1 8,5 5,9 2,5" fill="#D32F2F" /></svg>
+            <span>HQ</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg width="8" height="8"><rect width="6" height="6" x="1" y="1" fill="white" stroke="#D32F2F" strokeWidth="1" rx="1" /></svg>
+            <span>Hub</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg width="8" height="8"><polygon points="4,0 7,3 4,5 1,3" fill="#D32F2F" stroke="white" strokeWidth="0.5" /></svg>
+            <span>Drohne</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg width="12" height="8"><ellipse cx="6" cy="4" rx="5" ry="3" fill="none" stroke="#D32F2F" strokeWidth="0.5" strokeDasharray="2,1" /></svg>
+            <span>Flugzone</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg width="8" height="8"><circle cx="4" cy="4" r="3" fill="#D32F2F" /><circle cx="4" cy="4" r="1.5" fill="white" /></svg>
+            <span>Ziel</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

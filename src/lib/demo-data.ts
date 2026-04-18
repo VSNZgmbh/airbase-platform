@@ -346,3 +346,83 @@ export const DEMO_AUTHORIZATIONS = [
   { id: "a009", decision: "approved", decidedAt: "2026-04-13T10:45:00Z", pickupLat: "46.7547", pickupLng: "8.0475", deliveryLat: "46.7547", deliveryLng: "8.0475", sailLevel: "II", overallRisk: "LOW", decisionBy: "system", grc: 2 },
   { id: "a010", decision: "escalated", decidedAt: "2026-04-12T15:30:00Z", pickupLat: "46.4965", pickupLng: "7.6720", deliveryLat: "46.4935", deliveryLng: "7.6820", sailLevel: "IV", overallRisk: "HIGH", decisionBy: "safety_manager", grc: 4 },
 ];
+
+// ─── Franchise Partners ─────────────────────────────────────────────────────
+export const DEMO_FRANCHISE_PARTNERS = [
+  { id: "fp001", name: "Alpine Logistics Interlaken", region: "Interlaken", since: "2025-03-01", pilotCount: 3, droneCount: 2, monthlyFlights: 48, monthlyRevenue: 31200, marginPct: 34, score: 87, status: "active" },
+  { id: "fp002", name: "Grindelwald Drone Services", region: "Grindelwald", since: "2025-06-15", pilotCount: 2, droneCount: 2, monthlyFlights: 34, monthlyRevenue: 22100, marginPct: 31, score: 74, status: "active" },
+  { id: "fp003", name: "Lauterbrunnen Air Ops", region: "Lauterbrunnen", since: "2025-09-01", pilotCount: 2, droneCount: 1, monthlyFlights: 26, monthlyRevenue: 16900, marginPct: 28, score: 62, status: "active" },
+  { id: "fp004", name: "Brienz Aerial Services", region: "Brienz", since: "2026-01-10", pilotCount: 1, droneCount: 1, monthlyFlights: 18, monthlyRevenue: 11700, marginPct: 25, score: 51, status: "active" },
+  { id: "fp005", name: "Thun Valley Drones", region: "Thun", since: "2026-03-01", pilotCount: 1, droneCount: 1, monthlyFlights: 14, monthlyRevenue: 9100, marginPct: 22, score: 45, status: "onboarding" },
+];
+
+// ─── Invoices ───────────────────────────────────────────────────────────────
+export const DEMO_INVOICES = [
+  { id: "inv001", bookingId: "b001", identifier: "INV-2026-0042", customerName: "Bergbau AG", amount: 485.00, status: "pending", issuedAt: "2026-04-18T10:00:00Z", dueAt: "2026-05-18T10:00:00Z" },
+  { id: "inv002", bookingId: "b003", identifier: "INV-2026-0039", customerName: "Solar Bern GmbH", amount: 290.00, status: "paid", issuedAt: "2026-04-16T12:00:00Z", dueAt: "2026-05-16T12:00:00Z", paidAt: "2026-04-17T09:15:00Z" },
+  { id: "inv003", bookingId: "b005", identifier: "INV-2026-0036", customerName: "Rettungsdienst Berner Oberland", amount: 180.00, status: "paid", issuedAt: "2026-04-15T16:00:00Z", dueAt: "2026-05-15T16:00:00Z", paidAt: "2026-04-15T16:30:00Z" },
+  { id: "inv004", bookingId: "b008", identifier: "INV-2026-0031", customerName: "Gletscherforschung ETH", amount: 350.00, status: "paid", issuedAt: "2026-04-14T14:00:00Z", dueAt: "2026-05-14T14:00:00Z", paidAt: "2026-04-16T11:00:00Z" },
+  { id: "inv005", bookingId: "b006", identifier: "INV-2026-0043", customerName: "Agroswiss Brienz", amount: 440.00, status: "pending", issuedAt: "2026-04-18T08:00:00Z", dueAt: "2026-05-18T08:00:00Z" },
+  { id: "inv006", bookingId: "b002", identifier: "INV-2026-0044", customerName: "SAC Schynige Platte", amount: 320.00, status: "draft", issuedAt: "2026-04-19T07:30:00Z", dueAt: "2026-05-19T07:30:00Z" },
+];
+
+// ─── Maintenance Schedule ────────────────────────────────────────────────────
+export const DEMO_MAINTENANCE = [
+  { id: "m001", droneId: "d001", droneModel: "VOLTAIR X1", type: "scheduled", task: "100h-Inspektion: Motoren, Propeller, Avionik", scheduledAt: "2026-04-22T08:00:00Z", status: "upcoming", estimatedHours: 4 },
+  { id: "m002", droneId: "d002", droneModel: "VOLTAIR X2", type: "scheduled", task: "Akku-Zyklus-Check (500 Zyklen)", scheduledAt: "2026-04-25T09:00:00Z", status: "upcoming", estimatedHours: 2 },
+  { id: "m003", droneId: "d003", droneModel: "VOLTAIR Scout", type: "preventive", task: "Firmware-Update v4.2.1 + Sensor-Kalibrierung", scheduledAt: "2026-04-19T14:00:00Z", status: "upcoming", estimatedHours: 1.5 },
+  { id: "m004", droneId: "d004", droneModel: "VOLTAIR Heavy", type: "scheduled", task: "Jährliche BAZL-Zertifizierungsprüfung", scheduledAt: "2026-05-02T08:00:00Z", status: "upcoming", estimatedHours: 8 },
+  { id: "m005", droneId: "d005", droneModel: "VOLTAIR X1-B", type: "repair", task: "Propeller-Ersatz nach Landefehler + Strukturprüfung", scheduledAt: "2026-04-20T10:00:00Z", status: "in_progress", estimatedHours: 6 },
+];
+
+// ─── Incidents / Near-Misses ─────────────────────────────────────────────────
+export const DEMO_INCIDENTS = [
+  { id: "inc001", date: "2026-04-17T14:22:00Z", title: "Vogelschlag-Warnung bei Anflug Grindelwald", category: "operational", severity: "low", status: "resolved", pilot: "Hans Müller", drone: "VOLTAIR X2", description: "Vogelschwarm in 80m Höhe erkannt — automatischer Ausweichmanöver aktiviert, keine Kollision." },
+  { id: "inc002", date: "2026-04-15T09:45:00Z", title: "GPS-Signalverlust über Lauterbrunnen Tal", category: "technical", severity: "medium", status: "under_review", pilot: "Sarah Weber", drone: "VOLTAIR X1", description: "Temporärer GPS-Signalverlust (8 Sekunden) in engem Tal. INS-Backup übernahm, kein Flugabbruch." },
+  { id: "inc003", date: "2026-04-12T16:30:00Z", title: "Unerwartete Windböe bei Landung Kandersteg", category: "weather", severity: "medium", status: "resolved", pilot: "Marco Brunner", drone: "VOLTAIR Heavy", description: "Windböe von 45 km/h während Landeanflug. Landung abgebrochen, zweiter Anflug erfolgreich." },
+  { id: "inc004", date: "2026-04-10T11:00:00Z", title: "Near-Miss mit Helikopter bei Wengen", category: "airspace", severity: "high", status: "under_review", pilot: "Elena Fischer", drone: "VOLTAIR X1", description: "REGA-Helikopter in 200m Entfernung gesichtet. Automatischer Abstieg eingeleitet. NOTAM war nicht aktuell." },
+  { id: "inc005", date: "2026-04-08T07:15:00Z", title: "Batterie-Warnung unter 15% im Flug", category: "technical", severity: "medium", status: "resolved", pilot: "Thomas Steiner", drone: "VOLTAIR X1-B", description: "Unerwartet hoher Batterieverbrauch bei Gegenwind. Notlandung auf Zwischenlandeplatz erfolgreich." },
+];
+
+// ─── Emissions Data ──────────────────────────────────────────────────────────
+export const DEMO_EMISSIONS = {
+  totalKgCO2Saved: 12840,
+  electricKwh: 8420,
+  equivalentDieselLiters: 4280,
+  treesEquivalent: 584,
+  monthly: [
+    { month: "Okt", kgSaved: 980, flights: 24 },
+    { month: "Nov", kgSaved: 1240, flights: 31 },
+    { month: "Dez", kgSaved: 1040, flights: 26 },
+    { month: "Jan", kgSaved: 1520, flights: 38 },
+    { month: "Feb", kgSaved: 1880, flights: 47 },
+    { month: "Mär", kgSaved: 2240, flights: 56 },
+    { month: "Apr", kgSaved: 2560, flights: 64 },
+  ],
+};
+
+// ─── Scaling Metrics ─────────────────────────────────────────────────────────
+export const DEMO_SCALING = {
+  totalPartners: 5,
+  activePartners: 4,
+  newThisQuarter: 1,
+  regionsServed: 5,
+  targetRegions: 12,
+  growthMoM: 18.4,
+  quarterly: [
+    { quarter: "Q3 2025", partners: 2, regions: 2, revenue: 48200 },
+    { quarter: "Q4 2025", partners: 3, regions: 3, revenue: 60300 },
+    { quarter: "Q1 2026", partners: 4, regions: 4, revenue: 86000 },
+    { quarter: "Q2 2026", partners: 5, regions: 5, revenue: 112400 },
+  ],
+};
+
+// ─── Workflow Status Definitions ─────────────────────────────────────────────
+export const WORKFLOW_STEPS = [
+  { key: "requested", label: "Angefragt", icon: "send" },
+  { key: "quoted", label: "Angebot", icon: "file-text" },
+  { key: "confirmed", label: "Genehmigt", icon: "check-circle" },
+  { key: "in_progress", label: "In Durchführung", icon: "plane" },
+  { key: "completed", label: "Abgeschlossen", icon: "check-check" },
+  { key: "invoiced", label: "Rechnung", icon: "receipt" },
+] as const;

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { trpc } from "@/lib/trpc/client";
-import { DEMO_FLIGHTS } from "@/lib/demo-data";
+import { DEMO_FLIGHTS, DEMO_MAINTENANCE, DEMO_DRONES } from "@/lib/demo-data";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import {
@@ -20,6 +20,13 @@ import {
   ShieldCheck,
   Navigation,
   FileText,
+  Wrench,
+  Wind,
+  Thermometer,
+  Eye,
+  CloudRain,
+  Sun,
+  Calendar,
 } from "lucide-react";
 import { WeatherBadge } from "./WeatherBadge";
 import { MissionControlLayout, SwissMap, KeyMetrics } from "@/components/mission-control";
@@ -54,9 +61,10 @@ const MISSION_TYPES: Record<string, { label: string; color: string }> = {
 
 // ─── Telemetry Gauge (SVG ring) ──────────────────────────────────────────────
 
-function TelemetryGauge({ label, value, unit, max, icon: Icon }: {
+function TelemetryGauge({ label, value, unit, max, icon: Icon, warning }: {
   label: string; value: number; unit: string; max: number;
   icon: React.ComponentType<{ className?: string }>;
+  warning?: boolean;
 }) {
   const size = 56;
   const stroke = 4;
@@ -64,25 +72,19 @@ function TelemetryGauge({ label, value, unit, max, icon: Icon }: {
   const circumference = 2 * Math.PI * radius;
   const pct = Math.min(value / max, 1);
   const offset = circumference * (1 - pct);
+  const color = warning ? "#F59E0B" : "#D32F2F";
 
   return (
     <div className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm flex flex-col items-center gap-2">
       <div className="relative">
         <svg width={size} height={size} className="transform -rotate-90">
-          <circle
-            cx={size / 2} cy={size / 2} r={radius}
-            fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth={stroke}
-          />
-          <circle
-            cx={size / 2} cy={size / 2} r={radius}
-            fill="none" stroke="#D32F2F" strokeWidth={stroke}
-            strokeDasharray={circumference} strokeDashoffset={offset}
-            strokeLinecap="round"
-            className="transition-all duration-1000 ease-out"
-          />
+          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth={stroke} />
+          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={stroke}
+            strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round"
+            className="transition-all duration-1000 ease-out" />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-brand-500" />
+          <Icon className={`w-4 h-4 ${warning ? "text-amber-500" : "text-brand-500"}`} />
         </div>
       </div>
       <div className="text-center">
@@ -103,28 +105,10 @@ function SORAGuidelines({ soraCategory }: { soraCategory?: string | null }) {
   const sail = sailMatch ? sailMatch[1] : soraCategory;
 
   const guidelines: Record<string, string[]> = {
-    I: [
-      "Sichtflug (VLOS) einhalten",
-      "Max. Höhe 120m AGL",
-      "Abstand zu Menschen halten",
-    ],
-    II: [
-      "VLOS oder erweiterter VLOS mit Beobachter",
-      "Risikobewertung durchführen",
-      "Notfallverfahren bereithalten",
-    ],
-    III: [
-      "BVLOS möglich mit Genehmigung",
-      "Erweiterte Risikobewertung erforderlich",
-      "C2 Link-Redundanz sicherstellen",
-      "Notlandeverfahren aktivieren",
-    ],
-    IV: [
-      "Safety Manager Freigabe erforderlich",
-      "Vollständige SORA-Dokumentation",
-      "Betriebssicherheitsplan aktiv",
-      "Echtzeit-Monitoring durch Bodenstelle",
-    ],
+    I: ["Sichtflug (VLOS) einhalten", "Max. Höhe 120m AGL", "Abstand zu Menschen halten"],
+    II: ["VLOS oder erweiterter VLOS mit Beobachter", "Risikobewertung durchführen", "Notfallverfahren bereithalten"],
+    III: ["BVLOS möglich mit Genehmigung", "Erweiterte Risikobewertung erforderlich", "C2 Link-Redundanz sicherstellen", "Notlandeverfahren aktivieren"],
+    IV: ["Safety Manager Freigabe erforderlich", "Vollständige SORA-Dokumentation", "Betriebssicherheitsplan aktiv", "Echtzeit-Monitoring durch Bodenstelle"],
   };
 
   const rules = guidelines[sail] ?? guidelines["I"] ?? [];
@@ -147,21 +131,129 @@ function SORAGuidelines({ soraCategory }: { soraCategory?: string | null }) {
   );
 }
 
+// ─── Weather & Airspace Overview ─────────────────────────────────────────────
+
+function WeatherAirspacePanel() {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="px-5 py-3 border-b border-gray-50">
+        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Wetter & Luftraum</h3>
+        <p className="text-[10px] text-gray-300 mt-0.5">Berner Oberland — Jetzt</p>
+      </div>
+      <div className="p-4 space-y-3">
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-blue-50 rounded-lg p-2.5 border border-blue-100">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Sun className="w-3.5 h-3.5 text-blue-500" />
+              <span className="text-[10px] font-bold text-blue-600">Sicht</span>
+            </div>
+            <p className="text-sm font-bold text-blue-700">&gt; 10 km</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-2.5 border border-green-100">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Wind className="w-3.5 h-3.5 text-green-500" />
+              <span className="text-[10px] font-bold text-green-600">Wind</span>
+            </div>
+            <p className="text-sm font-bold text-green-700">12 km/h NW</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-2.5 border border-gray-100">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Thermometer className="w-3.5 h-3.5 text-gray-500" />
+              <span className="text-[10px] font-bold text-gray-500">Temp</span>
+            </div>
+            <p className="text-sm font-bold text-gray-700">14°C</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-2.5 border border-gray-100">
+            <div className="flex items-center gap-1.5 mb-1">
+              <CloudRain className="w-3.5 h-3.5 text-gray-500" />
+              <span className="text-[10px] font-bold text-gray-500">Niederschlag</span>
+            </div>
+            <p className="text-sm font-bold text-gray-700">0%</p>
+          </div>
+        </div>
+        {/* Airspace zones */}
+        <div>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Aktive Luftraum-Restriktionen</p>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-xs bg-green-50 rounded-lg px-3 py-2 border border-green-100">
+              <span className="font-medium text-green-700">CTR Interlaken</span>
+              <span className="text-[9px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">FREI</span>
+            </div>
+            <div className="flex items-center justify-between text-xs bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">
+              <span className="font-medium text-amber-700">TMA Bern Lower</span>
+              <span className="text-[9px] font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">EINGESCHRÄNKT</span>
+            </div>
+            <div className="flex items-center justify-between text-xs bg-red-50 rounded-lg px-3 py-2 border border-red-100">
+              <span className="font-medium text-red-700">R-Area Militär Thun</span>
+              <span className="text-[9px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">GESPERRT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Maintenance Schedule ────────────────────────────────────────────────────
+
+function MaintenancePanel() {
+  const upcoming = DEMO_MAINTENANCE.filter((m) => m.status === "upcoming" || m.status === "in_progress")
+    .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime());
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="px-5 py-3 border-b border-gray-50">
+        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Nächste Wartungstermine</h3>
+      </div>
+      <div className="divide-y divide-gray-50">
+        {upcoming.map((m) => (
+          <div key={m.id} className="px-5 py-3">
+            <div className="flex items-start justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <Wrench className={`w-3.5 h-3.5 ${m.status === "in_progress" ? "text-amber-500" : "text-gray-400"}`} />
+                <span className="text-xs font-bold text-gray-900">{m.droneModel}</span>
+              </div>
+              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
+                m.status === "in_progress" ? "bg-amber-50 text-amber-600 border-amber-200" :
+                m.type === "repair" ? "bg-red-50 text-red-600 border-red-200" :
+                "bg-gray-50 text-gray-500 border-gray-200"
+              }`}>
+                {m.status === "in_progress" ? "In Arbeit" : m.type === "repair" ? "Reparatur" : "Geplant"}
+              </span>
+            </div>
+            <p className="text-[10px] text-gray-500 mb-1">{m.task}</p>
+            <div className="flex items-center gap-2 text-[10px] text-gray-400">
+              <Calendar className="w-3 h-3" />
+              <span>{format(new Date(m.scheduledAt), "d. MMM yyyy HH:mm", { locale: de })}</span>
+              <span className="text-gray-200">|</span>
+              <span>~{m.estimatedHours}h</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Post-Flight Form ─────────────────────────────────────────────────────────
 
 interface PostFlightForm {
   actualWeightKg: string;
   flightDurationMinutes: string;
+  fuelConsumptionKwh: string;
   notes: string;
   incidentReport: string;
+  expenses: string;
   checklistDone: boolean[];
 }
 
 const defaultForm = (): PostFlightForm => ({
   actualWeightKg: "",
   flightDurationMinutes: "",
+  fuelConsumptionKwh: "",
   notes: "",
   incidentReport: "",
+  expenses: "",
   checklistDone: SAFETY_CHECKLIST.map(() => false),
 });
 
@@ -177,15 +269,13 @@ function ActiveMissionDetail({ flight }: { flight: any }) {
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-5 pt-4 pb-3 border-b border-gray-50">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Active Mission</h3>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Aktive Mission</h3>
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${statusCfg.color}`}>
             {statusCfg.label}
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="font-mono text-sm font-bold text-gray-900">
-            {booking?.identifier ?? flight.id.slice(0, 8)}
-          </span>
+          <span className="font-mono text-sm font-bold text-gray-900">{booking?.identifier ?? flight.id.slice(0, 8)}</span>
           <span className={`text-xs font-semibold ${missionType.color}`}>{missionType.label}</span>
         </div>
       </div>
@@ -219,17 +309,24 @@ function ActiveMissionDetail({ flight }: { flight: any }) {
           </div>
         </div>
 
+        {/* Route info */}
+        <div className="flex items-center gap-4 text-[10px] text-gray-400 bg-gray-50 rounded-lg px-3 py-2">
+          <span>Distanz: <span className="text-gray-700 font-semibold">{booking?.routeDistanceKm ?? "—"} km</span></span>
+          <span>Pilot: <span className="text-gray-700 font-semibold">{booking?.pilotName ?? "—"}</span></span>
+          <span>Drohne: <span className="text-gray-700 font-semibold">{flight.drone?.model ?? "—"}</span></span>
+        </div>
+
         {/* SORA category */}
         <SORAGuidelines soraCategory={flight.soraCategory} />
 
-        {/* Safety Checklist (read-only for active view) */}
+        {/* Pre-flight Checklist (read-only summary) */}
         <div>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Vorflug-Checkliste</p>
-          <div className="space-y-1.5">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Vorflug-Checkliste (SORA)</p>
+          <div className="grid grid-cols-2 gap-1.5">
             {SAFETY_CHECKLIST.map((item, idx) => (
               <div key={idx} className="flex items-start gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-gray-300 mt-0.5 flex-shrink-0" />
-                <span className="text-xs text-gray-500">{item}</span>
+                <CheckCircle2 className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${flight.status === "completed" || flight.status === "in_air" ? "text-brand-500" : "text-gray-300"}`} />
+                <span className="text-[10px] text-gray-500">{item}</span>
               </div>
             ))}
           </div>
@@ -267,8 +364,8 @@ function MissionList({
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col" style={{ maxHeight: "calc(100vh - 140px)" }}>
       <div className="px-5 py-3 border-b border-gray-50 flex-shrink-0">
-        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Mission Briefings</h3>
-        <p className="text-[10px] text-gray-300 mt-0.5">{flights.length} Flüge</p>
+        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Heutige Missionen</h3>
+        <p className="text-[10px] text-gray-300 mt-0.5">{flights.length} Flüge — {format(new Date(), "d. MMMM yyyy", { locale: de })}</p>
       </div>
 
       <div className="flex-1 overflow-y-auto">
@@ -288,7 +385,6 @@ function MissionList({
                 className="flex items-center gap-3 px-5 py-3.5 cursor-pointer hover:bg-gray-50/50 transition-colors"
                 onClick={() => setExpandedId(isExpanded ? null : flight.id)}
               >
-                {/* Status dot */}
                 <div className="flex-shrink-0">
                   {flight.status === "in_air" ? (
                     <span className="relative flex h-2.5 w-2.5">
@@ -302,7 +398,6 @@ function MissionList({
                   )}
                 </div>
 
-                {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="font-mono text-xs font-bold text-gray-700 truncate">
@@ -325,10 +420,15 @@ function MissionList({
                         <span>{booking.payloadWeightKg} kg</span>
                       </>
                     )}
+                    {booking?.routeDistanceKm && (
+                      <>
+                        <span className="text-gray-200">|</span>
+                        <span>{booking.routeDistanceKm} km</span>
+                      </>
+                    )}
                   </div>
                 </div>
 
-                {/* Expand arrow */}
                 <div className="flex-shrink-0">
                   {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-300" /> : <ChevronDown className="w-4 h-4 text-gray-300" />}
                 </div>
@@ -337,7 +437,6 @@ function MissionList({
               {/* Expanded detail */}
               {isExpanded && (
                 <div className="px-5 pb-4 space-y-4">
-                  {/* Mission type & service */}
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={`text-xs font-semibold ${missionType.color}`}>{missionType.label}</span>
                     {flight.soraCategory && (
@@ -398,11 +497,9 @@ function MissionList({
                           <div key={permit.id} className="flex items-center justify-between text-xs bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
                             <span className="font-medium text-gray-700">{permit.authority}</span>
                             <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
-                              permit.status === "approved"
-                                ? "bg-gray-50 text-gray-600 border-gray-200"
-                                : permit.status === "rejected"
-                                ? "bg-red-50 text-red-600 border-red-200"
-                                : "bg-amber-50 text-amber-600 border-amber-200"
+                              permit.status === "approved" ? "bg-gray-50 text-gray-600 border-gray-200" :
+                              permit.status === "rejected" ? "bg-red-50 text-red-600 border-red-200" :
+                              "bg-amber-50 text-amber-600 border-amber-200"
                             }`}>
                               {permit.status}
                             </span>
@@ -412,7 +509,6 @@ function MissionList({
                     </div>
                   )}
 
-                  {/* Payload details */}
                   {booking?.isDangerousGoods && (
                     <p className="text-red-600 text-xs font-bold flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
@@ -427,7 +523,7 @@ function MissionList({
                       className="flex items-center gap-2 px-4 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold rounded-xl transition-all shadow-lg shadow-brand-500/20 w-full justify-center"
                     >
                       <ClipboardList className="w-3.5 h-3.5" />
-                      Post-Flight-Log einreichen
+                      Post-Flight Report erstellen
                     </button>
                   )}
 
@@ -436,26 +532,17 @@ function MissionList({
                     <div className="bg-brand-50 border border-brand-100 rounded-xl p-4 space-y-4">
                       <h4 className="font-bold text-sm text-gray-900 flex items-center gap-2">
                         <ClipboardList className="w-4 h-4 text-brand-500" />
-                        Post-Flight-Log
+                        Post-Flight Report
                       </h4>
 
-                      {/* Safety checklist */}
                       <div>
-                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                          Vorflug-Checkliste (Pflicht)
-                        </p>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Sicherheits-Checkliste (Pflicht)</p>
                         <div className="space-y-1.5">
                           {SAFETY_CHECKLIST.map((item, idx) => (
                             <label key={idx} className="flex items-start gap-2.5 cursor-pointer group">
-                              <input
-                                type="checkbox"
-                                checked={form.checklistDone[idx]}
-                                onChange={() => toggleChecklist(flight.id, idx)}
-                                className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 bg-white text-brand-500 focus:ring-brand-500/40"
-                              />
-                              <span className={`text-xs transition-colors ${form.checklistDone[idx] ? "text-brand-600" : "text-gray-500 group-hover:text-gray-700"}`}>
-                                {item}
-                              </span>
+                              <input type="checkbox" checked={form.checklistDone[idx]} onChange={() => toggleChecklist(flight.id, idx)}
+                                className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 bg-white text-brand-500 focus:ring-brand-500/40" />
+                              <span className={`text-xs transition-colors ${form.checklistDone[idx] ? "text-brand-600" : "text-gray-500 group-hover:text-gray-700"}`}>{item}</span>
                             </label>
                           ))}
                         </div>
@@ -467,60 +554,56 @@ function MissionList({
                         )}
                       </div>
 
-                      {/* Form fields */}
+                      <div className="grid grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Gewicht (kg)</label>
+                          <input type="number" min="0" max="100" step="0.1"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all"
+                            placeholder="z.B. 24.5" value={form.actualWeightKg}
+                            onChange={(e) => updateForm(flight.id, { actualWeightKg: e.target.value })} />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Flugdauer (Min)</label>
+                          <input type="number" min="1" max="480"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all"
+                            placeholder="z.B. 45" value={form.flightDurationMinutes}
+                            onChange={(e) => updateForm(flight.id, { flightDurationMinutes: e.target.value })} />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Verbrauch (kWh)</label>
+                          <input type="number" min="0" step="0.1"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all"
+                            placeholder="z.B. 8.2" value={form.fuelConsumptionKwh}
+                            onChange={(e) => updateForm(flight.id, { fuelConsumptionKwh: e.target.value })} />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Notizen / Besonderheiten</label>
+                        <textarea rows={2}
+                          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all resize-none"
+                          placeholder="Besonderheiten, Abweichungen, Wetter..." value={form.notes}
+                          onChange={(e) => updateForm(flight.id, { notes: e.target.value })} />
+                      </div>
+
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Tatsächliches Gewicht (kg)</label>
-                          <input
-                            type="number"
-                            min="0"
-                            max="100"
-                            step="0.1"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all"
-                            placeholder="z.B. 24.5"
-                            value={form.actualWeightKg}
-                            onChange={(e) => updateForm(flight.id, { actualWeightKg: e.target.value })}
-                          />
+                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Zwischenfall-Bericht</label>
+                          <textarea rows={2}
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-300 transition-all resize-none"
+                            placeholder="Falls zutreffend..." value={form.incidentReport}
+                            onChange={(e) => updateForm(flight.id, { incidentReport: e.target.value })} />
                         </div>
                         <div>
-                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Flugdauer (Minuten)</label>
-                          <input
-                            type="number"
-                            min="1"
-                            max="480"
+                          <label className="block text-[10px] font-medium text-gray-500 mb-1">Spesen (CHF)</label>
+                          <input type="text"
                             className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all"
-                            placeholder="z.B. 45"
-                            value={form.flightDurationMinutes}
-                            onChange={(e) => updateForm(flight.id, { flightDurationMinutes: e.target.value })}
-                          />
+                            placeholder="z.B. Landeplatzgebühr 15.00" value={form.expenses}
+                            onChange={(e) => updateForm(flight.id, { expenses: e.target.value })} />
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Notizen (optional)</label>
-                        <textarea
-                          rows={2}
-                          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-300 transition-all resize-none"
-                          placeholder="Besonderheiten, Extras, Abweichungen..."
-                          value={form.notes}
-                          onChange={(e) => updateForm(flight.id, { notes: e.target.value })}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-[10px] font-medium text-gray-500 mb-1">Zwischenfall-Bericht (optional)</label>
-                        <textarea
-                          rows={2}
-                          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-red-300 transition-all resize-none"
-                          placeholder="Beschreiben Sie allfällige Zwischenfälle..."
-                          value={form.incidentReport}
-                          onChange={(e) => updateForm(flight.id, { incidentReport: e.target.value })}
-                        />
-                      </div>
-
-                      {submitMutation.error && (
-                        <p className="text-xs text-red-600">{submitMutation.error.message}</p>
-                      )}
+                      {submitMutation.error && <p className="text-xs text-red-600">{submitMutation.error.message}</p>}
 
                       <div className="flex gap-2">
                         <button
@@ -540,12 +623,10 @@ function MissionList({
                           className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold rounded-xl transition-all disabled:opacity-40 shadow-lg shadow-brand-500/20"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          {submitMutation.isPending ? "Wird eingereicht..." : "Einreichen"}
+                          {submitMutation.isPending ? "Wird eingereicht..." : "Report einreichen"}
                         </button>
-                        <button
-                          onClick={() => setShowPostFlight(null)}
-                          className="px-4 py-2.5 text-gray-500 text-xs font-semibold rounded-xl bg-white border border-gray-200 hover:bg-gray-50 transition-colors"
-                        >
+                        <button onClick={() => setShowPostFlight(null)}
+                          className="px-4 py-2.5 text-gray-500 text-xs font-semibold rounded-xl bg-white border border-gray-200 hover:bg-gray-50 transition-colors">
                           Abbrechen
                         </button>
                       </div>
@@ -555,7 +636,7 @@ function MissionList({
                   {flight.status === "completed" && (
                     <div className="flex items-center gap-2 text-brand-600 text-xs font-semibold bg-brand-50 border border-brand-100 rounded-xl px-4 py-2.5">
                       <CheckCircle2 className="w-4 h-4" />
-                      Flug abgeschlossen — Post-Flight-Log eingereicht
+                      Flug abgeschlossen — Post-Flight Report eingereicht
                     </div>
                   )}
                 </div>
@@ -577,20 +658,15 @@ export function PilotDashboard() {
 
   const { data, isLoading, error, refetch } = trpc.pilot.myFlights.useQuery({ limit: 20, offset: 0 });
   const submitMutation = trpc.pilot.submitPostFlight.useMutation({
-    onSuccess: () => {
-      setShowPostFlight(null);
-      refetch();
-    },
+    onSuccess: () => { setShowPostFlight(null); refetch(); },
   });
 
   function getForm(flightId: string): PostFlightForm {
     return forms[flightId] ?? defaultForm();
   }
-
   function updateForm(flightId: string, patch: Partial<PostFlightForm>) {
     setForms((prev) => ({ ...prev, [flightId]: { ...getForm(flightId), ...patch } }));
   }
-
   function toggleChecklist(flightId: string, idx: number) {
     const form = getForm(flightId);
     const next = [...form.checklistDone];
@@ -598,14 +674,9 @@ export function PilotDashboard() {
     updateForm(flightId, { checklistDone: next });
   }
 
-  // Use API data if available, otherwise fall back to demo flights
   const flights = data?.flights?.length ? data.flights : DEMO_FLIGHTS;
-
-  // Stats
   const activeCount = flights.filter((f: any) => f.status === "in_air" || f.status === "pre_flight_check").length;
   const completedCount = flights.filter((f: any) => f.status === "completed").length;
-
-  // Active flight (or first scheduled)
   const activeFlightOrFirst =
     flights.find((f: any) => f.status === "in_air") ??
     flights.find((f: any) => f.status === "pre_flight_check") ??
@@ -631,9 +702,7 @@ export function PilotDashboard() {
     return (
       <MissionControlLayout>
         <div className="p-5">
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center text-red-600">
-            {error.message}
-          </div>
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center text-red-600">{error.message}</div>
         </div>
       </MissionControlLayout>
     );
@@ -641,21 +710,20 @@ export function PilotDashboard() {
 
   return (
     <MissionControlLayout>
-      <div className="p-5">
+      <div className="p-5 overflow-y-auto" style={{ maxHeight: "calc(100vh - 48px)" }}>
         <div className="grid grid-cols-[1fr_380px] gap-5">
-          {/* Left: Map + Metrics + Current Mission detail */}
+          {/* Left: Map + Metrics + Current Mission + Weather */}
           <div className="flex flex-col gap-5">
             <SwissMap compact />
-
             <KeyMetrics items={[
               { label: "Zugewiesene Flüge", value: flights.length, animate: true },
               { label: "Aktiv", value: activeCount, animate: true },
               { label: "Abgeschlossen", value: completedCount, animate: true },
               { label: "Status", value: "BEREIT", highlight: false },
             ]} />
-
-            {/* Active mission detail card */}
             <ActiveMissionDetail flight={activeFlightOrFirst} />
+            <WeatherAirspacePanel />
+            <MaintenancePanel />
           </div>
 
           {/* Right: Mission list */}
