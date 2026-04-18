@@ -117,7 +117,7 @@ export function Step6Confirm({ data, onBack }: Props) {
           </h3>
           <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto">
             Um Buchungen aufzugeben und zu verwalten, benötigen Sie ein
-            VOLTAIR-Konto.
+            AIRBASE-Konto.
           </p>
           <SignInButton mode="modal">
             <button className="inline-flex items-center gap-2 bg-brand-600 text-white font-semibold px-8 py-3 rounded-xl hover:bg-brand-700 transition-colors">
@@ -184,7 +184,7 @@ export function Step6Confirm({ data, onBack }: Props) {
                 <a href="/datenschutz" className="text-brand-600 hover:underline">
                   Datenschutzerklärung
                 </a>{" "}
-                von VOLTAIR.
+                von Airbase Aviation GmbH.
               </span>
             </label>
           </div>

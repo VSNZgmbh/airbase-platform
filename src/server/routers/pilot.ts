@@ -160,7 +160,7 @@ export const pilotRouter = createTRPCRouter({
         where: eq(customers.id, result.booking.customerId),
       });
       if (customer?.email) {
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://voltair.one";
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://airbase.one";
         const reportUrl = `${appUrl}/api/reports/flight/${input.flightId}`;
         sendEmail({
           to: customer.email,

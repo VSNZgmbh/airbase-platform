@@ -28,12 +28,12 @@ export function BookingConfirmation({
   requestedDate,
   totalCHF,
   paymentUrl,
-  appUrl = "https://voltair.one",
+  appUrl = "https://airbase.one",
 }: Props) {
   return (
     <Html>
       <Head />
-      <Preview>Buchungsbestätigung {bookingIdentifier} — VOLTAIR</Preview>
+      <Preview>Buchungsbestätigung {bookingIdentifier} — AIRBASE</Preview>
       <Body style={body}>
         <Container style={container}>
           <Heading style={h1}>Buchungsbestätigung</Heading>
@@ -71,14 +71,14 @@ export function BookingConfirmation({
           <Text style={footer}>
             Ihr Buchungsstatus ist jederzeit im{" "}
             <a href={`${appUrl}/dashboard`} style={link}>
-              VOLTAIR Dashboard
+              AIRBASE Dashboard
             </a>{" "}
             einsehbar.
           </Text>
           <Text style={footer}>
             Mit freundlichen Grüssen
             <br />
-            Das VOLTAIR-Team
+            Das AIRBASE-Team
           </Text>
         </Container>
       </Body>

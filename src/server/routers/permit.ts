@@ -140,7 +140,7 @@ export const permitRouter = createTRPCRouter({
           pickupAddress: booking.pickupAddress ?? "",
           routeDistanceKm: booking.routeDistanceKm ?? "0",
           payloadWeightKg: booking.payloadWeightKg,
-          droneModel: flight.drone?.model ?? "VOLTAIR T100",
+          droneModel: flight.drone?.model ?? "AIRBASE T100",
           droneSerial: flight.drone?.serialNumber ?? "—",
           pilotName: flight.pilot
             ? `${flight.pilot.firstName} ${flight.pilot.lastName}`
@@ -288,15 +288,15 @@ Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
 Gesuchsteller:
-  VOLTAIR AG
+  Airbase Aviation GmbH
   Drohnenlogistik Schweiz
-  voltair.one
+  airbase.one
 
 BETRIEBSDETAILS:
   Einsatztyp:         ${p.serviceType}
   Datum:              ${dateStr}
   Zeitfenster:        ${p.requestedTimeFrom} – ${p.requestedTimeTo} Uhr
-  Abflugort:          ${p.pickupAddress || "VOLTAIR Hub"}
+  Abflugort:          ${p.pickupAddress || "AIRBASE Hub"}
   Zielort:            ${p.deliveryAddress}
   Routendistanz:      ${p.routeDistanceKm} km
   Nutzlast:           ${p.payloadWeightKg} kg
@@ -315,13 +315,13 @@ SORA-BEWERTUNG:
   ARC (Air Risk):     ${p.arcScore}
   Kategorie:          ${p.soraCategory}
 
-Das Unternehmen VOLTAIR AG verfügt über eine gültige Betriebsgenehmigung und alle notwendigen Versicherungen gemäss schweizerischem Recht.
+Das Unternehmen Airbase Aviation GmbH verfügt über eine gültige Betriebsgenehmigung und alle notwendigen Versicherungen gemäss schweizerischem Recht.
 
 Wir bitten um Genehmigung des oben beschriebenen Betriebs und stehen für Rückfragen zur Verfügung.
 
 Mit freundlichen Grüssen
-VOLTAIR AG — Operations Team
-ops@voltair.one | +41 XX XXX XX XX`;
+Airbase Aviation GmbH — Operations Team
+ops@airbase.one | +41 XX XXX XX XX`;
   }
 
   if (p.permitType === "CTR_CLEARANCE") {
@@ -330,12 +330,12 @@ An: ${p.authority}
 Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
-GESUCHSTELLER: VOLTAIR AG — voltair.one
+GESUCHSTELLER: Airbase Aviation GmbH — airbase.one
 
 GEPLANTE OPERATION:
   Datum:         ${dateStr}
   Zeitfenster:   ${p.requestedTimeFrom} – ${p.requestedTimeTo} UTC
-  Von:           ${p.pickupAddress || "VOLTAIR Hub"}
+  Von:           ${p.pickupAddress || "AIRBASE Hub"}
   Nach:          ${p.deliveryAddress}
   Distanz:       ${p.routeDistanceKm} km
   Max. Höhe:     120 m AGL
@@ -352,8 +352,8 @@ Wir ersuchen hiermit um eine vorübergehende Freigabe für die Durchquerung des 
 
 Die Operation erfolgt in Übereinstimmung mit den BAZL-Richtlinien und der SORA-Bewertung (GRC ${p.grcScore} / ARC ${p.arcScore}).
 
-VOLTAIR AG — Operations
-ops@voltair.one`;
+Airbase Aviation GmbH — Operations
+ops@airbase.one`;
   }
 
   // Municipal / cantonal permit
@@ -362,18 +362,18 @@ An: ${p.authority}
 Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
-GESUCHSTELLER: VOLTAIR AG — voltair.one
+GESUCHSTELLER: Airbase Aviation GmbH — airbase.one
 
 GEPLANTE OPERATION:
   Einsatz:       ${p.serviceType}
   Datum:         ${dateStr}
   Zeitfenster:   ${p.requestedTimeFrom} – ${p.requestedTimeTo} Uhr
-  Route:         ${p.pickupAddress || "VOLTAIR Hub"} → ${p.deliveryAddress}
+  Route:         ${p.pickupAddress || "AIRBASE Hub"} → ${p.deliveryAddress}
   Nutzlast:      ${p.payloadWeightKg} kg
   Drohne:        ${p.droneModel} (${p.droneSerial})
 
 Die Operation erfolgt gemäss SORA-Bewertung (GRC ${p.grcScore}) mit allen notwendigen Sicherheitsmassnahmen.
 
-VOLTAIR AG — Operations
-ops@voltair.one`;
+Airbase Aviation GmbH — Operations
+ops@airbase.one`;
 }

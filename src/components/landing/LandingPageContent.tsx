@@ -120,17 +120,16 @@ export function LandingPageContent({ locale }: { locale: string }) {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <span className="font-black uppercase tracking-tight" style={{ color: "#D32F2F" }}>VOLT</span>
-              <span className="italic font-normal" style={{ color: "#D32F2F" }}>AIR</span>
+              <span className="font-black uppercase tracking-tight" style={{ color: "#D32F2F" }}>AIRBASE</span>
             </motion.a>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#64748B" }}>
-              {["HOME", "DIENSTLEISTUNGEN", "VOLTAIR APP", "ÜBER UNS", "KONTAKT"].map((label, i) => (
+              {["HOME", "DIENSTLEISTUNGEN", "AIRBASE APP", "ÜBER UNS", "KONTAKT"].map((label, i) => (
                 <motion.a
                   key={label}
                   href={
                     label === "DIENSTLEISTUNGEN" ? "#dienstleistungen"
-                    : label === "VOLTAIR APP" ? "#app"
+                    : label === "AIRBASE APP" ? "#app"
                     : label === "ÜBER UNS" ? "#ueber-uns"
                     : label === "KONTAKT" ? "#kontakt"
                     : "#"
@@ -469,7 +468,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ── 5. Drone Showcase — VOLTAIR T100 ── */}
+      {/* ── 5. Drone Showcase — AIRBASE T100 ── */}
       <section className="relative py-32 overflow-hidden" style={{ background: "#FFFFFF" }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -507,7 +506,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
                   <Image
                     src="/images/dji-flycart-100.png"
-                    alt="VOLTAIR T100 heavy-lift drone"
+                    alt="AIRBASE T100 heavy-lift drone"
                     width={620}
                     height={440}
                     className="relative z-10 drop-shadow-2xl"
@@ -543,7 +542,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                   }}
                 >
-                  VOLTAIR T100
+                  AIRBASE T100
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
                   Die leistungsstärkste Drohne ihrer Klasse. 100 kg Nutzlast, 10 km Reichweite, vollautomatisch und BAZL-zertifiziert für den kommerziellen Einsatz in der Schweiz.
@@ -742,7 +741,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   </div>
                 </div>
                 <p className="text-lg leading-relaxed mb-6" style={{ color: "#334155" }}>
-                  In der Schweiz, wo saubere Energie und intakte Natur kein Luxus, sondern Identität sind, setzt VOLTAIR neue Standards für grüne Logistik.
+                  In der Schweiz, wo saubere Energie und intakte Natur kein Luxus, sondern Identität sind, setzt AIRBASE neue Standards für grüne Logistik.
                 </p>
                 <div className="rounded-xl overflow-hidden">
                   <Image
@@ -873,7 +872,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               variants={fadeUp}
               transition={{ duration: 0.5, ease }}
             >
-              VOLTAIR APP
+              AIRBASE APP
             </motion.p>
             <motion.h2
               className="font-black"
@@ -1018,7 +1017,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             viewport={vp}
             transition={{ delay: 0.35, duration: 0.6, ease }}
           >
-            Gegründet im Herzen des Berner Oberlandes, vereint VOLTAIR Schweizer Ingenieurskunst
+            Gegründet im Herzen des Berner Oberlandes, vereint AIRBASE Schweizer Ingenieurskunst
             mit dem Mut, Logistik neu zu denken. Unsere Vision: der verlässlichste Drohnenservice
             Europas — bodenständig, präzise, vorausschauend.
           </motion.p>
@@ -1101,7 +1100,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             <div className="relative" style={{ height: 520, background: "#F8FAFC" }}>
               <Image
                 src="/images/swiss-map.webp"
-                alt="Schweiz Karte — VOLTAIR Netzwerk"
+                alt="Schweiz Karte — AIRBASE Netzwerk"
                 fill
                 className="object-contain"
               />
@@ -1190,7 +1189,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 transition={{ delay: 0.6, duration: 0.6, ease }}
               >
                 <p className="font-black text-sm mb-3" style={{ color: "#0F172A", fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
-                  VOLTAIR Swiss
+                  AIRBASE Swiss
                 </p>
                 <div className="space-y-1.5">
                   {[
@@ -1259,7 +1258,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 variants={slideLeft}
                 transition={{ duration: 0.6, ease }}
               >
-                VOLTAIR ist mehr als ein Unternehmen — es ist ein Netzwerk. Wir bauen die führende
+                AIRBASE ist mehr als ein Unternehmen — es ist ein Netzwerk. Wir bauen die führende
                 Drohnenlogistik-Franchise Europas und suchen unternehmerische Partner.
               </motion.p>
               <motion.div
@@ -1366,14 +1365,14 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ duration: 0.6, ease }}
             >
               E-Mail:{" "}
-              <a href="mailto:info@voltair.one" className="font-semibold hover:underline" style={{ color: "#D32F2F" }}>
-                info@voltair.one
+              <a href="mailto:info@airbase.one" className="font-semibold hover:underline" style={{ color: "#D32F2F" }}>
+                info@airbase.one
               </a>
             </motion.p>
           </motion.div>
 
           <motion.form
-            action="mailto:info@voltair.one"
+            action="mailto:info@airbase.one"
             method="get"
             className="space-y-4"
             variants={stagger(0.08)}
@@ -1463,10 +1462,9 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ delay: 0.1, duration: 0.6, ease }}
             >
               <a href="#" className="flex items-center gap-1 text-2xl tracking-tight select-none mb-3">
-                <span className="font-black uppercase tracking-tight" style={{ color: "#0F172A" }}>VOLT</span>
-                <span className="italic font-normal" style={{ color: "#94A3B8" }}>AIR</span>
+                <span className="font-black uppercase tracking-tight" style={{ color: "#0F172A" }}>AIRBASE</span>
               </a>
-              <p className="text-sm" style={{ color: "#94A3B8" }}>Drohnenlogistik. Made in Switzerland.</p>
+              <p className="text-sm" style={{ color: "#94A3B8" }}>Airbase Aviation GmbH · Drohnenlogistik. Made in Switzerland.</p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
@@ -1536,7 +1534,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             className="border-t pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
             style={{ borderColor: "#E2E8F0", color: "#94A3B8" }}
           >
-            <span>© {new Date().getFullYear()} VOLTAIR — Alle Rechte vorbehalten.</span>
+            <span>© {new Date().getFullYear()} Airbase Aviation GmbH — Alle Rechte vorbehalten.</span>
             <span>BAZL-konform · SORA-zertifiziert · Made in Switzerland 🇨🇭</span>
           </div>
         </div>

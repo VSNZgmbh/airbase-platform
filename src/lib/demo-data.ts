@@ -1,4 +1,4 @@
-// ─── Demo Data for VOLTAIR Platform ──────────────────────────────────────────
+// ─── Demo Data for AIRBASE Platform ──────────────────────────────────────────
 // Based on real DJI FlyCart 30 specs (dji.com/flycart-30/specs)
 // Battery: DB2000, 38'000 mAh, 1'500 Ladezyklen, 12 Monate Lebensdauer
 // Max Nutzlast: 40 kg (Einzelbatterie) / 30 kg (Dualbatterie)
@@ -22,7 +22,7 @@ export const DEMO_BOOKINGS = [
     deliveryAddress: "Berghaus Bort, Grindelwald",
     deliveryLat: "46.6545",
     deliveryLng: "8.0414",
-    pickupAddress: "VOLTAIR Hub Wilderswil",
+    pickupAddress: "AIRBASE Hub Wilderswil",
     pickupLat: "46.6575",
     pickupLng: "7.8680",
     routeDistanceKm: "14.2",
@@ -44,7 +44,7 @@ export const DEMO_BOOKINGS = [
     deliveryAddress: "Schynige Platte, Wilderswil",
     deliveryLat: "46.6493",
     deliveryLng: "7.9095",
-    pickupAddress: "VOLTAIR Hub Interlaken",
+    pickupAddress: "AIRBASE Hub Interlaken",
     pickupLat: "46.6863",
     pickupLng: "7.8632",
     routeDistanceKm: "8.6",
@@ -66,7 +66,7 @@ export const DEMO_BOOKINGS = [
     deliveryAddress: "Solarpark Lauterbrunnen",
     deliveryLat: "46.5935",
     deliveryLng: "7.9091",
-    pickupAddress: "VOLTAIR Hub Lauterbrunnen",
+    pickupAddress: "AIRBASE Hub Lauterbrunnen",
     pickupLat: "46.5935",
     pickupLng: "7.9091",
     routeDistanceKm: "3.2",
@@ -88,7 +88,7 @@ export const DEMO_BOOKINGS = [
     deliveryAddress: "Schilthorn Baustelle, Mürren",
     deliveryLat: "46.5587",
     deliveryLng: "7.8355",
-    pickupAddress: "VOLTAIR Hub Stechelberg",
+    pickupAddress: "AIRBASE Hub Stechelberg",
     pickupLat: "46.5667",
     pickupLng: "7.8967",
     routeDistanceKm: "6.8",
@@ -176,7 +176,7 @@ export const DEMO_BOOKINGS = [
     deliveryAddress: "Unterer Grindelwaldgletscher",
     deliveryLat: "46.6210",
     deliveryLng: "8.0824",
-    pickupAddress: "VOLTAIR Hub Grindelwald",
+    pickupAddress: "AIRBASE Hub Grindelwald",
     pickupLat: "46.6243",
     pickupLng: "8.0414",
     routeDistanceKm: "4.1",
@@ -220,7 +220,7 @@ export const DEMO_BOOKINGS = [
     deliveryAddress: "Blüemlisalphütte, Kandersteg",
     deliveryLat: "46.4935",
     deliveryLng: "7.6820",
-    pickupAddress: "VOLTAIR Hub Kandersteg",
+    pickupAddress: "AIRBASE Hub Kandersteg",
     pickupLat: "46.4965",
     pickupLng: "7.6720",
     routeDistanceKm: "7.2",
@@ -232,11 +232,11 @@ export const DEMO_BOOKINGS = [
 ];
 
 export const DEMO_PILOTS = [
-  { id: "p001", firstName: "Hans", lastName: "Müller", email: "h.mueller@voltair.ch", licenseNumber: "CH-RPL-2024-0142", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: false, isActive: true, totalFlights: 142, hoursFlown: 386 },
-  { id: "p002", firstName: "Sarah", lastName: "Weber", email: "s.weber@voltair.ch", licenseNumber: "CH-RPL-2024-0087", soraA1A3Certified: true, soraA2Certified: false, sts01Certified: true, isActive: true, totalFlights: 98, hoursFlown: 267 },
-  { id: "p003", firstName: "Marco", lastName: "Brunner", email: "m.brunner@voltair.ch", licenseNumber: "CH-RPL-2023-0341", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: true, isActive: true, totalFlights: 215, hoursFlown: 584 },
-  { id: "p004", firstName: "Elena", lastName: "Fischer", email: "e.fischer@voltair.ch", licenseNumber: "CH-RPL-2025-0019", soraA1A3Certified: true, soraA2Certified: false, sts01Certified: false, isActive: true, totalFlights: 47, hoursFlown: 128 },
-  { id: "p005", firstName: "Thomas", lastName: "Steiner", email: "t.steiner@voltair.ch", licenseNumber: "CH-RPL-2024-0203", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: false, isActive: false, totalFlights: 89, hoursFlown: 242 },
+  { id: "p001", firstName: "Hans", lastName: "Müller", email: "h.mueller@airbase.one", licenseNumber: "CH-RPL-2024-0142", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: false, isActive: true, totalFlights: 142, hoursFlown: 386 },
+  { id: "p002", firstName: "Sarah", lastName: "Weber", email: "s.weber@airbase.one", licenseNumber: "CH-RPL-2024-0087", soraA1A3Certified: true, soraA2Certified: false, sts01Certified: true, isActive: true, totalFlights: 98, hoursFlown: 267 },
+  { id: "p003", firstName: "Marco", lastName: "Brunner", email: "m.brunner@airbase.one", licenseNumber: "CH-RPL-2023-0341", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: true, isActive: true, totalFlights: 215, hoursFlown: 584 },
+  { id: "p004", firstName: "Elena", lastName: "Fischer", email: "e.fischer@airbase.one", licenseNumber: "CH-RPL-2025-0019", soraA1A3Certified: true, soraA2Certified: false, sts01Certified: false, isActive: true, totalFlights: 47, hoursFlown: 128 },
+  { id: "p005", firstName: "Thomas", lastName: "Steiner", email: "t.steiner@airbase.one", licenseNumber: "CH-RPL-2024-0203", soraA1A3Certified: true, soraA2Certified: true, sts01Certified: false, isActive: false, totalFlights: 89, hoursFlown: 242 },
 ];
 
 // DJI FlyCart 30 fleet — real specs per dji.com/flycart-30/specs

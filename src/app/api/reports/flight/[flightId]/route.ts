@@ -91,7 +91,7 @@ export async function GET(
   return new NextResponse(pdfBuffer as unknown as BodyInit, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `inline; filename="voltair-flugbericht-${booking.identifier}.pdf"`,
+      "Content-Disposition": `inline; filename="airbase-flugbericht-${booking.identifier}.pdf"`,
       "Cache-Control": "private, no-store",
     },
   });

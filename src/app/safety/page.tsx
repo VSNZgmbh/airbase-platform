@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getAuthUserId, getUserRole, isClerkConfigured } from "@/lib/demo-auth";
 import { SafetyDashboard } from "@/components/safety/SafetyDashboard";
 
-export const metadata = { title: "Compliance — VOLTAIR Mission Control" };
+export const metadata = { title: "Compliance — Airbase Aviation OS" };
 
 export default async function SafetyPage() {
   const userId = await getAuthUserId();

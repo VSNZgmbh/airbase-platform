@@ -30,12 +30,12 @@ export function OperatorNewBooking({
   payloadWeightKg,
   deliveryAddress,
   totalCHF,
-  operatorUrl = "https://voltair.one/operator",
+  operatorUrl = "https://airbase.one/operator",
 }: Props) {
   return (
     <Html>
       <Head />
-      <Preview>Neue Buchungsanfrage {bookingIdentifier} — VOLTAIR Operator</Preview>
+      <Preview>Neue Buchungsanfrage {bookingIdentifier} — AIRBASE Operator</Preview>
       <Body style={body}>
         <Container style={container}>
           <Heading style={h1}>Neue Buchungsanfrage</Heading>
@@ -65,7 +65,7 @@ export function OperatorNewBooking({
           </Button>
 
           <Hr style={hr} />
-          <Text style={footer}>VOLTAIR Operator-System</Text>
+          <Text style={footer}>AIRBASE Operator-System</Text>
         </Container>
       </Body>
     </Html>

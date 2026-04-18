@@ -35,9 +35,9 @@ interface Props {
 type PickupOption = "CUSTOMER_LOCATION" | "VOLTAIR_HUB" | "CUSTOM_PICKUP";
 
 const VOLTAIR_HUBS = [
-  { id: "hub-wilderswil", name: "VOLTAIR HQ Wilderswil", address: "Mittelweg 9, 3812 Wilderswil", lat: 46.6553, lng: 7.8675 },
-  { id: "hub-interlaken", name: "VOLTAIR Hub Interlaken", address: "Interlaken, BE", lat: 46.6863, lng: 7.8632 },
-  { id: "hub-grindelwald", name: "VOLTAIR Hub Grindelwald", address: "Grindelwald, BE", lat: 46.6243, lng: 8.0413 },
+  { id: "hub-wilderswil", name: "AIRBASE HQ Wilderswil", address: "Mittelweg 9, 3812 Wilderswil", lat: 46.6553, lng: 7.8675 },
+  { id: "hub-interlaken", name: "AIRBASE Hub Interlaken", address: "Interlaken, BE", lat: 46.6863, lng: 7.8632 },
+  { id: "hub-grindelwald", name: "AIRBASE Hub Grindelwald", address: "Grindelwald, BE", lat: 46.6243, lng: 8.0413 },
 ];
 
 // Haversine straight-line distance (km) — appropriate for drone routes
@@ -421,7 +421,7 @@ export function Step4Location({ data, onNext, onBack }: Props) {
             <div className="flex-1 min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                 <span className="font-semibold text-gray-900 text-sm sm:text-base">
-                  Option B — VOLTAIR Hub
+                  Option B — AIRBASE Hub
                 </span>
                 <span className="text-sm font-semibold text-blue-600 flex-shrink-0">
                   +CHF 25.00

@@ -274,7 +274,7 @@ export function assessSora(input: SoraInput): SoraResult {
   if (arc === "c" || arc === "d") riskFactors.push("Kontrollierter Luftraum — CTR-Freigabe nötig");
   if (requiresBernBelpClearance) riskFactors.push("Route kreuzt Bern-Belp CTR (LSZB)");
   if (sail === "V" || sail === "VI") riskFactors.push(`SAIL ${sail} — Hohe Sicherheitsanforderungen`);
-  riskFactors.push("VOLTAIR T100 (170 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
+  riskFactors.push("AIRBASE T100 (170 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
 
   // Overall risk
   let overallRisk: SoraResult["overallRisk"];

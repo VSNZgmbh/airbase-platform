@@ -36,12 +36,12 @@ export function PostFlightInvoice({
   totalCHF,
   dueDate,
   reportUrl,
-  appUrl = "https://voltair.one",
+  appUrl = "https://airbase.one",
 }: Props) {
   return (
     <Html>
       <Head />
-      <Preview>Rechnung {invoiceNumber} für Ihren Flug — VOLTAIR</Preview>
+      <Preview>Rechnung {invoiceNumber} für Ihren Flug — AIRBASE</Preview>
       <Body style={body}>
         <Container style={container}>
           <Heading style={h1}>Flug abgeschlossen — Rechnung</Heading>
@@ -101,7 +101,7 @@ export function PostFlightInvoice({
           <Text style={footer}>
             Mit freundlichen Grüssen
             <br />
-            Das VOLTAIR-Team
+            Das AIRBASE-Team
           </Text>
         </Container>
       </Body>

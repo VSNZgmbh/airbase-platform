@@ -37,7 +37,7 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
       <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
         <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-blue-800">
-          <strong>VOLTAIR T100:</strong> Max. Nutzlast{" "}
+          <strong>AIRBASE T100:</strong> Max. Nutzlast{" "}
           {FLYCART_30.MAX_PAYLOAD_KG} kg · Max. Reichweite {FLYCART_30.MAX_RANGE_KM} km ·{" "}
           Reisegeschwindigkeit {FLYCART_30.CRUISE_SPEED_KMH} km/h
         </div>

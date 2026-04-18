@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getAuthUserId, getUserRole, isClerkConfigured } from "@/lib/demo-auth";
 import { PilotDashboard } from "@/components/pilot/PilotDashboard";
 
-export const metadata = { title: "Mission Control — VOLTAIR" };
+export const metadata = { title: "Mission Control — Airbase Aviation OS" };
 
 export default async function PilotPage() {
   const userId = await getAuthUserId();
