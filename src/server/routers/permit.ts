@@ -304,7 +304,7 @@ BETRIEBSDETAILS:
 LUFTFAHRZEUG:
   Modell:             ${p.droneModel}
   Seriennummer:       ${p.droneSerial}
-  MTOW:               95 kg
+  MTOW:               149.9 kg
   Betriebskategorie:  SPECIFIC (gemäss EU-UAS-Verordnung 2019/945)
 
 PILOT:
@@ -342,7 +342,7 @@ GEPLANTE OPERATION:
 
 LUFTFAHRZEUG:
   Typ:           UAS (Unbemannte Luftfahrtanlage) — ${p.droneModel}
-  MTOW:          95 kg
+  MTOW:          149.9 kg
   Serien-Nr.:    ${p.droneSerial}
 
 PILOT:

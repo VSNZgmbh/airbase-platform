@@ -12,7 +12,7 @@ export const pricingRouter = createTRPCRouter({
     .input(
       z.object({
         routeDistanceKm: z.number().min(0),
-        payloadWeightKg: z.number().min(0).max(40),
+        payloadWeightKg: z.number().min(0).max(100),
         pickupOption: z.enum([
           "CUSTOMER_LOCATION",
           "AIRBASE_HUB",

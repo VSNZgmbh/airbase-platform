@@ -80,9 +80,9 @@ export function Step3Payload({ data, onNext, onBack }: Props) {
             <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all ${
-                  weightNum > 80
+                  weightNum > 85
                     ? "bg-orange-400"
-                    : weightNum > 50
+                    : weightNum > 60
                     ? "bg-yellow-400"
                     : "bg-green-400"
                 }`}

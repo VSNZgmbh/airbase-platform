@@ -49,7 +49,7 @@ export const pilotRouter = createTRPCRouter({
     .input(
       z.object({
         flightId: z.string().uuid(),
-        actualWeightKg: z.number().min(0).max(40),
+        actualWeightKg: z.number().min(0).max(100),
         flightDurationMinutes: z.number().min(1).max(480),
         notes: z.string().optional(),
         incidentReport: z.string().optional(),

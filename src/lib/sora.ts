@@ -2,14 +2,14 @@
  * AIRBASE SORA (Specific Operations Risk Assessment) Engine
  *
  * Implements a simplified SORA v2.5 assessment for the DJI FlyCart 100
- * (MTOW 95 kg) operating in Swiss airspace, primarily the Berner Oberland corridors.
+ * (MTOW 149.9 kg) operating in Swiss airspace, primarily the Berner Oberland corridors.
  *
  * Reference: EASA SORA v2.5 (AMC1 UAS.SPEC.040) and BAZL Betriebshandbuch.
  *
  * IMPORTANT: This is a decision-support tool, not a certified assessment tool.
  * All flights require operator sign-off and may require official BAZL authorization.
  *
- * DJI FlyCart 100: At MTOW 95 kg, all operations fall into the SPECIFIC category
+ * DJI FlyCart 100: At MTOW 149.9 kg, all operations fall into the SPECIFIC category
  * and require a SORA assessment + BAZL operator authorisation.
  */
 
@@ -264,7 +264,7 @@ export function assessSora(input: SoraInput): SoraResult {
     pickupLng, pickupLat, deliveryLng, deliveryLat
   );
 
-  // DJI FlyCart 100 at 95 kg MTOW: ALWAYS SPECIFIC category + requires BAZL operator authorisation
+  // DJI FlyCart 100 at 149.9 kg MTOW: ALWAYS SPECIFIC category + requires BAZL operator authorisation
   const requiresBazlPermit = true;
 
   const riskFactors: string[] = [];
@@ -274,7 +274,7 @@ export function assessSora(input: SoraInput): SoraResult {
   if (arc === "c" || arc === "d") riskFactors.push("Kontrollierter Luftraum — CTR-Freigabe nötig");
   if (requiresBernBelpClearance) riskFactors.push("Route kreuzt Bern-Belp CTR (LSZB)");
   if (sail === "V" || sail === "VI") riskFactors.push(`SAIL ${sail} — Hohe Sicherheitsanforderungen`);
-  riskFactors.push("DJI FlyCart 100 (95 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
+  riskFactors.push("DJI FlyCart 100 (149.9 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
 
   // Overall risk
   let overallRisk: SoraResult["overallRisk"];
@@ -288,7 +288,7 @@ export function assessSora(input: SoraInput): SoraResult {
     {
       authority: "BAZL/FOCA",
       type: "SPECIFIC_AUTHORISATION",
-      description: "Betriebsgenehmigung für SPECIFIC-Kategorie UAS (DJI FlyCart 100, 95 kg MTOW)",
+      description: "Betriebsgenehmigung für SPECIFIC-Kategorie UAS (DJI FlyCart 100, 149.9 kg MTOW)",
       isMandatory: true,
     },
   ];

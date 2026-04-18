@@ -545,12 +545,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   DJI FlyCart 100
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
-                  Die leistungsstärkste Lastendrohne ihrer Klasse. Bis 40 kg Nutzlast, 28 km Reichweite, SORA-zertifiziert und BAZL-konform für den kommerziellen Einsatz in der Schweiz.
+                  Die leistungsstärkste Lastendrohne ihrer Klasse. Bis 100 kg Nutzlast, 26 km Reichweite, SORA-zertifiziert und BAZL-konform für den kommerziellen Einsatz in der Schweiz.
                 </p>
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {[
-                    { value: "40kg", label: "Nutzlast" },
-                    { value: "28km", label: "Reichweite" },
+                    { value: "100kg", label: "Nutzlast" },
+                    { value: "26km", label: "Reichweite" },
                     { value: "0g", label: "CO₂" },
                   ].map((spec) => (
                     <div key={spec.label} className="rounded-2xl p-4 text-center" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>

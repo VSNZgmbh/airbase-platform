@@ -142,38 +142,38 @@ export function formatCHF(amount: number): string {
   }).format(amount);
 }
 
-// DJI FlyCart 100 — Real specs (source: dji.com/flycart-100/specs)
-// Single-battery mode: 40 kg payload, 12 km range, 15 min flight
-// Dual-battery mode:   30 kg payload, 28 km range, 29 min flight
+// DJI FlyCart 100 — Real specs (released Dec 2025)
+// Sources: dronedj.com, dronelife.com, newsshooter.com
+// Single-battery mode: 100 kg payload, 12 km range
+// Dual-battery mode:   85 kg payload, 26 km range
 export const FLYCART_100 = {
   MODEL: "DJI FlyCart 100",
-  MAX_PAYLOAD_KG: 40,               // Single-battery mode max
-  MAX_PAYLOAD_DUAL_KG: 30,          // Dual-battery mode max
-  MAX_RANGE_KM: 28,                 // Dual-battery mode
-  MAX_RANGE_SINGLE_KM: 12,          // Single-battery mode
-  CRUISE_SPEED_KMH: 54,             // 15 m/s
-  MAX_SPEED_KMH: 72,                // 20 m/s
-  MAX_FLIGHT_TIME_MIN: 29,          // Dual-battery, no payload
-  FLIGHT_TIME_30KG_MIN: 18,         // Dual-battery, 30 kg payload
-  AIRCRAFT_WEIGHT_KG: 42.5,         // Without batteries
-  MTOW_KG: 95,                      // Max takeoff weight
-  BATTERY_MODEL: "DB2000",
-  BATTERY_CAPACITY_MAH: 38000,
-  BATTERY_CHARGE_CYCLES: 1500,      // Max lifecycle
-  BATTERY_LIFESPAN_MONTHS: 12,
-  CHARGING_TIME_DUAL_H: 2.5,        // Both batteries
-  CHARGING_TIME_SINGLE_H: 2.0,
-  PROPELLER_SIZE_INCH: 54,           // Carbon fiber composite
-  PROPELLER_REPLACE_HOURS: 1000,     // Or 36 months
-  PROPELLER_REPLACE_MONTHS: 36,
-  MOTOR_STATOR_MM: "100x33",
-  MOTOR_POWER_W: 4000,              // Per rotor
-  MOTOR_COUNT: 8,                    // 4-axis coaxial
-  INSPECTION_INTERVAL_FLIGHTS: 100,  // First inspection after 100 flights
-  INSPECTION_INTERVAL_HOURS: 50,     // Subsequent: every 50h
+  MAX_PAYLOAD_KG: 100,               // Single-battery mode max
+  MAX_PAYLOAD_DUAL_KG: 85,           // Dual-battery mode max
+  MAX_RANGE_KM: 26,                  // Dual-battery, empty
+  MAX_RANGE_LOADED_KM: 12,           // Dual-battery, loaded
+  CRUISE_SPEED_KMH: 54,              // 15 m/s
+  MAX_SPEED_KMH: 72,                 // 20 m/s
+  SINGLE_AXIS_LIFT_KG: 82,           // Single-axis lift capacity
+  MTOW_KG: 149.9,                    // Max takeoff weight
+  ROTOR_SYSTEM: "Coaxial 4-axis",    // 8 rotor blades
+  PROPELLER_SIZE_INCH: 62,           // Carbon fiber composite
+  MOTOR_COUNT: 8,                     // 4-axis coaxial, 8 blades
+  MAX_ALTITUDE_M: 6000,              // Operating altitude
+  WIND_RESISTANCE_MS: 12,            // Max wind speed m/s
+  DELIVERY_WINCH_M: 30,              // Winch cable length
+  DELIVERY_ELECTRIC_HOOK: true,      // Electric hook release
+  BATTERY_HOTSWAP: true,             // Hot-swap batteries
+  BATTERY_FAST_CHARGE: true,         // Ultra-fast charging
+  SAFETY_LIDAR: true,                // LiDAR obstacle avoidance
+  SAFETY_MMWAVE_RADAR: true,         // mmWave radar
+  SAFETY_VISION_DIRECTIONS: 5,       // 5-direction vision system
+  SAFETY_PARACHUTE: true,            // Emergency parachute
+  INSPECTION_INTERVAL_FLIGHTS: 100,   // First inspection after 100 flights
+  INSPECTION_INTERVAL_HOURS: 50,      // Subsequent: every 50h
   IP_RATING: "IP55",
   OPERATING_TEMP_MIN_C: -20,
-  OPERATING_TEMP_MAX_C: 45,
+  OPERATING_TEMP_MAX_C: 40,
 } as const;
 
 export function validatePayload(weightKg: number): {
