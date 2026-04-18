@@ -395,3 +395,132 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
     references: [customers.id],
   }),
 }));
+
+// ─── Phase 5: LUC Safety Dashboard ───────────────────────────────────────────
+
+export const authorizationDecisionEnum = pgEnum("authorization_decision", [
+  "approved",
+  "rejected",
+  "escalated",
+]);
+
+export const authorizationDecisionByEnum = pgEnum("authorization_decision_by", [
+  "system",
+  "safety_manager",
+]);
+
+export const occurrenceSeverityEnum = pgEnum("occurrence_severity", [
+  "low",
+  "medium",
+  "high",
+  "critical",
+]);
+
+export const occurrenceStatusEnum = pgEnum("occurrence_status", [
+  "open",
+  "under_review",
+  "resolved",
+]);
+
+/**
+ * LUC Self-Authorization log — every automated Go/No-Go decision.
+ * Provides the full audit trail required for BAZL LUC audits.
+ */
+export const flightAuthorizations = pgTable("flight_authorizations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** Optional link to a booking */
+  bookingId: uuid("booking_id").references(() => bookings.id),
+  /** Optional link to a scheduled flight */
+  flightId: uuid("flight_id").references(() => flights.id),
+  /** Franchise tenant this authorization belongs to */
+  franchiseTenantId: uuid("franchise_tenant_id").references(() => franchiseTenants.id),
+
+  // Route
+  pickupLat: decimal("pickup_lat", { precision: 10, scale: 7 }).notNull(),
+  pickupLng: decimal("pickup_lng", { precision: 10, scale: 7 }).notNull(),
+  deliveryLat: decimal("delivery_lat", { precision: 10, scale: 7 }).notNull(),
+  deliveryLng: decimal("delivery_lng", { precision: 10, scale: 7 }).notNull(),
+  altitudeAgl: integer("altitude_agl").default(120),
+
+  /** ISO datetime for which the flight is planned */
+  requestedForDatetime: timestamp("requested_for_datetime").notNull(),
+
+  // SORA snapshot
+  sailLevel: text("sail_level"),
+  grcScore: integer("grc_score"),
+  arcLevel: text("arc_level"),
+  overallRisk: text("overall_risk"),
+
+  // Full JSON snapshots for audit
+  soraResultJson: jsonb("sora_result_json"),
+  weatherResultJson: jsonb("weather_result_json"),
+  notamResultJson: jsonb("notam_result_json"),
+
+  // Decision
+  decision: authorizationDecisionEnum("decision").notNull(),
+  decisionReason: text("decision_reason").notNull(),
+  decisionBy: authorizationDecisionByEnum("decision_by").notNull().default("system"),
+  /** Set when a human safety manager overrides the system */
+  decisionByUserId: text("decision_by_user_id"),
+  decidedAt: timestamp("decided_at").notNull().defaultNow(),
+
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+/**
+ * Safety Occurrence Reports (SOR) — mandatory for LUC compliance.
+ */
+export const safetyOccurrences = pgTable("safety_occurrences", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  flightId: uuid("flight_id").references(() => flights.id),
+  authorizationId: uuid("authorization_id").references(() => flightAuthorizations.id),
+  franchiseTenantId: uuid("franchise_tenant_id").references(() => franchiseTenants.id),
+
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  severity: occurrenceSeverityEnum("severity").notNull().default("medium"),
+  category: text("category").notNull().default("operational"), // operational | weather | airspace | technical | human
+
+  reportedAt: timestamp("reported_at").notNull().defaultNow(),
+  reportedByUserId: text("reported_by_user_id"),
+
+  status: occurrenceStatusEnum("status").notNull().default("open"),
+  resolution: text("resolution"),
+  resolvedAt: timestamp("resolved_at"),
+
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// ─── Phase 5 Relations ────────────────────────────────────────────────────────
+
+export const flightAuthorizationsRelations = relations(flightAuthorizations, ({ one }) => ({
+  booking: one(bookings, {
+    fields: [flightAuthorizations.bookingId],
+    references: [bookings.id],
+  }),
+  flight: one(flights, {
+    fields: [flightAuthorizations.flightId],
+    references: [flights.id],
+  }),
+  franchiseTenant: one(franchiseTenants, {
+    fields: [flightAuthorizations.franchiseTenantId],
+    references: [franchiseTenants.id],
+  }),
+}));
+
+export const safetyOccurrencesRelations = relations(safetyOccurrences, ({ one }) => ({
+  flight: one(flights, {
+    fields: [safetyOccurrences.flightId],
+    references: [flights.id],
+  }),
+  authorization: one(flightAuthorizations, {
+    fields: [safetyOccurrences.authorizationId],
+    references: [flightAuthorizations.id],
+  }),
+  franchiseTenant: one(franchiseTenants, {
+    fields: [safetyOccurrences.franchiseTenantId],
+    references: [franchiseTenants.id],
+  }),
+}));

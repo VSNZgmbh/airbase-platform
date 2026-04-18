@@ -2,14 +2,14 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { OperatorDashboard } from "@/components/operator/OperatorDashboard";
-import { BarChart2, ShieldCheck } from "lucide-react";
+import { SafetyDashboard } from "@/components/safety/SafetyDashboard";
+import { ShieldCheck } from "lucide-react";
 
 export const metadata = {
-  title: "Operator Dashboard — Airbase",
+  title: "Safety Dashboard — Airbase LUC",
 };
 
-export default async function OperatorPage() {
+export default async function SafetyPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
@@ -30,23 +30,21 @@ export default async function OperatorPage() {
               <span className="text-white font-bold text-sm">A</span>
             </div>
             <span className="font-bold text-xl text-gray-900">Airbase</span>
-            <span className="text-xs font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ml-1">
-              OPERATOR
+            <span className="text-xs font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full ml-1">
+              LUC SAFETY
             </span>
           </Link>
           <div className="flex items-center gap-3">
             <Link
-              href="/safety"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-emerald-600 transition-colors"
+              href="/operator"
+              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
-              <ShieldCheck className="w-4 h-4" />
-              Safety
+              Buchungen
             </Link>
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
-              <BarChart2 className="w-4 h-4" />
               Analytics
             </Link>
             <UserButton afterSignOutUrl="/" />
@@ -55,13 +53,19 @@ export default async function OperatorPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Buchungsübersicht</h1>
-          <p className="text-gray-500 mt-1">
-            Alle Buchungen prüfen, genehmigen oder ablehnen
-          </p>
+        <div className="mb-8 flex items-start gap-3">
+          <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+            <ShieldCheck className="w-6 h-6 text-emerald-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">LUC Safety Dashboard</h1>
+            <p className="text-gray-500 mt-1 text-sm">
+              Light UAS Operator Certificate — Selbst-Autorisierungssystem für Flugfreigaben.
+              Alle Entscheidungen werden für BAZL-Audits protokolliert.
+            </p>
+          </div>
         </div>
-        <OperatorDashboard />
+        <SafetyDashboard />
       </div>
     </div>
   );
