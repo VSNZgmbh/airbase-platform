@@ -40,6 +40,8 @@ import {
   Activity,
   ChevronRight,
   Calendar,
+  Battery,
+  RotateCcw,
 } from "lucide-react";
 
 const tooltipStyle: React.CSSProperties = {
@@ -53,6 +55,22 @@ const tooltipStyle: React.CSSProperties = {
 
 // ─── Fleet Overview with Maintenance Status ─────────────────────────────────
 
+function WearBar({ label, icon, value, max, unit, warnAt }: { label: string; icon: React.ReactNode; value: number; max: number; unit: string; warnAt: number }) {
+  const pct = Math.min(100, (value / max) * 100);
+  const warn = pct >= warnAt;
+  return (
+    <div className="mb-1.5">
+      <div className="flex items-center justify-between text-[9px] mb-0.5">
+        <span className="flex items-center gap-1 text-gray-400">{icon}{label}</span>
+        <span className={`font-bold font-mono ${warn ? "text-amber-600" : "text-gray-500"}`}>{value}/{max} {unit}</span>
+      </div>
+      <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full transition-all duration-1000 ${warn ? "bg-amber-400" : "bg-emerald-400"}`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
 function FleetOverview() {
   const dronesQ = trpc.tenant.listDrones.useQuery(undefined, { retry: false });
   const drones = dronesQ.data && dronesQ.data.length > 0 ? dronesQ.data : DEMO_DRONES;
@@ -61,15 +79,17 @@ function FleetOverview() {
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flottenübersicht</h3>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flottenübersicht — DJI FlyCart 30</h3>
           <p className="text-[10px] text-gray-300 mt-0.5">{drones.length} Drohnen registriert</p>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         {drones.map((drone) => {
-          const utilization = "utilization" in drone ? (drone as (typeof DEMO_DRONES)[0]).utilization : Math.floor(Math.random() * 40 + 50);
+          const d = drone as (typeof DEMO_DRONES)[0];
+          const utilization = "utilization" in drone ? d.utilization : Math.floor(Math.random() * 40 + 50);
           const maintenance = DEMO_MAINTENANCE.find((m) => m.droneId === drone.id);
           const maintenanceUrgent = maintenance && maintenance.status === "in_progress";
+          const hasBatteryData = "batteryCyclesUsed" in drone;
           return (
             <div key={drone.id} className={`bg-white rounded-xl border p-4 hover:shadow-md transition-all ${maintenanceUrgent ? "border-amber-200" : "border-gray-100"}`}>
               <div className="flex items-start justify-between mb-2">
@@ -84,14 +104,15 @@ function FleetOverview() {
                   {drone.isActive ? "AKTIV" : "OFFLINE"}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-[10px] text-gray-400 mb-2">
+              <div className="flex items-center gap-3 text-[10px] text-gray-400 mb-1">
                 <span>Nutzlast: <span className="text-gray-700 font-semibold">{drone.maxPayloadKg} kg</span></span>
                 <span>Reichweite: <span className="text-gray-700 font-semibold">{drone.maxRangeKm} km</span></span>
+                {"batteryMode" in drone && <span className="text-gray-300">({d.batteryMode === "dual" ? "Dual" : "Einzel"}-Batterie)</span>}
               </div>
               {"totalFlights" in drone && (
               <div className="flex items-center gap-3 text-[10px] text-gray-400 mb-2">
-                <span>{(drone as (typeof DEMO_DRONES)[0]).totalFlights} Flüge</span>
-                <span>{(drone as (typeof DEMO_DRONES)[0]).hoursFlown}h geflogen</span>
+                <span>{d.totalFlights} Flüge</span>
+                <span>{d.hoursFlown}h geflogen</span>
               </div>
               )}
               {/* Utilization bar */}
@@ -104,9 +125,20 @@ function FleetOverview() {
                   <div className="h-full bg-brand-600 rounded-full transition-all duration-1000" style={{ width: `${utilization}%` }} />
                 </div>
               </div>
+              {/* Wear tracking */}
+              {hasBatteryData && (
+                <div className="border-t border-gray-50 pt-2 mt-2">
+                  <WearBar label="DB2000 Batterie" icon={<Battery className="w-2.5 h-2.5" />} value={d.batteryCyclesUsed} max={d.batteryCyclesMax} unit="Zyklen" warnAt={70} />
+                  <WearBar label="Propeller 54&quot;" icon={<RotateCcw className="w-2.5 h-2.5" />} value={d.propellerHours} max={d.propellerMaxHours} unit="h" warnAt={75} />
+                  <div className="flex items-center justify-between text-[9px] mt-1">
+                    <span className="text-gray-400">Batterie-Zustand</span>
+                    <span className={`font-bold ${d.batteryHealthPct >= 90 ? "text-emerald-600" : d.batteryHealthPct >= 80 ? "text-amber-600" : "text-red-600"}`}>{d.batteryHealthPct}%</span>
+                  </div>
+                </div>
+              )}
               {/* Maintenance status */}
               {maintenance && (
-                <div className={`flex items-center gap-1.5 text-[9px] font-semibold px-2 py-1 rounded-md ${
+                <div className={`flex items-center gap-1.5 text-[9px] font-semibold px-2 py-1 rounded-md mt-2 ${
                   maintenance.status === "in_progress" ? "bg-amber-50 text-amber-600" : "bg-gray-50 text-gray-500"
                 }`}>
                   <Wrench className="w-3 h-3" />

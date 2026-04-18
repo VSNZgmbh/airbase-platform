@@ -142,11 +142,45 @@ export function formatCHF(amount: number): string {
   }).format(amount);
 }
 
-// FlyCart 100 validation
+// DJI FlyCart 30 — Real specs (source: dji.com/flycart-30/specs)
+// Single-battery mode: 40 kg payload, 12 km range, 15 min flight
+// Dual-battery mode:   30 kg payload, 28 km range, 29 min flight
+export const FLYCART_30 = {
+  MODEL: "DJI FlyCart 30",
+  MAX_PAYLOAD_KG: 40,               // Single-battery mode max
+  MAX_PAYLOAD_DUAL_KG: 30,          // Dual-battery mode max
+  MAX_RANGE_KM: 28,                 // Dual-battery mode
+  MAX_RANGE_SINGLE_KM: 12,          // Single-battery mode
+  CRUISE_SPEED_KMH: 54,             // 15 m/s
+  MAX_SPEED_KMH: 72,                // 20 m/s
+  MAX_FLIGHT_TIME_MIN: 29,          // Dual-battery, no payload
+  FLIGHT_TIME_30KG_MIN: 18,         // Dual-battery, 30 kg payload
+  AIRCRAFT_WEIGHT_KG: 42.5,         // Without batteries
+  MTOW_KG: 95,                      // Max takeoff weight
+  BATTERY_MODEL: "DB2000",
+  BATTERY_CAPACITY_MAH: 38000,
+  BATTERY_CHARGE_CYCLES: 1500,      // Max lifecycle
+  BATTERY_LIFESPAN_MONTHS: 12,
+  CHARGING_TIME_DUAL_H: 2.5,        // Both batteries
+  CHARGING_TIME_SINGLE_H: 2.0,
+  PROPELLER_SIZE_INCH: 54,           // Carbon fiber composite
+  PROPELLER_REPLACE_HOURS: 1000,     // Or 36 months
+  PROPELLER_REPLACE_MONTHS: 36,
+  MOTOR_STATOR_MM: "100x33",
+  MOTOR_POWER_W: 4000,              // Per rotor
+  MOTOR_COUNT: 8,                    // 4-axis coaxial
+  INSPECTION_INTERVAL_FLIGHTS: 100,  // First inspection after 100 flights
+  INSPECTION_INTERVAL_HOURS: 50,     // Subsequent: every 50h
+  IP_RATING: "IP55",
+  OPERATING_TEMP_MIN_C: -20,
+  OPERATING_TEMP_MAX_C: 45,
+} as const;
+
+/** @deprecated Use FLYCART_30 instead */
 export const FLYCART_100 = {
-  MAX_PAYLOAD_KG: 100,
-  MAX_RANGE_KM: 100,
-  CRUISE_SPEED_KMH: 75,
+  MAX_PAYLOAD_KG: FLYCART_30.MAX_PAYLOAD_KG,
+  MAX_RANGE_KM: FLYCART_30.MAX_RANGE_KM,
+  CRUISE_SPEED_KMH: FLYCART_30.CRUISE_SPEED_KMH,
 } as const;
 
 export function validatePayload(weightKg: number): {
@@ -156,10 +190,10 @@ export function validatePayload(weightKg: number): {
   if (weightKg <= 0) {
     return { valid: false, error: "Gewicht muss grösser als 0 kg sein." };
   }
-  if (weightKg > FLYCART_100.MAX_PAYLOAD_KG) {
+  if (weightKg > FLYCART_30.MAX_PAYLOAD_KG) {
     return {
       valid: false,
-      error: `FlyCart 100 Maximalnutzlast: ${FLYCART_100.MAX_PAYLOAD_KG} kg. Bitte wenden Sie sich für Überlasten an uns.`,
+      error: `DJI FlyCart 30 Maximalnutzlast: ${FLYCART_30.MAX_PAYLOAD_KG} kg (Einzelbatterie). Bitte wenden Sie sich für Überlasten an uns.`,
     };
   }
   return { valid: true };

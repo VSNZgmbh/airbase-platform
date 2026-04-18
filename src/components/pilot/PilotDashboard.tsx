@@ -194,6 +194,110 @@ function WeatherAirspacePanel() {
   );
 }
 
+// ─── Drone Status / Wear Tracking (DJI FlyCart 30 real specs) ────────────────
+
+function DroneStatusPanel({ drone }: { drone: any }) {
+  if (!drone) return null;
+  const hasBatteryData = "batteryCyclesUsed" in drone;
+  if (!hasBatteryData) return null;
+  const d = drone as (typeof DEMO_DRONES)[0];
+
+  const batteryPct = (d.batteryCyclesUsed / d.batteryCyclesMax) * 100;
+  const propellerPct = (d.propellerHours / d.propellerMaxHours) * 100;
+  const flightsToInspection = d.nextMotorInspectionFlights - d.totalFlights;
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="px-5 py-3 border-b border-gray-50">
+        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Drohnen-Verschleiss — DJI FlyCart 30</h3>
+        <p className="text-[10px] text-gray-300 mt-0.5">{d.serialNumber} · {d.batteryMode === "dual" ? "Dual" : "Einzel"}-Batterie</p>
+      </div>
+      <div className="p-4 space-y-3">
+        {/* Battery DB2000 */}
+        <div className="bg-gray-50 rounded-xl p-3">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1.5">
+              <Battery className="w-3.5 h-3.5 text-gray-400" />
+              DB2000 Batterie (38&apos;000 mAh)
+            </span>
+            <span className={`text-[10px] font-bold ${d.batteryHealthPct >= 90 ? "text-emerald-600" : d.batteryHealthPct >= 80 ? "text-amber-600" : "text-red-600"}`}>
+              {d.batteryHealthPct}% Gesundheit
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[9px] text-gray-400 mb-1">
+            <span>{d.batteryCyclesUsed} / {d.batteryCyclesMax} Ladezyklen</span>
+            <span>Max. 12 Monate / 1&apos;500 Zyklen</span>
+          </div>
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className={`h-full rounded-full transition-all duration-1000 ${batteryPct > 70 ? "bg-amber-400" : "bg-emerald-400"}`}
+              style={{ width: `${batteryPct}%` }} />
+          </div>
+          <p className="text-[9px] text-gray-400 mt-1">
+            Installiert: {new Date(d.batteryInstalledDate).toLocaleDateString("de-CH")} · Ladedauer: {d.batteryMode === "dual" ? "2.5h" : "2.0h"}
+          </p>
+        </div>
+
+        {/* Propeller 54" Carbon */}
+        <div className="bg-gray-50 rounded-xl p-3">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1.5">
+              <Navigation className="w-3.5 h-3.5 text-gray-400" />
+              Propeller 54&quot; Carbon-Composite
+            </span>
+            <span className={`text-[10px] font-bold ${propellerPct > 75 ? "text-amber-600" : "text-emerald-600"}`}>
+              {Math.round(100 - propellerPct)}% Restleben
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[9px] text-gray-400 mb-1">
+            <span>{d.propellerHours}h / {d.propellerMaxHours}h bis Austausch</span>
+            <span>Oder alle 36 Monate</span>
+          </div>
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className={`h-full rounded-full transition-all duration-1000 ${propellerPct > 75 ? "bg-amber-400" : "bg-emerald-400"}`}
+              style={{ width: `${propellerPct}%` }} />
+          </div>
+          <p className="text-[9px] text-gray-400 mt-1">
+            Installiert: {new Date(d.propellerInstalledDate).toLocaleDateString("de-CH")} · Tägliche Sichtprüfung auf Verschleisslinien
+          </p>
+        </div>
+
+        {/* Motor Inspection */}
+        <div className="bg-gray-50 rounded-xl p-3">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1.5">
+              <Wrench className="w-3.5 h-3.5 text-gray-400" />
+              8x Motoren (100x33mm, 4kW)
+            </span>
+            <span className={`text-[10px] font-bold ${flightsToInspection <= 10 ? "text-amber-600" : "text-emerald-600"}`}>
+              {flightsToInspection > 0 ? `${flightsToInspection} Flüge bis Inspektion` : "Inspektion fällig!"}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[9px] text-gray-400">
+            <span>Letzte Inspektion: {new Date(d.lastMotorInspectionDate).toLocaleDateString("de-CH")}</span>
+            <span>Intervall: alle 50h / 100 Flüge</span>
+          </div>
+        </div>
+
+        {/* Quick specs */}
+        <div className="grid grid-cols-3 gap-2 pt-1">
+          <div className="text-center bg-gray-50 rounded-lg p-2">
+            <p className="text-[9px] text-gray-400">Nutzlast</p>
+            <p className="text-xs font-bold text-gray-700">{d.maxPayloadKg} kg</p>
+          </div>
+          <div className="text-center bg-gray-50 rounded-lg p-2">
+            <p className="text-[9px] text-gray-400">Reichweite</p>
+            <p className="text-xs font-bold text-gray-700">{d.maxRangeKm} km</p>
+          </div>
+          <div className="text-center bg-gray-50 rounded-lg p-2">
+            <p className="text-[9px] text-gray-400">Flugzeit ({d.batteryMode === "dual" ? "30 kg" : "leer"})</p>
+            <p className="text-xs font-bold text-gray-700">{d.batteryMode === "dual" ? "18" : "15"} min</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Maintenance Schedule ────────────────────────────────────────────────────
 
 function MaintenancePanel() {
@@ -722,6 +826,7 @@ export function PilotDashboard() {
               { label: "Status", value: "BEREIT", highlight: false },
             ]} />
             <ActiveMissionDetail flight={activeFlightOrFirst} />
+            <DroneStatusPanel drone={activeFlightOrFirst?.drone ?? DEMO_DRONES[0]} />
             <WeatherAirspacePanel />
             <MaintenancePanel />
           </div>
