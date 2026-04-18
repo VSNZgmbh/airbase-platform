@@ -1,16 +1,13 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { getAuthUserId, getUserRole, isClerkConfigured } from "@/lib/demo-auth";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 
 export default async function AdminPage() {
-  const { userId } = await auth();
+  const userId = await getAuthUserId();
   if (!userId) redirect("/sign-in");
 
-  // Only operators can access admin analytics
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  const role = (user.publicMetadata as { role?: string })?.role;
-  if (role !== "operator") redirect("/dashboard");
+  const role = await getUserRole(userId);
+  if (isClerkConfigured && role !== "operator") redirect("/dashboard");
 
   return (
     <main className="min-h-screen bg-gray-50">

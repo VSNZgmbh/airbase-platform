@@ -1,7 +1,7 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { getAuthUserId, getUserRole, isClerkConfigured } from "@/lib/demo-auth";
 import { OperatorDashboard } from "@/components/operator/OperatorDashboard";
 import { BarChart2, ShieldCheck } from "lucide-react";
 
@@ -10,14 +10,11 @@ export const metadata = {
 };
 
 export default async function OperatorPage() {
-  const { userId } = await auth();
+  const userId = await getAuthUserId();
   if (!userId) redirect("/sign-in");
 
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  const role = (user.publicMetadata as { role?: string })?.role;
-
-  if (role !== "operator") {
+  const role = await getUserRole(userId);
+  if (isClerkConfigured && role !== "operator") {
     redirect("/dashboard");
   }
 
@@ -49,7 +46,7 @@ export default async function OperatorPage() {
               <BarChart2 className="w-4 h-4" />
               Analytics
             </Link>
-            <UserButton afterSignOutUrl="/" />
+            {isClerkConfigured && <UserButton afterSignOutUrl="/" />}
           </div>
         </div>
       </header>

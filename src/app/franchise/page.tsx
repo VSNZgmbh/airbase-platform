@@ -1,6 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { getAuthUserId } from "@/lib/demo-auth";
 import { FranchiseDashboard } from "@/components/operator/FranchiseDashboard";
 import { Building2, ShieldCheck, BarChart2 } from "lucide-react";
 
@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function FranchisePage() {
-  const { userId } = await auth();
+  const userId = await getAuthUserId();
   if (!userId) redirect("/sign-in");
 
   return (

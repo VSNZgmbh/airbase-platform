@@ -1,7 +1,7 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { getAuthUserId, isClerkConfigured } from "@/lib/demo-auth";
 import { CustomerDashboard } from "@/components/dashboard/CustomerDashboard";
 import { Plus } from "lucide-react";
 
@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
-  const { userId } = await auth();
+  const userId = await getAuthUserId();
   if (!userId) redirect("/sign-in");
 
   return (
@@ -31,7 +31,7 @@ export default async function DashboardPage() {
               <Plus className="w-4 h-4" />
               Neuer Flug
             </Link>
-            <UserButton afterSignOutUrl="/" />
+            {isClerkConfigured && <UserButton afterSignOutUrl="/" />}
           </div>
         </div>
       </header>

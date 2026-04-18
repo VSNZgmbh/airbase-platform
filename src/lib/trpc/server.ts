@@ -1,10 +1,11 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { franchiseTenants } from "@/lib/db/schema";
+import { getAuthUserId, getUserRole as getDemoUserRole, isClerkConfigured } from "@/lib/demo-auth";
 
 /**
  * Resolve the franchise tenant ID for the current request.
@@ -39,7 +40,7 @@ async function resolveTenantId(userId: string | null): Promise<string | null> {
 }
 
 export const createTRPCContext = async () => {
-  const { userId } = await auth();
+  const userId = await getAuthUserId();
   const tenantId = await resolveTenantId(userId);
   return {
     db,
@@ -92,9 +93,7 @@ export const protectedProcedure = t.procedure
   });
 
 async function getUserRole(userId: string): Promise<string | undefined> {
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  return (user.publicMetadata as { role?: string })?.role;
+  return getDemoUserRole(userId);
 }
 
 export const operatorProcedure = t.procedure
