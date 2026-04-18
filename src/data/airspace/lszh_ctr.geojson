@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "icao": "LSZH",
+        "name": "CTR ZURICH",
+        "type": "CTR",
+        "class": "D",
+        "lowerLimit": "GND",
+        "upperLimit": "6000 ft MSL",
+        "source": "PLACEHOLDER — pending extraction from Swiss AIP AD 2-LSZH",
+        "lastVerified": null
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": []
+      }
+    }
+  ]
+}

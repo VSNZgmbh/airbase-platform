@@ -1,17 +1,14 @@
 import * as turf from "@turf/turf";
+import { LSZB_CTR_POLYGON } from "@/data/airspace";
 
 /**
- * Bern-Belp CTR (LSZB) — circular approximation.
- * Center: best-known ARP from ICAO/Eurocontrol public databases (46.9142°N, 7.4989°E).
- * Not yet verified against Swiss AIP AD 2-LSZB official publication.
- * Radius conservatively increased to 11 km (interim mitigation) to compensate for
- * residual coordinate uncertainty and cover the historical 1.6 km offset gap.
- * Pending replacement with official CTR polygon once sourced (see sibling task).
- * COO determination documented in AIR-89; coordinate discrepancy background in AIR-88.
+ * Bern-Belp CTR (LSZB) — official AIP polygon.
+ * Source: Swiss AIP AD 2-LSZB (skyguide), verified via OpenAIP community data.
+ * Boundary: 4 straight-line vertices + 5.02 NM arc centered on 46°55'09"N 007°29'32.8"E.
+ * Class D airspace, GND–5000 ft MSL.
+ * See src/data/airspace/lszb_ctr.geojson for full coordinate provenance.
  */
-export const LSZB_CTR = turf.circle([7.4989, 46.9142], 11, {
-  units: "kilometers",
-});
+export const LSZB_CTR = LSZB_CTR_POLYGON;
 
 /**
  * Returns true when the straight-line route between pickup and delivery
