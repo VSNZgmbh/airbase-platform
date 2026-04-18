@@ -44,14 +44,33 @@ const FLIGHT_STATUS_LABELS: Record<string, { label: string; color: string; glow:
 };
 
 const SAFETY_CHECKLIST = [
-  "Akku vollständig geladen und geprüft",
-  "Propeller auf Schäden geprüft",
-  "GPS-Signal stabil (min. 8 Satelliten)",
-  "Hinderniserkennungs-Sensoren kalibriert",
+  // ── Fallschirm & Notfallsysteme (Pflicht für 150 kg MTOW-UAS) ──
+  "Fallschirm-Selbsttest bestanden (Deployment-Check)",
+  "Notlandeplatz identifiziert und kommuniziert",
+  "Emergency-Descent-Briefing abgeschlossen",
+  // ── Energieversorgung ──
+  "Akku vollständig geladen (Modul A + B geprüft)",
+  "Akkugesundheit beider Batteriemodule verifiziert (SoH ≥ 80%)",
+  // ── Struktur & Antrieb ──
+  "Propeller auf Schäden geprüft (Sichtprüfung)",
+  "Propeller-Drehmoment-Check nach letztem Wechsel bestätigt",
+  // ── Navigation & Sensorik ──
+  "INS/GPS-Ausrichtung verifiziert (Gyro-Offset < Grenzwert)",
+  "GPS-Signal stabil (min. 12 Satelliten)",
+  "LiDAR-Hinderniserkennung aktiviert und Selbsttest bestanden",
+  "mmWave-Radar kalibriert (Front + Heck)",
+  // ── Kommunikation & C2-Link ──
+  "C2-Link-Stärke geprüft (SafeSky RSSI + INVOLI RSSI > Schwellenwert)",
+  "Kommunikation mit Bodenstelle hergestellt",
+  // ── Wetter & Luftraum ──
+  "Wetterdaten aktuell (max. 30 Minuten alt)",
   "Wetterkonditionen innerhalb der Betriebsgrenzen",
   "Luftraum-Freigabe bestätigt (NOTAM geprüft)",
-  "Kommunikation mit Bodenstelle hergestellt",
+  // ── Nutzlast & Mission ──
   "Nutzlast korrekt gesichert und gewogen",
+  "Nutzlastgewicht gegen zertifiziertes Limit verifiziert",
+  // ── Crew & Betrieb ──
+  "Crew-Rest-Nachweis erbracht (min. 8h vor Einsatz)",
 ];
 
 const MISSION_TYPES: Record<string, { label: string; color: string }> = {
