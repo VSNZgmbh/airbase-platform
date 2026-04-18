@@ -564,12 +564,13 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   DJI FlyCart 100
                 </h2>
                 <p className="text-lg mb-8" style={{ color: "rgba(248,250,252,0.8)" }}>
-                  Die leistungsstärkste Lastendrohne ihrer Klasse. Bis 100 kg Nutzlast, 26 km Reichweite, SORA-zertifiziert und BAZL-konform für den kommerziellen Einsatz in der Schweiz.
+                  Die leistungsstärkste Lastendrohne ihrer Klasse. Bis 100 kg Nutzlast (Einzelbatterie, 12 km Reichweite) oder bis 85 kg mit Doppelbatterie (26 km Reichweite). SORA-geprüft und BAZL-konform für den kommerziellen Einsatz in der Schweiz.
                 </p>
-                <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="grid grid-cols-4 gap-4 mb-8">
                   {[
-                    { value: "100kg", label: "Nutzlast" },
-                    { value: "26km", label: "Reichweite" },
+                    { value: "100kg", label: "Max. Nutzlast" },
+                    { value: "12km", label: "Reichweite (1 Akku)" },
+                    { value: "26km", label: "Reichweite (2 Akkus, ≤85 kg)" },
                     { value: "0g", label: "CO₂" },
                   ].map((spec) => (
                     <div key={spec.label} className="rounded-2xl p-4 text-center" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}>
@@ -1048,7 +1049,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             whileInView="visible"
             viewport={vp}
           >
-            {["SORA-zertifiziert", "BAZL-konform", "Swiss Made", "Berner Oberland"].map((badge) => (
+            {["SORA-geprüft", "BAZL-konform", "Swiss Made", "Berner Oberland"].map((badge) => (
               <motion.span
                 key={badge}
                 variants={popIn}
@@ -1554,7 +1555,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             style={{ borderColor: "#E2E8F0", color: "#94A3B8" }}
           >
             <span>© {new Date().getFullYear()} Airbase Aviation GmbH — Alle Rechte vorbehalten.</span>
-            <span>BAZL-konform · SORA-zertifiziert · Made in Switzerland 🇨🇭</span>
+            <span>BAZL-konform · SORA-geprüft · Made in Switzerland 🇨🇭</span>
           </div>
         </div>
       </motion.footer>

@@ -242,7 +242,8 @@ function ApprovalWorkflow() {
         {[
           { label: "SAIL \u2264 III", action: "Auto-Freigabe durch KI", style: "bg-green-50 text-green-700 border-green-200", icon: Zap },
           { label: "SAIL IV", action: "Safety Mgr → Accountable Mgr", style: "bg-purple-50 text-purple-600 border-purple-200", icon: ShieldCheck },
-          { label: "SAIL V/VI", action: "Automatisch abgelehnt", style: "bg-red-50 text-red-600 border-red-200", icon: XCircle },
+          { label: "SAIL V", action: "Eskalation: Safety Mgr + BAZL-Vorabklärung", style: "bg-amber-50 text-amber-600 border-amber-200", icon: ShieldAlert },
+          { label: "SAIL VI", action: "Manueller BAZL-Antrag erforderlich", style: "bg-red-50 text-red-600 border-red-200", icon: AlertTriangle },
         ].map((item) => (
           <div key={item.label} className={`flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-lg border ${item.style}`}>
             <item.icon className="w-3.5 h-3.5" />
@@ -278,8 +279,8 @@ function LUCProtocol() {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">LUC-Protokoll</h3>
-        <p className="text-[10px] font-bold text-brand-500 uppercase tracking-[0.12em] mt-1">Light UAS Operator Certificate</p>
+        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Betriebsprüfung</h3>
+        <p className="text-[10px] font-bold text-brand-500 uppercase tracking-[0.12em] mt-1">BAZL-Betriebsgenehmigung (SPECIFIC)</p>
       </div>
 
       <div className="space-y-2 mb-4">
@@ -294,7 +295,7 @@ function LUCProtocol() {
       <div className="border-t border-gray-100 pt-3">
         <div className="flex items-center gap-2 text-[10px] text-gray-400">
           <FileText className="w-3 h-3" />
-          <span>LUC-Nr. CH-LUC-2025-0042 | Gültig bis 31.12.2026</span>
+          <span>BAZL-Betriebsgenehmigung (SPECIFIC) | Gültig gemäss LFG SR 748.0</span>
         </div>
       </div>
     </div>

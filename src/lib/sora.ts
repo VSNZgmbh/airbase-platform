@@ -14,7 +14,7 @@
  */
 
 import * as turf from "@turf/turf";
-import { requiresBernBelpPermit } from "./geo";
+import { requiresBernBelpPermit, routeIntersectsControlledAirspace } from "./geo";
 
 // ─── GRC — Ground Risk Class ──────────────────────────────────────────────────
 
@@ -663,7 +663,9 @@ function calculateGRC(
 
 /**
  * Determine ARC based on airspace characteristics.
- * Uses Bern-Belp CTR detection + altitude.
+ * Checks all major Swiss CTRs: LSZB (precise polygon), LSZH, LSGG, LFSB,
+ * LSGS, LSZA, LSZL, LSMP, LSME, LSMM (bounding boxes).
+ * Source: Swiss AIP AD 2 (skyguide).
  */
 function calculateARC(
   pickupLng: number,
@@ -672,7 +674,7 @@ function calculateARC(
   deliveryLat: number,
   altitudeAgl = 120
 ): ARCLevel {
-  const inCTR = requiresBernBelpPermit(pickupLng, pickupLat, deliveryLng, deliveryLat);
+  const inCTR = routeIntersectsControlledAirspace(pickupLng, pickupLat, deliveryLng, deliveryLat);
 
   if (inCTR) {
     // Inside controlled airspace

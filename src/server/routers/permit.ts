@@ -305,7 +305,7 @@ LUFTFAHRZEUG:
   Modell:             ${p.droneModel}
   Seriennummer:       ${p.droneSerial}
   MTOW:               149.9 kg
-  Betriebskategorie:  SPECIFIC (gemäss EU-UAS-Verordnung 2019/945)
+  Betriebskategorie:  SPECIFIC (gemäss LFG SR 748.0 / LFV SR 748.01 / BAZL-Betriebsgenehmigungsregime)
 
 PILOT:
   Name:               ${p.pilotName}
@@ -315,7 +315,7 @@ SORA-BEWERTUNG:
   ARC (Air Risk):     ${p.arcScore}
   Kategorie:          ${p.soraCategory}
 
-Das Unternehmen Airbase Aviation GmbH verfügt über eine gültige Betriebsgenehmigung und alle notwendigen Versicherungen gemäss schweizerischem Recht.
+Das Unternehmen Airbase Aviation GmbH verfügt über eine gültige BAZL-Betriebsgenehmigung (gemäss LFG SR 748.0 / LFV SR 748.01) und alle notwendigen Versicherungen gemäss schweizerischem Recht.
 
 Wir bitten um Genehmigung des oben beschriebenen Betriebs und stehen für Rückfragen zur Verfügung.
 
@@ -350,7 +350,7 @@ PILOT:
 
 Wir ersuchen hiermit um eine vorübergehende Freigabe für die Durchquerung des CTR Bern-Belp (LSZB) im Rahmen der oben beschriebenen Drohnenoperation.
 
-Die Operation erfolgt in Übereinstimmung mit den BAZL-Richtlinien und der SORA-Bewertung (GRC ${p.grcScore} / ARC ${p.arcScore}).
+Die Operation erfolgt in Übereinstimmung mit dem BAZL-Betriebsgenehmigungsregime (LFG SR 748.0 / LFV SR 748.01) und der SORA-Bewertung (GRC ${p.grcScore} / ARC ${p.arcScore}).
 
 Airbase Aviation GmbH — Operations
 ops@airbase.one`;
@@ -372,7 +372,7 @@ GEPLANTE OPERATION:
   Nutzlast:      ${p.payloadWeightKg} kg
   Drohne:        ${p.droneModel} (${p.droneSerial})
 
-Die Operation erfolgt gemäss SORA-Bewertung (GRC ${p.grcScore}) mit allen notwendigen Sicherheitsmassnahmen.
+Die Operation erfolgt gemäss BAZL-Betriebsgenehmigungsregime (LFG SR 748.0 / LFV SR 748.01) und SORA-Bewertung (GRC ${p.grcScore}) mit allen notwendigen Sicherheitsmassnahmen.
 
 Airbase Aviation GmbH — Operations
 ops@airbase.one`;
