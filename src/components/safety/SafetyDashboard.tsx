@@ -190,47 +190,58 @@ function ApprovalWorkflow() {
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <div className="mb-4">
         <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flugfreigabe-Workflow</h3>
-        <p className="text-[10px] text-gray-300 mt-0.5">KI empfiehlt → Safety Manager genehmigt</p>
+        <p className="text-[10px] text-gray-300 mt-0.5">BAZL LUC Dreistufig: KI → Safety Manager → Accountable Manager</p>
       </div>
 
-      {/* Workflow diagram */}
-      <div className="flex items-center gap-2 mb-4 bg-gray-50 rounded-xl p-3 border border-gray-100">
+      {/* Three-tier workflow diagram */}
+      <div className="flex items-center gap-1.5 mb-4 bg-gray-50 rounded-xl p-3 border border-gray-100">
         <div className="flex flex-col items-center gap-1">
           <div className="w-8 h-8 bg-brand-50 rounded-lg flex items-center justify-center border border-brand-200">
             <Zap className="w-4 h-4 text-brand-500" />
           </div>
-          <span className="text-[8px] font-bold text-gray-400">KI-Analyse</span>
+          <span className="text-[7px] font-bold text-gray-400">KI-System</span>
         </div>
         <div className="flex-1 h-px bg-gray-200 relative">
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[8px] text-gray-400 bg-gray-50 px-1">SORA+Wetter</span>
+            <span className="text-[7px] text-gray-400 bg-gray-50 px-1">SORA</span>
           </div>
         </div>
         <div className="flex flex-col items-center gap-1">
           <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center border border-amber-200">
             <Eye className="w-4 h-4 text-amber-500" />
           </div>
-          <span className="text-[8px] font-bold text-gray-400">Review</span>
+          <span className="text-[7px] font-bold text-gray-400">Safety Mgr</span>
         </div>
         <div className="flex-1 h-px bg-gray-200 relative">
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[8px] text-gray-400 bg-gray-50 px-1">SAIL≥IV</span>
+            <span className="text-[7px] text-gray-400 bg-gray-50 px-1">SAIL IV</span>
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-200">
+            <ShieldCheck className="w-4 h-4 text-purple-500" />
+          </div>
+          <span className="text-[7px] font-bold text-gray-400">Acc. Mgr</span>
+        </div>
+        <div className="flex-1 h-px bg-gray-200 relative">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-[7px] text-gray-400 bg-gray-50 px-1">Final</span>
           </div>
         </div>
         <div className="flex flex-col items-center gap-1">
           <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-200">
             <CheckCircle2 className="w-4 h-4 text-green-500" />
           </div>
-          <span className="text-[8px] font-bold text-gray-400">Freigabe</span>
+          <span className="text-[7px] font-bold text-gray-400">Freigabe</span>
         </div>
       </div>
 
-      {/* SAIL decision rules */}
+      {/* SAIL decision rules — three-tier */}
       <div className="space-y-2">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2">SAIL Entscheidungsregeln</p>
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2">SAIL Entscheidungsregeln (EASA Art. 12 AMC1)</p>
         {[
           { label: "SAIL \u2264 III", action: "Auto-Freigabe durch KI", style: "bg-green-50 text-green-700 border-green-200", icon: Zap },
-          { label: "SAIL IV", action: "Safety Manager Review", style: "bg-amber-50 text-amber-600 border-amber-200", icon: Eye },
+          { label: "SAIL IV", action: "Safety Mgr → Accountable Mgr", style: "bg-purple-50 text-purple-600 border-purple-200", icon: ShieldCheck },
           { label: "SAIL V/VI", action: "Automatisch abgelehnt", style: "bg-red-50 text-red-600 border-red-200", icon: XCircle },
         ].map((item) => (
           <div key={item.label} className={`flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-lg border ${item.style}`}>
@@ -240,6 +251,11 @@ function ApprovalWorkflow() {
             <span>{item.action}</span>
           </div>
         ))}
+      </div>
+
+      {/* BAZL compliance note */}
+      <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+        <p className="text-[9px] text-blue-600 font-medium">BAZL LUC-konform: Dreistufige Signaturkette gem. EASA Art. 12 AMC1</p>
       </div>
     </div>
   );
@@ -584,7 +600,9 @@ function AuthorizationTester() {
                     result.decision === "rejected" ? "text-red-600" : "text-amber-600"
                   }`}>
                     {result.decision === "approved" ? "FLUG FREIGEGEBEN" :
-                     result.decision === "rejected" ? "FLUG ABGELEHNT" : "ESKALIERT \u2014 Safety Manager erforderlich"}
+                     result.decision === "rejected" ? "FLUG ABGELEHNT" :
+                     result.soraResult.sail === "IV" ? "ESKALIERT \u2014 Safety Manager + Accountable Manager erforderlich" :
+                     "ESKALIERT \u2014 Safety Manager erforderlich"}
                   </span>
                 </div>
                 <p className="text-xs text-gray-600">{result.reason}</p>
@@ -703,6 +721,8 @@ function AuthorizationsTable() {
                     <span className="text-xs text-gray-500 flex items-center gap-1.5">
                       {auth.decisionBy === "system" ? (
                         <><Zap className="w-3 h-3 text-brand-500" /><span className="text-brand-500">System KI</span></>
+                      ) : auth.decisionBy === "accountable_manager" ? (
+                        <><ShieldCheck className="w-3 h-3 text-purple-500" /><span className="text-purple-600">Accountable Mgr</span></>
                       ) : (
                         <><Eye className="w-3 h-3 text-amber-500" /><span className="text-amber-600">Safety Manager</span></>
                       )}

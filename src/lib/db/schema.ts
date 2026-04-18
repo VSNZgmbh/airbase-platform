@@ -407,6 +407,7 @@ export const authorizationDecisionEnum = pgEnum("authorization_decision", [
 export const authorizationDecisionByEnum = pgEnum("authorization_decision_by", [
   "system",
   "safety_manager",
+  "accountable_manager",
 ]);
 
 export const occurrenceSeverityEnum = pgEnum("occurrence_severity", [
@@ -463,6 +464,11 @@ export const flightAuthorizations = pgTable("flight_authorizations", {
   /** Set when a human safety manager overrides the system */
   decisionByUserId: text("decision_by_user_id"),
   decidedAt: timestamp("decided_at").notNull().defaultNow(),
+
+  // Three-tier audit: Safety Manager intermediate approval (before Accountable Manager)
+  safetyManagerDecision: authorizationDecisionEnum("safety_manager_decision"),
+  safetyManagerUserId: text("safety_manager_user_id"),
+  safetyManagerDecidedAt: timestamp("safety_manager_decided_at"),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

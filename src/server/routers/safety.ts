@@ -104,9 +104,9 @@ function computeDecision(
     return { decision: "rejected", reason: "Kritische NOTAM aktiv. Luftraum gesperrt, Flug abgelehnt." };
   }
 
-  // Escalations requiring human Safety Manager review
+  // Escalations requiring three-tier review (BAZL LUC / EASA Art. 12 AMC1)
   if (sail === "IV") {
-    return { decision: "escalated", reason: `SAIL IV erfordert Safety Manager Überprüfung vor Freigabe.` };
+    return { decision: "escalated", reason: `SAIL IV erfordert dreistufige Freigabe: Safety Manager + Accountable Manager (EASA Art. 12 AMC1).` };
   }
   if (weatherCondition === "marginal") {
     return { decision: "escalated", reason: "Marginale Wetterbedingungen — Safety Manager muss entscheiden." };
@@ -392,8 +392,11 @@ export const safetyRouter = createTRPCRouter({
     }),
 
   /**
-   * Override a system decision (Safety Manager manual review).
-   * Used when an escalated flight is manually approved or rejected.
+   * Safety Manager override — Tier 2 of the three-tier BAZL LUC workflow.
+   *
+   * For SAIL IV flights: Safety Manager approval is recorded as intermediate,
+   * and the flight stays escalated pending Accountable Manager final sign-off.
+   * For non-SAIL-IV escalations (weather/NOTAM): Safety Manager decision is final.
    */
   overrideDecision: operatorProcedure
     .input(
@@ -404,12 +407,91 @@ export const safetyRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      // Fetch current authorization to check SAIL level
+      const [current] = await ctx.db
+        .select()
+        .from(flightAuthorizations)
+        .where(eq(flightAuthorizations.id, input.authorizationId))
+        .limit(1);
+
+      if (!current) throw new TRPCError({ code: "NOT_FOUND" });
+
+      // SAIL IV + SM approves → record SM decision, keep escalated for AM
+      if (current.sailLevel === "IV" && input.decision === "approved") {
+        const [updated] = await ctx.db
+          .update(flightAuthorizations)
+          .set({
+            safetyManagerDecision: "approved",
+            safetyManagerUserId: ctx.userId,
+            safetyManagerDecidedAt: new Date(),
+            decisionReason: `Safety Manager genehmigt — Accountable Manager Freigabe ausstehend. SM: ${input.reason}`,
+            updatedAt: new Date(),
+          })
+          .where(eq(flightAuthorizations.id, input.authorizationId))
+          .returning();
+
+        return updated;
+      }
+
+      // SM rejects or non-SAIL-IV escalation → SM decision is final
       const [updated] = await ctx.db
         .update(flightAuthorizations)
         .set({
           decision: input.decision,
           decisionReason: input.reason,
           decisionBy: "safety_manager",
+          decisionByUserId: ctx.userId,
+          decidedAt: new Date(),
+          safetyManagerDecision: input.decision,
+          safetyManagerUserId: ctx.userId,
+          safetyManagerDecidedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(flightAuthorizations.id, input.authorizationId))
+        .returning();
+
+      if (!updated) throw new TRPCError({ code: "NOT_FOUND" });
+      return updated;
+    }),
+
+  /**
+   * Accountable Manager override — Tier 3 (final) of the BAZL LUC workflow.
+   *
+   * Only available for SAIL IV flights that have already been approved by
+   * the Safety Manager. This is the final authorization required by
+   * EASA Art. 12 AMC1 for the three-tier signature chain.
+   */
+  accountableManagerOverride: operatorProcedure
+    .input(
+      z.object({
+        authorizationId: z.string().uuid(),
+        decision: z.enum(["approved", "rejected"]),
+        reason: z.string().min(10),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify SM has already approved
+      const [current] = await ctx.db
+        .select()
+        .from(flightAuthorizations)
+        .where(eq(flightAuthorizations.id, input.authorizationId))
+        .limit(1);
+
+      if (!current) throw new TRPCError({ code: "NOT_FOUND" });
+
+      if (current.safetyManagerDecision !== "approved") {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "Safety Manager muss zuerst genehmigen, bevor der Accountable Manager entscheiden kann.",
+        });
+      }
+
+      const [updated] = await ctx.db
+        .update(flightAuthorizations)
+        .set({
+          decision: input.decision,
+          decisionReason: `[Dreistufig] KI→SM→AM: ${input.reason}`,
+          decisionBy: "accountable_manager",
           decisionByUserId: ctx.userId,
           decidedAt: new Date(),
           updatedAt: new Date(),
