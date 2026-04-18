@@ -32,6 +32,7 @@ import {
   franchiseTenants,
 } from "@/lib/db/schema";
 import { assessSora, type SAILLevel } from "@/lib/sora";
+import { checkRouteNotams } from "./notam";
 
 // ─── Weather helper (inline fetch to avoid circular dep) ──────────────────────
 
@@ -169,14 +170,13 @@ export const safetyRouter = createTRPCRouter({
         allWarnings: [...pickupWeather.warnings, ...deliveryWeather.warnings],
       };
 
-      // 3. NOTAM (simplified: use areas from both endpoints)
-      // We treat advisory-level NOTAMs as info, skip network call complexity
-      const notamResult = {
-        overallSeverity: "info" as const,
-        alerts: [] as Array<{ icaoId: string; message: string; severity: string }>,
-        manualCheckUrl: "https://www.skyguide.ch/services/aeronautical-information",
-        checkTimestamp: new Date().toISOString(),
-      };
+      // 3. NOTAM — live Skyguide check for both pickup + delivery areas
+      const notamResult = await checkRouteNotams(
+        input.pickupLat,
+        input.pickupLng,
+        input.deliveryLat,
+        input.deliveryLng,
+      );
 
       // 4. Decision
       const { decision, reason } = computeDecision(soraResult.sail, worstCondition, notamResult.overallSeverity);

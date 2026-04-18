@@ -84,6 +84,43 @@ async function fetchSwissNotams(
   }));
 }
 
+/**
+ * Direct NOTAM check for a flight route — used by safety.ts authorize mutation.
+ * Avoids tRPC overhead while reusing the same check logic.
+ */
+export async function checkRouteNotams(
+  pickupLat: number,
+  pickupLng: number,
+  deliveryLat: number,
+  deliveryLng: number,
+): Promise<NotamCheckResult> {
+  const pickupAreas = findRelevantAreas(pickupLat, pickupLng);
+  const deliveryAreas = findRelevantAreas(deliveryLat, deliveryLng);
+  const allAreas = [...new Set([...pickupAreas, ...deliveryAreas])];
+  const areasToCheck = allAreas.length > 0 ? allAreas : ["LSAS" as IcaoArea];
+
+  const alerts = await fetchSwissNotams(areasToCheck);
+
+  const severityOrder = ["clear", "info", "warning", "critical"] as const;
+  let overallSeverity: NotamCheckResult["overallSeverity"] = "clear";
+  for (const alert of alerts) {
+    if (
+      severityOrder.indexOf(alert.severity) >
+      severityOrder.indexOf(overallSeverity as typeof alert.severity)
+    ) {
+      overallSeverity = alert.severity;
+    }
+  }
+
+  return {
+    alerts,
+    affectedAreas: areasToCheck,
+    overallSeverity: alerts.length > 0 ? overallSeverity : "clear",
+    checkTimestamp: new Date().toISOString(),
+    manualCheckUrl: "https://www.skyguide.ch/services/aeronautical-information",
+  };
+}
+
 export const notamRouter = createTRPCRouter({
   /**
    * Check NOTAMs for a given coordinate.

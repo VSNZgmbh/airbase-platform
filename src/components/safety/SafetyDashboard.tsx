@@ -412,6 +412,100 @@ function SafetyKPIs() {
   );
 }
 
+// ─── NOTAM Status Panel ──────────────────────────────────────────────────────
+
+function NotamStatusPanel() {
+  // Default check location: Interlaken (central Swiss drone ops area)
+  const { data, isLoading, error } = trpc.notam.checkLocation.useQuery(
+    { lat: 46.6863, lng: 7.8632, radiusKm: 30 },
+  );
+
+  const severityStyles: Record<string, { bg: string; border: string; text: string; label: string }> = {
+    clear: { bg: "bg-green-50", border: "border-green-200", text: "text-green-700", label: "Luftraum frei" },
+    info: { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", label: "Hinweise vorhanden" },
+    warning: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", label: "Warnungen aktiv" },
+    critical: { bg: "bg-red-50", border: "border-red-200", text: "text-red-700", label: "Luftraum gesperrt" },
+  };
+
+  const style = data ? severityStyles[data.overallSeverity] ?? severityStyles.clear : severityStyles.clear;
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">NOTAM-Status</h3>
+          <p className="text-[10px] text-gray-300 mt-0.5">Skyguide Luftraum-Meldungen</p>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
+          </span>
+          <span className="text-[10px] font-bold text-blue-600">LIVE</span>
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center justify-center py-6">
+          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : error ? (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p className="text-[10px] text-red-600 font-medium">NOTAM-Abfrage fehlgeschlagen</p>
+        </div>
+      ) : data ? (
+        <>
+          {/* Overall severity indicator */}
+          <div className={`${style.bg} ${style.border} border rounded-xl p-3 mb-3`}>
+            <div className="flex items-center gap-2">
+              {data.overallSeverity === "clear" ? (
+                <ShieldCheck className={`w-5 h-5 ${style.text}`} />
+              ) : data.overallSeverity === "critical" ? (
+                <ShieldX className={`w-5 h-5 ${style.text}`} />
+              ) : (
+                <ShieldAlert className={`w-5 h-5 ${style.text}`} />
+              )}
+              <div>
+                <p className={`text-sm font-bold ${style.text}`}>{style.label}</p>
+                <p className="text-[10px] text-gray-500">{data.affectedAreas.join(", ")}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Alert list */}
+          {data.alerts.length > 0 && (
+            <div className="space-y-1.5 mb-3">
+              {data.alerts.map((alert, i) => (
+                <div key={i} className="flex items-start gap-2 text-[11px] px-3 py-2 rounded-lg bg-gray-50 border border-gray-100">
+                  <AlertCircle className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${
+                    alert.severity === "critical" ? "text-red-500" :
+                    alert.severity === "warning" ? "text-amber-500" : "text-blue-500"
+                  }`} />
+                  <div>
+                    <span className="font-mono font-bold text-gray-700">{alert.icaoId}</span>
+                    <span className="text-gray-400 mx-1">—</span>
+                    <span className="text-gray-600">{alert.message}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Manual check link */}
+          <a href={data.manualCheckUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[10px] text-blue-500 hover:text-blue-700 font-medium">
+            <ExternalLink className="w-3 h-3" /> Skyguide AIM Briefing öffnen
+          </a>
+
+          <div className="border-t border-gray-100 pt-2 mt-3">
+            <p className="text-[9px] text-gray-400">Letzte Prüfung: {new Date(data.checkTimestamp).toLocaleString("de-CH")}</p>
+          </div>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 // ─── Risk Distribution Panel ──────────────────────────────────────────────────
 
 function RiskDistributionPanel() {
@@ -518,6 +612,7 @@ function AuthorizationTester() {
     decision: string; reason: string;
     soraResult: { sail: string; grc: number; arc: string; overallRisk: string; riskFactors: string[] };
     weatherResult: { overallCondition: string; allWarnings: string[] };
+    notamResult: { overallSeverity: string; alerts: Array<{ icaoId: string; areaName: string; severity: string; message: string; sourceUrl: string }>; affectedAreas: string[]; manualCheckUrl: string };
   }>(null);
 
   const authorize = trpc.safety.authorize.useMutation({ onSuccess: (data) => setResult(data as typeof result) });
@@ -608,7 +703,7 @@ function AuthorizationTester() {
                 <p className="text-xs text-gray-600">{result.reason}</p>
               </div>
 
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 {[
                   { label: "SAIL", value: result.soraResult.sail },
                   { label: "GRC", value: result.soraResult.grc },
@@ -617,6 +712,12 @@ function AuthorizationTester() {
                     result.weatherResult.overallCondition === "marginal" ? "MARGINAL" : "UNSAFE",
                     color: result.weatherResult.overallCondition === "safe" ? "text-green-700" :
                     result.weatherResult.overallCondition === "marginal" ? "text-amber-600" : "text-red-600" },
+                  { label: "NOTAM", value: result.notamResult.overallSeverity === "clear" ? "FREI" :
+                    result.notamResult.overallSeverity === "info" ? "INFO" :
+                    result.notamResult.overallSeverity === "warning" ? "WARNUNG" : "KRITISCH",
+                    color: result.notamResult.overallSeverity === "clear" ? "text-green-700" :
+                    result.notamResult.overallSeverity === "info" ? "text-blue-600" :
+                    result.notamResult.overallSeverity === "warning" ? "text-amber-600" : "text-red-600" },
                 ].map((item) => (
                   <div key={item.label} className="bg-white border border-gray-100 shadow-sm rounded-xl p-2.5 text-center">
                     <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider">{item.label}</p>
@@ -624,6 +725,27 @@ function AuthorizationTester() {
                   </div>
                 ))}
               </div>
+
+              {/* NOTAM Alerts */}
+              {result.notamResult.alerts.length > 0 && (
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
+                  <p className="text-[10px] font-semibold text-blue-600 mb-1.5 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" /> NOTAM-Meldungen ({result.notamResult.affectedAreas.join(", ")})
+                  </p>
+                  <ul className="space-y-0.5">
+                    {result.notamResult.alerts.map((alert, i) => (
+                      <li key={i} className="text-[11px] text-blue-700 flex items-start gap-1">
+                        <span className={`mt-0.5 ${alert.severity === "critical" ? "text-red-500" : alert.severity === "warning" ? "text-amber-500" : "text-blue-500"}`}>{"\u2022"}</span>
+                        <span><strong>{alert.icaoId}</strong>: {alert.message}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a href={result.notamResult.manualCheckUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[10px] text-blue-500 hover:text-blue-700 mt-2 font-medium">
+                    <ExternalLink className="w-3 h-3" /> Skyguide AIM Briefing
+                  </a>
+                </div>
+              )}
 
               {(result.soraResult.riskFactors.length > 0 || result.weatherResult.allWarnings.length > 0) && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
@@ -899,6 +1021,9 @@ export function SafetyDashboard() {
 
             {/* LUC Protocol */}
             <LUCProtocol />
+
+            {/* NOTAM Status */}
+            <NotamStatusPanel />
 
             {/* Risk Distribution */}
             <RiskDistributionPanel />
