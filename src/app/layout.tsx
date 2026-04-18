@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/og-image.jpg" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "AIRBASE — Schweizer Drohnen-Logistik",
+    description:
+      "DJI FlyCart 100 — bis 100 kg Nutzlast. SORA-zertifiziert. BAZL-konform.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
