@@ -1,7 +1,7 @@
 /**
- * Airbase SORA (Specific Operations Risk Assessment) Engine
+ * VOLTAIR SORA (Specific Operations Risk Assessment) Engine
  *
- * Implements a simplified SORA v2.5 assessment for the Airbase T100 drone
+ * Implements a simplified SORA v2.5 assessment for the VOLTAIR T100 drone
  * (MTOW 170 kg) operating in Swiss airspace, primarily the Berner Oberland corridors.
  *
  * Reference: EASA SORA v2.5 (AMC1 UAS.SPEC.040) and BAZL Betriebshandbuch.
@@ -81,7 +81,7 @@ export type SoraCategory = "OPEN_A1" | "OPEN_A2" | "OPEN_A3" | "SPECIFIC" | "CER
 // ─── Berner Oberland Corridors ────────────────────────────────────────────────
 
 /**
- * Pre-defined Berner Oberland delivery corridors used by Airbase.
+ * Pre-defined Berner Oberland delivery corridors used by VOLTAIR.
  * Each corridor has a baseline GRC based on terrain characteristics.
  */
 export const BERNER_OBERLAND_CORRIDORS = [
@@ -274,7 +274,7 @@ export function assessSora(input: SoraInput): SoraResult {
   if (arc === "c" || arc === "d") riskFactors.push("Kontrollierter Luftraum — CTR-Freigabe nötig");
   if (requiresBernBelpClearance) riskFactors.push("Route kreuzt Bern-Belp CTR (LSZB)");
   if (sail === "V" || sail === "VI") riskFactors.push(`SAIL ${sail} — Hohe Sicherheitsanforderungen`);
-  riskFactors.push("Airbase T100 (170 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
+  riskFactors.push("VOLTAIR T100 (170 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
 
   // Overall risk
   let overallRisk: SoraResult["overallRisk"];

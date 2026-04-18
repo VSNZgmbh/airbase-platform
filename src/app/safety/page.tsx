@@ -6,7 +6,7 @@ import { SafetyDashboard } from "@/components/safety/SafetyDashboard";
 import { ShieldCheck } from "lucide-react";
 
 export const metadata = {
-  title: "Safety Dashboard — Airbase LUC",
+  title: "Safety Dashboard — VOLTAIR LUC",
 };
 
 export default async function SafetyPage() {
@@ -24,9 +24,9 @@ export default async function SafetyPage() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/20">
-              <span className="text-white font-bold text-sm">A</span>
+              <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="font-bold text-xl text-white">Airbase</span>
+            <span className="font-bold text-xl text-white">VOLTAIR</span>
             <span className="text-[10px] font-bold bg-emerald-500/15 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 tracking-wider">
               LUC SAFETY
             </span>

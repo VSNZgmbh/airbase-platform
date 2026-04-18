@@ -6,7 +6,7 @@ import { PilotDashboard } from "@/components/pilot/PilotDashboard";
 import { Plane } from "lucide-react";
 
 export const metadata = {
-  title: "Pilot Interface — Airbase",
+  title: "Pilot Interface — VOLTAIR",
 };
 
 export default async function PilotPage() {
@@ -24,9 +24,9 @@ export default async function PilotPage() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <span className="text-white font-bold text-sm">A</span>
+              <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="font-bold text-xl text-white">Airbase</span>
+            <span className="font-bold text-xl text-white">VOLTAIR</span>
             <span className="text-[10px] font-bold bg-indigo-500/15 text-indigo-400 px-2.5 py-1 rounded-full border border-indigo-500/20 tracking-wider">
               PILOT
             </span>

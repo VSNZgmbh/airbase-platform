@@ -6,7 +6,7 @@ import { CustomerDashboard } from "@/components/dashboard/CustomerDashboard";
 import { Plus } from "lucide-react";
 
 export const metadata = {
-  title: "Meine Buchungen — Airbase",
+  title: "Meine Buchungen — VOLTAIR",
 };
 
 export default async function DashboardPage() {
@@ -19,9 +19,9 @@ export default async function DashboardPage() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-brand-600 to-brand-700 rounded-lg flex items-center justify-center shadow-lg shadow-brand-500/15">
-              <span className="text-white font-bold text-sm">A</span>
+              <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="font-bold text-xl text-gray-900">Airbase</span>
+            <span className="font-bold text-xl text-gray-900">VOLTAIR</span>
           </Link>
           <div className="flex items-center gap-4">
             <Link

@@ -6,7 +6,7 @@ import { OperatorDashboard } from "@/components/operator/OperatorDashboard";
 import { BarChart2, ShieldCheck } from "lucide-react";
 
 export const metadata = {
-  title: "Operator Dashboard — Airbase",
+  title: "Operator Dashboard — VOLTAIR",
 };
 
 export default async function OperatorPage() {
@@ -24,9 +24,9 @@ export default async function OperatorPage() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">A</span>
+              <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="font-bold text-xl text-gray-900">Airbase</span>
+            <span className="font-bold text-xl text-gray-900">VOLTAIR</span>
             <span className="text-xs font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ml-1">
               OPERATOR
             </span>

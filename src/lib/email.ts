@@ -11,7 +11,7 @@ function getResend(): Resend | null {
   return resend;
 }
 
-const FROM = process.env.EMAIL_FROM ?? "Airbase <noreply@airbase.one>";
+const FROM = process.env.EMAIL_FROM ?? "VOLTAIR <noreply@voltair.one>";
 
 export type EmailPayload = {
   to: string | string[];

@@ -5,7 +5,7 @@ import { FranchiseDashboard } from "@/components/operator/FranchiseDashboard";
 import { Building2, ShieldCheck, BarChart2 } from "lucide-react";
 
 export const metadata = {
-  title: "Franchise Admin — Airbase",
+  title: "Franchise Admin — VOLTAIR",
 };
 
 export default async function FranchisePage() {
@@ -18,9 +18,9 @@ export default async function FranchisePage() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <span className="text-white font-bold text-sm">A</span>
+              <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="font-bold text-xl text-white">Airbase</span>
+            <span className="font-bold text-xl text-white">VOLTAIR</span>
             <span className="text-[10px] font-bold bg-cyan-500/15 text-cyan-400 px-2.5 py-1 rounded-full border border-cyan-500/20 tracking-wider">
               FRANCHISE
             </span>

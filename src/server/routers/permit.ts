@@ -9,7 +9,7 @@ import { assessSora } from "@/lib/sora";
  * Permit Router — Phase 5 Automation Engine
  *
  * Manages permit applications for BAZL/FOCA, Bern-Belp CTR,
- * and municipal authorities for Airbase T100 drone operations.
+ * and municipal authorities for VOLTAIR T100 drone operations.
  */
 export const permitRouter = createTRPCRouter({
   /**
@@ -140,7 +140,7 @@ export const permitRouter = createTRPCRouter({
           pickupAddress: booking.pickupAddress ?? "",
           routeDistanceKm: booking.routeDistanceKm ?? "0",
           payloadWeightKg: booking.payloadWeightKg,
-          droneModel: flight.drone?.model ?? "Airbase T100",
+          droneModel: flight.drone?.model ?? "VOLTAIR T100",
           droneSerial: flight.drone?.serialNumber ?? "—",
           pilotName: flight.pilot
             ? `${flight.pilot.firstName} ${flight.pilot.lastName}`
@@ -288,15 +288,15 @@ Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
 Gesuchsteller:
-  Airbase AG
+  VOLTAIR AG
   Drohnenlogistik Schweiz
-  airbase.one
+  voltair.one
 
 BETRIEBSDETAILS:
   Einsatztyp:         ${p.serviceType}
   Datum:              ${dateStr}
   Zeitfenster:        ${p.requestedTimeFrom} – ${p.requestedTimeTo} Uhr
-  Abflugort:          ${p.pickupAddress || "Airbase Hub"}
+  Abflugort:          ${p.pickupAddress || "VOLTAIR Hub"}
   Zielort:            ${p.deliveryAddress}
   Routendistanz:      ${p.routeDistanceKm} km
   Nutzlast:           ${p.payloadWeightKg} kg
@@ -315,13 +315,13 @@ SORA-BEWERTUNG:
   ARC (Air Risk):     ${p.arcScore}
   Kategorie:          ${p.soraCategory}
 
-Das Unternehmen Airbase AG verfügt über eine gültige Betriebsgenehmigung und alle notwendigen Versicherungen gemäss schweizerischem Recht.
+Das Unternehmen VOLTAIR AG verfügt über eine gültige Betriebsgenehmigung und alle notwendigen Versicherungen gemäss schweizerischem Recht.
 
 Wir bitten um Genehmigung des oben beschriebenen Betriebs und stehen für Rückfragen zur Verfügung.
 
 Mit freundlichen Grüssen
-Airbase AG — Operations Team
-ops@airbase.one | +41 XX XXX XX XX`;
+VOLTAIR AG — Operations Team
+ops@voltair.one | +41 XX XXX XX XX`;
   }
 
   if (p.permitType === "CTR_CLEARANCE") {
@@ -330,12 +330,12 @@ An: ${p.authority}
 Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
-GESUCHSTELLER: Airbase AG — airbase.one
+GESUCHSTELLER: VOLTAIR AG — voltair.one
 
 GEPLANTE OPERATION:
   Datum:         ${dateStr}
   Zeitfenster:   ${p.requestedTimeFrom} – ${p.requestedTimeTo} UTC
-  Von:           ${p.pickupAddress || "Airbase Hub"}
+  Von:           ${p.pickupAddress || "VOLTAIR Hub"}
   Nach:          ${p.deliveryAddress}
   Distanz:       ${p.routeDistanceKm} km
   Max. Höhe:     120 m AGL
@@ -352,8 +352,8 @@ Wir ersuchen hiermit um eine vorübergehende Freigabe für die Durchquerung des 
 
 Die Operation erfolgt in Übereinstimmung mit den BAZL-Richtlinien und der SORA-Bewertung (GRC ${p.grcScore} / ARC ${p.arcScore}).
 
-Airbase AG — Operations
-ops@airbase.one`;
+VOLTAIR AG — Operations
+ops@voltair.one`;
   }
 
   // Municipal / cantonal permit
@@ -362,18 +362,18 @@ An: ${p.authority}
 Datum: ${new Date().toLocaleDateString("de-CH")}
 Referenz: ${p.bookingIdentifier}
 
-GESUCHSTELLER: Airbase AG — airbase.one
+GESUCHSTELLER: VOLTAIR AG — voltair.one
 
 GEPLANTE OPERATION:
   Einsatz:       ${p.serviceType}
   Datum:         ${dateStr}
   Zeitfenster:   ${p.requestedTimeFrom} – ${p.requestedTimeTo} Uhr
-  Route:         ${p.pickupAddress || "Airbase Hub"} → ${p.deliveryAddress}
+  Route:         ${p.pickupAddress || "VOLTAIR Hub"} → ${p.deliveryAddress}
   Nutzlast:      ${p.payloadWeightKg} kg
   Drohne:        ${p.droneModel} (${p.droneSerial})
 
 Die Operation erfolgt gemäss SORA-Bewertung (GRC ${p.grcScore}) mit allen notwendigen Sicherheitsmassnahmen.
 
-Airbase AG — Operations
-ops@airbase.one`;
+VOLTAIR AG — Operations
+ops@voltair.one`;
 }

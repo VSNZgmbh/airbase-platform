@@ -1,12 +1,12 @@
 /**
- * Airbase Pricing Engine
+ * VOLTAIR Pricing Engine
  *
  * Rates (Phase 5 update):
  *   Base rate:          CHF 12.00 / km
  *   Weight surcharge:   CHF 0.50 / kg above 20 kg
  *   Pickup surcharges:
  *     Option A (customer location):  CHF 0
- *     Option B (Airbase hub):         CHF 25 flat
+ *     Option B (VOLTAIR hub):         CHF 25 flat
  *     Option C (custom pickup):       CHF 2 / km from nearest hub
  *   SORA airspace surcharge: CHF 0–200 based on SAIL level
  *   Rush surcharge:     CHF 80 (same/next day or outside 08–17)
@@ -26,7 +26,7 @@ export const PRICING_CONFIG = {
   RUSH_SURCHARGE_CHF: 80,
 } as const;
 
-export type PickupOption = "CUSTOMER_LOCATION" | "AIRBASE_HUB" | "CUSTOM_PICKUP";
+export type PickupOption = "CUSTOMER_LOCATION" | "VOLTAIR_HUB" | "CUSTOM_PICKUP";
 
 export interface TenantPricingOverrides {
   baseRateCHFPerKm?: number;
@@ -95,7 +95,7 @@ export function calculatePrice(input: PriceInput): PriceBreakdown {
 
   // Pickup surcharge
   let pickupSurcharge = 0;
-  if (pickupOption === "AIRBASE_HUB") {
+  if (pickupOption === "VOLTAIR_HUB") {
     pickupSurcharge = cfg.HUB_PICKUP_SURCHARGE_CHF;
   } else if (pickupOption === "CUSTOM_PICKUP") {
     const hubDistance = pickupDistanceFromHubKm ?? 0;

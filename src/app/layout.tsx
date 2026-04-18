@@ -8,16 +8,16 @@ import { TRPCProvider } from "@/lib/trpc/provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Airbase.one — Drohnen-Gütertransport Schweiz",
+  title: "VOLTAIR — Drohnen-Gütertransport Schweiz",
   description:
     "LASTENFLUG: Schwere Lasten per Drohne transportieren. Bis 100 kg Nutzlast. SORA-zertifiziert. BAZL-konform. Für Bau, Alpine Logistik & Notfallversorgung in der Schweiz.",
-  metadataBase: new URL("https://airbase.one"),
+  metadataBase: new URL("https://voltair.one"),
   openGraph: {
-    title: "Airbase.one — Schweizer Drohnen-Logistik",
+    title: "VOLTAIR — Schweizer Drohnen-Logistik",
     description:
       "Der fortschrittlichste Drohnen-Transportservice der Schweiz. Bis 100 kg Nutzlast.",
-    url: "https://airbase.one",
-    siteName: "Airbase.one",
+    url: "https://voltair.one",
+    siteName: "VOLTAIR",
     locale: "de_CH",
     type: "website",
     images: [{ url: "/og-image.jpg" }],

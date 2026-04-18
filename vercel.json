@@ -4,7 +4,7 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "env": {
-    "NEXT_PUBLIC_APP_URL": "https://airbase.one"
+    "NEXT_PUBLIC_APP_URL": "https://voltair.one"
   },
   "regions": ["fra1"]
 }

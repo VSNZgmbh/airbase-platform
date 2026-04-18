@@ -215,15 +215,15 @@ export interface FlightReportData {
 export function FlightReport({ data }: { data: FlightReportData }) {
   return (
     <Document
-      title={`Airbase Flugbericht — ${data.bookingIdentifier}`}
-      author="Airbase AG"
+      title={`VOLTAIR Flugbericht — ${data.bookingIdentifier}`}
+      author="VOLTAIR AG"
       subject="Drohnenflug-Bericht"
     >
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.brand}>AIRBASE</Text>
+            <Text style={styles.brand}>VOLTAIR</Text>
             <Text style={styles.brandSub}>Drohnenlogistik Schweiz</Text>
           </View>
           <View>
@@ -303,7 +303,7 @@ export function FlightReport({ data }: { data: FlightReportData }) {
           <View style={styles.grid}>
             <View style={styles.gridItem}>
               <Text style={styles.fieldLabel}>Abflugort</Text>
-              <Text style={styles.fieldValue}>{data.pickupAddress ?? "Airbase Hub"}</Text>
+              <Text style={styles.fieldValue}>{data.pickupAddress ?? "VOLTAIR Hub"}</Text>
             </View>
             <View style={styles.gridItem}>
               <Text style={styles.fieldLabel}>Lieferadresse</Text>
@@ -406,7 +406,7 @@ export function FlightReport({ data }: { data: FlightReportData }) {
         {/* Footer */}
         <View style={styles.footer} fixed>
           <Text style={styles.footerText}>
-            Airbase AG · Drohnenlogistik Schweiz · airbase.one
+            VOLTAIR AG · Drohnenlogistik Schweiz · voltair.one
           </Text>
           <Text style={styles.footerText} render={({ pageNumber, totalPages }) =>
             `Seite ${pageNumber} / ${totalPages}`

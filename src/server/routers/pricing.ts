@@ -15,7 +15,7 @@ export const pricingRouter = createTRPCRouter({
         payloadWeightKg: z.number().min(0).max(100),
         pickupOption: z.enum([
           "CUSTOMER_LOCATION",
-          "AIRBASE_HUB",
+          "VOLTAIR_HUB",
           "CUSTOM_PICKUP",
         ]),
         pickupDistanceFromHubKm: z.number().min(0).optional(),

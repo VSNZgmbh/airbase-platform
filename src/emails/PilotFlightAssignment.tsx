@@ -36,7 +36,7 @@ export function PilotFlightAssignment({
   return (
     <Html>
       <Head />
-      <Preview>Neuer Flugauftrag {bookingIdentifier} — Airbase</Preview>
+      <Preview>Neuer Flugauftrag {bookingIdentifier} — VOLTAIR</Preview>
       <Body style={body}>
         <Container style={container}>
           <Heading style={h1}>Neuer Flugauftrag</Heading>
@@ -75,10 +75,10 @@ export function PilotFlightAssignment({
 
           <Hr style={hr} />
           <Text style={footer}>
-            Bitte loggen Sie sich im Airbase Pilot-Portal ein, um den Vorflugcheck
+            Bitte loggen Sie sich im VOLTAIR Pilot-Portal ein, um den Vorflugcheck
             abzuschliessen und das Post-Flight-Log einzureichen.
           </Text>
-          <Text style={footer}>Das Airbase-Team</Text>
+          <Text style={footer}>Das VOLTAIR-Team</Text>
         </Container>
       </Body>
     </Html>

@@ -84,7 +84,7 @@ export const pilotRouter = createTRPCRouter({
       // Atomic WHERE on flights.status guards against a double-submit race.
       const result = await ctx.db.transaction(async (tx) => {
         // Acquire transaction-level advisory lock — released automatically at tx end.
-        await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext('airbase_invoice_seq'))`);
+        await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext('voltair_invoice_seq'))`);
 
         // m1: store structured post-flight data in flightPlanJson (queryable jsonb),
         // keep notes column for human-readable free text only.
@@ -160,7 +160,7 @@ export const pilotRouter = createTRPCRouter({
         where: eq(customers.id, result.booking.customerId),
       });
       if (customer?.email) {
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://airbase.one";
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://voltair.one";
         const reportUrl = `${appUrl}/api/reports/flight/${input.flightId}`;
         sendEmail({
           to: customer.email,

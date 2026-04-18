@@ -6,7 +6,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/lib/trpc/server";
-import { bookings, customers, airbaseHubs } from "@/lib/db/schema";
+import { bookings, customers, voltairHubs } from "@/lib/db/schema";
 import { createBookingSchema } from "@/lib/validations";
 import { calculatePrice, type PickupOption } from "@/lib/pricing";
 import { assessSora, soraAirspaceSurchargeCHF, isRushBooking } from "@/lib/sora";
@@ -14,7 +14,7 @@ import { assessSora, soraAirspaceSurchargeCHF, isRushBooking } from "@/lib/sora"
 export const bookingRouter = createTRPCRouter({
   // Get all hubs (for pickup option B)
   getHubs: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.select().from(airbaseHubs).where(eq(airbaseHubs.isActive, true));
+    return ctx.db.select().from(voltairHubs).where(eq(voltairHubs.isActive, true));
   }),
 
   // Create a new booking (requires auth)

@@ -31,7 +31,7 @@ export const bookingStep4Schema = z.object({
   deliveryAddress: z.string().min(1, "Lieferadresse erforderlich"),
 
   // Pickup option
-  pickupOption: z.enum(["CUSTOMER_LOCATION", "AIRBASE_HUB", "CUSTOM_PICKUP"]),
+  pickupOption: z.enum(["CUSTOMER_LOCATION", "VOLTAIR_HUB", "CUSTOM_PICKUP"]),
   pickupLat: z.number().optional(),
   pickupLng: z.number().optional(),
   pickupAddress: z.string().optional(),
