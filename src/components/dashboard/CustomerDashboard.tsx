@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DEMO_BOOKINGS, DEMO_INVOICES, DEMO_EMISSIONS } from "@/lib/demo-data";
+import { ConnectionStatus } from "@/components/mission-control/ConnectionStatus";
 import {
   CalendarClock,
   History,
@@ -261,6 +262,7 @@ function CustomerTopBar({ title, subtitle }: { title: string; subtitle: string }
         <p className="text-[10px] text-gray-400">{subtitle}</p>
       </div>
       <div className="flex items-center gap-4">
+        <ConnectionStatus />
         <div className="hidden md:flex items-center gap-1 bg-gray-100/80 rounded-full px-3 py-1.5 w-64">
           <Search className="w-3.5 h-3.5 text-gray-400" />
           <input type="text" placeholder="Buchung suchen..." className="bg-transparent text-xs text-gray-700 placeholder-gray-400 outline-none w-full ml-1.5" />

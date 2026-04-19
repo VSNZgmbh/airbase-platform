@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { DEMO_BOOKINGS, DEMO_DRONES, DEMO_FRANCHISE_PARTNERS, DEMO_AUTHORIZATIONS, DEMO_AREA_DATA, DEMO_INCIDENTS, DEMO_FLIGHTS } from "@/lib/demo-data";
+import { ConnectionStatus } from "@/components/mission-control/ConnectionStatus";
 import {
   BarChart,
   Bar,
@@ -145,6 +146,7 @@ function AdminTopBar({ title, subtitle }: { title: string; subtitle: string }) {
         <p className="text-[10px] text-slate-400">{subtitle}</p>
       </div>
       <div className="flex items-center gap-4 text-sm text-slate-400">
+        <ConnectionStatus />
         <span className="font-mono text-lg font-bold text-blue-400">{time}</span>
         <span className="text-[10px] text-slate-600 font-mono">UTC+2</span>
       </div>
