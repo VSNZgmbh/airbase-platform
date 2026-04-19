@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { TRPCProvider } from "@/lib/trpc/provider";
+import { GlobalNav } from "@/components/layout/GlobalNav";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
+          <GlobalNav />
           <TRPCProvider>{children}</TRPCProvider>
         </NextIntlClientProvider>
       </body>

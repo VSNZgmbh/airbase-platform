@@ -100,7 +100,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
 
       {/* ── 1. Navigation ── */}
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 border-b"
+        className="sticky top-0 left-0 right-0 z-50 border-b"
         style={{
           background: "#FFFFFF",
           borderColor: "#E2E8F0",
@@ -912,12 +912,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
               variants={fadeUp}
               transition={{ duration: 0.6, ease }}
             >
-              Drei spezialisierte Portale — massgeschneidert für Kunden, Piloten und Betreiber.
+              Vier spezialisierte Dashboards — massgeschneidert für Kunden, Admins, Piloten und Compliance.
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="grid md:grid-cols-3 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
             variants={stagger(0.12)}
             initial="hidden"
             whileInView="visible"
@@ -925,25 +925,32 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             {[
               {
-                title: "Kundenportal",
+                title: "Kunden-Dashboard",
                 desc: "Buchen, verfolgen, abrechnen — alles an einem Ort. Behalten Sie Ihre Aufträge im Griff und verfolgen Sie Ihre Drohne in Echtzeit.",
                 icon: "👤",
                 href: "/dashboard",
-                cta: "Zum Kundenportal",
+                cta: "Kunden-Dashboard",
               },
               {
-                title: "Operatorenportal",
-                desc: "Koordinieren Sie Aufträge, weisen Sie Piloten zu und behalten Sie Ihre gesamte Flotte im Überblick. Volle Kontrolle, jederzeit.",
+                title: "Admin-Dashboard",
+                desc: "Franchise-Verwaltung, Buchungsstatistiken und Betriebskennzahlen. Volle Kontrolle über alle Standorte.",
                 icon: "⚙️",
-                href: "/operator",
-                cta: "Zum Operatorenportal",
+                href: "/admin",
+                cta: "Admin-Dashboard",
               },
               {
-                title: "Pilotenportal",
-                desc: "Ihr digitales Cockpit für jeden Einsatz. Aufträge annehmen, Wetter checken, NOTAMs prüfen, Bericht einreichen — alles sofort.",
+                title: "Piloten-Dashboard",
+                desc: "Ihr digitales Cockpit für jeden Einsatz. Aufträge annehmen, Wetter checken, NOTAMs prüfen, Bericht einreichen.",
                 icon: "🛩️",
                 href: "/pilot",
-                cta: "Zum Pilotenportal",
+                cta: "Piloten-Dashboard",
+              },
+              {
+                title: "Safety & Compliance",
+                desc: "SORA-Prüfungen, Risiko-Assessments und regulatorische Compliance. Alle Sicherheitsdaten im Überblick.",
+                icon: "🛡️",
+                href: "/safety",
+                cta: "Safety-Dashboard",
               },
             ].map((portal) => (
               <motion.div
