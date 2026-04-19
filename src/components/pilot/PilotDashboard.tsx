@@ -320,6 +320,11 @@ function PilotSidebar({
         })}
       </nav>
 
+      {/* Connection Status in Sidebar (Board-Anforderung) */}
+      <div className="px-4 pb-2">
+        <ConnectionStatus />
+      </div>
+
       {/* Drone card footer */}
       <div className="px-4 pb-6">
         <div className="bg-gray-50 rounded-xl p-3 border border-gray-100">
@@ -525,65 +530,71 @@ function MissionControlSection({ flights }: { flights: any[] }) {
             </p>
           </div>
 
-          {/* Telemetry Grid */}
-          <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
+          {/* SORA Authorization Banner */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100">
+                  <ShieldCheck className="w-4 h-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-gray-900">SORA Authorization</p>
+                  <p className="text-[10px] text-gray-400">ConOps: VSNZ-SORA-TRANSPORT-2026-002 v6.2</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-100">SAIL III</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-100">GRC 4</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-600 border border-purple-100">ARC-b</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-600 border border-green-100">APPROVED</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 mt-2.5 text-[10px] text-gray-400">
+              <span>Fallschirm: DJI E2MSF-100A ✓</span>
+              <span>Remote ID: Aktiv ✓</span>
+              <span>FLARM: Aktiv ✓</span>
+              <span>LUC: VSNZ GmbH ✓</span>
+            </div>
+          </div>
+
+          {/* Telemetry Grid — 14 Safety Data Points (Safety Manager Spec) */}
+          <div className="grid grid-cols-3 lg:grid-cols-7 gap-3">
             {[
-              {
-                label: "Position",
-                value: "46.6863°N",
-                icon: MapPin,
-                color: "text-blue-600",
-                bg: "bg-blue-50 border-blue-100",
-              },
-              {
-                label: "Höhe AGL",
-                value: "120 m",
-                icon: Navigation,
-                color: "text-indigo-600",
-                bg: "bg-indigo-50 border-indigo-100",
-              },
-              {
-                label: "Geschwindigkeit",
-                value: "75 km/h",
-                icon: Gauge,
-                color: "text-purple-600",
-                bg: "bg-purple-50 border-purple-100",
-              },
-              {
-                label: "Batterie",
-                value: "92%",
-                icon: Battery,
-                color: "text-green-600",
-                bg: "bg-green-50 border-green-100",
-              },
-              {
-                label: "ETA",
-                value: "12 Min",
-                icon: Clock,
-                color: "text-amber-600",
-                bg: "bg-amber-50 border-amber-100",
-              },
-              {
-                label: "C2 Link",
-                value: "OK",
-                icon: Signal,
-                color: "text-emerald-600",
-                bg: "bg-emerald-50 border-emerald-100",
-              },
+              { label: "Flugzustand", value: "AIRBORNE", icon: Plane, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "Akku A+B", value: "92%", icon: Battery, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "Restflugzeit", value: "18 min", icon: Clock, color: "text-blue-600", bg: "bg-blue-50 border-blue-100" },
+              { label: "GPS / HDOP", value: "16 Sat / 0.9", icon: Signal, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "C2 RSSI", value: "-62 dBm", icon: Radio, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "Wind Ist", value: "4.2 m/s", icon: Wind, color: "text-blue-600", bg: "bg-blue-50 border-blue-100" },
+              { label: "Höhe AGL", value: "120 m", icon: Navigation, color: "text-indigo-600", bg: "bg-indigo-50 border-indigo-100" },
+              { label: "Luftraum", value: "CLEAR", icon: ShieldCheck, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "Nächstes LFZ", value: "> 3 km", icon: Eye, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "SORA Auth", value: "APPROVED", icon: ShieldCheck, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "Nutzlast-Lock", value: "SECURED", icon: Lock, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "Wetter", value: "0 mm/h · 15 km", icon: Sun, color: "text-amber-600", bg: "bg-amber-50 border-amber-100" },
+              { label: "LiDAR/mmWave", value: "ACTIVE", icon: Zap, color: "text-green-600", bg: "bg-green-50 border-green-100" },
+              { label: "System ♥", value: "94%", icon: Activity, color: "text-green-600", bg: "bg-green-50 border-green-100" },
             ].map((item) => (
-              <div
-                key={item.label}
-                className={`${item.bg} border rounded-xl p-3 text-center`}
-              >
-                <item.icon
-                  className={`w-4 h-4 ${item.color} mx-auto mb-1.5`}
-                />
-                <p className={`text-sm font-bold ${item.color}`}>
-                  {item.value}
-                </p>
-                <p className="text-[10px] text-gray-500 mt-0.5">
-                  {item.label}
-                </p>
+              <div key={item.label} className={`${item.bg} border rounded-xl p-3 text-center`}>
+                <item.icon className={`w-4 h-4 ${item.color} mx-auto mb-1.5`} />
+                <p className={`text-xs font-bold ${item.color}`}>{item.value}</p>
+                <p className="text-[10px] text-gray-500 mt-0.5">{item.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Navigation & Route Data */}
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { label: "Position", value: "46.6863°N, 7.6528°E", icon: MapPin, color: "text-blue-600", bg: "bg-blue-50 border-blue-100" },
+              { label: "Geschwindigkeit", value: "75 km/h", icon: Gauge, color: "text-purple-600", bg: "bg-purple-50 border-purple-100" },
+              { label: "ETA Ziel", value: "12 Min", icon: Clock, color: "text-amber-600", bg: "bg-amber-50 border-amber-100" },
+              { label: "Distanz verbl.", value: "4.8 km", icon: Navigation, color: "text-indigo-600", bg: "bg-indigo-50 border-indigo-100" },
+            ].map((item) => (
+              <div key={item.label} className={`${item.bg} border rounded-xl p-3 text-center`}>
+                <item.icon className={`w-4 h-4 ${item.color} mx-auto mb-1.5`} />
+                <p className={`text-sm font-bold ${item.color}`}>{item.value}</p>
+                <p className="text-[10px] text-gray-500 mt-0.5">{item.label}</p>
               </div>
             ))}
           </div>
@@ -1340,6 +1351,18 @@ const PREFLIGHT_CATEGORIES = [
       "Briefing mit Bodenpersonal abgeschlossen",
       "Kommunikationscheck mit Bodenstation erfolgreich",
       "Emergency-Descent-Briefing durchgeführt",
+      "Safety Manager / Bodenstelle erreichbar und informiert",
+    ],
+  },
+  {
+    title: "Genehmigungen & Rechtliches",
+    ref: "EU 2019/947 Art. 11, BAZL VAR Art. 17–19",
+    items: [
+      "SORA-Fluggenehmigung erhalten und gültig (Status = APPROVED)",
+      "LUC-Betriebsfreigabe für diese Route bestätigt (Franchise aktiv)",
+      "Versicherungsnachweis für diese Mission gültig",
+      "Einsatzgebiet vorab besichtigt (Bodenperson bestätigt)",
+      "RTH-Punkt gesetzt, getestet und bestätigt",
     ],
   },
 ];
@@ -1862,6 +1885,71 @@ function MissionReportSection({
                   placeholder="z.B. 12"
                   className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
                 />
+              </div>
+            </div>
+          </div>
+
+          {/* Safety-Pflichtfelder (Safety Manager Spec AIR-197) */}
+          <div className="border-t border-gray-100 pt-4">
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Safety-Pflichtfelder (BAZL / EASA)
+            </p>
+            <div className="grid grid-cols-3 gap-3 mb-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Max. Wind während Mission (m/s)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  placeholder="z.B. 8.5"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Min. Akkustand während Mission (%)
+                </label>
+                <input
+                  type="number"
+                  placeholder="z.B. 28"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Proximity-Alerts (WARNING + ALERT)
+                </label>
+                <input
+                  type="number"
+                  placeholder="z.B. 0"
+                  defaultValue="0"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Flugbahnabweichung
+                </label>
+                <select className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300">
+                  <option value="nein">Nein — keine Abweichung</option>
+                  <option value="ja">Ja — Begründung erforderlich</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Checklisten-Ausnahmen
+                </label>
+                <input
+                  type="number"
+                  value="0"
+                  readOnly
+                  className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+                />
+                <p className="text-[10px] text-gray-400 mt-0.5">Muss immer 0 sein (Startsperre bei &gt; 0)</p>
               </div>
             </div>
           </div>
@@ -3255,9 +3343,11 @@ function MeinArbeitsbereichSection() {
                       <td className="px-3 py-2.5 font-semibold text-gray-900">{net.toFixed(1)}h</td>
                       <td className="px-3 py-2.5">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                          row.type === "Flugdienst" ? "bg-blue-50 text-blue-600" :
+                          row.type === "Flugdienst" || row.type === "Flugzeit" ? "bg-blue-50 text-blue-600" :
                           row.type === "Schulung" ? "bg-purple-50 text-purple-600" :
-                          "bg-gray-100 text-gray-500"
+                          row.type === "Wartungszeit" ? "bg-amber-50 text-amber-600" :
+                          row.type === "Bereitschaft" || row.type === "Standby" ? "bg-gray-100 text-gray-500" :
+                          "bg-green-50 text-green-600"
                         }`}>{row.type}</span>
                       </td>
                       <td className="px-3 py-2.5 text-gray-500 text-xs">{row.mission}</td>
@@ -3267,6 +3357,21 @@ function MeinArbeitsbereichSection() {
               </tbody>
             </table>
           </div>
+          {/* FOCA Limits + Crew-Rest (COO Spec AIR-199) */}
+          <div className="bg-amber-50 rounded-xl border border-amber-100 p-4">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-xs font-bold text-amber-700">FOCA-Arbeitszeitlimits</p>
+                <div className="flex gap-6 mt-1 text-[10px] text-amber-600">
+                  <span>Max. 10h Flug/Tag</span>
+                  <span>Max. 30h Flug/7 Tage</span>
+                  <span>Min. 8h Ruhezeit (Crew-Rest-Sperre aktiv)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Quick add */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h4 className="text-sm font-bold text-gray-900 mb-3">Arbeitszeit erfassen</h4>
@@ -3284,12 +3389,14 @@ function MeinArbeitsbereichSection() {
                 <input type="time" defaultValue="16:00" className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg text-sm" />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Art</label>
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Kategorie (COO)</label>
                 <select className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white">
-                  <option>Flugdienst</option>
+                  <option>Flugzeit</option>
+                  <option>Bodenzeit Einsatz</option>
+                  <option>Bodenzeit Büro</option>
+                  <option>Wartungszeit</option>
+                  <option>Bereitschaft</option>
                   <option>Schulung</option>
-                  <option>Standby</option>
-                  <option>Büro</option>
                 </select>
               </div>
               <div className="flex items-end">
