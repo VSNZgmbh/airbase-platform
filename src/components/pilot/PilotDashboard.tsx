@@ -361,6 +361,62 @@ function MissionControlSection({ flights }: { flights: any[] }) {
       FLIGHT_STATUS_LABELS.scheduled
     : null;
 
+  // ── Pre-Flight Checklist state (embedded in Mission Control) ──
+  const [preflightChecked, setPreflightChecked] = useState<Record<string, boolean>>({});
+  const [preflightExpanded, setPreflightExpanded] = useState(true);
+  const preflightTotal = PREFLIGHT_CATEGORIES.reduce((s, c) => s + c.items.length, 0);
+  const preflightDone = Object.values(preflightChecked).filter(Boolean).length;
+  const preflightAllDone = preflightDone === preflightTotal;
+  const preflightProgress = preflightTotal > 0 ? Math.round((preflightDone / preflightTotal) * 100) : 0;
+  const [flightApproved, setFlightApproved] = useState(false);
+
+  function togglePreflight(catIdx: number, itemIdx: number) {
+    const key = `pf-${catIdx}-${itemIdx}`;
+    setPreflightChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  // ── Notfall-Chat (Emergency Chat with Admin/Safety) ──
+  const [emergencyChatOpen, setEmergencyChatOpen] = useState(false);
+  const [emergencyMsg, setEmergencyMsg] = useState("");
+  const [emergencyPriority, setEmergencyPriority] = useState("hoch");
+  const [emergencyCategory, setEmergencyCategory] = useState("");
+  const [emergencyMessages, setEmergencyMessages] = useState([
+    {
+      sender: "system",
+      name: "System",
+      time: "—",
+      text: "Notfall-Chat mit Safety/Admin. Verwenden Sie diesen Kanal für unvorhergesehene Änderungen während der Mission.",
+    },
+  ]);
+
+  function sendEmergencyMessage() {
+    if (!emergencyMsg.trim() || !emergencyCategory) return;
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    setEmergencyMessages((prev) => [
+      ...prev,
+      {
+        sender: "pilot",
+        name: "Pilot (Sie)",
+        time: timeStr,
+        text: `[${emergencyPriority.toUpperCase()}] [${emergencyCategory}] ${emergencyMsg}`,
+      },
+    ]);
+    setEmergencyMsg("");
+    // Simulate admin response after 1.5s
+    setTimeout(() => {
+      setEmergencyMessages((prev) => [
+        ...prev,
+        {
+          sender: "admin",
+          name: "Safety Officer M. Keller",
+          time: `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes() + 1).padStart(2, "0")}`,
+          text: "Antrag erhalten. Wir prüfen und melden uns umgehend. Halten Sie Ihre Position.",
+        },
+      ]);
+    }, 1500);
+  }
+
   const demoMessages = [
     {
       sender: "customer",
@@ -711,6 +767,293 @@ function MissionControlSection({ flights }: { flights: any[] }) {
                 Genehmigter Startpunkt · Letzte Nutzung: Heute
               </p>
             </div>
+          </div>
+
+          {/* ══════ PRE-FLIGHT CHECKLISTE (embedded in Mission Control) ══════ */}
+          <div className="bg-white rounded-2xl border-2 border-amber-300 overflow-hidden">
+            <button
+              onClick={() => setPreflightExpanded(!preflightExpanded)}
+              className="w-full px-5 py-4 flex items-center justify-between bg-gradient-to-r from-amber-50 to-amber-100/50 hover:from-amber-100 hover:to-amber-100 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                  flightApproved ? "bg-emerald-100" : "bg-amber-100"
+                }`}>
+                  {flightApproved ? (
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  ) : (
+                    <ListChecks className="w-5 h-5 text-amber-600" />
+                  )}
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-bold text-gray-900">
+                    PRE-FLIGHT CHECKLISTE
+                  </p>
+                  <p className="text-[10px] text-gray-500">
+                    EU 2019/947 · EASA LUC · SORA v2.5 — Pflicht vor Flugstart
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                    flightApproved
+                      ? "bg-emerald-100 text-emerald-700"
+                      : preflightProgress > 50
+                        ? "bg-amber-100 text-amber-700"
+                        : "bg-red-100 text-red-700"
+                  }`}>
+                    {flightApproved ? "✓ FREIGEGEBEN" : `${preflightDone}/${preflightTotal}`}
+                  </span>
+                </div>
+                {preflightExpanded ? (
+                  <ChevronUp className="w-4 h-4 text-gray-400" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                )}
+              </div>
+            </button>
+
+            {preflightExpanded && (
+              <div className="p-5 space-y-4">
+                {/* Progress Bar */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Fortschritt
+                    </span>
+                    <span className={`text-xs font-bold ${
+                      preflightAllDone ? "text-emerald-600" : "text-gray-400"
+                    }`}>
+                      {preflightProgress}%
+                    </span>
+                  </div>
+                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        preflightAllDone
+                          ? "bg-emerald-500"
+                          : preflightProgress > 50
+                            ? "bg-amber-400"
+                            : "bg-red-400"
+                      }`}
+                      style={{ width: `${preflightProgress}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Checklist Categories */}
+                {PREFLIGHT_CATEGORIES.map((cat, catIdx) => {
+                  const catChecked = cat.items.filter(
+                    (_, i) => preflightChecked[`pf-${catIdx}-${i}`]
+                  ).length;
+                  const catComplete = catChecked === cat.items.length;
+                  return (
+                    <div key={catIdx} className="border border-gray-100 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                          {catComplete ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                          ) : (
+                            <ListChecks className="w-3.5 h-3.5 text-amber-500" />
+                          )}
+                          {cat.title}
+                        </h4>
+                        <span className="text-[9px] text-gray-400">{cat.ref}</span>
+                      </div>
+                      <div className="space-y-1">
+                        {cat.items.map((item, itemIdx) => {
+                          const key = `pf-${catIdx}-${itemIdx}`;
+                          const checked = !!preflightChecked[key];
+                          return (
+                            <label
+                              key={itemIdx}
+                              className="flex items-start gap-2 cursor-pointer group"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => togglePreflight(catIdx, itemIdx)}
+                                disabled={flightApproved}
+                                className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-red-500 focus:ring-red-500/40"
+                              />
+                              <span
+                                className={`text-[11px] leading-relaxed transition-colors ${
+                                  checked
+                                    ? "text-emerald-600 line-through"
+                                    : "text-gray-600 group-hover:text-gray-900"
+                                }`}
+                              >
+                                {item}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Flight Start Gate */}
+                {!flightApproved ? (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => {
+                        if (preflightAllDone) setFlightApproved(true);
+                      }}
+                      disabled={!preflightAllDone}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                      <CheckCheck className="w-4 h-4" />
+                      Flugstart genehmigen
+                    </button>
+                    {!preflightAllDone && (
+                      <p className="text-[10px] text-amber-600 text-center flex items-center justify-center gap-1">
+                        <AlertTriangle className="w-3 h-3" />
+                        Alle {preflightTotal} Checkpunkte müssen abgehakt sein, bevor der Flugstart genehmigt werden kann.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 px-4 py-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                    <div>
+                      <p className="text-xs font-bold text-emerald-700">
+                        FLUGSTART GENEHMIGT
+                      </p>
+                      <p className="text-[10px] text-emerald-600">
+                        Alle Checkpunkte bestätigt — {new Date().toLocaleString("de-CH")}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* ══════ NOTFALL-CHAT MIT ADMIN/SAFETY ══════ */}
+          <div className="bg-white rounded-2xl border-2 border-red-200 overflow-hidden">
+            <div className="px-5 py-3 bg-gradient-to-r from-red-50 to-red-100/50 border-b border-red-200 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                  <AlertTriangle className="w-4 h-4 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-gray-900">
+                    Notfall-Chat — Safety / Admin
+                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+                    </span>
+                    <span className="text-[10px] text-red-600 font-semibold">
+                      Notfallkanal aktiv
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setEmergencyChatOpen(!emergencyChatOpen)}
+                className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors px-3 py-1 border border-red-200 rounded-full hover:bg-red-50"
+              >
+                {emergencyChatOpen ? "Minimieren" : "Öffnen"}
+              </button>
+            </div>
+
+            {emergencyChatOpen && (
+              <>
+                {/* Messages */}
+                <div
+                  className="p-4 space-y-3 bg-gray-50/50"
+                  style={{ maxHeight: 220, overflowY: "auto" }}
+                >
+                  {emergencyMessages.map((msg, i) => (
+                    <div key={i} className={`flex ${
+                      msg.sender === "pilot" ? "justify-end" :
+                      msg.sender === "system" ? "justify-center" : "justify-start"
+                    }`}>
+                      {msg.sender === "system" ? (
+                        <div className="bg-gray-200/60 rounded-xl px-4 py-2 max-w-[85%]">
+                          <p className="text-[10px] text-gray-500 text-center">{msg.text}</p>
+                        </div>
+                      ) : (
+                        <div className={`max-w-[70%] rounded-2xl px-4 py-2.5 ${
+                          msg.sender === "pilot"
+                            ? "bg-red-500 text-white rounded-br-md"
+                            : "bg-white border border-gray-200 text-gray-800 rounded-bl-md"
+                        }`}>
+                          <p className={`text-[10px] font-semibold mb-0.5 ${
+                            msg.sender === "pilot" ? "text-red-200" : "text-gray-400"
+                          }`}>
+                            {msg.name}
+                          </p>
+                          <p className="text-sm">{msg.text}</p>
+                          <p className={`text-[10px] mt-1 ${
+                            msg.sender === "pilot" ? "text-red-200" : "text-gray-400"
+                          }`}>
+                            {msg.time}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Input Area */}
+                <div className="px-4 py-3 border-t border-red-100 bg-white space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <select
+                      value={emergencyCategory}
+                      onChange={(e) => setEmergencyCategory(e.target.value)}
+                      className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                    >
+                      <option value="">Kategorie wählen...</option>
+                      <option value="Startpunkt verlegen">Startpunkt verlegen</option>
+                      <option value="Wetter-Änderung">Wetter-Änderung</option>
+                      <option value="Technisches Problem">Technisches Problem</option>
+                      <option value="Luftraum-Konflikt">Luftraum-Konflikt</option>
+                      <option value="Nutzlast-Problem">Nutzlast-Problem</option>
+                      <option value="Sonstiges">Sonstiges</option>
+                    </select>
+                    <select
+                      value={emergencyPriority}
+                      onChange={(e) => setEmergencyPriority(e.target.value)}
+                      className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                    >
+                      <option value="hoch">🔴 Hoch — Sofort</option>
+                      <option value="mittel">🟡 Mittel — Dringend</option>
+                      <option value="niedrig">🟢 Niedrig — Info</option>
+                    </select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={emergencyMsg}
+                      onChange={(e) => setEmergencyMsg(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") sendEmergencyMessage();
+                      }}
+                      placeholder="Notfall-Nachricht an Safety/Admin..."
+                      className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-red-300 focus:ring-2 focus:ring-red-100"
+                    />
+                    <button
+                      onClick={sendEmergencyMessage}
+                      disabled={!emergencyMsg.trim() || !emergencyCategory}
+                      className="w-9 h-9 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-colors disabled:opacity-40"
+                    >
+                      <Send className="w-4 h-4" />
+                    </button>
+                  </div>
+                  {!emergencyCategory && emergencyMsg.trim() && (
+                    <p className="text-[10px] text-red-500 flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3" />
+                      Bitte wählen Sie eine Kategorie, bevor Sie die Nachricht senden.
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
