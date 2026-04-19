@@ -27,9 +27,9 @@ async function resolveTenantId(userId: string | null): Promise<string | null> {
     }
   }
 
-  // Fall back to env-configured default tenant slug
+  // Fall back to env-configured default tenant slug (only if DB is available)
   const defaultSlug = process.env.DEFAULT_TENANT_SLUG;
-  if (defaultSlug) {
+  if (defaultSlug && process.env.DATABASE_URL) {
     const tenant = await db.query.franchiseTenants.findFirst({
       where: eq(franchiseTenants.slug, defaultSlug),
     }).catch(() => null);
