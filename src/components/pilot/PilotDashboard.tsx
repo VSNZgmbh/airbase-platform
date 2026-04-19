@@ -56,6 +56,16 @@ import {
   Filter,
   CheckCheck,
   Activity,
+  ListChecks,
+  FolderOpen,
+  Lock,
+  Upload,
+  ExternalLink,
+  Fingerprint,
+  BookOpen,
+  Hash,
+  MapPinned,
+  Target,
 } from "lucide-react";
 import { ConnectionStatus } from "@/components/mission-control/ConnectionStatus";
 import { SwissMap } from "@/components/mission-control";
@@ -66,10 +76,12 @@ import { ProximityWarning } from "@/components/airspace/ProximityWarning";
 type MenuSection =
   | "mission-control"
   | "upcoming"
+  | "preflight-checklist"
   | "report"
   | "airspace"
   | "add-startpoint"
   | "regulations"
+  | "documents"
   | "drone-status"
   | "incidents";
 
@@ -81,10 +93,12 @@ const MENU_ITEMS: {
 }[] = [
   { id: "mission-control", label: "Mission Control", icon: Compass },
   { id: "upcoming", label: "Bevorstehende Missionen", icon: Calendar },
+  { id: "preflight-checklist", label: "Vorflug-Checkliste", icon: ListChecks },
   { id: "report", label: "Missionsbericht", icon: ClipboardList },
   { id: "airspace", label: "Airspace", icon: Globe },
   { id: "add-startpoint", label: "Startpunkt hinzufügen", icon: MapPinPlus },
   { id: "regulations", label: "Bewilligungen & SORA", icon: ShieldCheck },
+  { id: "documents", label: "Dokumente", icon: FolderOpen },
   { id: "drone-status", label: "Drohnen-Status", icon: Wrench },
   { id: "incidents", label: "Vorfälle & Safety", icon: AlertTriangle },
 ];
@@ -203,7 +217,7 @@ function PilotSidebar({
         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] px-3 mb-2 mt-2">
           Flugbetrieb
         </p>
-        {MENU_ITEMS.slice(0, 3).map((item) => {
+        {MENU_ITEMS.slice(0, 4).map((item) => {
           const isActive = activeSection === item.id;
           const showBadge =
             item.id === "mission-control" && activeMissionCount > 0;
@@ -234,7 +248,7 @@ function PilotSidebar({
         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] px-3 mb-2 mt-5">
           Luftraum & Navigation
         </p>
-        {MENU_ITEMS.slice(3, 5).map((item) => {
+        {MENU_ITEMS.slice(4, 6).map((item) => {
           const isActive = activeSection === item.id;
           return (
             <button
@@ -257,7 +271,7 @@ function PilotSidebar({
         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] px-3 mb-2 mt-5">
           Safety & Wartung
         </p>
-        {MENU_ITEMS.slice(5).map((item) => {
+        {MENU_ITEMS.slice(6).map((item) => {
           const isActive = activeSection === item.id;
           return (
             <button
@@ -895,6 +909,277 @@ function UpcomingMissionsSection({ flights }: { flights: any[] }) {
   );
 }
 
+// ─── Section: Pre-Flight Checklist ─────────────────────────────────────────
+
+const PREFLIGHT_CATEGORIES = [
+  {
+    title: "Drohne & Technik",
+    ref: "EU 2019/947 Art. 14, EASA LUC",
+    items: [
+      "Allgemeiner Zustand der Drohne geprüft (Sichtprüfung Rumpf, Arme, Landegestell)",
+      "Propeller auf Beschädigungen und festen Sitz kontrolliert",
+      "Akkumodule eingesetzt, Ladezustand ≥ 90% verifiziert",
+      "Akkugesundheit geprüft (SoH ≥ 80% beide Module)",
+      "Fallschirmsystem: Selbsttest bestanden, Pin gesichert",
+      "LiDAR-Hinderniserkennung: Selbsttest bestanden",
+      "mmWave-Radar kalibriert (Front + Heck)",
+      "C2-Link: Verbindung zur Bodenstation hergestellt, RSSI im Toleranzbereich",
+      "GPS-Signal stabil (min. 12 Satelliten, PDOP < 3)",
+      "INS/Gyro-Ausrichtung abgeschlossen (Offset < Grenzwert)",
+    ],
+  },
+  {
+    title: "Nutzlast & Beladung",
+    ref: "SORA v2.5, Betriebshandbuch Kap. 4",
+    items: [
+      "Nutzlast gewogen und Gewicht dokumentiert",
+      "Nutzlastgewicht innerhalb des zertifizierten Limits (≤ 100 kg)",
+      "Schwerpunktlage geprüft und innerhalb der Toleranz",
+      "Ladung korrekt gesichert (Gurte, Haken, Verriegelung)",
+      "Gefahrgut-Klassifikation geprüft (falls zutreffend)",
+    ],
+  },
+  {
+    title: "Luftraum & Bewilligungen",
+    ref: "BAZL DABS, EU 2019/947 Art. 15",
+    items: [
+      "DABS/NOTAM für Fluggebiet geprüft (max. 30 Min. alt)",
+      "Luftraum-Freigabe bestätigt (CTR/TMA Status)",
+      "Betriebsbewilligung / Operational Authorization gültig",
+      "Fluggebiet innerhalb der genehmigten Geografie",
+    ],
+  },
+  {
+    title: "Wetter & Umgebung",
+    ref: "EU 2019/947, SORA ConOps",
+    items: [
+      "Aktuelle Wetterdaten abgerufen (max. 30 Min. alt)",
+      "Windgeschwindigkeit innerhalb der Betriebsgrenzen (< 35 km/h)",
+      "Sichtweite ≥ 5 km (VLOS) oder BVLOS-Bedingungen erfüllt",
+      "Niederschlag: Kein Regen/Schnee/Hagel oder innerhalb IP-Rating",
+      "Notlandeplatz identifiziert und kommuniziert",
+    ],
+  },
+  {
+    title: "Crew & Kommunikation",
+    ref: "EASA LUC, Betriebshandbuch Kap. 2",
+    items: [
+      "PIC (Pilot-in-Command) identifiziert und dienstfähig",
+      "Crew-Rest-Nachweis erbracht (min. 8h Ruhezeit)",
+      "Briefing mit Bodenpersonal abgeschlossen",
+      "Kommunikationscheck mit Bodenstation erfolgreich",
+      "Emergency-Descent-Briefing durchgeführt",
+    ],
+  },
+];
+
+function PreFlightChecklistSection() {
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [pilotSignature, setPilotSignature] = useState("");
+  const [missionRef, setMissionRef] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const totalItems = PREFLIGHT_CATEGORIES.reduce((s, c) => s + c.items.length, 0);
+  const checkedCount = Object.values(checkedItems).filter(Boolean).length;
+  const allChecked = checkedCount === totalItems;
+  const progress = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
+
+  function toggleItem(catIdx: number, itemIdx: number) {
+    const key = `${catIdx}-${itemIdx}`;
+    setCheckedItems((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Vorflug-Checkliste</h2>
+        <p className="text-sm text-gray-500 mt-0.5">
+          Pflicht-Checkliste gemäss EU 2019/947, EASA LUC und SORA v2.5
+        </p>
+      </div>
+
+      {/* Regulatory info */}
+      <div className="bg-amber-50 rounded-2xl border border-amber-100 p-5">
+        <div className="flex items-start gap-3">
+          <ShieldCheck className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-xs font-bold text-amber-700">Regulatorische Pflicht</p>
+            <p className="text-xs text-amber-600 leading-relaxed mt-1">
+              Diese Pre-Flight Checklist ist gemäss EU 2019/947, EASA LUC-Anforderungen und SORA v2.5 vor
+              jedem Flug vollständig abzuarbeiten. Die digitale Signatur des PIC ist obligatorisch.
+              Unvollständige Checklisten verhindern den Flugstart.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Mission Reference */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <Target className="w-4 h-4 text-red-500" />
+          Missionsreferenz
+        </h3>
+        <select
+          value={missionRef}
+          onChange={(e) => setMissionRef(e.target.value)}
+          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+        >
+          <option value="">Mission auswählen...</option>
+          {DEMO_BOOKINGS.slice(0, 5).map((b: any) => (
+            <option key={b.id} value={b.id}>
+              {b.identifier} — {b.payloadDescription} ({b.serviceType})
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-5">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold text-gray-900">
+            Fortschritt: {checkedCount} / {totalItems} Punkte
+          </span>
+          <span className={`text-xs font-bold ${allChecked ? "text-emerald-600" : "text-gray-400"}`}>
+            {progress}%
+          </span>
+        </div>
+        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ${
+              allChecked ? "bg-emerald-500" : progress > 50 ? "bg-amber-400" : "bg-red-400"
+            }`}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Checklist Categories */}
+      {PREFLIGHT_CATEGORIES.map((cat, catIdx) => {
+        const catChecked = cat.items.filter((_, i) => checkedItems[`${catIdx}-${i}`]).length;
+        const catComplete = catChecked === cat.items.length;
+        return (
+          <div key={catIdx} className="bg-white rounded-2xl border border-gray-200 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                {catComplete ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                ) : (
+                  <ListChecks className="w-4 h-4 text-red-500" />
+                )}
+                {cat.title}
+              </h3>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-gray-400">{cat.ref}</span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  catComplete
+                    ? "bg-emerald-100 text-emerald-700"
+                    : "bg-gray-100 text-gray-500"
+                }`}>
+                  {catChecked}/{cat.items.length}
+                </span>
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              {cat.items.map((item, itemIdx) => {
+                const key = `${catIdx}-${itemIdx}`;
+                const checked = !!checkedItems[key];
+                return (
+                  <label key={itemIdx} className="flex items-start gap-2.5 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => toggleItem(catIdx, itemIdx)}
+                      disabled={submitted}
+                      className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-red-500 focus:ring-red-500/40"
+                    />
+                    <span className={`text-xs transition-colors ${
+                      checked ? "text-emerald-600 line-through" : "text-gray-600 group-hover:text-gray-900"
+                    }`}>
+                      {item}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Pilot Signature */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <Fingerprint className="w-4 h-4 text-red-500" />
+          Piloten-Signatur (PIC)
+        </h3>
+        <p className="text-xs text-gray-500 mb-3">
+          Mit Ihrer digitalen Signatur bestätigen Sie, dass alle Checkpunkte korrekt und vollständig
+          geprüft wurden und die Drohne flugbereit ist.
+        </p>
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label className="block text-[10px] font-medium text-gray-500 mb-1">Pilotenname</label>
+            <input
+              type="text"
+              value="Hans Müller"
+              readOnly
+              className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-medium text-gray-500 mb-1">Lizenznummer</label>
+            <input
+              type="text"
+              value="CH-RPL-2024-0142"
+              readOnly
+              className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+            />
+          </div>
+        </div>
+        <div className="mb-3">
+          <label className="block text-[10px] font-medium text-gray-500 mb-1">
+            Digitale Signatur (Name eintippen zur Bestätigung)
+          </label>
+          <input
+            type="text"
+            value={pilotSignature}
+            onChange={(e) => setPilotSignature(e.target.value)}
+            disabled={submitted}
+            placeholder="Hans Müller"
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+          />
+        </div>
+        {submitted ? (
+          <div className="flex items-center gap-2 px-4 py-3 bg-emerald-50 rounded-xl border border-emerald-100">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span className="text-xs font-semibold text-emerald-700">
+              Vorflug-Checkliste abgeschlossen und signiert — {new Date().toLocaleString("de-CH")}
+            </span>
+          </div>
+        ) : (
+          <button
+            onClick={() => {
+              if (allChecked && pilotSignature.trim().length > 0 && missionRef) {
+                setSubmitted(true);
+              }
+            }}
+            disabled={!allChecked || !pilotSignature.trim() || !missionRef}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-xl transition-all disabled:opacity-40"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            Checkliste abschliessen und signieren
+          </button>
+        )}
+        {!allChecked && !submitted && (
+          <p className="text-[10px] text-amber-600 mt-2 flex items-center gap-1">
+            <AlertTriangle className="w-3 h-3" />
+            Alle Checkpunkte müssen abgehakt sein, bevor die Checkliste signiert werden kann.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Section: Mission Report ───────────────────────────────────────────────
 
 function MissionReportSection({
@@ -1064,6 +1349,150 @@ function MissionReportSection({
                 />
               </div>
             ))}
+          </div>
+
+          {/* Flugbuch-Pflichtfelder (BAZL / EU 2019/947) */}
+          <div className="border-t border-gray-100 pt-4">
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <BookOpen className="w-3.5 h-3.5" />
+              Flugbuch-Pflichtfelder (BAZL)
+            </p>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Datum/Uhrzeit Abflug
+                </label>
+                <input
+                  type="datetime-local"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Datum/Uhrzeit Landung
+                </label>
+                <input
+                  type="datetime-local"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  <span className="flex items-center gap-1"><User className="w-3 h-3" /> Pilot (Name)</span>
+                </label>
+                <input
+                  type="text"
+                  value="Hans Müller"
+                  readOnly
+                  className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  <span className="flex items-center gap-1"><Hash className="w-3 h-3" /> Lizenznummer</span>
+                </label>
+                <input
+                  type="text"
+                  value="CH-RPL-2024-0142"
+                  readOnly
+                  className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  <span className="flex items-center gap-1"><Plane className="w-3 h-3" /> Drohne (Seriennummer)</span>
+                </label>
+                <input
+                  type="text"
+                  value="DJI-FC100-CH-2024-001"
+                  readOnly
+                  className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Drohnentyp
+                </label>
+                <input
+                  type="text"
+                  value="DJI FlyCart 100"
+                  readOnly
+                  className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-700"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  <span className="flex items-center gap-1"><MapPinned className="w-3 h-3" /> Betriebsort (Koordinaten)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="z.B. 46.6863°N, 7.8632°E"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Flugzweck
+                </label>
+                <select className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300">
+                  <option value="">Auswählen...</option>
+                  <option value="LASTENFLUG">Lastenflug / Gütertransport</option>
+                  <option value="BERGLOGISTIK">Berglogistik</option>
+                  <option value="SOLARPANEL">Solarpanel-Reinigung</option>
+                  <option value="BAU">Bau-Materialtransport</option>
+                  <option value="NOTFALL">Notfallversorgung</option>
+                  <option value="SONSTIG">Sonstiges</option>
+                </select>
+              </div>
+            </div>
+            <div className="mb-3">
+              <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                Besondere Vorkommnisse
+              </label>
+              <textarea
+                rows={2}
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 resize-none"
+                placeholder="Keine Vorkommnisse / Beschreibung..."
+              />
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Wetter (Zusammenfassung)
+                </label>
+                <input
+                  type="text"
+                  placeholder="z.B. Klar, 14°C, Wind 12 km/h NW"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Sichtweite
+                </label>
+                <input
+                  type="text"
+                  placeholder="z.B. > 10 km"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-gray-500 mb-1">
+                  Windstärke (km/h)
+                </label>
+                <input
+                  type="number"
+                  placeholder="z.B. 12"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Expenses */}
@@ -1244,6 +1673,127 @@ function AirspaceSection() {
 
       {/* Air Traffic */}
       <ProximityWarning />
+
+      {/* DABS/NOTAM Workflow (BAZL Pflicht) */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-red-500" />
+          DABS/NOTAM Prüfung
+        </h3>
+        <p className="text-[10px] text-gray-500 mb-4">
+          BAZL schreibt eine DABS-Prüfung vor jedem Flug vor. Bestätigen Sie die Prüfung aller relevanten NOTAMs.
+        </p>
+
+        {/* DABS Status Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
+          <div className="bg-emerald-50 rounded-xl border border-emerald-100 p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-emerald-700">DABS Berner Oberland</span>
+              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                AKTIV
+              </span>
+            </div>
+            <p className="text-[10px] text-emerald-600">
+              Gültig: {new Date().toLocaleDateString("de-CH")} 06:00 — 20:00 LT
+            </p>
+            <p className="text-[10px] text-emerald-600 mt-0.5">
+              Keine Einschränkungen für UAS-Betrieb unter FL 120
+            </p>
+          </div>
+          <div className="bg-amber-50 rounded-xl border border-amber-100 p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-amber-700">NOTAM A0847/26</span>
+              <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
+                BEACHTEN
+              </span>
+            </div>
+            <p className="text-[10px] text-amber-600">
+              Temporäre Einschränkung: Militärübung Thun — R-Area aktiv bis {new Date(Date.now() + 86400000).toLocaleDateString("de-CH")}
+            </p>
+            <p className="text-[10px] text-amber-600 mt-0.5">
+              Betroffen: CTR Thun, FL 0-100 | Ausweichroute über Brienz empfohlen
+            </p>
+          </div>
+        </div>
+
+        {/* Active NOTAMs List */}
+        <div className="mb-4">
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">
+            Aktive NOTAMs im Einsatzgebiet
+          </p>
+          <div className="space-y-1.5">
+            {[
+              { id: "A0847/26", type: "RESTRICT", area: "R-Area Thun", severity: "amber", detail: "Militärübung, FL 0-100" },
+              { id: "A0912/26", type: "OBST", area: "Kran Interlaken-Ost", severity: "blue", detail: "Max. Höhe 45m AGL, beleuchtet" },
+              { id: "A0893/26", type: "INFO", area: "Heliport Lauterbrunnen", severity: "gray", detail: "Erhöhter Helikopter-Verkehr Sa/So" },
+            ].map((notam) => (
+              <div
+                key={notam.id}
+                className={`flex items-center justify-between px-3 py-2 rounded-lg border ${
+                  notam.severity === "amber"
+                    ? "bg-amber-50 border-amber-100"
+                    : notam.severity === "blue"
+                      ? "bg-blue-50 border-blue-100"
+                      : "bg-gray-50 border-gray-100"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[10px] font-bold text-gray-600">{notam.id}</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                    notam.severity === "amber"
+                      ? "bg-amber-100 text-amber-700"
+                      : notam.severity === "blue"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-gray-100 text-gray-600"
+                  }`}>
+                    {notam.type}
+                  </span>
+                  <span className="text-[10px] text-gray-600">{notam.area} — {notam.detail}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Confirmation Workflow */}
+        <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+          <p className="text-xs font-bold text-gray-700 mb-2 flex items-center gap-1.5">
+            <Lock className="w-3.5 h-3.5 text-red-500" />
+            DABS/NOTAM Bestätigung
+          </p>
+          <div className="space-y-2 mb-3">
+            {[
+              "Ich habe alle aktiven NOTAMs für das Einsatzgebiet geprüft",
+              "Die Flugroute berücksichtigt alle Einschränkungen und R-Areas",
+              "DABS-Daten sind aktuell (max. 30 Minuten alt)",
+              "Ausweichrouten sind geplant für eingeschränkte Bereiche",
+            ].map((item, idx) => (
+              <label key={idx} className="flex items-start gap-2.5 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-red-500 focus:ring-red-500/40"
+                />
+                <span className="text-xs text-gray-600 group-hover:text-gray-900">{item}</span>
+              </label>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="flex items-center gap-1.5 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition-colors">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              DABS/NOTAM als geprüft bestätigen
+            </button>
+            <a
+              href="https://www.skybriefing.com/de"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-4 py-2 text-gray-600 text-xs font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              Skybriefing öffnen
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* Weather */}
       <div className="bg-white rounded-2xl border border-gray-200 p-5">
@@ -1709,6 +2259,180 @@ function RegulationsSection() {
   );
 }
 
+// ─── Section: Documents (LUC-Pflicht) ──────────────────────────────────────
+
+const PILOT_DOCUMENTS = [
+  {
+    category: "Pilotenlizenz / Zertifikate",
+    docs: [
+      { name: "Fernpiloten-Zeugnis A1/A3", status: "valid", expiry: "2027-03-15", issuer: "BAZL" },
+      { name: "Fernpiloten-Zeugnis A2", status: "valid", expiry: "2027-03-15", issuer: "BAZL" },
+      { name: "STS-Zertifikat (Specific Category)", status: "valid", expiry: "2026-12-01", issuer: "BAZL" },
+      { name: "Medizinische Tauglichkeit", status: "valid", expiry: "2027-06-30", issuer: "Dr. Keller, Bern" },
+    ],
+  },
+  {
+    category: "Betriebsbewilligung / Operational Authorization",
+    docs: [
+      { name: "LUC — Light UAS Operator Certificate", status: "valid", expiry: "2027-01-20", issuer: "BAZL" },
+      { name: "Operational Authorization (SORA)", status: "valid", expiry: "2026-11-15", issuer: "BAZL" },
+      { name: "BVLOS-Genehmigung Berner Oberland", status: "valid", expiry: "2026-09-30", issuer: "BAZL / Kanton BE" },
+    ],
+  },
+  {
+    category: "Versicherungsnachweis",
+    docs: [
+      { name: "Haftpflichtversicherung UAS-Betrieb", status: "valid", expiry: "2027-01-01", issuer: "Helvetia" },
+      { name: "Transportgut-Versicherung", status: "valid", expiry: "2027-01-01", issuer: "Helvetia" },
+      { name: "Kaskoversicherung DJI FlyCart 100", status: "valid", expiry: "2027-01-01", issuer: "Zurich" },
+    ],
+  },
+  {
+    category: "Betriebshandbuch (relevante Kapitel)",
+    docs: [
+      { name: "Kap. 1 — Organisationsstruktur", status: "current", expiry: "", issuer: "Airbase AG" },
+      { name: "Kap. 2 — Personalanforderungen & Training", status: "current", expiry: "", issuer: "Airbase AG" },
+      { name: "Kap. 4 — Betriebsverfahren & Checklisten", status: "current", expiry: "", issuer: "Airbase AG" },
+      { name: "Kap. 7 — Notfallverfahren", status: "current", expiry: "", issuer: "Airbase AG" },
+      { name: "Kap. 9 — Wartung & Instandhaltung", status: "current", expiry: "", issuer: "Airbase AG" },
+    ],
+  },
+];
+
+function DocumentsSection() {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Dokumente</h2>
+        <p className="text-sm text-gray-500 mt-0.5">
+          Pflichtdokumente gemäss LUC, EASA und BAZL-Vorgaben
+        </p>
+      </div>
+
+      {/* LUC Notice */}
+      <div className="bg-blue-50 rounded-2xl border border-blue-100 p-5">
+        <div className="flex items-start gap-3">
+          <FolderOpen className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-xs font-bold text-blue-700">LUC-Pflichtdokumentation</p>
+            <p className="text-xs text-blue-600 leading-relaxed mt-1">
+              Gemäss EASA LUC-Anforderungen müssen alle hier aufgeführten Dokumente aktuell und
+              jederzeit verfügbar sein. Abgelaufene Dokumente verhindern den Flugbetrieb.
+              Laden Sie erneuerte Dokumente rechtzeitig hoch.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-3 gap-3">
+        {(() => {
+          const allDocs = PILOT_DOCUMENTS.flatMap((c) => c.docs);
+          const valid = allDocs.filter((d) => d.status === "valid" || d.status === "current").length;
+          const expiringSoon = allDocs.filter((d) => {
+            if (!d.expiry) return false;
+            const diff = new Date(d.expiry).getTime() - Date.now();
+            return diff > 0 && diff < 90 * 86400000;
+          }).length;
+          return [
+            { label: "Gültige Dokumente", value: valid, total: allDocs.length, color: "emerald" },
+            { label: "Läuft bald ab (< 90 Tage)", value: expiringSoon, total: null, color: expiringSoon > 0 ? "amber" : "gray" },
+            { label: "Abgelaufen", value: 0, total: null, color: "gray" },
+          ];
+        })().map((card) => (
+          <div
+            key={card.label}
+            className={`bg-${card.color === "emerald" ? "emerald" : card.color === "amber" ? "amber" : "gray"}-50 rounded-xl border border-${card.color === "emerald" ? "emerald" : card.color === "amber" ? "amber" : "gray"}-100 p-4`}
+          >
+            <p className={`text-2xl font-black text-${card.color === "emerald" ? "emerald" : card.color === "amber" ? "amber" : "gray"}-700`}>
+              {card.value}{card.total !== null ? `/${card.total}` : ""}
+            </p>
+            <p className={`text-[10px] font-semibold text-${card.color === "emerald" ? "emerald" : card.color === "amber" ? "amber" : "gray"}-600 mt-0.5`}>
+              {card.label}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Document Categories */}
+      {PILOT_DOCUMENTS.map((cat, catIdx) => (
+        <div key={catIdx} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <div className="px-5 py-3 border-b border-gray-100 bg-gray-50">
+            <h3 className="text-sm font-bold text-gray-900">{cat.category}</h3>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {cat.docs.map((doc, docIdx) => {
+              const isExpiringSoon = doc.expiry && (new Date(doc.expiry).getTime() - Date.now()) < 90 * 86400000 && (new Date(doc.expiry).getTime() - Date.now()) > 0;
+              return (
+                <div key={docIdx} className="px-5 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      doc.status === "current"
+                        ? "bg-blue-50"
+                        : isExpiringSoon
+                          ? "bg-amber-50"
+                          : "bg-emerald-50"
+                    }`}>
+                      <FileText className={`w-4 h-4 ${
+                        doc.status === "current"
+                          ? "text-blue-500"
+                          : isExpiringSoon
+                            ? "text-amber-500"
+                            : "text-emerald-500"
+                      }`} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-gray-900">{doc.name}</p>
+                      <p className="text-[10px] text-gray-400">
+                        {doc.issuer}
+                        {doc.expiry && ` · Gültig bis ${new Date(doc.expiry).toLocaleDateString("de-CH")}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {isExpiringSoon && (
+                      <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
+                        Bald fällig
+                      </span>
+                    )}
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      doc.status === "valid"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-blue-100 text-blue-700"
+                    }`}>
+                      {doc.status === "valid" ? "Gültig" : "Aktuell"}
+                    </span>
+                    <button className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {/* Upload Section */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <Upload className="w-4 h-4 text-red-500" />
+          Dokument hochladen
+        </h3>
+        <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-red-300 hover:bg-red-50/30 transition-colors cursor-pointer">
+          <Upload className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+          <p className="text-xs font-semibold text-gray-600">
+            Datei hierher ziehen oder klicken zum Hochladen
+          </p>
+          <p className="text-[10px] text-gray-400 mt-1">
+            PDF, JPG, PNG · Max. 10 MB
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Section: Drone Status ─────────────────────────────────────────────────
 
 function DroneStatusSection() {
@@ -2039,13 +2763,17 @@ const SECTION_TITLES: Record<
     title: "Bevorstehende Missionen",
     subtitle: "Kalender und Tagesplan der geplanten Flüge",
   },
+  "preflight-checklist": {
+    title: "Vorflug-Checkliste",
+    subtitle: "Pflicht-Checkliste gemäss EU 2019/947, EASA LUC und SORA v2.5",
+  },
   report: {
     title: "Missionsbericht",
-    subtitle: "Mission abschliessen, Spesen und Vorfälle erfassen",
+    subtitle: "Mission abschliessen, Flugbuch und Vorfälle erfassen",
   },
   airspace: {
     title: "Airspace",
-    subtitle: "Schweizer Karte, Wetter, Luftraum und Verkehr",
+    subtitle: "Schweizer Karte, DABS/NOTAM, Wetter und Verkehr",
   },
   "add-startpoint": {
     title: "Startpunkt hinzufügen",
@@ -2054,6 +2782,10 @@ const SECTION_TITLES: Record<
   regulations: {
     title: "Bewilligungen & SORA",
     subtitle: "Regulatorische Vorgaben und aktive Bewilligungen",
+  },
+  documents: {
+    title: "Dokumente",
+    subtitle: "Lizenzen, Bewilligungen, Versicherungen und Betriebshandbuch",
   },
   "drone-status": {
     title: "Drohnen-Status",
@@ -2165,6 +2897,9 @@ export function PilotDashboard() {
           {activeSection === "upcoming" && (
             <UpcomingMissionsSection flights={flights} />
           )}
+          {activeSection === "preflight-checklist" && (
+            <PreFlightChecklistSection />
+          )}
           {activeSection === "report" && (
             <MissionReportSection
               flights={flights}
@@ -2180,6 +2915,7 @@ export function PilotDashboard() {
             <AddStartPointSection />
           )}
           {activeSection === "regulations" && <RegulationsSection />}
+          {activeSection === "documents" && <DocumentsSection />}
           {activeSection === "drone-status" && <DroneStatusSection />}
           {activeSection === "incidents" && <IncidentsSection />}
         </main>
