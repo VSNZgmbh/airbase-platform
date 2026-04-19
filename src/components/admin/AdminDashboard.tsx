@@ -15,6 +15,17 @@ import {
   DEMO_WEEKLY_DATA,
 } from "@/lib/demo-data";
 import { ConnectionStatus } from "@/components/mission-control/ConnectionStatus";
+import dynamic from "next/dynamic";
+
+const LiveOperationsMap = dynamic(
+  () => import("@/components/admin/LiveOperationsMap").then((m) => ({ default: m.LiveOperationsMap })),
+  { ssr: false, loading: () => <div className="h-[500px] bg-gray-50 rounded-2xl animate-pulse" /> }
+);
+const AirspaceView3D = dynamic(
+  () => import("@/components/admin/AirspaceView3D").then((m) => ({ default: m.AirspaceView3D })),
+  { ssr: false, loading: () => <div className="h-[500px] bg-gray-50 rounded-2xl animate-pulse" /> }
+);
+import { AdminSafetyPanel } from "@/components/admin/AdminSafetyPanel";
 import {
   BarChart,
   Bar,
@@ -667,6 +678,7 @@ function OverviewSection() {
 // ─── Section: Live Operations ───────────────────────────────────────────────
 
 function LiveOpsSection() {
+  const [activeTab, setActiveTab] = useState<"map" | "3d" | "safety">("map");
   const liveFlights = DEMO_FLIGHTS.filter((f) => f.status === "in_air");
   const preFlightFlights = DEMO_FLIGHTS.filter(
     (f) => f.status === "pre_flight_check"
@@ -689,6 +701,12 @@ function LiveOpsSection() {
   const redCount = riskFlights.filter(
     (f) => f.risk === "HIGH" || f.risk === "CRITICAL"
   ).length;
+
+  const tabs = [
+    { id: "map" as const, label: "Live-Karte", icon: Globe },
+    { id: "3d" as const, label: "3D Luftraum", icon: Compass },
+    { id: "safety" as const, label: "Sicherheit", icon: ShieldAlert },
+  ];
 
   return (
     <div className="space-y-6">
@@ -718,6 +736,29 @@ function LiveOpsSection() {
         <KpiCard title="Risiko GRÜN" value={greenCount} icon={CheckCircle2} color="green" />
         <KpiCard title="Risiko ROT" value={redCount} icon={AlertTriangle} color={redCount > 0 ? "amber" : "green"} />
       </div>
+
+      {/* View Tabs — Map / 3D / Safety */}
+      <div className="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 flex items-center justify-center gap-2 text-xs font-bold py-2.5 rounded-lg transition-all ${
+              activeTab === tab.id
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <tab.icon className="w-3.5 h-3.5" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Active Tab Content */}
+      {activeTab === "map" && <LiveOperationsMap />}
+      {activeTab === "3d" && <AirspaceView3D />}
+      {activeTab === "safety" && <AdminSafetyPanel />}
 
       {/* Live Flight Monitor */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
