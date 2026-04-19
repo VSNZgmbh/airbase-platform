@@ -51,11 +51,14 @@ import {
   ExternalLink,
   ChevronDown,
   ChevronUp,
+  Briefcase,
+  CalendarDays,
+  ClipboardList,
 } from "lucide-react";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-type AdminTab = "analytics" | "safety" | "fleet" | "team";
+type AdminTab = "analytics" | "safety" | "fleet" | "team" | "mitarbeiter";
 
 // ─── Sidebar ────────────────────────────────────────────────────────────────
 
@@ -81,6 +84,7 @@ function AdminSidebar({ activeTab, onTabChange }: { activeTab: AdminTab; onTabCh
           { id: "safety" as AdminTab, icon: ShieldCheck, label: "Safety & Compliance" },
           { id: "fleet" as AdminTab, icon: Plane, label: "Flotte & Wartung" },
           { id: "team" as AdminTab, icon: Users, label: "Team & Franchise" },
+          { id: "mitarbeiter" as AdminTab, icon: Briefcase, label: "Mitarbeiter-Übersicht" },
         ].map((item) => (
           <button
             key={item.id}
@@ -625,6 +629,243 @@ function TeamTab() {
   );
 }
 
+// ─── Tab: Mitarbeiter-Übersicht ─────────────────────────────────────────────
+
+const DEMO_EMPLOYEES = [
+  {
+    name: "Hans Müller",
+    role: "Pilot / PIC",
+    contract: "Unbefristet",
+    pensum: "100%",
+    status: "aktiv" as const,
+    hoursThisMonth: 156.5,
+    hoursSoll: 168,
+    vacationTotal: 25,
+    vacationUsed: 7,
+    vacationPending: 12,
+    sickDays: 2,
+    absentToday: false,
+  },
+  {
+    name: "Sarah Weber",
+    role: "Pilotin / PIC",
+    contract: "Unbefristet",
+    pensum: "100%",
+    status: "aktiv" as const,
+    hoursThisMonth: 162.0,
+    hoursSoll: 168,
+    vacationTotal: 25,
+    vacationUsed: 5,
+    vacationPending: 5,
+    sickDays: 0,
+    absentToday: false,
+  },
+  {
+    name: "Marco Brunner",
+    role: "Pilot / PIC",
+    contract: "Unbefristet",
+    pensum: "80%",
+    status: "aktiv" as const,
+    hoursThisMonth: 120.0,
+    hoursSoll: 134.4,
+    vacationTotal: 25,
+    vacationUsed: 10,
+    vacationPending: 0,
+    sickDays: 3,
+    absentToday: false,
+  },
+  {
+    name: "Lisa Keller",
+    role: "Pilotin / PIC",
+    contract: "Befristet",
+    pensum: "100%",
+    status: "aktiv" as const,
+    hoursThisMonth: 148.0,
+    hoursSoll: 168,
+    vacationTotal: 20,
+    vacationUsed: 3,
+    vacationPending: 10,
+    sickDays: 1,
+    absentToday: true,
+  },
+  {
+    name: "Thomas Frei",
+    role: "Safety Manager",
+    contract: "Unbefristet",
+    pensum: "100%",
+    status: "aktiv" as const,
+    hoursThisMonth: 170.0,
+    hoursSoll: 168,
+    vacationTotal: 25,
+    vacationUsed: 8,
+    vacationPending: 5,
+    sickDays: 0,
+    absentToday: false,
+  },
+  {
+    name: "Anna Roth",
+    role: "Safety Managerin",
+    contract: "Unbefristet",
+    pensum: "60%",
+    status: "aktiv" as const,
+    hoursThisMonth: 95.5,
+    hoursSoll: 100.8,
+    vacationTotal: 25,
+    vacationUsed: 12,
+    vacationPending: 0,
+    sickDays: 4,
+    absentToday: false,
+  },
+];
+
+function MitarbeiterTab() {
+  const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
+  const totalEmployees = DEMO_EMPLOYEES.length;
+  const absentToday = DEMO_EMPLOYEES.filter(e => e.absentToday).length;
+  const avgVacationUsed = Math.round(DEMO_EMPLOYEES.reduce((s, e) => s + e.vacationUsed, 0) / totalEmployees);
+  const totalSickDays = DEMO_EMPLOYEES.reduce((s, e) => s + e.sickDays, 0);
+
+  return (
+    <div className="space-y-6">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-4 gap-4">
+        <KpiCard title="Mitarbeiter" value={totalEmployees} icon={Users} color="blue" />
+        <KpiCard title="Abwesend heute" value={absentToday} icon={CalendarDays} color={absentToday > 0 ? "amber" : "green"} />
+        <KpiCard title="Ø Ferien bezogen" value={`${avgVacationUsed} Tage`} icon={CalendarDays} color="indigo" />
+        <KpiCard title="Krankheitstage (Gesamt)" value={totalSickDays} icon={Activity} color="red" />
+      </div>
+
+      {/* Employee Table */}
+      <div className="bg-slate-800/50 rounded-lg border border-slate-700 overflow-hidden">
+        <div className="px-5 py-3 border-b border-slate-700 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-white">Alle Mitarbeiter</h3>
+          <span className="text-[10px] text-slate-400">April 2026</span>
+        </div>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-[10px] font-semibold text-slate-400 uppercase border-b border-slate-700">
+              <th className="text-left px-5 py-2.5">Mitarbeiter</th>
+              <th className="text-left px-3 py-2.5">Vertrag</th>
+              <th className="text-center px-3 py-2.5">Stunden (Ist/Soll)</th>
+              <th className="text-center px-3 py-2.5">Ferien-Saldo</th>
+              <th className="text-center px-3 py-2.5">Krankheit</th>
+              <th className="text-center px-3 py-2.5">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-700/50">
+            {DEMO_EMPLOYEES.map((emp) => {
+              const hoursPercent = Math.round((emp.hoursThisMonth / emp.hoursSoll) * 100);
+              const vacationRemaining = emp.vacationTotal - emp.vacationUsed;
+              return (
+                <tr
+                  key={emp.name}
+                  onClick={() => setSelectedEmployee(selectedEmployee === emp.name ? null : emp.name)}
+                  className="hover:bg-slate-700/30 transition-colors cursor-pointer"
+                >
+                  <td className="px-5 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-900/50 rounded-full flex items-center justify-center border border-blue-700">
+                        <Users className="w-3.5 h-3.5 text-blue-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-white">{emp.name}</p>
+                        <p className="text-[10px] text-slate-400">{emp.role} · {emp.pensum}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-3 py-3">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                      emp.contract === "Unbefristet" ? "bg-emerald-900/30 text-emerald-400" : "bg-amber-900/30 text-amber-400"
+                    }`}>
+                      {emp.contract}
+                    </span>
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="text-xs font-bold text-white">{emp.hoursThisMonth}h / {emp.hoursSoll}h</span>
+                      <div className="w-20 bg-slate-700 rounded-full h-1.5 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            hoursPercent >= 100 ? "bg-emerald-400" : hoursPercent >= 80 ? "bg-blue-400" : "bg-amber-400"
+                          }`}
+                          style={{ width: `${Math.min(hoursPercent, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    <span className="text-xs font-bold text-white">{vacationRemaining}</span>
+                    <span className="text-[10px] text-slate-400"> / {emp.vacationTotal}</span>
+                    {emp.vacationPending > 0 && (
+                      <span className="ml-1.5 text-[10px] text-amber-400">({emp.vacationPending} beantragt)</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    <span className={`text-xs font-bold ${emp.sickDays > 3 ? "text-red-400" : emp.sickDays > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                      {emp.sickDays} Tage
+                    </span>
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    {emp.absentToday ? (
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-red-900/30 text-red-400">Abwesend</span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-900/30 text-emerald-400">Anwesend</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Detail panel for selected employee */}
+      {selectedEmployee && (() => {
+        const emp = DEMO_EMPLOYEES.find(e => e.name === selectedEmployee);
+        if (!emp) return null;
+        return (
+          <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-900/50 rounded-full flex items-center justify-center border border-blue-700">
+                  <Users className="w-5 h-5 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">{emp.name}</h3>
+                  <p className="text-xs text-slate-400">{emp.role} · {emp.pensum} · {emp.contract}</p>
+                </div>
+              </div>
+              <button onClick={() => setSelectedEmployee(null)} className="text-xs text-slate-400 hover:text-white">Schliessen</button>
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                <p className="text-[10px] font-semibold text-slate-400 uppercase mb-1">Stunden diesen Monat</p>
+                <p className="text-lg font-bold text-white">{emp.hoursThisMonth}h</p>
+                <p className="text-[10px] text-slate-500">Soll: {emp.hoursSoll}h · {Math.round((emp.hoursThisMonth / emp.hoursSoll) * 100)}%</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                <p className="text-[10px] font-semibold text-slate-400 uppercase mb-1">Ferien-Saldo</p>
+                <p className="text-lg font-bold text-white">{emp.vacationTotal - emp.vacationUsed} Tage</p>
+                <p className="text-[10px] text-slate-500">{emp.vacationUsed} bezogen / {emp.vacationTotal} Total</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                <p className="text-[10px] font-semibold text-slate-400 uppercase mb-1">Beantragt</p>
+                <p className="text-lg font-bold text-amber-400">{emp.vacationPending} Tage</p>
+                <p className="text-[10px] text-slate-500">Ferien + Weiterbildung</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                <p className="text-[10px] font-semibold text-slate-400 uppercase mb-1">Krankheitstage</p>
+                <p className={`text-lg font-bold ${emp.sickDays > 3 ? "text-red-400" : "text-white"}`}>{emp.sickDays}</p>
+                <p className="text-[10px] text-slate-500">Laufendes Jahr</p>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
 // ─── Tab Titles ─────────────────────────────────────────────────────────────
 
 const TAB_TITLES: Record<AdminTab, { title: string; subtitle: string }> = {
@@ -632,6 +873,7 @@ const TAB_TITLES: Record<AdminTab, { title: string; subtitle: string }> = {
   safety: { title: "Safety & Compliance", subtitle: "Flugfreigaben, Risikobewertung, Vorfälle" },
   fleet: { title: "Flotte & Wartung", subtitle: "Drohnen-Status, Verschleiss und Wartungsplanung" },
   team: { title: "Team & Franchise", subtitle: "Piloten, Safety Manager und Franchise-Partner" },
+  mitarbeiter: { title: "Mitarbeiter-Übersicht", subtitle: "Arbeitszeiten, Ferien-Saldo, Abwesenheiten und Vertragsstatus" },
 };
 
 // ─── Main Dashboard ─────────────────────────────────────────────────────────
@@ -650,6 +892,7 @@ export function AdminDashboard() {
           {activeTab === "safety" && <SafetyTab />}
           {activeTab === "fleet" && <FleetTab />}
           {activeTab === "team" && <TeamTab />}
+          {activeTab === "mitarbeiter" && <MitarbeiterTab />}
         </main>
       </div>
     </div>

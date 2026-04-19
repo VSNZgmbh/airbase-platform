@@ -66,6 +66,9 @@ import {
   Hash,
   MapPinned,
   Target,
+  Briefcase,
+  CalendarDays,
+  FileCheck,
 } from "lucide-react";
 import { ConnectionStatus } from "@/components/mission-control/ConnectionStatus";
 import { SwissMap } from "@/components/mission-control";
@@ -83,7 +86,8 @@ type MenuSection =
   | "regulations"
   | "documents"
   | "drone-status"
-  | "incidents";
+  | "incidents"
+  | "mein-arbeitsbereich";
 
 const MENU_ITEMS: {
   id: MenuSection;
@@ -101,6 +105,7 @@ const MENU_ITEMS: {
   { id: "documents", label: "Dokumente", icon: FolderOpen },
   { id: "drone-status", label: "Drohnen-Status", icon: Wrench },
   { id: "incidents", label: "Vorfälle & Safety", icon: AlertTriangle },
+  { id: "mein-arbeitsbereich", label: "Mein Arbeitsbereich", icon: Briefcase },
 ];
 
 const FLIGHT_STATUS_LABELS: Record<
@@ -271,7 +276,30 @@ function PilotSidebar({
         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] px-3 mb-2 mt-5">
           Safety & Wartung
         </p>
-        {MENU_ITEMS.slice(6).map((item) => {
+        {MENU_ITEMS.slice(6, 10).map((item) => {
+          const isActive = activeSection === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onNavigate(item.id)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                isActive
+                  ? "bg-red-50 text-red-700 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+              }`}
+            >
+              <item.icon
+                className={`w-4 h-4 ${isActive ? "text-red-500" : "text-gray-400"}`}
+              />
+              <span className="flex-1 text-left">{item.label}</span>
+            </button>
+          );
+        })}
+
+        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] px-3 mb-2 mt-5">
+          Personal & HR
+        </p>
+        {MENU_ITEMS.slice(10).map((item) => {
           const isActive = activeSection === item.id;
           return (
             <button
@@ -3092,6 +3120,315 @@ function IncidentsSection() {
   );
 }
 
+// ─── Section: Mein Arbeitsbereich (HR) ─────────────────────────────────────
+
+const DEMO_TIMESHEET = [
+  { date: "2026-04-14", start: "06:30", end: "14:45", pause: 0.5, type: "Flugdienst", mission: "ZH-001 Bau" },
+  { date: "2026-04-15", start: "07:00", end: "16:00", pause: 0.75, type: "Flugdienst", mission: "ZH-003 Transport" },
+  { date: "2026-04-16", start: "08:00", end: "12:00", pause: 0, type: "Schulung", mission: "SORA Refresher" },
+  { date: "2026-04-17", start: "06:00", end: "15:30", pause: 0.5, type: "Flugdienst", mission: "BE-012 Bau" },
+  { date: "2026-04-18", start: "07:30", end: "13:00", pause: 0.5, type: "Standby", mission: "—" },
+];
+
+const DEMO_ABSENCES = [
+  { id: 1, type: "Ferien", from: "2026-05-01", to: "2026-05-09", days: 7, status: "genehmigt" as const },
+  { id: 2, type: "Ferien", from: "2026-07-20", to: "2026-08-01", days: 10, status: "beantragt" as const },
+  { id: 3, type: "Krankheit", from: "2026-03-10", to: "2026-03-11", days: 2, status: "genehmigt" as const },
+  { id: 4, type: "Weiterbildung", from: "2026-06-15", to: "2026-06-16", days: 2, status: "beantragt" as const },
+];
+
+function MeinArbeitsbereichSection() {
+  const [activeTab, setActiveTab] = useState<"stunden" | "ferien" | "vertrag">("stunden");
+
+  const totalHoursWeek = DEMO_TIMESHEET.reduce((sum, d) => {
+    const start = parseInt(d.start.split(":")[0]) + parseInt(d.start.split(":")[1]) / 60;
+    const end = parseInt(d.end.split(":")[0]) + parseInt(d.end.split(":")[1]) / 60;
+    return sum + (end - start - d.pause);
+  }, 0);
+
+  const usedVacation = DEMO_ABSENCES.filter(a => a.type === "Ferien" && a.status === "genehmigt").reduce((s, a) => s + a.days, 0);
+  const pendingVacation = DEMO_ABSENCES.filter(a => a.status === "beantragt").reduce((s, a) => s + a.days, 0);
+
+  return (
+    <div className="space-y-6">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+              <Clock className="w-4 h-4 text-blue-500" />
+            </div>
+            <span className="text-[10px] font-semibold text-gray-400 uppercase">Diese Woche</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{totalHoursWeek.toFixed(1)}h</p>
+          <p className="text-[10px] text-gray-400 mt-1">von 42h Soll</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+              <CalendarDays className="w-4 h-4 text-green-500" />
+            </div>
+            <span className="text-[10px] font-semibold text-gray-400 uppercase">Ferien-Saldo</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{25 - usedVacation} Tage</p>
+          <p className="text-[10px] text-gray-400 mt-1">{usedVacation} bezogen / 25 Total</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
+              <Clock className="w-4 h-4 text-amber-500" />
+            </div>
+            <span className="text-[10px] font-semibold text-gray-400 uppercase">Überstunden</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">12.5h</p>
+          <p className="text-[10px] text-gray-400 mt-1">Laufendes Jahr</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+              <FileCheck className="w-4 h-4 text-purple-500" />
+            </div>
+            <span className="text-[10px] font-semibold text-gray-400 uppercase">Vertrag</span>
+          </div>
+          <p className="text-2xl font-bold text-green-600">Aktiv</p>
+          <p className="text-[10px] text-gray-400 mt-1">Unbefristet · 100%</p>
+        </div>
+      </div>
+
+      {/* Sub-tabs */}
+      <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+        {([
+          { id: "stunden" as const, label: "Stundenerfassung", icon: Clock },
+          { id: "ferien" as const, label: "Ferien / Abwesenheiten", icon: CalendarDays },
+          { id: "vertrag" as const, label: "Arbeitsvertrag", icon: FileText },
+        ]).map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              activeTab === tab.id
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <tab.icon className="w-3.5 h-3.5" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Stundenerfassung */}
+      {activeTab === "stunden" && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-gray-900">Woche 16 — 14.–18. April 2026</h3>
+              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
+                {totalHoursWeek.toFixed(1)}h / 42h
+              </span>
+            </div>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-[10px] font-semibold text-gray-400 uppercase border-b border-gray-100">
+                  <th className="text-left px-5 py-2">Datum</th>
+                  <th className="text-left px-3 py-2">Beginn</th>
+                  <th className="text-left px-3 py-2">Ende</th>
+                  <th className="text-left px-3 py-2">Pause</th>
+                  <th className="text-left px-3 py-2">Netto</th>
+                  <th className="text-left px-3 py-2">Art</th>
+                  <th className="text-left px-3 py-2">Mission</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {DEMO_TIMESHEET.map((row) => {
+                  const start = parseInt(row.start.split(":")[0]) + parseInt(row.start.split(":")[1]) / 60;
+                  const end = parseInt(row.end.split(":")[0]) + parseInt(row.end.split(":")[1]) / 60;
+                  const net = end - start - row.pause;
+                  return (
+                    <tr key={row.date} className="hover:bg-gray-50/50">
+                      <td className="px-5 py-2.5 font-medium text-gray-900">
+                        {format(new Date(row.date), "EEE, d. MMM", { locale: de })}
+                      </td>
+                      <td className="px-3 py-2.5 text-gray-600">{row.start}</td>
+                      <td className="px-3 py-2.5 text-gray-600">{row.end}</td>
+                      <td className="px-3 py-2.5 text-gray-400">{row.pause}h</td>
+                      <td className="px-3 py-2.5 font-semibold text-gray-900">{net.toFixed(1)}h</td>
+                      <td className="px-3 py-2.5">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                          row.type === "Flugdienst" ? "bg-blue-50 text-blue-600" :
+                          row.type === "Schulung" ? "bg-purple-50 text-purple-600" :
+                          "bg-gray-100 text-gray-500"
+                        }`}>{row.type}</span>
+                      </td>
+                      <td className="px-3 py-2.5 text-gray-500 text-xs">{row.mission}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {/* Quick add */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <h4 className="text-sm font-bold text-gray-900 mb-3">Arbeitszeit erfassen</h4>
+            <div className="grid grid-cols-5 gap-3">
+              <div>
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Datum</label>
+                <input type="date" defaultValue="2026-04-19" className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+              </div>
+              <div>
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Beginn</label>
+                <input type="time" defaultValue="07:00" className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+              </div>
+              <div>
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Ende</label>
+                <input type="time" defaultValue="16:00" className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+              </div>
+              <div>
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Art</label>
+                <select className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white">
+                  <option>Flugdienst</option>
+                  <option>Schulung</option>
+                  <option>Standby</option>
+                  <option>Büro</option>
+                </select>
+              </div>
+              <div className="flex items-end">
+                <button className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold transition-colors">
+                  Erfassen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Ferien & Abwesenheiten */}
+      {activeTab === "ferien" && (
+        <div className="space-y-4">
+          {/* Vacation balance bar */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <h4 className="text-sm font-bold text-gray-900 mb-3">Ferienübersicht 2026</h4>
+            <div className="flex items-center gap-4 mb-3">
+              <div className="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all" style={{ width: `${(usedVacation / 25) * 100}%` }} />
+              </div>
+              <span className="text-sm font-bold text-gray-900 whitespace-nowrap">{usedVacation} / 25 Tage</span>
+            </div>
+            <div className="flex gap-6 text-xs text-gray-500">
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-400" />Bezogen: {usedVacation} Tage</span>
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-400" />Beantragt: {pendingVacation} Tage</span>
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gray-300" />Verfügbar: {25 - usedVacation - pendingVacation} Tage</span>
+            </div>
+          </div>
+
+          {/* Absence list */}
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-gray-900">Abwesenheiten</h3>
+              <button className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5">
+                <PlusCircle className="w-3 h-3" /> Neuer Antrag
+              </button>
+            </div>
+            <div className="divide-y divide-gray-50">
+              {DEMO_ABSENCES.map((a) => (
+                <div key={a.id} className="px-5 py-3 flex items-center justify-between hover:bg-gray-50/50">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      a.type === "Ferien" ? "bg-green-50" : a.type === "Krankheit" ? "bg-red-50" : "bg-purple-50"
+                    }`}>
+                      <CalendarDays className={`w-4 h-4 ${
+                        a.type === "Ferien" ? "text-green-500" : a.type === "Krankheit" ? "text-red-500" : "text-purple-500"
+                      }`} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{a.type}</p>
+                      <p className="text-[10px] text-gray-400">
+                        {format(new Date(a.from), "d. MMM", { locale: de })} – {format(new Date(a.to), "d. MMM yyyy", { locale: de })} · {a.days} Tage
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${
+                    a.status === "genehmigt" ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"
+                  }`}>
+                    {a.status === "genehmigt" ? "Genehmigt" : "Beantragt"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Arbeitsvertrag */}
+      {activeTab === "vertrag" && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Arbeitsvertrag</h3>
+                <p className="text-sm text-gray-500 mt-0.5">VSNZ GmbH — Drohnen-Pilot (PIC)</p>
+              </div>
+              <span className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-bold">Aktiv</span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-12 gap-y-4">
+              {[
+                { label: "Name", value: "Hans Müller" },
+                { label: "Position", value: "Drohnen-Pilot / PIC" },
+                { label: "Vertragsbeginn", value: "1. Januar 2025" },
+                { label: "Vertragsart", value: "Unbefristet" },
+                { label: "Pensum", value: "100% (42h / Woche)" },
+                { label: "Jahressalär", value: "CHF 92'000 brutto" },
+                { label: "Ferienanspruch", value: "25 Tage / Jahr" },
+                { label: "Probezeit", value: "Abgeschlossen (3 Monate)" },
+                { label: "Lizenz", value: "CH-RPL-2024-0142" },
+                { label: "Arbeitgeber", value: "VSNZ GmbH, Zürich" },
+                { label: "AHV-Nr.", value: "756.1234.5678.90" },
+                { label: "Kündigungsfrist", value: "3 Monate" },
+              ].map((row) => (
+                <div key={row.label} className="flex items-start gap-3 py-1.5 border-b border-gray-50">
+                  <span className="text-xs text-gray-400 w-32 flex-shrink-0">{row.label}</span>
+                  <span className="text-sm font-medium text-gray-900">{row.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Documents */}
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="px-5 py-3 border-b border-gray-100">
+              <h3 className="text-sm font-bold text-gray-900">Vertragsdokumente</h3>
+            </div>
+            <div className="divide-y divide-gray-50">
+              {[
+                { name: "Arbeitsvertrag_Mueller_2025.pdf", date: "01.01.2025", size: "245 KB" },
+                { name: "Lohnabrechnung_März_2026.pdf", date: "31.03.2026", size: "89 KB" },
+                { name: "Lohnabrechnung_Feb_2026.pdf", date: "28.02.2026", size: "87 KB" },
+                { name: "Spesenreglement_2026.pdf", date: "01.01.2026", size: "112 KB" },
+                { name: "Piloten-Arbeitsreglement_V3.pdf", date: "15.06.2025", size: "320 KB" },
+              ].map((doc) => (
+                <div key={doc.name} className="px-5 py-3 flex items-center justify-between hover:bg-gray-50/50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
+                      <FileText className="w-4 h-4 text-red-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{doc.name}</p>
+                      <p className="text-[10px] text-gray-400">{doc.date} · {doc.size}</p>
+                    </div>
+                  </div>
+                  <button className="text-xs text-red-500 hover:text-red-600 font-semibold flex items-center gap-1">
+                    <Download className="w-3 h-3" /> Download
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Section Title Map ──────────────────────────────────────────────────────
 
 const SECTION_TITLES: Record<
@@ -3137,6 +3474,10 @@ const SECTION_TITLES: Record<
   incidents: {
     title: "Vorfälle & Safety",
     subtitle: "Gemeldete Vorfälle und Sicherheitsereignisse",
+  },
+  "mein-arbeitsbereich": {
+    title: "Mein Arbeitsbereich",
+    subtitle: "Stundenerfassung, Ferien/Abwesenheiten und Arbeitsvertrag",
   },
 };
 
@@ -3261,6 +3602,7 @@ export function PilotDashboard() {
           {activeSection === "documents" && <DocumentsSection />}
           {activeSection === "drone-status" && <DroneStatusSection />}
           {activeSection === "incidents" && <IncidentsSection />}
+          {activeSection === "mein-arbeitsbereich" && <MeinArbeitsbereichSection />}
         </main>
       </div>
     </div>
