@@ -16,7 +16,10 @@ function getDb(): SchemaDB {
     );
   }
 
-  const client = postgres(connectionString, { prepare: false });
+  const client = postgres(connectionString, {
+    prepare: false,
+    connect_timeout: 5, // 5s max — fail fast so demo data can take over
+  });
   _db = drizzle(client, { schema });
   return _db;
 }

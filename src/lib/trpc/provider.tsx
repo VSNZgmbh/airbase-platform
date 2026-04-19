@@ -19,6 +19,7 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
         defaultOptions: {
           queries: {
             staleTime: 30 * 1000, // 30s
+            retry: false, // No retries — fast fallback to demo data when DB is down
           },
         },
       })
