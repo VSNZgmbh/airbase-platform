@@ -1586,7 +1586,7 @@ function SettingsSection() {
         <h3 className="text-sm font-bold text-gray-900 mb-4">Betriebsparameter</h3>
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: "Max. Nutzlast", value: "100 kg", icon: Package },
+            { label: "Max. Nutzlast", value: "85 kg (Dual)", icon: Package },
             { label: "Max. Reichweite", value: "12 km", icon: Navigation },
             { label: "Max. Flughöhe", value: "120 m AGL", icon: Gauge },
             { label: "Min. Sichtweite", value: "5 km", icon: Eye },

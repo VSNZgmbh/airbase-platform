@@ -335,7 +335,7 @@ function PilotSidebar({
             </span>
           </div>
           <p className="text-[10px] text-gray-400">
-            100 kg Nutzlast · 12 km Reichweite
+            85 kg Nutzlast (Dual) · 12 km Reichweite
           </p>
         </div>
       </div>
@@ -1315,7 +1315,7 @@ const PREFLIGHT_CATEGORIES = [
     ref: "SORA v2.5, Betriebshandbuch Kap. 4",
     items: [
       "Nutzlast gewogen und Gewicht dokumentiert",
-      "Nutzlastgewicht innerhalb des zertifizierten Limits (≤ 100 kg)",
+      "Nutzlastgewicht innerhalb des zertifizierten Limits (≤ 85 kg Dual / ≤ 80 kg Single)",
       "Schwerpunktlage geprüft und innerhalb der Toleranz",
       "Ladung korrekt gesichert (Gurte, Haken, Verriegelung)",
       "Gefahrgut-Klassifikation geprüft (falls zutreffend)",
