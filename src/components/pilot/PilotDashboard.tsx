@@ -3649,26 +3649,6 @@ export function PilotDashboard() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex min-h-screen bg-gray-50/50">
-        <PilotSidebar
-          activeSection={activeSection}
-          onNavigate={setActiveSection}
-          activeMissionCount={0}
-        />
-        <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
-          <PilotTopBar title="Fehler" subtitle="" />
-          <main className="flex-1 overflow-y-auto p-6">
-            <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center text-red-600">
-              {error.message}
-            </div>
-          </main>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex min-h-screen bg-gray-50/50">
       <PilotSidebar

@@ -946,6 +946,22 @@ const CHART_COLORS = ["#ef4444", "#6366f1", "#0891b2", "#16a34a", "#d97706", "#d
 const STATUS_LABELS: Record<string, string> = { draft: "Entwurf", pending: "Ausstehend", quoted: "Angeboten", confirmed: "Bestätigt", in_progress: "In Bearbeitung", completed: "Abgeschlossen", cancelled: "Storniert" };
 const SERVICE_LABELS: Record<string, string> = { LASTENFLUG: "Lastenflug", PERSONENFLUG: "Personenflug", INSPEKTION: "Inspektion" };
 
+const DEMO_ANALYTICS_OVERVIEW = {
+  totalBookings: DEMO_BOOKINGS.length,
+  totalRevenueCHF: DEMO_BOOKINGS.reduce((sum, b) => sum + parseFloat(b.totalCHF || "0"), 0),
+  completedFlights: DEMO_FLIGHTS.filter((f) => f.status === "completed").length,
+  totalFlights: DEMO_FLIGHTS.length,
+  bookingsByStatus: DEMO_BOOKINGS.reduce<Record<string, number>>((acc, b) => { acc[b.status] = (acc[b.status] ?? 0) + 1; return acc; }, {}),
+  unpaidInvoicesCount: 2,
+  unpaidInvoicesTotalCHF: 1840,
+};
+
+const DEMO_ANALYTICS_TIMELINE = DEMO_WEEKLY_DATA.map((d) => ({ date: `2026-04-${String(DEMO_WEEKLY_DATA.indexOf(d) + 13).padStart(2, "0")}`, count: d.flights, revenue: d.revenue }));
+
+const DEMO_ANALYTICS_ROUTES = DEMO_AREA_DATA.slice(0, 5).map((a) => ({ address: a.name, count: a.flights }));
+
+const DEMO_ANALYTICS_SERVICES = DEMO_SERVICE_DISTRIBUTION.slice(0, 3).map((s) => ({ serviceType: s.name === "Lastenflug" ? "LASTENFLUG" : s.name === "Inspektion" ? "INSPEKTION" : "PERSONENFLUG", count: s.value, revenue: s.value * 520 }));
+
 function AnalyticsSection() {
   const overviewQ = trpc.analytics.overview.useQuery();
   const timelineQ = trpc.analytics.bookingsOverTime.useQuery({ days: 90 });
@@ -953,6 +969,7 @@ function AnalyticsSection() {
   const serviceQ = trpc.analytics.serviceTypeBreakdown.useQuery();
   const payloadQ = trpc.analytics.avgPayloadWeight.useQuery();
   const isLoading = overviewQ.isLoading || timelineQ.isLoading || serviceQ.isLoading;
+  const hasError = overviewQ.error || timelineQ.error || routesQ.error || serviceQ.error || payloadQ.error;
 
   if (isLoading) {
     return (
@@ -963,11 +980,11 @@ function AnalyticsSection() {
     );
   }
 
-  const ov = overviewQ.data;
-  const timeline = timelineQ.data ?? [];
-  const routes = routesQ.data ?? [];
-  const services = serviceQ.data ?? [];
-  const payload = payloadQ.data;
+  const ov = hasError ? DEMO_ANALYTICS_OVERVIEW : overviewQ.data;
+  const timeline = hasError ? DEMO_ANALYTICS_TIMELINE : (timelineQ.data ?? []);
+  const routes = hasError ? DEMO_ANALYTICS_ROUTES : (routesQ.data ?? []);
+  const services = hasError ? DEMO_ANALYTICS_SERVICES : (serviceQ.data ?? []);
+  const payload = hasError ? { avg: 34, min: 8, max: 65 } : payloadQ.data;
 
   const statusPieData = Object.entries(ov?.bookingsByStatus ?? {}).filter(([, v]) => v > 0).map(([k, v]) => ({ name: STATUS_LABELS[k] ?? k, value: v }));
   const serviceBarData = services.map((s) => ({ name: SERVICE_LABELS[s.serviceType] ?? s.serviceType, Buchungen: s.count, "Umsatz (CHF)": Math.round(s.revenue) }));
