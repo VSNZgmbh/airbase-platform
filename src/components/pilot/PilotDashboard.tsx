@@ -73,6 +73,8 @@ import {
 import { ConnectionStatus } from "@/components/mission-control/ConnectionStatus";
 import { SwissMap } from "@/components/mission-control";
 import { ProximityWarning } from "@/components/airspace/ProximityWarning";
+import { LiveOperationsMap } from "@/components/admin/LiveOperationsMap";
+import { AirspaceView3D } from "@/components/admin/AirspaceView3D";
 
 // ─── Types & Data ───────────────────────────────────────────────────────────
 
@@ -2116,18 +2118,48 @@ function MissionReportSection({
 // ─── Section: Airspace ─────────────────────────────────────────────────────
 
 function AirspaceSection() {
+  const [airspaceView, setAirspaceView] = useState<"map" | "3d">("map");
+
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-xl font-bold text-gray-900">Airspace</h2>
-        <p className="text-sm text-gray-500 mt-0.5">
-          Schweizer Karte mit Luftraum, Wetter und Verkehr
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Airspace</h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Live-Karte mit Drohnenpositionen, Luftverkehr und 3D-Ansicht
+          </p>
+        </div>
+        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
+          <button
+            onClick={() => setAirspaceView("map")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+              airspaceView === "map"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Live Map
+          </button>
+          <button
+            onClick={() => setAirspaceView("3d")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+              airspaceView === "3d"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            3D Airspace
+          </button>
+        </div>
       </div>
 
-      {/* Swiss Map */}
+      {/* Live Operations Map / 3D View */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-        <SwissMap compact={false} showAirTraffic />
+        {airspaceView === "map" ? (
+          <LiveOperationsMap expanded={false} />
+        ) : (
+          <AirspaceView3D />
+        )}
       </div>
 
       {/* Air Traffic */}
