@@ -92,11 +92,11 @@ const STEPS = [
 
 const SERVICES = [
   { id: "transport", label: "Transport", desc: "Lasten bis 100 kg per Drohne", icon: Truck, color: "from-red-500 to-red-600", available: true },
-  { id: "agriculture", label: "Landwirtschaft", desc: "Präzisionslandwirtschaft & Sprühen", icon: Wheat, color: "from-green-500 to-green-600", available: true },
-  { id: "cleaning", label: "Reinigung", desc: "Solar- & Fassadenreinigung", icon: Sparkles, color: "from-cyan-500 to-cyan-600", available: true },
   { id: "construction", label: "Bau & Vermessung", desc: "Inspektion & Materiallieferung", icon: HardHat, color: "from-amber-500 to-amber-600", available: true },
+  { id: "agriculture", label: "Landwirtschaft", desc: "Präzisionslandwirtschaft & Sprühen", icon: Wheat, color: "from-green-500 to-green-600", available: false },
+  { id: "cleaning", label: "Reinigung", desc: "Solar- & Fassadenreinigung", icon: Sparkles, color: "from-cyan-500 to-cyan-600", available: false },
+  { id: "solar", label: "Solar & Inspektion", desc: "PV-Anlagen & Infrastruktur", icon: Sun, color: "from-orange-500 to-orange-600", available: false },
   { id: "emergency", label: "Notfall", desc: "Medizinische & Rettungseinsätze", icon: Siren, color: "from-purple-500 to-purple-600", available: false },
-  { id: "solar", label: "Solar & Inspektion", desc: "PV-Anlagen & Infrastruktur", icon: Sun, color: "from-orange-500 to-orange-600", available: true },
 ];
 
 // ─── Workflow Stepper ───────────────────────────────────────────────────────
@@ -706,9 +706,8 @@ function NewBookingSection() {
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {SERVICES.map((service) => (
-          <button
+          <div
             key={service.id}
-            disabled={!service.available}
             className={`group relative text-left p-6 rounded-2xl border-2 transition-all duration-300 bg-white ${
               service.available
                 ? "border-gray-200 hover:shadow-lg hover:-translate-y-1 cursor-pointer hover:border-red-200"
@@ -721,14 +720,22 @@ function NewBookingSection() {
             <h3 className="font-bold text-gray-900 text-base mb-1">{service.label}</h3>
             <p className="text-sm text-gray-500 leading-relaxed">{service.desc}</p>
             {!service.available && (
-              <span className="absolute top-4 right-4 text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">BALD</span>
+              <span className="absolute top-4 right-4 text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">COMING SOON</span>
             )}
             {service.available && (
               <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                 Jetzt buchen <ChevronRight className="w-4 h-4" />
               </div>
             )}
-          </button>
+            {/* Coming Soon hover tooltip */}
+            {!service.available && (
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" style={{ background: "rgba(15,23,42,0.08)" }}>
+                <div className="rounded-lg px-4 py-2 text-sm font-bold text-white shadow-lg" style={{ background: "rgba(15,23,42,0.85)", backdropFilter: "blur(8px)" }}>
+                  Coming Soon
+                </div>
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </div>

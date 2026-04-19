@@ -247,7 +247,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 initial="hidden"
                 animate="visible"
               >
-                {["Transport", "Landwirtschaft", "Reinigung", "Bau"].map((service, i) => (
+                {["Transport", "Bau", "Landwirtschaft", "Reinigung"].map((service, i) => (
                   <motion.h2
                     key={service}
                     className="font-black text-white"
@@ -396,7 +396,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           </motion.div>
 
           <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
             variants={stagger(0.1)}
             initial="hidden"
             whileInView="visible"
@@ -407,6 +407,13 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 title: "Transport",
                 img: "/images/flycart-lastendrohne.webp",
                 desc: "Kein Weg? Kein Problem. Wir liefern Güter direkt dorthin, wo keine Strasse führt — schnell, sicher und kosteneffizient.",
+                href: "/book",
+                comingSoon: false,
+              },
+              {
+                title: "Bau",
+                img: "/images/flycart-notfalltransport.webp",
+                desc: "Kein Kran. Keine Strassensperrung. Material, Werkzeug und Ausrüstung kommen per Drohne — direkt auf Ihre Baustelle.",
                 href: "/book",
                 comingSoon: false,
               },
@@ -425,9 +432,16 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 comingSoon: true,
               },
               {
-                title: "Bau",
+                title: "Solar",
+                img: "/images/flycart-scene-2.webp",
+                desc: "PV-Anlagen und Infrastruktur — inspiziert und gewartet per Drohne, ohne Gerüst oder Absperrung.",
+                href: "#dienstleistungen",
+                comingSoon: true,
+              },
+              {
+                title: "Notfall",
                 img: "/images/flycart-notfalltransport.webp",
-                desc: "Kein Kran. Keine Strassensperrung. Material, Werkzeug und Ausrüstung kommen per Drohne — direkt auf Ihre Baustelle.",
+                desc: "Medizinische Güter und Rettungsausrüstung — in Minuten vor Ort, wenn jede Sekunde zählt.",
                 href: "#dienstleistungen",
                 comingSoon: true,
               },
@@ -437,7 +451,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 variants={fadeUp}
                 transition={{ duration: 0.6, ease }}
                 whileHover={{ y: -10, transition: { duration: 0.25 } }}
-                className={`group rounded-2xl overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-shadow ${service.comingSoon ? "opacity-80" : ""}`}
+                className={`group relative rounded-2xl overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-shadow ${service.comingSoon ? "opacity-80" : ""}`}
                 style={{ background: "#FFFFFF", border: "1px solid #E2E8F0" }}
               >
                 {/* Service image */}
@@ -481,6 +495,15 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     </Link>
                   )}
                 </div>
+
+                {/* Coming Soon hover tooltip */}
+                {service.comingSoon && (
+                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                    <div className="rounded-xl px-5 py-2.5 text-sm font-black text-white shadow-xl" style={{ background: "rgba(15,23,42,0.85)", backdropFilter: "blur(8px)" }}>
+                      Coming Soon
+                    </div>
+                  </div>
+                )}
               </motion.div>
             ))}
           </motion.div>
