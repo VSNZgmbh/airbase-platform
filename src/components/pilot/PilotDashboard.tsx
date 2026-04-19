@@ -176,8 +176,7 @@ function CockpitSidebar({ flights, activeCount, completedCount }: { flights: any
         {[
           { href: "/dashboard", icon: MapPin, label: "Kunden" },
           { href: "/pilot", icon: Compass, label: "Cockpit", active: true },
-          { href: "/safety", icon: ShieldCheck, label: "Compliance" },
-          { href: "/admin", icon: Gauge, label: "Analytics" },
+          { href: "/admin", icon: ShieldCheck, label: "Admin & Safety" },
         ].map((item) => (
           <a
             key={item.href}

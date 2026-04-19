@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShieldCheck, Plane, Settings } from "lucide-react";
+import { LayoutDashboard, ShieldCheck, Plane } from "lucide-react";
 
 const dashboards = [
   { href: "/dashboard", label: "Kunden", icon: LayoutDashboard },
-  { href: "/admin", label: "Admin", icon: Settings },
   { href: "/pilot", label: "Pilot", icon: Plane },
-  { href: "/safety", label: "Safety", icon: ShieldCheck },
+  { href: "/admin", label: "Admin & Safety", icon: ShieldCheck },
 ] as const;
 
 export function GlobalNav() {

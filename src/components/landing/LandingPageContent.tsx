@@ -912,12 +912,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
               variants={fadeUp}
               transition={{ duration: 0.6, ease }}
             >
-              Vier spezialisierte Dashboards — massgeschneidert für Kunden, Admins, Piloten und Compliance.
+              Drei spezialisierte Dashboards — massgeschneidert für Kunden, Piloten und Admin/Safety.
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid md:grid-cols-3 gap-6"
             variants={stagger(0.12)}
             initial="hidden"
             whileInView="visible"
@@ -926,31 +926,24 @@ export function LandingPageContent({ locale }: { locale: string }) {
             {[
               {
                 title: "Kunden-Dashboard",
-                desc: "Buchen, verfolgen, abrechnen — alles an einem Ort. Behalten Sie Ihre Aufträge im Griff und verfolgen Sie Ihre Drohne in Echtzeit.",
+                desc: "Missionen buchen, Live-Tracking verfolgen, mit Ihrem Piloten chatten, Rechnungen verwalten — alles an einem Ort. Ihr komplettes Kundenportal.",
                 icon: "👤",
                 href: "/dashboard",
                 cta: "Kunden-Dashboard",
               },
               {
-                title: "Admin-Dashboard",
-                desc: "Franchise-Verwaltung, Buchungsstatistiken und Betriebskennzahlen. Volle Kontrolle über alle Standorte.",
-                icon: "⚙️",
-                href: "/admin",
-                cta: "Admin-Dashboard",
-              },
-              {
                 title: "Piloten-Dashboard",
-                desc: "Ihr digitales Cockpit für jeden Einsatz. Aufträge annehmen, Wetter checken, NOTAMs prüfen, Bericht einreichen.",
+                desc: "Ihr digitales Cockpit für jeden Einsatz. Aufträge annehmen, Wetter checken, NOTAMs prüfen, Telemetrie überwachen, Post-Flight Reports einreichen.",
                 icon: "🛩️",
                 href: "/pilot",
                 cta: "Piloten-Dashboard",
               },
               {
-                title: "Safety & Compliance",
-                desc: "SORA-Prüfungen, Risiko-Assessments und regulatorische Compliance. Alle Sicherheitsdaten im Überblick.",
+                title: "Admin & Safety",
+                desc: "Finanzen, Flottenmanagement, SORA-Compliance, Flugfreigaben, Risikobewertung, Franchise-Netzwerk und Team — ein Dashboard für die gesamte Betriebsführung.",
                 icon: "🛡️",
-                href: "/safety",
-                cta: "Safety-Dashboard",
+                href: "/admin",
+                cta: "Admin & Safety",
               },
             ].map((portal) => (
               <motion.div
