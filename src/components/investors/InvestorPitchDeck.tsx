@@ -42,7 +42,6 @@ import {
   DollarSign,
   BarChart3,
   Layers,
-  Percent,
   Banknote,
   Truck,
   Sparkles,
@@ -252,23 +251,15 @@ function Bullet({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
-/* ─── Investment Slider ─── */
+/* ─── Investment Slider (Convertible Note / Wandeldarlehen) ─── */
 function InvestmentSlider() {
   const [amount, setAmount] = useState(250);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
 
-  const tiers = [
-    { min: 50, label: "CHF 50K", equity: 1.5, interest: 4, perks: "Quarterly reports, investor updates" },
-    { min: 100, label: "CHF 100K", equity: 3, interest: 5, perks: "Board observer rights, quarterly reports" },
-    { min: 250, label: "CHF 250K", equity: 5, interest: 6, perks: "Board seat option, strategic input, quarterly reports" },
-    { min: 500, label: "CHF 500K", equity: 12, interest: 7, perks: "Board seat, co-pilot program, strategic input" },
-    { min: 750, label: "CHF 750K", equity: 20, interest: 8, perks: "Board seat, naming rights, strategic partnership" },
-  ];
-
-  const currentTier = [...tiers].reverse().find(t => amount >= t.min) || tiers[0];
-  const equity = currentTier.equity + ((amount - currentTier.min) / 50) * (currentTier === tiers[tiers.length - 1] ? 0.8 : ((tiers[tiers.indexOf(currentTier) + 1]?.equity || currentTier.equity + 5) - currentTier.equity) / ((tiers[tiers.indexOf(currentTier) + 1]?.min || currentTier.min + 250) - currentTier.min) * 50);
-  const displayEquity = Math.min(Math.round(equity * 10) / 10, 30);
+  const INTEREST_RATE = 6; // 6% p.a. — standard Swiss convertible note rate
+  const annualInterest = amount * INTEREST_RATE / 100; // CHF K per year
+  const years = [1, 2, 3, 4, 5];
 
   return (
     <motion.div
@@ -285,12 +276,12 @@ function InvestmentSlider() {
           <Banknote className="w-5 h-5" style={{ color: C.accent }} />
         </div>
         <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
-          Investment Calculator
+          Convertible Note Calculator
         </span>
       </div>
 
       <div className="text-center mb-8">
-        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment</div>
+        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment (Wandeldarlehen)</div>
         <div className="text-4xl md:text-5xl font-bold font-mono" style={{ color: C.text }}>
           CHF {amount}K
         </div>
@@ -318,27 +309,63 @@ function InvestmentSlider() {
 
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="rounded-xl p-4 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
-          <Percent className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
-          <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>{displayEquity}%</div>
-          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Equity Stake</div>
+          <Banknote className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
+          <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>CHF {amount}K</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Loan Amount</div>
         </div>
         <div className="rounded-xl p-4 text-center" style={{ background: C.greenLight, border: `1px solid rgba(22,163,74,0.15)` }}>
           <TrendingUp className="w-5 h-5 mx-auto mb-2" style={{ color: C.green }} />
-          <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{currentTier.interest}%</div>
+          <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{INTEREST_RATE}%</div>
           <div className="text-xs mt-1" style={{ color: C.textMuted }}>Annual Interest</div>
         </div>
         <div className="rounded-xl p-4 text-center" style={{ background: C.goldLight, border: `1px solid rgba(184,134,11,0.15)` }}>
           <DollarSign className="w-5 h-5 mx-auto mb-2" style={{ color: C.gold }} />
-          <div className="text-2xl font-bold font-mono" style={{ color: C.gold }}>CHF {Math.round(amount * currentTier.interest / 100 * 10)}K</div>
-          <div className="text-xs mt-1" style={{ color: C.textMuted }}>5-Yr Interest Return</div>
+          <div className="text-2xl font-bold font-mono" style={{ color: C.gold }}>CHF {amount + annualInterest * 5}K</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Total at Conversion (5 Yr)</div>
         </div>
       </div>
 
-      <div className="rounded-xl p-4" style={{ background: C.bgAlt, border: `1px solid ${C.border}` }}>
-        <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.textMuted }}>
-          Investor Perks at This Level
+      {/* Accumulated interest breakdown by year */}
+      <div className="rounded-xl p-4 mb-4" style={{ background: C.bgAlt, border: `1px solid ${C.border}` }}>
+        <div className="text-xs font-mono uppercase tracking-wider mb-3" style={{ color: C.textMuted }}>
+          Accumulated Interest Over Time
         </div>
-        <p className="text-sm" style={{ color: C.textSecondary }}>{currentTier.perks}</p>
+        <div className="space-y-2">
+          {years.map((yr) => {
+            const accumulated = annualInterest * yr;
+            const total = amount + accumulated;
+            const pct = (accumulated / (annualInterest * 5)) * 100;
+            return (
+              <div key={yr} className="flex items-center gap-3">
+                <span className="text-xs font-mono w-12 shrink-0" style={{ color: C.textMuted }}>
+                  Yr {yr}
+                </span>
+                <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: C.border }}>
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{ width: `${pct}%`, background: C.accent }}
+                  />
+                </div>
+                <span className="text-xs font-mono w-28 text-right shrink-0" style={{ color: C.textSecondary }}>
+                  +{accumulated}K = {total}K
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* How Wandeldarlehen works */}
+      <div className="rounded-xl p-4" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
+        <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
+          How the Convertible Note Works
+        </div>
+        <ul className="text-xs space-y-1.5" style={{ color: C.textSecondary }}>
+          <li>1. You provide a loan (Darlehen) to AIRBASE</li>
+          <li>2. Interest of {INTEREST_RATE}% p.a. accrues — not paid out in cash</li>
+          <li>3. At the next funding round, loan + accrued interest converts into equity</li>
+          <li>4. Conversion at a discount to the next-round valuation</li>
+        </ul>
       </div>
 
       <div className="mt-4 text-xs text-center" style={{ color: C.textMuted }}>
@@ -2500,7 +2527,10 @@ export function InvestorPitchDeck() {
                           Instrument
                         </div>
                         <div className="text-sm font-bold mt-1" style={{ color: C.text }}>
-                          SAFE or Equity
+                          Convertible Note
+                        </div>
+                        <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>
+                          (Wandeldarlehen)
                         </div>
                       </div>
                       <div className="rounded-xl p-4 border" style={{ borderColor: C.border, background: C.bgCard, boxShadow: C.shadow }}>
