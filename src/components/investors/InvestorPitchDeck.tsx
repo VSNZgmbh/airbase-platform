@@ -846,94 +846,104 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight"
               style={{ color: C.text }}
             >
-              Traditional Services
+              Swiss Logistics Is
               <br />
-              <span style={{ color: C.red }}>Are Grounded.</span>
+              <span style={{ color: C.red }}>Stuck in the Past.</span>
             </motion.h2>
 
             <motion.div variants={fadeIn} className="h-px w-24 mt-4 mb-8" style={{ background: C.red + "60" }} />
           </Stagger>
 
-          <div className="grid md:grid-cols-2 gap-12 mt-12">
-            <Stagger className="space-y-6" delay={0.3}>
-              {[
-                { icon: Package, text: "Last-mile delivery = 41% of supply chain cost (McKinsey, 2023)", color: C.red },
-                { icon: Wheat, text: "Agricultural spraying by hand: slow, expensive, 3× chemical overuse", color: C.red },
-                { icon: Sparkles, text: "Facade & solar cleaning: scaffolding costs up to CHF 50K per job", color: C.accent },
-                { icon: Eye, text: "Infrastructure inspections require costly manned helicopter flights", color: C.gold },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  variants={slideRight}
-                  className="flex items-start gap-4 p-4 rounded-xl border"
-                  style={{ borderColor: item.color + "20", background: item.color + "06" }}
-                >
-                  <item.icon className="w-5 h-5 mt-0.5 shrink-0" style={{ color: item.color }} />
-                  <span className="text-base md:text-lg" style={{ color: C.textSecondary }}>
+          {/* ── Swiss Pain Points ── */}
+          <Stagger className="space-y-4 mt-12" delay={0.3}>
+            {[
+              { icon: Mountain, label: "Material Cable Cars", text: "Temporary Materialgondelbahnen still built to haul construction materials to mountain sites — tens of thousands of CHF, weeks to erect.", color: C.red },
+              { icon: Wheat, label: "Agriculture", text: "Spraying, seeding & crop monitoring still done by hand across steep terrain. Expensive labor, limited reach, 3× chemical overuse.", color: C.red },
+              { icon: MapPin, label: "Hiking Trail Maintenance", text: "Maintained by hand crews or helicopter flights at CHF 2,800–4,500/hr. A single supply run can cost more than the repair itself.", color: C.accent },
+              { icon: HardHat, label: "Alpine Construction Supply", text: "Remote building sites depend entirely on helicopter logistics. SAC mountain huts are resupplied exclusively by air — at extreme cost.", color: C.gold },
+              { icon: HeartPulse, label: "Emergency & Rescue Logistics", text: "Medical and supply transport in difficult terrain relies on slow ground vehicles or helicopters at CHF 100/min.", color: C.red },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                variants={slideRight}
+                className="flex items-start gap-4 p-4 rounded-xl border"
+                style={{ borderColor: item.color + "20", background: item.color + "06" }}
+              >
+                <item.icon className="w-5 h-5 mt-1 shrink-0" style={{ color: item.color }} />
+                <div>
+                  <div className="text-sm font-semibold mb-0.5" style={{ color: C.text }}>{item.label}</div>
+                  <span className="text-sm md:text-base" style={{ color: C.textSecondary }}>
                     {item.text}
                   </span>
-                </motion.div>
-              ))}
+                </div>
+              </motion.div>
+            ))}
+          </Stagger>
+
+          {/* ── Before / After Contrast ── */}
+          <div className="grid md:grid-cols-2 gap-6 mt-14">
+            <Stagger delay={0.6}>
+              <motion.div
+                variants={scaleUp}
+                className="rounded-2xl border p-6 text-center"
+                style={{ borderColor: C.red + "25", background: C.red + "04" }}
+              >
+                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.red }}>
+                  The Old Way
+                </div>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: Mountain, text: "Temporary cable cars" },
+                    { icon: Users, text: "Manual hand crews" },
+                    { icon: DollarSign, text: "CHF 3,000+/hr helicopters" },
+                  ].map((row, i) => (
+                    <div key={i} className="flex items-center gap-3 justify-center">
+                      <row.icon className="w-4 h-4" style={{ color: C.red }} />
+                      <span className="text-sm" style={{ color: C.textSecondary }}>{row.text}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 text-xs font-semibold px-3 py-1.5 rounded-full inline-block" style={{ background: C.red + "10", color: C.red }}>
+                  Slow · Expensive · Outdated
+                </div>
+              </motion.div>
             </Stagger>
 
-            <div className="flex flex-col items-center justify-center">
-              <Stagger delay={0.6}>
-                <motion.div variants={scaleUp} className="text-center">
-                  <div className="text-xs font-mono uppercase tracking-wider mb-3" style={{ color: C.textMuted }}>
-                    Cost Comparison: Last-Mile Delivery
-                  </div>
-                  <div className="flex items-end justify-center gap-8 mb-6">
-                    <div className="text-center">
-                      <motion.div
-                        initial={{ scaleY: 0 }}
-                        whileInView={{ scaleY: 1 }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
-                        viewport={{ once: true }}
-                        className="w-20 rounded-t-lg origin-bottom"
-                        style={{ height: 180, background: `linear-gradient(180deg, ${C.red}40 0%, ${C.red}20 100%)`, border: `1px solid ${C.red}30` }}
-                      />
-                      <div className="text-2xl font-bold font-mono mt-3" style={{ color: C.text }}>
-                        CHF 28
-                      </div>
-                      <div className="text-xs mt-1" style={{ color: C.textMuted }}>
-                        Courier / delivery
-                      </div>
+            <Stagger delay={0.8}>
+              <motion.div
+                variants={scaleUp}
+                className="rounded-2xl border p-6 text-center"
+                style={{ borderColor: C.accent + "25", background: C.accentGlow }}
+              >
+                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.accent }}>
+                  The AIRBASE Way
+                </div>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: Zap, text: "Autonomous drone fleet" },
+                    { icon: Cpu, text: "AI-optimized routing" },
+                    { icon: TrendingUp, text: "Up to 90% cost reduction" },
+                  ].map((row, i) => (
+                    <div key={i} className="flex items-center gap-3 justify-center">
+                      <row.icon className="w-4 h-4" style={{ color: C.accent }} />
+                      <span className="text-sm" style={{ color: C.textSecondary }}>{row.text}</span>
                     </div>
-                    <div className="text-center">
-                      <motion.div
-                        initial={{ scaleY: 0 }}
-                        whileInView={{ scaleY: 1 }}
-                        transition={{ duration: 0.8, delay: 0.8 }}
-                        viewport={{ once: true }}
-                        className="w-20 rounded-t-lg origin-bottom"
-                        style={{ height: 26, background: `linear-gradient(180deg, ${C.accent} 0%, ${C.accent}90 100%)` }}
-                      />
-                      <div className="text-2xl font-bold font-mono mt-3" style={{ color: C.text }}>
-                        CHF 4
-                      </div>
-                      <div className="text-xs mt-1" style={{ color: C.textMuted }}>
-                        Drone / delivery
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="text-sm font-semibold px-4 py-2 rounded-full inline-block"
-                    style={{ background: C.accentGlow, color: C.accent }}
-                  >
-                    85% cost reduction
-                  </div>
-                </motion.div>
-              </Stagger>
-            </div>
+                  ))}
+                </div>
+                <div className="mt-4 text-xs font-semibold px-3 py-1.5 rounded-full inline-block" style={{ background: C.accentGlow, color: C.accent }}>
+                  Fast · Affordable · Scalable
+                </div>
+              </motion.div>
+            </Stagger>
           </div>
 
-          <Stagger delay={0.8}>
+          <Stagger delay={1.0}>
             <motion.blockquote
               variants={fadeUp}
               className="mt-16 text-xl md:text-2xl font-light italic text-center max-w-2xl mx-auto"
               style={{ color: C.textSecondary }}
             >
-              &ldquo;The technology is ready. The infrastructure is not. That&apos;s our opportunity.&rdquo;
+              &ldquo;Switzerland still moves materials the way it did 50 years ago. We&apos;re changing that.&rdquo;
             </motion.blockquote>
           </Stagger>
         </div>
