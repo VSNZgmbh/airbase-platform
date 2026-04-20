@@ -11,6 +11,8 @@ import {
 } from "@/lib/demo-data";
 import type { AirspaceTraffic, AircraftCategory, ThreatLevel } from "@/lib/airspace";
 import { classifyThreat, getThreatColor, haversineM } from "@/lib/airspace";
+import { useLiveTelemetry } from "@/lib/hooks/use-live-telemetry";
+import type { TelemetryReport } from "@/lib/telemetry";
 import {
   Plane,
   MapPin,
@@ -85,6 +87,18 @@ interface DronePosition {
   routeTo: { lat: number; lng: number };
   payloadKg: number;
   c2Link: "strong" | "medium" | "weak";
+  // Extended telemetry fields (Phase 6)
+  batteryVoltageV?: number;
+  estimatedFlightTimeSec?: number;
+  verticalSpeedMps?: number;
+  signalStrengthPct?: number;
+  gpsAccuracyM?: number;
+  satelliteCount?: number;
+  winchActive?: boolean;
+  cargoLocked?: boolean;
+  cargoTempC?: number | null;
+  warnings?: Array<{ code: string; severity: string; message: string }>;
+  telemetrySource?: string;
 }
 
 interface SelectedDrone {
@@ -92,47 +106,52 @@ interface SelectedDrone {
   threats: Array<{ traffic: AirspaceTraffic; distance: number; threat: ThreatLevel }>;
 }
 
-// ─── Simulated Drone Positions ──────────────────────────────────────────────
+// ─── Telemetry → DronePosition Converter ───────────────────────────────────
 
-function useSimulatedDrones(): DronePosition[] {
-  const [progress, setProgress] = useState(0.6);
+/** Map a TelemetryReport to the DronePosition format used by the map UI */
+function telemetryToDronePosition(report: TelemetryReport, index: number): DronePosition {
+  // Look up flight/booking info for route display
+  const flight = DEMO_FLIGHTS.find(
+    (f) => f.drone.serialNumber === report.droneSerial || f.id === report.flightId,
+  );
+  const booking = flight?.booking;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((p) => (p >= 0.95 ? 0.1 : p + 0.002));
-    }, 100);
-    return () => clearInterval(timer);
-  }, []);
+  const pickupLat = booking ? parseFloat(booking.pickupLat) : report.lat - 0.05;
+  const pickupLng = booking ? parseFloat(booking.pickupLng) : report.lng - 0.05;
+  const deliveryLat = booking ? parseFloat(booking.deliveryLat) : report.lat + 0.05;
+  const deliveryLng = booking ? parseFloat(booking.deliveryLng) : report.lng + 0.05;
 
-  const liveFlights = DEMO_FLIGHTS.filter((f) => f.status === "in_air");
+  const c2Link: "strong" | "medium" | "weak" =
+    report.signalStrengthPct > 70 ? "strong" : report.signalStrengthPct > 40 ? "medium" : "weak";
 
-  return liveFlights.map((flight, i) => {
-    const pickupLat = parseFloat(flight.booking.pickupLat);
-    const pickupLng = parseFloat(flight.booking.pickupLng);
-    const deliveryLat = parseFloat(flight.booking.deliveryLat);
-    const deliveryLng = parseFloat(flight.booking.deliveryLng);
-
-    const adjustedProgress = Math.min(1, progress + i * 0.15);
-    const lat = pickupLat + (deliveryLat - pickupLat) * adjustedProgress;
-    const lng = pickupLng + (deliveryLng - pickupLng) * adjustedProgress;
-
-    return {
-      id: flight.id,
-      identifier: flight.booking.identifier,
-      pilotName: flight.booking.pilotName,
-      lat,
-      lng,
-      altitudeM: 120 + Math.sin(progress * Math.PI * 4 + i) * 20,
-      speedKmh: 65 + Math.sin(progress * Math.PI * 2 + i) * 15,
-      batteryPct: Math.max(20, 95 - adjustedProgress * 60 + i * 5),
-      headingDeg: (Math.atan2(deliveryLng - pickupLng, deliveryLat - pickupLat) * 180) / Math.PI,
-      status: "in_air" as const,
-      routeFrom: { lat: pickupLat, lng: pickupLng },
-      routeTo: { lat: deliveryLat, lng: deliveryLng },
-      payloadKg: parseFloat(flight.booking.payloadWeightKg),
-      c2Link: "strong" as const,
-    };
-  });
+  return {
+    id: report.flightId ?? report.droneSerial,
+    identifier: booking?.identifier ?? report.droneSerial,
+    pilotName: booking?.pilotName ?? "Unbekannt",
+    lat: report.lat,
+    lng: report.lng,
+    altitudeM: report.altitudeAglM,
+    speedKmh: report.speedKmh,
+    batteryPct: report.batteryPct,
+    headingDeg: report.headingDeg,
+    status: "in_air",
+    routeFrom: { lat: pickupLat, lng: pickupLng },
+    routeTo: { lat: deliveryLat, lng: deliveryLng },
+    payloadKg: report.payloadWeightKg,
+    c2Link,
+    // Extended telemetry
+    batteryVoltageV: report.batteryVoltageV,
+    estimatedFlightTimeSec: report.estimatedFlightTimeSec,
+    verticalSpeedMps: report.verticalSpeedMps,
+    signalStrengthPct: report.signalStrengthPct,
+    gpsAccuracyM: report.gpsAccuracyM,
+    satelliteCount: report.satelliteCount,
+    winchActive: report.winchActive,
+    cargoLocked: report.cargoLocked,
+    cargoTempC: report.cargoTempC,
+    warnings: report.warnings,
+    telemetrySource: report.source,
+  };
 }
 
 // ─── GeoJSON for flight routes ──────────────────────────────────────────────
@@ -313,11 +332,18 @@ function DroneInfoPanel({
   const { drone, threats } = selected;
   const [alertMsg, setAlertMsg] = useState("");
 
+  const batteryDisplay = drone.batteryVoltageV
+    ? `${Math.round(drone.batteryPct)}% · ${drone.batteryVoltageV.toFixed(1)}V`
+    : `${Math.round(drone.batteryPct)}%`;
+  const flightTimeDisplay = drone.estimatedFlightTimeSec
+    ? `${Math.floor(drone.estimatedFlightTimeSec / 60)}m ${drone.estimatedFlightTimeSec % 60}s`
+    : "—";
+
   const telemetry = [
     { label: "Position", value: `${drone.lat.toFixed(4)}°N, ${drone.lng.toFixed(4)}°E`, icon: MapPin },
     { label: "Höhe AGL", value: `${Math.round(drone.altitudeM)} m`, icon: Navigation },
     { label: "Geschwindigkeit", value: `${Math.round(drone.speedKmh)} km/h`, icon: Gauge },
-    { label: "Batterie", value: `${Math.round(drone.batteryPct)}%`, icon: Battery },
+    { label: "Batterie", value: batteryDisplay, icon: Battery },
     { label: "C2 Link", value: drone.c2Link.toUpperCase(), icon: Radio },
     { label: "Nutzlast", value: `${drone.payloadKg} kg`, icon: Activity },
   ];
@@ -351,6 +377,63 @@ function DroneInfoPanel({
           </div>
         ))}
       </div>
+
+      {/* Extended Telemetry Details */}
+      <div className="px-3 pb-2 border-t border-gray-100 pt-2">
+        <div className="grid grid-cols-4 gap-1.5 text-[9px]">
+          <div className="bg-gray-50 rounded px-1.5 py-1 text-center">
+            <p className="font-bold text-gray-700 font-mono">{flightTimeDisplay}</p>
+            <p className="text-gray-400">Restflugzeit</p>
+          </div>
+          <div className="bg-gray-50 rounded px-1.5 py-1 text-center">
+            <p className="font-bold text-gray-700 font-mono">{drone.satelliteCount ?? "—"}</p>
+            <p className="text-gray-400">Satelliten</p>
+          </div>
+          <div className="bg-gray-50 rounded px-1.5 py-1 text-center">
+            <p className="font-bold text-gray-700 font-mono">{drone.gpsAccuracyM?.toFixed(1) ?? "—"}m</p>
+            <p className="text-gray-400">GPS-Genauigkeit</p>
+          </div>
+          <div className="bg-gray-50 rounded px-1.5 py-1 text-center">
+            <p className="font-bold text-gray-700 font-mono">{drone.signalStrengthPct ?? "—"}%</p>
+            <p className="text-gray-400">Signal</p>
+          </div>
+        </div>
+        {/* Cargo status row */}
+        <div className="flex items-center gap-2 mt-1.5 text-[9px] text-gray-500">
+          <span className={`flex items-center gap-0.5 ${drone.cargoLocked ? "text-emerald-600" : "text-red-600"}`}>
+            {drone.cargoLocked ? "Ladung gesichert" : "Ladung OFFEN"}
+          </span>
+          {drone.winchActive && <span className="text-amber-600 font-bold">Winde aktiv</span>}
+          {drone.cargoTempC != null && <span>Temp: {drone.cargoTempC.toFixed(1)}°C</span>}
+          {drone.telemetrySource && (
+            <span className="ml-auto font-mono text-gray-400">
+              Quelle: {drone.telemetrySource === "dji_cloud_api" ? "DJI MQTT" : drone.telemetrySource === "lte_gps_tracker" ? "LTE-GPS" : "SIM"}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Drone Warnings */}
+      {drone.warnings && drone.warnings.length > 0 && (
+        <div className="px-3 pb-2">
+          <div className="space-y-1">
+            {drone.warnings.map((w, idx) => (
+              <div
+                key={idx}
+                className={`text-[10px] px-2 py-1 rounded-lg border ${
+                  w.severity === "critical"
+                    ? "border-red-300 bg-red-50 text-red-700"
+                    : w.severity === "warning"
+                    ? "border-amber-300 bg-amber-50 text-amber-700"
+                    : "border-blue-200 bg-blue-50 text-blue-700"
+                }`}
+              >
+                {w.message}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Threats */}
       {threats.length > 0 && (
@@ -422,7 +505,9 @@ export function LiveOperationsMap({ expanded = false }: { expanded?: boolean }) 
   const [isFullscreen, setIsFullscreen] = useState(expanded);
   const [alertLog, setAlertLog] = useState<Array<{ droneId: string; msg: string; time: string }>>([]);
 
-  const drones = useSimulatedDrones();
+  // Phase 6: Live telemetry via SSE (falls back to mock simulation)
+  const { drones: telemetryDrones, isConnected, connectionSource, lastUpdate, sourceBreakdown } = useLiveTelemetry();
+  const drones = telemetryDrones.map(telemetryToDronePosition);
   const routeGeoJSON = buildRouteGeoJSON(drones);
   const zoneGeoJSON = buildFlightZonesGeoJSON();
 
@@ -501,6 +586,15 @@ export function LiveOperationsMap({ expanded = false }: { expanded?: boolean }) 
             </div>
             <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
               {drones.length} AKTIV
+            </span>
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+              connectionSource === "sse"
+                ? "text-emerald-600 bg-emerald-50 border-emerald-200"
+                : connectionSource === "mock"
+                ? "text-amber-600 bg-amber-50 border-amber-200"
+                : "text-gray-500 bg-gray-50 border-gray-200"
+            }`}>
+              {connectionSource === "sse" ? "LIVE SSE" : connectionSource === "mock" ? "DEMO" : "OFFLINE"}
             </span>
             {alertCount > 0 && (
               <span className="text-[10px] font-bold text-white bg-red-500 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -652,9 +746,20 @@ export function LiveOperationsMap({ expanded = false }: { expanded?: boolean }) 
               <span className="w-2 h-2 rounded-sm bg-white border border-red-500" /> {HUB_LOCATIONS.length} Hubs
             </span>
           </div>
-          <span className="font-mono text-gray-400">
-            {viewState.latitude.toFixed(4)}°N {viewState.longitude.toFixed(4)}°E · Zoom {viewState.zoom.toFixed(1)}
-          </span>
+          <div className="flex items-center gap-3 font-mono text-gray-400">
+            {sourceBreakdown.djiCloudApi > 0 && (
+              <span className="text-emerald-500">MQTT: {sourceBreakdown.djiCloudApi}</span>
+            )}
+            {sourceBreakdown.lteGpsTracker > 0 && (
+              <span className="text-blue-500">LTE: {sourceBreakdown.lteGpsTracker}</span>
+            )}
+            {sourceBreakdown.simulation > 0 && (
+              <span className="text-amber-500">SIM: {sourceBreakdown.simulation}</span>
+            )}
+            <span>
+              {viewState.latitude.toFixed(4)}°N {viewState.longitude.toFixed(4)}°E · Zoom {viewState.zoom.toFixed(1)}
+            </span>
+          </div>
         </div>
       </div>
     </div>

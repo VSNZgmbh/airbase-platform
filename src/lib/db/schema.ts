@@ -530,3 +530,99 @@ export const safetyOccurrencesRelations = relations(safetyOccurrences, ({ one })
     references: [franchiseTenants.id],
   }),
 }));
+
+// ─── Phase 6: Live Telemetry Tracking ───────────────────────────────────────
+
+export const telemetrySourceEnum = pgEnum("telemetry_source", [
+  "dji_cloud_api",
+  "lte_gps_tracker",
+  "manual",
+  "simulation",
+]);
+
+/**
+ * Drone telemetry log — every position report from DJI Cloud API (MQTT) or
+ * BAZL-redundant LTE-GPS tracker. High-write table, partitioned by time in prod.
+ */
+export const droneTelemetry = pgTable("drone_telemetry", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  droneId: uuid("drone_id").references(() => drones.id),
+  flightId: uuid("flight_id").references(() => flights.id),
+  droneSerial: text("drone_serial").notNull(),
+
+  // Position (WGS84)
+  lat: decimal("lat", { precision: 10, scale: 7 }).notNull(),
+  lng: decimal("lng", { precision: 10, scale: 7 }).notNull(),
+  altitudeMslM: decimal("altitude_msl_m", { precision: 8, scale: 2 }).notNull(),
+  altitudeAglM: decimal("altitude_agl_m", { precision: 8, scale: 2 }),
+
+  // Velocity
+  speedKmh: decimal("speed_kmh", { precision: 6, scale: 2 }),
+  headingDeg: decimal("heading_deg", { precision: 6, scale: 2 }),
+  verticalSpeedMps: decimal("vertical_speed_mps", { precision: 6, scale: 2 }),
+
+  // Battery (DB2160: 41 Ah, 52 V)
+  batteryPct: integer("battery_pct"),
+  batteryVoltageV: decimal("battery_voltage_v", { precision: 6, scale: 2 }),
+  estimatedFlightTimeSec: integer("estimated_flight_time_sec"),
+
+  // Payload & Winch
+  payloadWeightKg: decimal("payload_weight_kg", { precision: 6, scale: 2 }),
+  winchActive: boolean("winch_active").default(false),
+  cargoLocked: boolean("cargo_locked").default(true),
+  cargoTempC: decimal("cargo_temp_c", { precision: 5, scale: 1 }),
+
+  // Signal quality
+  signalStrengthPct: integer("signal_strength_pct"),
+  gpsAccuracyM: decimal("gps_accuracy_m", { precision: 6, scale: 2 }),
+  satelliteCount: integer("satellite_count"),
+
+  // Warnings (array of { code, severity, message })
+  warnings: jsonb("warnings").$type<Array<{ code: string; severity: string; message: string }>>(),
+
+  // Source & timestamps
+  source: telemetrySourceEnum("source").notNull(),
+  deviceTimestamp: timestamp("device_timestamp"),
+  receivedAt: timestamp("received_at").notNull().defaultNow(),
+});
+
+/**
+ * Latest known position per drone — upserted on each telemetry report.
+ * Provides O(1) fleet-wide snapshot without scanning the telemetry log.
+ */
+export const droneLatestPosition = pgTable("drone_latest_position", {
+  droneSerial: text("drone_serial").primaryKey(),
+  droneId: uuid("drone_id").references(() => drones.id),
+  flightId: uuid("flight_id").references(() => flights.id),
+
+  lat: decimal("lat", { precision: 10, scale: 7 }).notNull(),
+  lng: decimal("lng", { precision: 10, scale: 7 }).notNull(),
+  altitudeMslM: decimal("altitude_msl_m", { precision: 8, scale: 2 }).notNull(),
+  altitudeAglM: decimal("altitude_agl_m", { precision: 8, scale: 2 }),
+  speedKmh: decimal("speed_kmh", { precision: 6, scale: 2 }),
+  headingDeg: decimal("heading_deg", { precision: 6, scale: 2 }),
+  batteryPct: integer("battery_pct"),
+  estimatedFlightTimeSec: integer("estimated_flight_time_sec"),
+  payloadWeightKg: decimal("payload_weight_kg", { precision: 6, scale: 2 }),
+  winchActive: boolean("winch_active").default(false),
+  cargoLocked: boolean("cargo_locked").default(true),
+  signalStrengthPct: integer("signal_strength_pct"),
+  warnings: jsonb("warnings").$type<Array<{ code: string; severity: string; message: string }>>(),
+  source: telemetrySourceEnum("source").notNull(),
+  isAirborne: boolean("is_airborne").notNull().default(false),
+
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// ─── Phase 6 Relations ──────────────────────────────────────────────────────
+
+export const droneTelemetryRelations = relations(droneTelemetry, ({ one }) => ({
+  drone: one(drones, {
+    fields: [droneTelemetry.droneId],
+    references: [drones.id],
+  }),
+  flight: one(flights, {
+    fields: [droneTelemetry.flightId],
+    references: [flights.id],
+  }),
+}));
