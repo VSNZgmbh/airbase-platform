@@ -628,14 +628,14 @@ export function InvestorPitchDeck() {
         className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
-        {/* Hero drone image background */}
+        {/* Hero drone image background — stunning FlyCart mountain photo */}
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src="/images/hero-drones.jpg"
-            alt=""
-            className="w-full h-full object-cover opacity-10"
+            src="/assets/hero-flycart-mountains.jpg"
+            alt="DJI FlyCart 100 drones over Swiss mountains"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.95) 60%, rgba(255,255,255,1) 100%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.92) 70%, rgba(255,255,255,1) 100%)" }} />
         </div>
 
         {/* Subtle accent glow */}
@@ -1040,6 +1040,52 @@ export function InvestorPitchDeck() {
                   </motion.div>
                 ))}
               </div>
+            </motion.div>
+          </Stagger>
+
+          {/* YouTube Video + FlyCart Showcase */}
+          <Stagger className="mt-8 grid md:grid-cols-2 gap-6" delay={0.8}>
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl overflow-hidden border relative"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadowLg }}
+            >
+              <div className="aspect-video w-full">
+                <iframe
+                  src="https://www.youtube.com/embed/QCU3fBOJ0H0"
+                  title="DJI FlyCart 100 — See It Fly"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full border-0"
+                />
+              </div>
+              <div className="p-4">
+                <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.accent }}>
+                  Watch It Fly
+                </div>
+                <p className="text-sm" style={{ color: C.textSecondary }}>
+                  The DJI FlyCart 100 in action — see the drone that powers our logistics network.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl overflow-hidden border flex flex-col items-center justify-center p-8 relative"
+              style={{ background: `linear-gradient(135deg, ${C.bgAlt} 0%, ${C.accentLight} 100%)`, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <motion.img
+                src="/assets/flycart-100-cutout.png"
+                alt="DJI FlyCart 100 drone"
+                className="w-48 md:w-64 h-auto object-contain mb-4"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
+                Our Workhorse
+              </div>
+              <div className="text-xl font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
+              <div className="text-sm mt-1" style={{ color: C.textMuted }}>100 kg payload · 16 km range · IP55</div>
             </motion.div>
           </Stagger>
         </div>
@@ -1735,11 +1781,16 @@ export function InvestorPitchDeck() {
             <Stagger delay={0.4}>
               <motion.div
                 variants={fadeUp}
-                className="rounded-2xl p-6 border"
+                className="rounded-2xl p-6 border relative overflow-hidden"
                 style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
-                <Box className="w-8 h-8 mb-4" style={{ color: C.accent }} />
-                <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
+                <img
+                  src="/assets/flycart-100-cutout.png"
+                  alt="DJI FlyCart 100"
+                  className="absolute -right-6 -top-2 w-28 h-28 object-contain opacity-15 pointer-events-none"
+                />
+                <Box className="w-8 h-8 mb-4 relative z-10" style={{ color: C.accent }} />
+                <div className="text-sm font-mono uppercase tracking-wider mb-2 relative z-10" style={{ color: C.accent }}>
                   DJI FlyCart 100
                 </div>
                 <ul className="space-y-2">
@@ -2478,12 +2529,12 @@ export function InvestorPitchDeck() {
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
-        {/* Background Swiss landscape */}
+        {/* Background Swiss landscape — FlyCart mountain photo */}
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src="/images/hero-drones.jpg"
+            src="/assets/hero-flycart-mountains.jpg"
             alt=""
-            className="w-full h-full object-cover opacity-[0.06]"
+            className="w-full h-full object-cover opacity-[0.08]"
           />
         </div>
 
