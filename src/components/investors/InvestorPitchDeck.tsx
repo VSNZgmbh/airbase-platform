@@ -21,8 +21,6 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
 } from "recharts";
 import {
   ChevronDown,
@@ -44,27 +42,33 @@ import {
   DollarSign,
   BarChart3,
   Layers,
-  ArrowDown,
+  Percent,
+  Banknote,
 } from "lucide-react";
 
-/* ─── Design Tokens ─── */
+/* ─── Design Tokens — White / Light Theme ─── */
 const C = {
-  bg: "#0A0A0F",
-  bgCard: "#12121C",
+  bg: "#FFFFFF",
+  bgAlt: "#F8F9FA",
+  bgCard: "#FFFFFF",
   accent: "#D32F2F",
-  accentGlow: "rgba(211,47,47,0.15)",
-  gold: "#C9A84C",
-  white: "#FFFFFF",
-  gray: "#8A8A9A",
-  grayLight: "#B0B0C0",
-  darkGray: "#1A1A2E",
-  border: "#1E1E30",
-  red: "#EF4444",
-  green: "#22C55E",
+  accentGlow: "rgba(211,47,47,0.08)",
+  accentLight: "rgba(211,47,47,0.05)",
+  gold: "#B8860B",
+  goldLight: "rgba(184,134,11,0.08)",
+  text: "#1A1A2E",
+  textSecondary: "#4A4A5A",
+  textMuted: "#8A8A9A",
+  border: "#E8E8EE",
+  borderAccent: "rgba(211,47,47,0.15)",
+  red: "#D32F2F",
+  green: "#16A34A",
+  greenLight: "rgba(22,163,74,0.08)",
+  shadow: "0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)",
+  shadowLg: "0 4px 24px rgba(0,0,0,0.08)",
 };
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
-const spring = { type: "spring" as const, stiffness: 120, damping: 20 };
 
 /* ─── Shared Variants ─── */
 const fadeUp: Variants = {
@@ -145,26 +149,6 @@ function Stagger({
   );
 }
 
-/* ─── Utility: Animated Section ─── */
-function Section({
-  children,
-  className = "",
-  id,
-}: {
-  children: ReactNode;
-  className?: string;
-  id?: string;
-}) {
-  return (
-    <section
-      id={id}
-      className={`relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 ${className}`}
-    >
-      {children}
-    </section>
-  );
-}
-
 /* ─── Slide Label ─── */
 function SlideLabel({ number, text }: { number: string; text: string }) {
   const ref = useRef(null);
@@ -179,11 +163,11 @@ function SlideLabel({ number, text }: { number: string; text: string }) {
     >
       <span
         className="text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-full border"
-        style={{ color: C.accent, borderColor: C.accent + "40" }}
+        style={{ color: C.accent, borderColor: C.borderAccent }}
       >
         {number}
       </span>
-      <span className="text-xs font-mono tracking-widest uppercase" style={{ color: C.gray }}>
+      <span className="text-xs font-mono tracking-widest uppercase" style={{ color: C.textMuted }}>
         {text}
       </span>
     </motion.div>
@@ -215,21 +199,21 @@ function KpiCard({
       animate={inView ? "visible" : "hidden"}
       transition={{ duration: 0.6, delay, ease }}
       className="rounded-2xl p-6 border"
-      style={{ background: C.bgCard, borderColor: C.border }}
+      style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 rounded-lg" style={{ background: C.accentGlow }}>
           <Icon className="w-4 h-4" style={{ color: C.accent }} />
         </div>
-        <span className="text-xs font-mono uppercase tracking-wider" style={{ color: C.gray }}>
+        <span className="text-xs font-mono uppercase tracking-wider" style={{ color: C.textMuted }}>
           {label}
         </span>
       </div>
-      <div className="text-3xl md:text-4xl font-bold font-mono" style={{ color: C.white }}>
+      <div className="text-3xl md:text-4xl font-bold font-mono" style={{ color: C.text }}>
         {value}
       </div>
       {sub && (
-        <div className="text-sm mt-2" style={{ color: C.gray }}>
+        <div className="text-sm mt-2" style={{ color: C.textMuted }}>
           {sub}
         </div>
       )}
@@ -250,7 +234,7 @@ function Bullet({ children, delay = 0 }: { children: ReactNode; delay?: number }
       animate={inView ? "visible" : "hidden"}
       transition={{ duration: 0.5, delay, ease }}
       className="flex items-start gap-3 text-base md:text-lg leading-relaxed"
-      style={{ color: C.grayLight }}
+      style={{ color: C.textSecondary }}
     >
       <CheckCircle2
         className="w-5 h-5 mt-1 shrink-0"
@@ -258,6 +242,102 @@ function Bullet({ children, delay = 0 }: { children: ReactNode; delay?: number }
       />
       <span>{children}</span>
     </motion.li>
+  );
+}
+
+/* ─── Investment Slider ─── */
+function InvestmentSlider() {
+  const [amount, setAmount] = useState(250);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  const tiers = [
+    { min: 50, label: "CHF 50K", equity: 1.5, interest: 4, perks: "Quarterly reports, investor updates" },
+    { min: 100, label: "CHF 100K", equity: 3, interest: 5, perks: "Board observer rights, quarterly reports" },
+    { min: 250, label: "CHF 250K", equity: 5, interest: 6, perks: "Board seat option, strategic input, quarterly reports" },
+    { min: 500, label: "CHF 500K", equity: 12, interest: 7, perks: "Board seat, co-pilot program, strategic input" },
+    { min: 750, label: "CHF 750K", equity: 20, interest: 8, perks: "Board seat, naming rights, strategic partnership" },
+  ];
+
+  const currentTier = [...tiers].reverse().find(t => amount >= t.min) || tiers[0];
+  const equity = currentTier.equity + ((amount - currentTier.min) / 50) * (currentTier === tiers[tiers.length - 1] ? 0.8 : ((tiers[tiers.indexOf(currentTier) + 1]?.equity || currentTier.equity + 5) - currentTier.equity) / ((tiers[tiers.indexOf(currentTier) + 1]?.min || currentTier.min + 250) - currentTier.min) * 50);
+  const displayEquity = Math.min(Math.round(equity * 10) / 10, 30);
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={fadeUp}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      transition={{ duration: 0.6, ease }}
+      className="rounded-2xl p-8 border"
+      style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadowLg }}
+    >
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 rounded-lg" style={{ background: C.accentGlow }}>
+          <Banknote className="w-5 h-5" style={{ color: C.accent }} />
+        </div>
+        <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+          Investment Calculator
+        </span>
+      </div>
+
+      <div className="text-center mb-8">
+        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment</div>
+        <div className="text-4xl md:text-5xl font-bold font-mono" style={{ color: C.text }}>
+          CHF {amount}K
+        </div>
+      </div>
+
+      <div className="px-2 mb-8">
+        <input
+          type="range"
+          min={50}
+          max={750}
+          step={50}
+          value={amount}
+          onChange={(e) => setAmount(Number(e.target.value))}
+          className="w-full h-2 rounded-full appearance-none cursor-pointer"
+          style={{
+            background: `linear-gradient(to right, ${C.accent} 0%, ${C.accent} ${((amount - 50) / 700) * 100}%, ${C.border} ${((amount - 50) / 700) * 100}%, ${C.border} 100%)`,
+            accentColor: C.accent,
+          }}
+        />
+        <div className="flex justify-between mt-2">
+          <span className="text-xs font-mono" style={{ color: C.textMuted }}>CHF 50K</span>
+          <span className="text-xs font-mono" style={{ color: C.textMuted }}>CHF 750K</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="rounded-xl p-4 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
+          <Percent className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
+          <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>{displayEquity}%</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Equity Stake</div>
+        </div>
+        <div className="rounded-xl p-4 text-center" style={{ background: C.greenLight, border: `1px solid rgba(22,163,74,0.15)` }}>
+          <TrendingUp className="w-5 h-5 mx-auto mb-2" style={{ color: C.green }} />
+          <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{currentTier.interest}%</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Annual Interest</div>
+        </div>
+        <div className="rounded-xl p-4 text-center" style={{ background: C.goldLight, border: `1px solid rgba(184,134,11,0.15)` }}>
+          <DollarSign className="w-5 h-5 mx-auto mb-2" style={{ color: C.gold }} />
+          <div className="text-2xl font-bold font-mono" style={{ color: C.gold }}>CHF {Math.round(amount * currentTier.interest / 100 * 10)}K</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>5-Yr Interest Return</div>
+        </div>
+      </div>
+
+      <div className="rounded-xl p-4" style={{ background: C.bgAlt, border: `1px solid ${C.border}` }}>
+        <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.textMuted }}>
+          Investor Perks at This Level
+        </div>
+        <p className="text-sm" style={{ color: C.textSecondary }}>{currentTier.perks}</p>
+      </div>
+
+      <div className="mt-4 text-xs text-center" style={{ color: C.textMuted }}>
+        * Terms indicative. Final terms subject to formal agreement.
+      </div>
+    </motion.div>
   );
 }
 
@@ -281,11 +361,11 @@ const revenueProjection = [
 ];
 
 const fundAllocation = [
-  { name: "Fleet Expansion", value: 35, amount: "875K", color: C.accent },
-  { name: "Platform Development", value: 25, amount: "625K", color: "#FF6B6B" },
-  { name: "LUC + Legal", value: 20, amount: "500K", color: C.gold },
-  { name: "Sales & Marketing", value: 10, amount: "250K", color: C.green },
-  { name: "Working Capital", value: 10, amount: "250K", color: C.grayLight },
+  { name: "Fleet Expansion", value: 35, amount: "525K", color: C.accent },
+  { name: "Platform Development", value: 25, amount: "375K", color: "#FF6B6B" },
+  { name: "LUC + Legal", value: 20, amount: "300K", color: C.gold },
+  { name: "Sales & Marketing", value: 10, amount: "150K", color: C.green },
+  { name: "Working Capital", value: 10, amount: "150K", color: C.textMuted },
 ];
 
 const costCompare = [
@@ -312,7 +392,7 @@ function SlideNav({
           aria-label={`Go to slide ${i + 1}`}
           className="w-2.5 h-2.5 rounded-full transition-all duration-300"
           style={{
-            background: i === current ? C.accent : C.gray + "40",
+            background: i === current ? C.accent : C.textMuted + "40",
             transform: i === current ? "scale(1.4)" : "scale(1)",
           }}
         />
@@ -389,15 +469,25 @@ export function InvestorPitchDeck() {
       {/* ═══ SLIDE 1: COVER ═══ */}
       <section
         ref={setRef(0)}
-        className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center"
+        className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
-        {/* Background glow */}
+        {/* Hero drone image background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src="/images/investors/drone-hero.jpg"
+            alt=""
+            className="w-full h-full object-cover opacity-10"
+          />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.95) 60%, rgba(255,255,255,1) 100%)" }} />
+        </div>
+
+        {/* Subtle accent glow */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(211,47,47,0.08) 0%, transparent 70%)",
+              "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(211,47,47,0.04) 0%, transparent 70%)",
           }}
         />
 
@@ -413,7 +503,7 @@ export function InvestorPitchDeck() {
             }}
             animate={{
               y: [0, -30, 0],
-              opacity: [0.2, 0.6, 0.2],
+              opacity: [0.15, 0.4, 0.15],
             }}
             transition={{
               duration: 3 + i * 0.5,
@@ -445,7 +535,7 @@ export function InvestorPitchDeck() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease }}
             className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
-            style={{ color: C.white }}
+            style={{ color: C.text }}
           >
             AIRBASE
           </motion.h1>
@@ -455,7 +545,7 @@ export function InvestorPitchDeck() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
             className="text-lg md:text-xl lg:text-2xl font-light mb-4"
-            style={{ color: C.grayLight }}
+            style={{ color: C.textSecondary }}
           >
             Switzerland&apos;s AI-Powered Drone Delivery Platform
           </motion.p>
@@ -463,9 +553,19 @@ export function InvestorPitchDeck() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.6 }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold mt-8"
-            style={{ color: C.gold }}
+            transition={{ delay: 1.0, duration: 0.6 }}
+            className="text-base md:text-lg mb-6"
+            style={{ color: C.textMuted }}
+          >
+            15 Years of Drone Expertise &middot; Swiss Precision &middot; Market-Ready
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="text-2xl md:text-3xl lg:text-4xl font-bold mt-6"
+            style={{ color: C.accent }}
           >
             The Future of Logistics Flies.
           </motion.p>
@@ -473,11 +573,11 @@ export function InvestorPitchDeck() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.6 }}
+            transition={{ delay: 1.6, duration: 0.6 }}
             className="text-sm font-mono tracking-wider mt-6"
-            style={{ color: C.gray }}
+            style={{ color: C.textMuted }}
           >
-            airbase.swiss &middot; Seed Round &middot; 2026
+            airbase.swiss &middot; Seed Round CHF 1.5M &middot; 2026
           </motion.div>
         </motion.div>
 
@@ -491,7 +591,7 @@ export function InvestorPitchDeck() {
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ChevronDown className="w-6 h-6" style={{ color: C.gray }} />
+            <ChevronDown className="w-6 h-6" style={{ color: C.textMuted }} />
           </motion.div>
         </motion.div>
       </section>
@@ -500,7 +600,7 @@ export function InvestorPitchDeck() {
       <section
         ref={setRef(1)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
           <SlideLabel number="01" text="The Problem" />
@@ -509,7 +609,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Last-Mile Logistics
               <br />
@@ -531,10 +631,10 @@ export function InvestorPitchDeck() {
                   key={i}
                   variants={slideRight}
                   className="flex items-start gap-4 p-4 rounded-xl border"
-                  style={{ borderColor: item.color + "30", background: item.color + "08" }}
+                  style={{ borderColor: item.color + "20", background: item.color + "06" }}
                 >
                   <item.icon className="w-5 h-5 mt-0.5 shrink-0" style={{ color: item.color }} />
-                  <span className="text-base md:text-lg" style={{ color: C.grayLight }}>
+                  <span className="text-base md:text-lg" style={{ color: C.textSecondary }}>
                     {item.text}
                   </span>
                 </motion.div>
@@ -544,7 +644,7 @@ export function InvestorPitchDeck() {
             <div className="flex flex-col items-center justify-center">
               <Stagger delay={0.6}>
                 <motion.div variants={scaleUp} className="text-center">
-                  <div className="text-xs font-mono uppercase tracking-wider mb-3" style={{ color: C.gray }}>
+                  <div className="text-xs font-mono uppercase tracking-wider mb-3" style={{ color: C.textMuted }}>
                     Cost Comparison: Last-Mile Delivery
                   </div>
                   <div className="flex items-end justify-center gap-8 mb-6">
@@ -555,12 +655,12 @@ export function InvestorPitchDeck() {
                         transition={{ duration: 0.8, delay: 0.5 }}
                         viewport={{ once: true }}
                         className="w-20 rounded-t-lg origin-bottom"
-                        style={{ height: 180, background: C.red + "80" }}
+                        style={{ height: 180, background: `linear-gradient(180deg, ${C.red}40 0%, ${C.red}20 100%)`, border: `1px solid ${C.red}30` }}
                       />
-                      <div className="text-2xl font-bold font-mono mt-3" style={{ color: C.white }}>
+                      <div className="text-2xl font-bold font-mono mt-3" style={{ color: C.text }}>
                         CHF 28
                       </div>
-                      <div className="text-xs mt-1" style={{ color: C.gray }}>
+                      <div className="text-xs mt-1" style={{ color: C.textMuted }}>
                         Courier / delivery
                       </div>
                     </div>
@@ -571,19 +671,19 @@ export function InvestorPitchDeck() {
                         transition={{ duration: 0.8, delay: 0.8 }}
                         viewport={{ once: true }}
                         className="w-20 rounded-t-lg origin-bottom"
-                        style={{ height: 26, background: C.accent }}
+                        style={{ height: 26, background: `linear-gradient(180deg, ${C.accent} 0%, ${C.accent}90 100%)` }}
                       />
-                      <div className="text-2xl font-bold font-mono mt-3" style={{ color: C.white }}>
+                      <div className="text-2xl font-bold font-mono mt-3" style={{ color: C.text }}>
                         CHF 4
                       </div>
-                      <div className="text-xs mt-1" style={{ color: C.gray }}>
+                      <div className="text-xs mt-1" style={{ color: C.textMuted }}>
                         Drone / delivery
                       </div>
                     </div>
                   </div>
                   <div
                     className="text-sm font-semibold px-4 py-2 rounded-full inline-block"
-                    style={{ background: C.accent + "20", color: C.accent }}
+                    style={{ background: C.accentGlow, color: C.accent }}
                   >
                     85% cost reduction
                   </div>
@@ -596,7 +696,7 @@ export function InvestorPitchDeck() {
             <motion.blockquote
               variants={fadeUp}
               className="mt-16 text-xl md:text-2xl font-light italic text-center max-w-2xl mx-auto"
-              style={{ color: C.grayLight }}
+              style={{ color: C.textSecondary }}
             >
               &ldquo;The technology is ready. The infrastructure is not. That&apos;s our opportunity.&rdquo;
             </motion.blockquote>
@@ -617,19 +717,34 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Autonomous. Precise.
               <br />
               <span style={{ color: C.accent }}>Swiss-Certified.</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-lg md:text-xl" style={{ color: C.gray }}>
+            <motion.p variants={fadeUp} className="text-lg md:text-xl" style={{ color: C.textMuted }}>
               End-to-end AI-powered drone delivery — from order intake to touchdown — with zero driver dependency.
             </motion.p>
           </Stagger>
 
+          {/* Drone image banner */}
+          <Stagger delay={0.2}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl overflow-hidden border"
+              style={{ borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <img
+                src="/images/investors/drone-delivery.jpg"
+                alt="DJI FlyCart 100 delivery drone in flight"
+                className="w-full h-48 md:h-64 object-cover"
+              />
+            </motion.div>
+          </Stagger>
+
           {/* Key stats */}
-          <Stagger className="grid md:grid-cols-4 gap-6 mt-12" delay={0.3}>
+          <Stagger className="grid md:grid-cols-4 gap-6 mt-8" delay={0.3}>
             {[
               { value: "CHF 4", label: "avg. cost per delivery", sub: "vs CHF 28 road" },
               { value: "-85%", label: "delivery cost reduction", sub: "at scale" },
@@ -640,15 +755,15 @@ export function InvestorPitchDeck() {
                 key={i}
                 variants={fadeUp}
                 className="rounded-2xl p-5 border text-center"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <div className="text-3xl md:text-4xl font-bold font-mono" style={{ color: C.accent }}>
                   {stat.value}
                 </div>
-                <div className="text-sm mt-2" style={{ color: C.grayLight }}>
+                <div className="text-sm mt-2" style={{ color: C.textSecondary }}>
                   {stat.label}
                 </div>
-                <div className="text-xs mt-1" style={{ color: C.gray }}>
+                <div className="text-xs mt-1" style={{ color: C.textMuted }}>
                   {stat.sub}
                 </div>
               </motion.div>
@@ -659,10 +774,10 @@ export function InvestorPitchDeck() {
           <Stagger delay={0.6}>
             <motion.div
               variants={fadeUp}
-              className="mt-12 rounded-2xl p-6 border"
-              style={{ background: C.bgCard, borderColor: C.border }}
+              className="mt-8 rounded-2xl p-6 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
-              <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.gray }}>
+              <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
                 How It Works
               </div>
               <div className="grid grid-cols-5 gap-2 md:gap-4">
@@ -676,12 +791,12 @@ export function InvestorPitchDeck() {
                   <motion.div key={i} variants={fadeUp} className="text-center relative">
                     <div
                       className="w-10 h-10 md:w-12 md:h-12 rounded-xl mx-auto flex items-center justify-center mb-2"
-                      style={{ background: C.accent + "15" }}
+                      style={{ background: C.accentGlow }}
                     >
                       <s.icon className="w-5 h-5" style={{ color: C.accent }} />
                     </div>
-                    <div className="text-xs font-bold" style={{ color: C.white }}>{s.step}</div>
-                    <div className="text-xs mt-0.5" style={{ color: C.gray }}>{s.desc}</div>
+                    <div className="text-xs font-bold" style={{ color: C.text }}>{s.step}</div>
+                    <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{s.desc}</div>
                     {i < 4 && (
                       <ArrowRight className="absolute top-4 -right-2 md:-right-3 w-3 h-3" style={{ color: C.accent + "60" }} />
                     )}
@@ -697,7 +812,7 @@ export function InvestorPitchDeck() {
       <section
         ref={setRef(3)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
           <SlideLabel number="03" text="Technology" />
@@ -706,7 +821,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               The Operating System for{" "}
               <span style={{ color: C.accent }}>Drone Logistics</span>
@@ -724,15 +839,15 @@ export function InvestorPitchDeck() {
                 key={pillar.title}
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: C.accent + "15" }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: C.accentGlow }}>
                   <pillar.icon className="w-5 h-5" style={{ color: C.accent }} />
                 </div>
-                <div className="text-lg font-bold mb-3" style={{ color: C.white }}>{pillar.title}</div>
+                <div className="text-lg font-bold mb-3" style={{ color: C.text }}>{pillar.title}</div>
                 <ul className="space-y-2">
                   {pillar.items.map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.grayLight }}>
+                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
                       <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
                       {item}
                     </li>
@@ -742,12 +857,31 @@ export function InvestorPitchDeck() {
             ))}
           </Stagger>
 
+          {/* Dashboard Screenshot */}
+          <Stagger delay={0.4}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl overflow-hidden border"
+              style={{ borderColor: C.border, boxShadow: C.shadowLg }}
+            >
+              <div className="text-xs font-mono uppercase tracking-wider px-6 pt-4 pb-2" style={{ color: C.textMuted, background: C.bgCard }}>
+                Live Operations Dashboard — Admin View
+              </div>
+              <img
+                src="/images/investors/dashboard.png"
+                alt="AIRBASE Live Operations Dashboard with Swiss map, active missions, and telemetry"
+                className="w-full object-cover"
+                style={{ maxHeight: 400 }}
+              />
+            </motion.div>
+          </Stagger>
+
           {/* AI Layer */}
-          <Stagger delay={0.5}>
+          <Stagger delay={0.6}>
             <motion.div
               variants={fadeUp}
               className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.accent + "08", borderColor: C.accent + "30" }}
+              style={{ background: C.accentLight, borderColor: C.borderAccent }}
             >
               <div className="flex items-center gap-3 mb-4">
                 <Cpu className="w-5 h-5" style={{ color: C.accent }} />
@@ -755,7 +889,7 @@ export function InvestorPitchDeck() {
               </div>
               <div className="grid md:grid-cols-4 gap-4">
                 {["Autonomous quote generation", "Intelligent dispatch routing", "Safety redundancy (auto-abort)", "Post-flight analytics"].map((f, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm" style={{ color: C.grayLight }}>
+                  <div key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
                     <Zap className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
                     {f}
                   </div>
@@ -765,7 +899,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           <Stagger delay={0.7}>
-            <motion.div variants={fadeUp} className="mt-6 text-xs font-mono" style={{ color: C.gray }}>
+            <motion.div variants={fadeUp} className="mt-6 text-xs font-mono" style={{ color: C.textMuted }}>
               Tech stack: Next.js / Node.js / Real-time telemetry / EASA-compliant data logging
             </motion.div>
           </Stagger>
@@ -785,7 +919,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-4"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               A CHF 4 Billion Market{" "}
               <span style={{ color: C.accent }}>on the Launchpad</span>
@@ -822,23 +956,23 @@ export function InvestorPitchDeck() {
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
-                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.gray }}>
+                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
                   Global Drone Logistics Market ($B)
                 </div>
                 <ResponsiveContainer width="100%" height={260}>
                   <AreaChart data={tamData}>
                     <defs>
                       <linearGradient id="tamGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor={C.accent} stopOpacity={0.3} />
-                        <stop offset="100%" stopColor={C.accent} stopOpacity={0} />
+                        <stop offset="0%" stopColor={C.accent} stopOpacity={0.2} />
+                        <stop offset="100%" stopColor={C.accent} stopOpacity={0.02} />
                       </linearGradient>
                     </defs>
-                    <XAxis dataKey="year" stroke={C.gray + "60"} tick={{ fill: C.gray, fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <YAxis stroke={C.gray + "60"} tick={{ fill: C.gray, fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}B`} />
+                    <XAxis dataKey="year" stroke={C.textMuted + "40"} tick={{ fill: C.textMuted, fontSize: 12 }} axisLine={false} tickLine={false} />
+                    <YAxis stroke={C.textMuted + "40"} tick={{ fill: C.textMuted, fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}B`} />
                     <Tooltip
-                      contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, color: C.white, fontSize: 13 }}
+                      contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, color: C.text, fontSize: 13, boxShadow: C.shadow }}
                       formatter={(v) => [`$${v}B`, "Market Size"]}
                     />
                     <Area type="monotone" dataKey="value" stroke={C.accent} strokeWidth={2} fill="url(#tamGrad)" />
@@ -850,7 +984,7 @@ export function InvestorPitchDeck() {
             {/* Regulatory tailwind */}
             <Stagger delay={0.6}>
               <motion.div variants={fadeUp} className="space-y-4">
-                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.gray }}>
+                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
                   Regulatory Tailwind
                 </div>
                 <ul className="space-y-4">
@@ -862,7 +996,7 @@ export function InvestorPitchDeck() {
                 <motion.div
                   variants={fadeUp}
                   className="mt-8 p-4 rounded-xl border"
-                  style={{ borderColor: C.gold + "30", background: C.gold + "08" }}
+                  style={{ borderColor: C.gold + "20", background: C.goldLight }}
                 >
                   <div className="text-sm font-semibold" style={{ color: C.gold }}>
                     Year-5 Realistic Capture (SOM)
@@ -881,7 +1015,7 @@ export function InvestorPitchDeck() {
       <section
         ref={setRef(5)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
           <SlideLabel number="05" text="Business Model" />
@@ -890,7 +1024,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Three Revenue Streams.{" "}
               <span style={{ color: C.accent }}>One Platform.</span>
@@ -932,24 +1066,24 @@ export function InvestorPitchDeck() {
                 key={stream.title}
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: stream.color + "15" }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: stream.color + "10" }}>
                   <stream.icon className="w-5 h-5" style={{ color: stream.color }} />
                 </div>
                 <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: stream.color }}>
                   {stream.sub}
                 </div>
-                <div className="text-lg font-bold mb-2" style={{ color: C.white }}>
+                <div className="text-lg font-bold mb-2" style={{ color: C.text }}>
                   {stream.title}
                 </div>
-                <p className="text-sm mb-4" style={{ color: C.grayLight }}>
+                <p className="text-sm mb-4" style={{ color: C.textSecondary }}>
                   {stream.desc}
                 </p>
                 <div className="text-sm font-semibold" style={{ color: stream.color }}>
                   {stream.metric}
                 </div>
-                <div className="text-xs mt-1" style={{ color: C.gray }}>
+                <div className="text-xs mt-1" style={{ color: C.textMuted }}>
                   {stream.revenue}
                 </div>
               </motion.div>
@@ -961,9 +1095,9 @@ export function InvestorPitchDeck() {
             <motion.div
               variants={fadeUp}
               className="mt-8 rounded-2xl p-6 border text-center"
-              style={{ background: C.bgCard, borderColor: C.border }}
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
-              <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.gray }}>
+              <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
                 Projected Year 3 Revenue Mix
               </div>
               <div className="flex justify-center gap-12">
@@ -974,7 +1108,7 @@ export function InvestorPitchDeck() {
                 ].map((mix) => (
                   <div key={mix.label}>
                     <div className="text-3xl font-bold font-mono" style={{ color: mix.color }}>{mix.pct}</div>
-                    <div className="text-xs mt-1" style={{ color: C.gray }}>{mix.label}</div>
+                    <div className="text-xs mt-1" style={{ color: C.textMuted }}>{mix.label}</div>
                   </div>
                 ))}
               </div>
@@ -986,17 +1120,26 @@ export function InvestorPitchDeck() {
       {/* ═══ SLIDE 7: COMPETITIVE ADVANTAGE ═══ */}
       <section
         ref={setRef(6)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
-        <div className="max-w-5xl mx-auto w-full">
+        {/* Background drone image */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src="/images/investors/drone-flight.jpg"
+            alt=""
+            className="w-full h-full object-cover opacity-[0.04]"
+          />
+        </div>
+
+        <div className="relative max-w-5xl mx-auto w-full">
           <SlideLabel number="06" text="Competitive Advantage" />
 
           <Stagger>
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Our Moat Is{" "}
               <span style={{ color: C.gold }}>Certified, Not Just Claimed</span>
@@ -1009,7 +1152,7 @@ export function InvestorPitchDeck() {
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ borderColor: C.gold + "30", background: C.gold + "08" }}
+                style={{ borderColor: C.gold + "20", background: C.goldLight, boxShadow: C.shadow }}
               >
                 <Lock className="w-8 h-8 mb-4" style={{ color: C.gold }} />
                 <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.gold }}>
@@ -1021,7 +1164,7 @@ export function InvestorPitchDeck() {
                     "Fewer than 12 operators pursuing LUC in Switzerland",
                     "18-24 months minimum for competitors starting today",
                   ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.grayLight }}>
+                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
                       <Shield className="w-3 h-3 mt-1 shrink-0" style={{ color: C.gold }} />
                       {text}
                     </li>
@@ -1035,7 +1178,7 @@ export function InvestorPitchDeck() {
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <Box className="w-8 h-8 mb-4" style={{ color: C.accent }} />
                 <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
@@ -1047,7 +1190,7 @@ export function InvestorPitchDeck() {
                     "IP55 rated: rain, wind up to 12 m/s",
                     "16 km range, locked via DJI enterprise partnership",
                   ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.grayLight }}>
+                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
                       <CheckCircle2 className="w-3 h-3 mt-1 shrink-0" style={{ color: C.accent }} />
                       {text}
                     </li>
@@ -1061,7 +1204,7 @@ export function InvestorPitchDeck() {
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.green + "08", borderColor: C.green + "30" }}
+                style={{ background: C.greenLight, borderColor: C.green + "20", boxShadow: C.shadow }}
               >
                 <Cpu className="w-8 h-8 mb-4" style={{ color: C.green }} />
                 <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.green }}>
@@ -1073,7 +1216,7 @@ export function InvestorPitchDeck() {
                     "Lower insurance premiums = structural cost advantage",
                     "Data flywheel: every flight improves routing & safety",
                   ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.grayLight }}>
+                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
                       <Zap className="w-3 h-3 mt-1 shrink-0" style={{ color: C.green }} />
                       {text}
                     </li>
@@ -1087,7 +1230,7 @@ export function InvestorPitchDeck() {
             <motion.blockquote
               variants={fadeUp}
               className="mt-16 text-xl md:text-2xl font-light italic text-center"
-              style={{ color: C.grayLight }}
+              style={{ color: C.textSecondary }}
             >
               &ldquo;We are not selling drones. We are selling{" "}
               <span className="font-semibold not-italic" style={{ color: C.gold }}>
@@ -1103,7 +1246,7 @@ export function InvestorPitchDeck() {
       <section
         ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
           <SlideLabel number="07" text="Traction" />
@@ -1112,7 +1255,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Not Pre-Product.{" "}
               <span style={{ color: C.green }}>Pre-Scale.</span>
@@ -1136,18 +1279,19 @@ export function InvestorPitchDeck() {
                 variants={slideRight}
                 className="flex items-center gap-4 p-4 rounded-xl border"
                 style={{
-                  borderColor: milestone.done ? C.green + "30" : C.gray + "20",
-                  background: milestone.done ? C.green + "06" : C.bgCard,
+                  borderColor: milestone.done ? C.green + "20" : C.border,
+                  background: milestone.done ? C.greenLight : C.bgCard,
+                  boxShadow: milestone.done ? "none" : C.shadow,
                 }}
               >
                 <div
                   className="w-3 h-3 rounded-full shrink-0"
-                  style={{ background: milestone.done ? C.green : C.gray + "40", border: milestone.done ? "none" : `2px dashed ${C.gray}40` }}
+                  style={{ background: milestone.done ? C.green : C.textMuted + "30", border: milestone.done ? "none" : `2px dashed ${C.textMuted}40` }}
                 />
-                <span className="text-xs font-mono w-20 shrink-0" style={{ color: milestone.done ? C.green : C.gray }}>
+                <span className="text-xs font-mono w-20 shrink-0" style={{ color: milestone.done ? C.green : C.textMuted }}>
                   {milestone.date}
                 </span>
-                <span className="text-sm" style={{ color: C.grayLight }}>
+                <span className="text-sm" style={{ color: C.textSecondary }}>
                   {milestone.text}
                 </span>
               </motion.div>
@@ -1155,7 +1299,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           <Stagger delay={0.7}>
-            <motion.div variants={fadeUp} className="mt-8 text-xs" style={{ color: C.gray }}>
+            <motion.div variants={fadeUp} className="mt-8 text-xs" style={{ color: C.textMuted }}>
               * Projected milestones — subject to regulatory timelines
             </motion.div>
           </Stagger>
@@ -1175,12 +1319,12 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
-              Founded by Operators,{" "}
-              <span style={{ color: C.accent }}>Built by AI</span>
+              15 Years of Drone Expertise.{" "}
+              <span style={{ color: C.accent }}>Built by AI.</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-lg" style={{ color: C.gray }}>
+            <motion.p variants={fadeUp} className="text-lg" style={{ color: C.textMuted }}>
               Lean headcount with enterprise-grade output.
             </motion.p>
           </Stagger>
@@ -1191,26 +1335,29 @@ export function InvestorPitchDeck() {
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <div
                   className="w-16 h-16 rounded-2xl mb-4 flex items-center justify-center"
-                  style={{ background: C.accent + "15" }}
+                  style={{ background: C.accentGlow }}
                 >
                   <Users className="w-7 h-7" style={{ color: C.accent }} />
                 </div>
-                <div className="text-lg font-bold" style={{ color: C.white }}>
+                <div className="text-lg font-bold" style={{ color: C.text }}>
                   Founder / CEO
                 </div>
                 <div className="text-xs font-mono uppercase tracking-wider mt-1" style={{ color: C.accent }}>
                   Vision &middot; Strategy &middot; Regulatory &middot; Operations
                 </div>
-                <p className="text-sm mt-3" style={{ color: C.grayLight }}>
-                  Built from a Billion-Dollar-Mindset. Swiss precision, Silicon Valley speed.
+                <div className="mt-3 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ background: C.accentGlow, color: C.accent }}>
+                  15+ Years in the Drone Business
+                </div>
+                <p className="text-sm mt-3" style={{ color: C.textSecondary }}>
+                  Over 15 years of hands-on experience in the drone industry — from operations and regulatory navigation to building Switzerland&apos;s first AI-powered drone logistics platform. Swiss precision meets Silicon Valley speed.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-4">
-                  {["Drone Operations", "Strategy", "Swiss Market", "BAZL Relations"].map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-1 rounded-md" style={{ background: C.accent + "15", color: C.accent }}>
+                  {["Drone Operations", "Strategy", "Swiss Market", "BAZL Relations", "15yr Industry Veteran"].map((tag) => (
+                    <span key={tag} className="text-xs px-2 py-1 rounded-md" style={{ background: C.accentGlow, color: C.accent }}>
                       {tag}
                     </span>
                   ))}
@@ -1223,15 +1370,15 @@ export function InvestorPitchDeck() {
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-6 border"
-                style={{ background: C.accent + "06", borderColor: C.accent + "25" }}
+                style={{ background: C.accentLight, borderColor: C.borderAccent, boxShadow: C.shadow }}
               >
                 <div
                   className="w-16 h-16 rounded-2xl mb-4 flex items-center justify-center"
-                  style={{ background: C.accent + "15" }}
+                  style={{ background: C.accentGlow }}
                 >
                   <Cpu className="w-7 h-7" style={{ color: C.accent }} />
                 </div>
-                <div className="text-lg font-bold" style={{ color: C.white }}>
+                <div className="text-lg font-bold" style={{ color: C.text }}>
                   AI Operations Team
                 </div>
                 <div className="text-xs font-mono uppercase tracking-wider mt-1" style={{ color: C.accent }}>
@@ -1246,7 +1393,7 @@ export function InvestorPitchDeck() {
                     "Sales & Finance",
                     "Art Direction",
                   ].map((role) => (
-                    <div key={role} className="flex items-center gap-2 text-sm" style={{ color: C.grayLight }}>
+                    <div key={role} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
                       <Zap className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
                       {role}
                     </div>
@@ -1260,7 +1407,7 @@ export function InvestorPitchDeck() {
             <motion.div
               variants={fadeUp}
               className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.bgCard, borderColor: C.border }}
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
               <div className="flex items-center gap-3 mb-3">
                 <Shield className="w-4 h-4" style={{ color: C.gold }} />
@@ -1268,7 +1415,7 @@ export function InvestorPitchDeck() {
                   Advisory / Partners
                 </span>
               </div>
-              <p className="text-sm" style={{ color: C.grayLight }}>
+              <p className="text-sm" style={{ color: C.textSecondary }}>
                 DJI Enterprise Channel &middot; Swiss aviation counsel (BAZL regulatory advisor) &middot; EASA compliance network
               </p>
             </motion.div>
@@ -1280,7 +1427,7 @@ export function InvestorPitchDeck() {
       <section
         ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
           <SlideLabel number="09" text="Financial Projections" />
@@ -1289,7 +1436,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Unit Economics{" "}
               <span style={{ color: C.accent }}>That Scale</span>
@@ -1308,10 +1455,10 @@ export function InvestorPitchDeck() {
                 key={m.label}
                 variants={fadeUp}
                 className="rounded-xl p-4 border text-center"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
-                <div className="text-xs font-mono uppercase" style={{ color: C.gray }}>{m.label}</div>
-                <div className="text-lg font-bold font-mono mt-1" style={{ color: C.white }}>{m.value}</div>
+                <div className="text-xs font-mono uppercase" style={{ color: C.textMuted }}>{m.label}</div>
+                <div className="text-lg font-bold font-mono mt-1" style={{ color: C.text }}>{m.value}</div>
               </motion.div>
             ))}
           </Stagger>
@@ -1321,9 +1468,9 @@ export function InvestorPitchDeck() {
             <motion.div
               variants={fadeUp}
               className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.bgCard, borderColor: C.border }}
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
-              <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.gray }}>
+              <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
                 5-Year Revenue Projection (CHF)
               </div>
               <ResponsiveContainer width="100%" height={300}>
@@ -1331,25 +1478,25 @@ export function InvestorPitchDeck() {
                   <defs>
                     <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor={C.accent} stopOpacity={0.9} />
-                      <stop offset="100%" stopColor={C.accent} stopOpacity={0.3} />
+                      <stop offset="100%" stopColor={C.accent} stopOpacity={0.4} />
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="year" stroke={C.gray + "60"} tick={{ fill: C.gray, fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <XAxis dataKey="year" stroke={C.textMuted + "40"} tick={{ fill: C.textMuted, fontSize: 12 }} axisLine={false} tickLine={false} />
                   <YAxis
-                    stroke={C.gray + "60"}
-                    tick={{ fill: C.gray, fontSize: 12 }}
+                    stroke={C.textMuted + "40"}
+                    tick={{ fill: C.textMuted, fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(v) => `${v}M`}
                   />
                   <Tooltip
-                    contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, color: C.white, fontSize: 13 }}
+                    contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, color: C.text, fontSize: 13, boxShadow: C.shadow }}
                     formatter={(v) => [`CHF ${v}M`, "Revenue"]}
                   />
                   <Bar dataKey="revenue" fill="url(#revGrad)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
-              <div className="text-xs mt-4 italic" style={{ color: C.gray }}>
+              <div className="text-xs mt-4 italic" style={{ color: C.textMuted }}>
                 Projections are forward-looking estimates based on internal models and market benchmarks. Not guarantees.
               </div>
             </motion.div>
@@ -1368,142 +1515,149 @@ export function InvestorPitchDeck() {
                 key={yr.year}
                 variants={fadeUp}
                 className="rounded-xl p-3 border text-center"
-                style={{ background: C.bgCard, borderColor: C.border }}
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <div className="text-xs font-mono" style={{ color: C.accent }}>{yr.year}</div>
-                <div className="text-lg font-bold font-mono" style={{ color: C.white }}>CHF {yr.rev}</div>
-                <div className="text-xs" style={{ color: C.gray }}>{yr.note}</div>
+                <div className="text-lg font-bold font-mono" style={{ color: C.text }}>CHF {yr.rev}</div>
+                <div className="text-xs" style={{ color: C.textMuted }}>{yr.note}</div>
               </motion.div>
             ))}
           </Stagger>
         </div>
       </section>
 
-      {/* ═══ SLIDE 11: THE ASK ═══ */}
+      {/* ═══ SLIDE 11: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
         ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
-        <div className="max-w-5xl mx-auto w-full">
+        <div className="max-w-6xl mx-auto w-full">
           <SlideLabel number="10" text="The Ask" />
 
           <Stagger>
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
-              <span style={{ color: C.accent }}>CHF 2.5M</span>{" "}
+              <span style={{ color: C.accent }}>CHF 1.5M</span>{" "}
               to Own the Swiss Sky
             </motion.h2>
           </Stagger>
 
-          <div className="grid md:grid-cols-2 gap-12 mt-12">
-            {/* Fund allocation pie */}
-            <Stagger delay={0.3}>
-              <motion.div
-                variants={fadeUp}
-                className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border }}
-              >
-                <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.gray }}>
-                  Use of Funds
-                </div>
-                <div className="flex justify-center">
-                  <ResponsiveContainer width="100%" height={240}>
-                    <PieChart>
-                      <Pie
-                        data={fundAllocation}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={95}
-                        paddingAngle={3}
-                        dataKey="value"
-                      >
-                        {fundAllocation.map((entry, i) => (
-                          <Cell key={i} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        contentStyle={{
-                          background: C.bgCard,
-                          border: `1px solid ${C.border}`,
-                          borderRadius: 12,
-                          color: C.white,
-                          fontSize: 13,
-                        }}
-                        formatter={(v, _, props) => {
-                          const p = props as unknown as { payload: { name: string; amount: string } };
-                          return [`CHF ${p.payload.amount} (${v}%)`, p.payload.name];
-                        }}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="space-y-2 mt-4">
-                  {fundAllocation.map((item) => (
-                    <div key={item.name} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-sm" style={{ background: item.color }} />
-                        <span style={{ color: C.grayLight }}>{item.name}</span>
+          <div className="grid lg:grid-cols-2 gap-12 mt-12">
+            {/* Left column: Fund allocation + milestones */}
+            <div className="space-y-8">
+              {/* Fund allocation pie */}
+              <Stagger delay={0.3}>
+                <motion.div
+                  variants={fadeUp}
+                  className="rounded-2xl p-6 border"
+                  style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+                >
+                  <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
+                    Use of Funds — CHF 1.5M
+                  </div>
+                  <div className="flex justify-center">
+                    <ResponsiveContainer width="100%" height={200}>
+                      <PieChart>
+                        <Pie
+                          data={fundAllocation}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={85}
+                          paddingAngle={3}
+                          dataKey="value"
+                        >
+                          {fundAllocation.map((entry, i) => (
+                            <Cell key={i} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            background: C.bgCard,
+                            border: `1px solid ${C.border}`,
+                            borderRadius: 12,
+                            color: C.text,
+                            fontSize: 13,
+                            boxShadow: C.shadow,
+                          }}
+                          formatter={(v, _, props) => {
+                            const p = props as unknown as { payload: { name: string; amount: string } };
+                            return [`CHF ${p.payload.amount} (${v}%)`, p.payload.name];
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="space-y-2 mt-2">
+                    {fundAllocation.map((item) => (
+                      <div key={item.name} className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-sm" style={{ background: item.color }} />
+                          <span style={{ color: C.textSecondary }}>{item.name}</span>
+                        </div>
+                        <span className="font-mono" style={{ color: C.text }}>
+                          CHF {item.amount}
+                        </span>
                       </div>
-                      <span className="font-mono" style={{ color: C.white }}>
-                        CHF {item.amount}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </Stagger>
+                    ))}
+                  </div>
+                </motion.div>
+              </Stagger>
 
-            {/* What this unlocks */}
-            <Stagger delay={0.5}>
-              <motion.div variants={fadeUp} className="space-y-6">
-                <div className="text-sm font-mono uppercase tracking-wider" style={{ color: C.accent }}>
-                  Milestone Unlocks This Round
-                </div>
-                <ul className="space-y-4">
-                  <Bullet delay={0}>LUC certification achieved</Bullet>
-                  <Bullet delay={0.1}>3 enterprise DaaS contracts signed</Bullet>
-                  <Bullet delay={0.2}>Franchise program live (2 active partners)</Bullet>
-                  <Bullet delay={0.3}>CHF 680K ARR target reached</Bullet>
-                </ul>
+              {/* Milestone unlocks */}
+              <Stagger delay={0.5}>
+                <motion.div variants={fadeUp} className="space-y-4">
+                  <div className="text-sm font-mono uppercase tracking-wider" style={{ color: C.accent }}>
+                    Milestone Unlocks This Round
+                  </div>
+                  <ul className="space-y-3">
+                    <Bullet delay={0}>LUC certification achieved</Bullet>
+                    <Bullet delay={0.1}>3 enterprise DaaS contracts signed</Bullet>
+                    <Bullet delay={0.2}>Franchise program live (2 active partners)</Bullet>
+                    <Bullet delay={0.3}>CHF 680K ARR target reached</Bullet>
+                  </ul>
 
-                <div className="space-y-4 mt-8">
-                  <div
-                    className="rounded-xl p-4 border"
-                    style={{ borderColor: C.accent + "30", background: C.accent + "08" }}
-                  >
-                    <div className="text-xs" style={{ color: C.gray }}>
-                      Pre-Money Valuation
+                  <div className="space-y-4 mt-6">
+                    <div
+                      className="rounded-xl p-4 border"
+                      style={{ borderColor: C.borderAccent, background: C.accentLight }}
+                    >
+                      <div className="text-xs" style={{ color: C.textMuted }}>
+                        Pre-Money Valuation
+                      </div>
+                      <div className="text-3xl font-bold font-mono" style={{ color: C.accent }}>
+                        CHF 8.5M
+                      </div>
                     </div>
-                    <div className="text-3xl font-bold font-mono" style={{ color: C.accent }}>
-                      CHF 8.5M
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="rounded-xl p-4 border" style={{ borderColor: C.border, background: C.bgCard, boxShadow: C.shadow }}>
+                        <div className="text-xs" style={{ color: C.textMuted }}>
+                          Instrument
+                        </div>
+                        <div className="text-sm font-bold mt-1" style={{ color: C.text }}>
+                          SAFE or Equity
+                        </div>
+                      </div>
+                      <div className="rounded-xl p-4 border" style={{ borderColor: C.border, background: C.bgCard, boxShadow: C.shadow }}>
+                        <div className="text-xs" style={{ color: C.textMuted }}>
+                          Round
+                        </div>
+                        <div className="text-sm font-bold mt-1" style={{ color: C.text }}>
+                          Seed
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="rounded-xl p-4 border" style={{ borderColor: C.border, background: C.bgCard }}>
-                      <div className="text-xs" style={{ color: C.gray }}>
-                        Instrument
-                      </div>
-                      <div className="text-sm font-bold mt-1" style={{ color: C.white }}>
-                        SAFE or Equity
-                      </div>
-                    </div>
-                    <div className="rounded-xl p-4 border" style={{ borderColor: C.border, background: C.bgCard }}>
-                      <div className="text-xs" style={{ color: C.gray }}>
-                        Round
-                      </div>
-                      <div className="text-sm font-bold mt-1" style={{ color: C.white }}>
-                        Seed / Series A
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </Stagger>
+                </motion.div>
+              </Stagger>
+            </div>
+
+            {/* Right column: Investment Calculator */}
+            <InvestmentSlider />
           </div>
         </div>
       </section>
@@ -1511,17 +1665,17 @@ export function InvestorPitchDeck() {
       {/* ═══ SLIDE 12: VISION ═══ */}
       <section
         ref={setRef(11)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
-        {/* Background glow */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(211,47,47,0.06) 0%, transparent 70%)",
-          }}
-        />
+        {/* Background Swiss landscape */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src="/images/investors/swiss-mountains.jpg"
+            alt=""
+            className="w-full h-full object-cover opacity-[0.06]"
+          />
+        </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
           <SlideLabel number="11" text="Vision" />
@@ -1530,7 +1684,7 @@ export function InvestorPitchDeck() {
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.white }}
+              style={{ color: C.text }}
             >
               Switzerland First.{" "}
               <span style={{ color: C.accent }}>Europe Next.</span>
@@ -1560,12 +1714,12 @@ export function InvestorPitchDeck() {
                 key={i}
                 variants={slideRight}
                 className="flex items-start gap-4 p-5 rounded-xl border"
-                style={{ borderColor: C.accent + "20", background: C.accent + "06" }}
+                style={{ borderColor: C.borderAccent, background: C.accentLight }}
               >
                 <item.icon className="w-5 h-5 mt-0.5 shrink-0" style={{ color: C.accent }} />
                 <div>
                   <span className="text-sm font-mono font-bold" style={{ color: C.accent }}>{item.year}</span>
-                  <span className="text-base md:text-lg leading-relaxed ml-3" style={{ color: C.grayLight }}>
+                  <span className="text-base md:text-lg leading-relaxed ml-3" style={{ color: C.textSecondary }}>
                     {item.text}
                   </span>
                 </div>
@@ -1579,8 +1733,9 @@ export function InvestorPitchDeck() {
               variants={scaleUp}
               className="mt-12 rounded-2xl p-8 border text-center"
               style={{
-                borderColor: C.gold + "30",
-                background: `linear-gradient(135deg, ${C.gold}08 0%, ${C.accent}08 100%)`,
+                borderColor: C.gold + "20",
+                background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.accentLight} 100%)`,
+                boxShadow: C.shadowLg,
               }}
             >
               <div className="text-xs font-mono uppercase tracking-[0.3em] mb-6" style={{ color: C.gold }}>
@@ -1594,10 +1749,10 @@ export function InvestorPitchDeck() {
                   { value: "75%+", label: "Gross Margin" },
                 ].map((m) => (
                   <div key={m.label}>
-                    <div className="text-2xl md:text-3xl font-bold font-mono" style={{ color: C.white }}>
+                    <div className="text-2xl md:text-3xl font-bold font-mono" style={{ color: C.text }}>
                       {m.value}
                     </div>
-                    <div className="text-xs mt-1" style={{ color: C.gray }}>
+                    <div className="text-xs mt-1" style={{ color: C.textMuted }}>
                       {m.label}
                     </div>
                   </div>
@@ -1609,16 +1764,16 @@ export function InvestorPitchDeck() {
           {/* Closing tagline */}
           <Stagger delay={1}>
             <motion.div variants={fadeUp} className="mt-16 text-center space-y-6">
-              <p className="text-lg" style={{ color: C.grayLight }}>
+              <p className="text-lg" style={{ color: C.textSecondary }}>
                 Every logistics revolution started with one breakthrough in infrastructure.
               </p>
-              <p className="text-2xl md:text-4xl font-bold" style={{ color: C.white }}>
+              <p className="text-2xl md:text-4xl font-bold" style={{ color: C.text }}>
                 The drone era&apos;s infrastructure is being built right now.
                 <br />
                 In Switzerland. <span style={{ color: C.accent }}>By us.</span>
               </p>
               <div className="pt-8">
-                <div className="text-3xl md:text-5xl font-bold" style={{ color: C.gold }}>
+                <div className="text-3xl md:text-5xl font-bold" style={{ color: C.accent }}>
                   The Future of Logistics Flies.
                 </div>
               </div>
@@ -1626,7 +1781,7 @@ export function InvestorPitchDeck() {
                 <div className="text-sm font-mono" style={{ color: C.accent }}>
                   invest@airbase.swiss
                 </div>
-                <div className="text-xs font-mono" style={{ color: C.gray }}>
+                <div className="text-xs font-mono" style={{ color: C.textMuted }}>
                   airbase.swiss &mdash; Confidential
                 </div>
               </div>
