@@ -411,11 +411,129 @@ function SlideNav({
 /* ═══════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════ */
+const DECK_PASSWORD = "Airdrone";
+const AUTH_KEY = "airbase-investor-auth";
+
+/* ─── Password Gate ─── */
+function PasswordGate({ onAuth }: { onAuth: () => void }) {
+  const [pw, setPw] = useState("");
+  const [error, setError] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogin = useCallback((e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (pw === DECK_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, "1");
+      onAuth();
+    } else {
+      setError(true);
+      inputRef.current?.focus();
+    }
+  }, [pw, onAuth]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: `linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%)` }}
+    >
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 50% 50% at 50% 40%, rgba(211,47,47,0.08) 0%, transparent 70%)",
+        }}
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease }}
+        className="relative w-full max-w-md mx-4"
+      >
+        <div
+          className="rounded-2xl p-10 border text-center"
+          style={{
+            background: "rgba(255,255,255,0.03)",
+            borderColor: "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(20px)",
+            boxShadow: "0 8px 40px rgba(0,0,0,0.3)",
+          }}
+        >
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
+              style={{ background: C.accent }}
+            >
+              <Rocket className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-3xl font-bold tracking-tight text-white">
+              AIRBASE
+            </span>
+          </div>
+
+          <div className="text-sm font-mono uppercase tracking-[0.2em] mb-1 text-white/40">
+            Confidential
+          </div>
+          <div className="text-lg font-semibold text-white/80 mb-8">
+            Investor Pitch Deck
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input
+                ref={inputRef}
+                type="password"
+                value={pw}
+                onChange={(e) => { setPw(e.target.value); setError(false); }}
+                placeholder="Enter password"
+                autoFocus
+                className="w-full pl-11 pr-4 py-3 rounded-xl text-white placeholder:text-white/30 outline-none text-sm font-mono"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: `1px solid ${error ? C.accent : "rgba(255,255,255,0.1)"}`,
+                }}
+              />
+            </div>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xs font-mono"
+                style={{ color: C.accent }}
+              >
+                Incorrect password. Please try again.
+              </motion.div>
+            )}
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110"
+              style={{ background: C.accent }}
+            >
+              Access Deck
+            </button>
+          </form>
+
+          <div className="mt-8 text-xs font-mono text-white/20">
+            airbase.one &mdash; Confidential &amp; Proprietary
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export function InvestorPitchDeck() {
+  const [authed, setAuthed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 13;
+  const totalSlides = 14;
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
+      setAuthed(true);
+    }
+  }, []);
 
   /* Track which slide is visible */
   useEffect(() => {
@@ -460,6 +578,10 @@ export function InvestorPitchDeck() {
   const setRef = (idx: number) => (el: HTMLElement | null) => {
     slideRefs.current[idx] = el;
   };
+
+  if (!authed) {
+    return <PasswordGate onAuth={() => setAuthed(true)} />;
+  }
 
   return (
     <div
@@ -972,21 +1094,34 @@ export function InvestorPitchDeck() {
             ))}
           </Stagger>
 
-          {/* Dashboard Screenshot */}
+          {/* Dashboard Screenshot — Hero Size */}
           <Stagger delay={0.4}>
             <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl overflow-hidden border"
-              style={{ borderColor: C.border, boxShadow: C.shadowLg }}
+              variants={scaleUp}
+              className="mt-10 rounded-2xl overflow-hidden border-2"
+              style={{ borderColor: C.accent + "30", boxShadow: `0 8px 40px rgba(211,47,47,0.12), ${C.shadowLg}` }}
             >
-              <div className="text-xs font-mono uppercase tracking-wider px-6 pt-4 pb-2" style={{ color: C.textMuted, background: C.bgCard }}>
-                Live Operations Dashboard — Admin View
+              <div
+                className="flex items-center justify-between px-6 py-3"
+                style={{ background: `linear-gradient(135deg, ${C.accent} 0%, #B71C1C 100%)` }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+                </div>
+                <span className="text-xs font-mono uppercase tracking-widest text-white/80">
+                  Live Operations Dashboard — Real Product
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-xs font-mono text-white/60">LIVE</span>
+                </div>
               </div>
               <img
                 src="/images/investors/dashboard.png"
-                alt="AIRBASE Live Operations Dashboard with Swiss map, active missions, and telemetry"
-                className="w-full object-cover"
-                style={{ maxHeight: 400 }}
+                alt="AIRBASE Live Operations Dashboard with Swiss map, active missions, and real-time telemetry"
+                className="w-full"
               />
             </motion.div>
           </Stagger>
@@ -1372,9 +1507,176 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 7: COMPETITIVE ADVANTAGE ═══ */}
+      {/* ═══ SLIDE 6B: AI-POWERED LEAN OPERATIONS ═══ */}
       <section
         ref={setRef(6)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
+        style={{ scrollSnapAlign: "start" }}
+      >
+        {/* Subtle tech background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(211,47,47,0.03) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="relative max-w-6xl mx-auto w-full">
+          <SlideLabel number="06" text="AI-Powered Operations" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              Almost Everything Is{" "}
+              <span style={{ color: C.accent }}>Automated</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-lg mt-4 mb-6 max-w-3xl"
+              style={{ color: C.textSecondary }}
+            >
+              AIRBASE needs minimal human staff. AI handles calculations, dispatch, safety checks,
+              quoting, compliance, and post-flight analytics — giving us an enormous cost and
+              scalability advantage over traditional logistics.
+            </motion.p>
+          </Stagger>
+
+          {/* Headcount comparison */}
+          <Stagger className="grid md:grid-cols-2 gap-8 mt-8" delay={0.2}>
+            {/* Traditional */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-8 border"
+              style={{ background: C.bgAlt, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Truck className="w-6 h-6" style={{ color: C.textMuted }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
+                  Traditional Courier
+                </span>
+              </div>
+              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.textMuted }}>
+                ~50
+              </div>
+              <div className="text-sm mb-6" style={{ color: C.textMuted }}>
+                Employees needed for 100 daily deliveries
+              </div>
+              <ul className="space-y-2">
+                {["30+ drivers", "5 dispatchers", "4 warehouse staff", "3 customer service", "3 management", "5+ admin & compliance"].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textMuted }}>
+                    <Users className="w-3 h-3 shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* AIRBASE */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-8 border-2 relative"
+              style={{ background: C.bgCard, borderColor: C.accent + "30", boxShadow: `0 4px 24px rgba(211,47,47,0.08)` }}
+            >
+              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
+                style={{ background: C.accent }}>
+                95% LESS STAFF
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <Cpu className="w-6 h-6" style={{ color: C.accent }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                  AIRBASE (AI-Powered)
+                </span>
+              </div>
+              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.accent }}>
+                ~3
+              </div>
+              <div className="text-sm mb-6" style={{ color: C.textSecondary }}>
+                Core team for 100+ daily deliveries
+              </div>
+              <ul className="space-y-2">
+                {[
+                  { text: "Licensed drone pilots (per-shift)", icon: Rocket },
+                  { text: "1 Safety Manager / Operations Lead", icon: Shield },
+                  { text: "AI: dispatch, routing, quoting, compliance", icon: Cpu },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
+                    <item.icon className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
+                    {item.text}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </Stagger>
+
+          {/* What AI automates */}
+          <Stagger delay={0.5}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl p-6 border"
+              style={{ background: C.accentLight, borderColor: C.borderAccent }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Zap className="w-5 h-5" style={{ color: C.accent }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                  What Our AI Automates
+                </span>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                {[
+                  { title: "Operations", items: ["Intelligent dispatch & routing", "Real-time fleet management", "Automated mission planning"] },
+                  { title: "Business", items: ["Instant quote generation", "Invoice & billing automation", "Customer notifications"] },
+                  { title: "Compliance", items: ["SORA risk assessment", "Airspace deconfliction", "Post-flight safety analytics"] },
+                ].map((col) => (
+                  <div key={col.title}>
+                    <div className="text-xs font-mono uppercase tracking-wider mb-2 font-semibold" style={{ color: C.accent }}>
+                      {col.title}
+                    </div>
+                    <ul className="space-y-1.5">
+                      {col.items.map((item, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
+                          <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* Investor punchline */}
+          <Stagger delay={0.7}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 grid md:grid-cols-3 gap-6"
+            >
+              {[
+                { metric: "~95%", label: "Lower headcount vs. traditional logistics", icon: Users },
+                { metric: "10x", label: "Deliveries per employee", icon: TrendingUp },
+                { metric: "Linear", label: "Revenue scales, headcount doesn't", icon: Rocket },
+              ].map((kpi) => (
+                <div
+                  key={kpi.label}
+                  className="rounded-xl p-5 border text-center"
+                  style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+                >
+                  <kpi.icon className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
+                  <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>{kpi.metric}</div>
+                  <div className="text-xs mt-1" style={{ color: C.textMuted }}>{kpi.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 7: COMPETITIVE ADVANTAGE ═══ */}
+      <section
+        ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -1388,7 +1690,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="06" text="Competitive Advantage" />
+          <SlideLabel number="07" text="Competitive Advantage" />
 
           <Stagger>
             <motion.h2
@@ -1522,12 +1824,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 8: COMPETITIVE LANDSCAPE ═══ */}
       <section
-        ref={setRef(7)}
+        ref={setRef(8)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="07" text="Competitive Landscape" />
+          <SlideLabel number="08" text="Competitive Landscape" />
 
           <Stagger>
             <motion.h2
@@ -1727,12 +2029,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 9: TRACTION ═══ */}
       <section
-        ref={setRef(8)}
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="08" text="Traction" />
+          <SlideLabel number="09" text="Traction" />
 
           <Stagger>
             <motion.h2
@@ -1792,12 +2094,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 10: TEAM ═══ */}
       <section
-        ref={setRef(9)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="09" text="Team" />
+          <SlideLabel number="10" text="Team" />
 
           <Stagger>
             <motion.h2
@@ -1933,12 +2235,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 11: FINANCIAL PROJECTIONS ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="10" text="Financial Projections" />
+          <SlideLabel number="11" text="Financial Projections" />
 
           <Stagger>
             <motion.h2
@@ -2036,12 +2338,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 12: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(12)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="11" text="The Ask" />
+          <SlideLabel number="12" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -2172,7 +2474,7 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 13: VISION ═══ */}
       <section
-        ref={setRef(12)}
+        ref={setRef(13)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -2186,7 +2488,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="12" text="Vision" />
+          <SlideLabel number="13" text="Vision" />
 
           <Stagger>
             <motion.h2
