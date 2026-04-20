@@ -44,6 +44,10 @@ import {
   Layers,
   Percent,
   Banknote,
+  Truck,
+  Sparkles,
+  Wheat,
+  Eye,
 } from "lucide-react";
 
 /* ─── Design Tokens — White / Light Theme ─── */
@@ -475,7 +479,7 @@ export function InvestorPitchDeck() {
         {/* Hero drone image background */}
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src="/images/investors/drone-hero.jpg"
+            src="/images/hero-drones.jpg"
             alt=""
             className="w-full h-full object-cover opacity-10"
           />
@@ -547,7 +551,7 @@ export function InvestorPitchDeck() {
             className="text-lg md:text-xl lg:text-2xl font-light mb-4"
             style={{ color: C.textSecondary }}
           >
-            Switzerland&apos;s AI-Powered Drone Delivery Platform
+            Switzerland&apos;s AI-Powered Drone Services Platform
           </motion.p>
 
           <motion.p
@@ -719,37 +723,84 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4"
               style={{ color: C.text }}
             >
-              Autonomous. Precise.
+              Four Service Lines.
               <br />
-              <span style={{ color: C.accent }}>Swiss-Certified.</span>
+              <span style={{ color: C.accent }}>One Platform.</span>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-lg md:text-xl" style={{ color: C.textMuted }}>
-              End-to-end AI-powered drone delivery — from order intake to touchdown — with zero driver dependency.
+              AI-powered drone services — from cargo transport to precision agriculture — all Swiss-certified, all autonomous.
             </motion.p>
           </Stagger>
 
-          {/* Drone image banner */}
-          <Stagger delay={0.2}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl overflow-hidden border"
-              style={{ borderColor: C.border, boxShadow: C.shadow }}
-            >
-              <img
-                src="/images/investors/drone-delivery.jpg"
-                alt="DJI FlyCart 100 delivery drone in flight"
-                className="w-full h-48 md:h-64 object-cover"
-              />
-            </motion.div>
+          {/* Four service lines with website images */}
+          <Stagger className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8" delay={0.2}>
+            {[
+              {
+                title: "Transportflüge",
+                sub: "Cargo & Logistics",
+                desc: "Up to 100 kg payload with DJI FlyCart 100. Hospitals, retailers, construction sites.",
+                image: "/images/flycart-lastendrohne.webp",
+                icon: Truck,
+                stat: "CHF 4/flight",
+              },
+              {
+                title: "Reinigung",
+                sub: "Cleaning & Facades",
+                desc: "Industrial building and facade cleaning. Solar panel maintenance at scale.",
+                image: "/images/flycart-scene-2.webp",
+                icon: Sparkles,
+                stat: "80% faster",
+              },
+              {
+                title: "Agrar-Drohnen",
+                sub: "Precision Agriculture",
+                desc: "Targeted spraying, seeding, and crop monitoring. Reduces chemical use by 60%.",
+                image: "/images/flycart-ingenieurverkehr.webp",
+                icon: Wheat,
+                stat: "60% less chemicals",
+              },
+              {
+                title: "Spezialflüge",
+                sub: "Inspection & Rescue",
+                desc: "Thermal imaging, infrastructure inspection, emergency medical transport.",
+                image: "/images/flycart-notfalltransport.webp",
+                icon: Eye,
+                stat: "24/7 ready",
+              },
+            ].map((service) => (
+              <motion.div
+                key={service.title}
+                variants={fadeUp}
+                className="rounded-2xl overflow-hidden border"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-32 object-cover"
+                />
+                <div className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <service.icon className="w-4 h-4" style={{ color: C.accent }} />
+                    <span className="text-xs font-mono uppercase tracking-wider" style={{ color: C.accent }}>
+                      {service.sub}
+                    </span>
+                  </div>
+                  <div className="text-base font-bold mb-1" style={{ color: C.text }}>{service.title}</div>
+                  <p className="text-xs mb-3" style={{ color: C.textSecondary }}>{service.desc}</p>
+                  <div className="text-sm font-bold font-mono" style={{ color: C.accent }}>{service.stat}</div>
+                </div>
+              </motion.div>
+            ))}
           </Stagger>
 
-          {/* Key stats */}
-          <Stagger className="grid md:grid-cols-4 gap-6 mt-8" delay={0.3}>
+          {/* Key platform stats */}
+          <Stagger className="grid md:grid-cols-4 gap-6 mt-8" delay={0.4}>
             {[
-              { value: "CHF 4", label: "avg. cost per delivery", sub: "vs CHF 28 road" },
-              { value: "-85%", label: "delivery cost reduction", sub: "at scale" },
+              { value: "4", label: "service lines", sub: "fully integrated" },
               { value: "100 kg", label: "max payload", sub: "DJI FlyCart 100" },
-              { value: "<30 min", label: "flight-to-delivery", sub: "dense zones" },
+              { value: "-85%", label: "cost vs traditional", sub: "at scale" },
+              { value: "<30 min", label: "deployment time", sub: "any service" },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -824,7 +875,7 @@ export function InvestorPitchDeck() {
               style={{ color: C.text }}
             >
               The Operating System for{" "}
-              <span style={{ color: C.accent }}>Drone Logistics</span>
+              <span style={{ color: C.accent }}>Drone Services</span>
             </motion.h2>
           </Stagger>
 
@@ -922,13 +973,13 @@ export function InvestorPitchDeck() {
               style={{ color: C.text }}
             >
               A CHF 4 Billion Market{" "}
-              <span style={{ color: C.accent }}>on the Launchpad</span>
+              <span style={{ color: C.accent }}>Across Four Verticals</span>
             </motion.h2>
           </Stagger>
 
           <div className="grid lg:grid-cols-3 gap-6 mt-10">
             <KpiCard
-              label="Global Drone Logistics TAM"
+              label="Global Drone Services TAM"
               value={<CountUp end={31.7} prefix="$" suffix="B" decimals={1} />}
               sub="by 2030 (MarketsandMarkets)"
               icon={Globe}
@@ -949,6 +1000,32 @@ export function InvestorPitchDeck() {
               delay={0.5}
             />
           </div>
+
+          {/* Service-specific market breakdown */}
+          <Stagger className="grid md:grid-cols-4 gap-4 mt-8" delay={0.3}>
+            {[
+              { service: "Transportflüge", tam: "CHF 180M", icon: Truck, desc: "Logistics, medical, construction supply" },
+              { service: "Reinigung", tam: "CHF 95M", icon: Sparkles, desc: "Solar, facade, industrial cleaning" },
+              { service: "Agrar-Drohnen", tam: "CHF 85M", icon: Wheat, desc: "Spraying, seeding, monitoring" },
+              { service: "Spezialflüge", tam: "CHF 60M", icon: Eye, desc: "Thermal, rescue, inspection" },
+            ].map((s) => (
+              <motion.div
+                key={s.service}
+                variants={fadeUp}
+                className="rounded-xl p-4 border"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <s.icon className="w-4 h-4" style={{ color: C.accent }} />
+                  <span className="text-xs font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                    {s.service}
+                  </span>
+                </div>
+                <div className="text-xl font-bold font-mono" style={{ color: C.text }}>{s.tam}</div>
+                <div className="text-xs mt-1" style={{ color: C.textMuted }}>{s.desc}</div>
+              </motion.div>
+            ))}
+          </Stagger>
 
           <div className="grid md:grid-cols-2 gap-8 mt-12">
             {/* TAM Growth Chart */}
@@ -1036,8 +1113,8 @@ export function InvestorPitchDeck() {
             {[
               {
                 title: "Drone-as-a-Service",
-                sub: "DaaS",
-                desc: "Direct B2B contracts: logistics, hospitals, retailers, municipalities.",
+                sub: "DaaS — 4 Service Lines",
+                desc: "Transportflüge, Reinigung, Agrar-Drohnen, Spezialflüge — B2B contracts across all verticals.",
                 metric: "~65% gross margin",
                 revenue: "Per-flight fee + SLA retainer",
                 icon: Rocket,
@@ -1046,7 +1123,7 @@ export function InvestorPitchDeck() {
               {
                 title: "Platform SaaS",
                 sub: "Software",
-                desc: "Licensing AIRBASE software stack to third-party operators.",
+                desc: "Licensing AIRBASE software stack to third-party operators — all 4 service modules included.",
                 metric: "~80% gross margin",
                 revenue: "Monthly licence + API fees",
                 icon: Cpu,
@@ -1055,7 +1132,7 @@ export function InvestorPitchDeck() {
               {
                 title: "Franchise Licensing",
                 sub: "Scale",
-                desc: "Partners acquire AIRBASE-branded drone kits + software + LUC sub-licence.",
+                desc: "Partners acquire AIRBASE-branded drone kits + full service portfolio + LUC sub-licence.",
                 metric: "CHF 85K setup + 12% royalty",
                 revenue: "Lower capex, faster expansion",
                 icon: Globe,
@@ -1114,6 +1191,33 @@ export function InvestorPitchDeck() {
               </div>
             </motion.div>
           </Stagger>
+
+          {/* DaaS service line breakdown */}
+          <Stagger delay={0.8}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-6 rounded-2xl p-6 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.accent }}>
+                DaaS Revenue by Service Line (Year 3 Target)
+              </div>
+              <div className="grid grid-cols-4 gap-4">
+                {[
+                  { service: "Transport", pct: "45%", icon: Truck },
+                  { service: "Reinigung", pct: "20%", icon: Sparkles },
+                  { service: "Agrar", pct: "20%", icon: Wheat },
+                  { service: "Spezial", pct: "15%", icon: Eye },
+                ].map((s) => (
+                  <div key={s.service} className="text-center">
+                    <s.icon className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
+                    <div className="text-xl font-bold font-mono" style={{ color: C.text }}>{s.pct}</div>
+                    <div className="text-xs mt-1" style={{ color: C.textMuted }}>{s.service}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
         </div>
       </section>
 
@@ -1126,7 +1230,7 @@ export function InvestorPitchDeck() {
         {/* Background drone image */}
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src="/images/investors/drone-flight.jpg"
+            src="/images/flycart-scene-1.jpg"
             alt=""
             className="w-full h-full object-cover opacity-[0.04]"
           />
@@ -1671,7 +1775,7 @@ export function InvestorPitchDeck() {
         {/* Background Swiss landscape */}
         <div className="absolute inset-0 pointer-events-none">
           <img
-            src="/images/investors/swiss-mountains.jpg"
+            src="/images/hero-drones.jpg"
             alt=""
             className="w-full h-full object-cover opacity-[0.06]"
           />
