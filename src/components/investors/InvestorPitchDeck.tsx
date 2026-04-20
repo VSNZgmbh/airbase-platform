@@ -48,6 +48,9 @@ import {
   Sparkles,
   Wheat,
   Eye,
+  Mountain,
+  HeartPulse,
+  HardHat,
 } from "lucide-react";
 
 /* ─── Design Tokens — White / Light Theme ─── */
@@ -1085,6 +1088,93 @@ export function InvestorPitchDeck() {
               </motion.div>
             </Stagger>
           </div>
+
+          {/* ── New Market Creation Section ── */}
+          <Stagger delay={0.8}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-16 rounded-2xl p-8 border"
+              style={{
+                borderColor: C.gold + "20",
+                background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.accentLight} 100%)`,
+                boxShadow: C.shadow,
+              }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: C.gold + "15" }}
+                >
+                  <Rocket className="w-5 h-5" style={{ color: C.gold }} />
+                </div>
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-[0.2em]" style={{ color: C.gold }}>
+                    Beyond Disruption
+                  </div>
+                  <div className="text-lg md:text-xl font-bold" style={{ color: C.text }}>
+                    We Don&apos;t Just Compete &mdash; We Create New Markets
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-sm md:text-base leading-relaxed mb-8" style={{ color: C.textSecondary }}>
+                Logistics, agriculture, and industrial cleaning are existing markets where AIRBASE
+                offers a radically better solution. But our 100&nbsp;kg heavy-lift capability
+                <span style={{ color: C.gold, fontWeight: 600 }}> unlocks use cases that were previously impossible</span> &mdash;
+                creating entirely new revenue pools.
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  {
+                    icon: HardHat,
+                    title: "Remote Construction Supply",
+                    desc: "Deliver materials to alpine or off-grid build sites with zero road infrastructure",
+                  },
+                  {
+                    icon: HeartPulse,
+                    title: "Emergency Disaster Relief",
+                    desc: "Deploy 100 kg medical & survival payloads to flood, avalanche, or earthquake zones in minutes",
+                  },
+                  {
+                    icon: Mountain,
+                    title: "Alpine Infrastructure",
+                    desc: "Service ski lifts, telecom towers, and mountain huts unreachable by ground transport",
+                  },
+                  {
+                    icon: Truck,
+                    title: "Rural Medical Delivery",
+                    desc: "Rapid equipment & supply delivery to hospitals and clinics in underserved areas",
+                  },
+                ].map((item) => (
+                  <motion.div
+                    key={item.title}
+                    variants={fadeUp}
+                    className="rounded-xl p-4 border"
+                    style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+                  >
+                    <item.icon className="w-5 h-5 mb-3" style={{ color: C.accent }} />
+                    <div className="text-sm font-semibold mb-1" style={{ color: C.text }}>
+                      {item.title}
+                    </div>
+                    <div className="text-xs leading-relaxed" style={{ color: C.textMuted }}>
+                      {item.desc}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="mt-6 pt-5 border-t" style={{ borderColor: C.border }}>
+                <div className="text-sm font-semibold" style={{ color: C.gold }}>
+                  Category creators capture disproportionate value.
+                </div>
+                <div className="text-xs mt-1" style={{ color: C.textMuted }}>
+                  AIRBASE is not entering existing markets &mdash; we are defining the heavy-lift drone logistics
+                  category.
+                </div>
+              </div>
+            </motion.div>
+          </Stagger>
         </div>
       </section>
 
@@ -2122,12 +2212,16 @@ export function InvestorPitchDeck() {
           <Stagger delay={1}>
             <motion.div variants={fadeUp} className="mt-16 text-center space-y-6">
               <p className="text-lg" style={{ color: C.textSecondary }}>
-                Every logistics revolution started with one breakthrough in infrastructure.
+                We are not just competing in existing markets.
+                <br />
+                We are not just building a drone company.
               </p>
               <p className="text-2xl md:text-4xl font-bold" style={{ color: C.text }}>
-                The drone era&apos;s infrastructure is being built right now.
+                We are <span style={{ color: C.gold }}>creating a new category</span>
                 <br />
-                In Switzerland. <span style={{ color: C.accent }}>By us.</span>
+                and building the operating system
+                <br />
+                for the <span style={{ color: C.accent }}>drone economy</span>.
               </p>
               <div className="pt-8">
                 <div className="text-3xl md:text-5xl font-bold" style={{ color: C.accent }}>
