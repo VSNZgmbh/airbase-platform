@@ -641,7 +641,7 @@ export function InvestorPitchDeck() {
         }}
       >
         <div className="flex items-center gap-3" style={{ pointerEvents: "auto" }}>
-          <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
+          <img src="/airbase-logo.png" alt="airBASE" className="h-14 w-auto" />
           <span className="hidden md:inline text-xs font-mono tracking-wider ml-2" style={{ color: C.textMuted }}>
             airbase.one
           </span>
@@ -705,6 +705,15 @@ export function InvestorPitchDeck() {
           transition={{ duration: 1, ease }}
           className="relative z-10 max-w-5xl"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.8, ease }}
+            className="flex items-center justify-center mb-10"
+          >
+            <img src="/airbase-logo.png" alt="airBASE AVIATION" className="h-28 md:h-36 lg:h-44 w-auto" />
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
