@@ -50,6 +50,9 @@ import {
   Mountain,
   HeartPulse,
   HardHat,
+  Leaf,
+  Sun,
+  Battery,
 } from "lucide-react";
 
 /* ─── Design Tokens — White / Light Theme ─── */
@@ -251,7 +254,7 @@ function Bullet({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
-/* ─── Investment Slider (Convertible Note / Wandeldarlehen) ─── */
+/* ─── Investment Slider (Convertible Note) ─── */
 function InvestmentSlider() {
   const [amount, setAmount] = useState(250);
   const ref = useRef(null);
@@ -281,7 +284,7 @@ function InvestmentSlider() {
       </div>
 
       <div className="text-center mb-8">
-        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment (Wandeldarlehen)</div>
+        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment (Convertible Note)</div>
         <div className="text-4xl md:text-5xl font-bold font-mono" style={{ color: C.text }}>
           CHF {amount}K
         </div>
@@ -355,13 +358,13 @@ function InvestmentSlider() {
         </div>
       </div>
 
-      {/* How Wandeldarlehen works */}
+      {/* How Convertible Note works */}
       <div className="rounded-xl p-4" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
         <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
           How the Convertible Note Works
         </div>
         <ul className="text-xs space-y-1.5" style={{ color: C.textSecondary }}>
-          <li>1. You provide a loan (Darlehen) to AIRBASE</li>
+          <li>1. You provide a loan to AIRBASE</li>
           <li>2. Interest of {INTEREST_RATE}% p.a. accrues — not paid out in cash</li>
           <li>3. At the next funding round, loan + accrued interest converts into equity</li>
           <li>4. Conversion at a discount to the next-round valuation</li>
@@ -554,7 +557,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 14;
+  const totalSlides = 15;
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
@@ -949,7 +952,7 @@ export function InvestorPitchDeck() {
           <Stagger className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8" delay={0.2}>
             {[
               {
-                title: "Transportflüge",
+                title: "Transport Flights",
                 sub: "Cargo & Logistics",
                 desc: "Up to 100 kg payload with DJI FlyCart 100. Hospitals, retailers, construction sites.",
                 image: "/images/flycart-scene-2.webp",
@@ -957,7 +960,7 @@ export function InvestorPitchDeck() {
                 stat: "CHF 4/flight",
               },
               {
-                title: "Reinigung",
+                title: "Cleaning",
                 sub: "Cleaning & Facades",
                 desc: "Industrial building and facade cleaning. Solar panel maintenance at scale.",
                 image: "/images/flycart-ingenieurverkehr.webp",
@@ -965,7 +968,7 @@ export function InvestorPitchDeck() {
                 stat: "80% faster",
               },
               {
-                title: "Agrar-Drohnen",
+                title: "Agriculture",
                 sub: "Precision Agriculture",
                 desc: "Targeted spraying, seeding, and crop monitoring. Reduces chemical use by 60%.",
                 image: "/images/flycart-lastendrohne.webp",
@@ -973,7 +976,7 @@ export function InvestorPitchDeck() {
                 stat: "60% less chemicals",
               },
               {
-                title: "Spezialflüge",
+                title: "Special Missions",
                 sub: "Inspection & Rescue",
                 desc: "Thermal imaging, infrastructure inspection, emergency medical transport.",
                 image: "/images/flycart-notfalltransport.webp",
@@ -1276,10 +1279,10 @@ export function InvestorPitchDeck() {
           {/* Service-specific market breakdown */}
           <Stagger className="grid md:grid-cols-4 gap-4 mt-8" delay={0.3}>
             {[
-              { service: "Transportflüge", tam: "CHF 180M", icon: Truck, desc: "Logistics, medical, construction supply" },
-              { service: "Reinigung", tam: "CHF 95M", icon: Sparkles, desc: "Solar, facade, industrial cleaning" },
-              { service: "Agrar-Drohnen", tam: "CHF 85M", icon: Wheat, desc: "Spraying, seeding, monitoring" },
-              { service: "Spezialflüge", tam: "CHF 60M", icon: Eye, desc: "Thermal, rescue, inspection" },
+              { service: "Transport", tam: "CHF 180M", icon: Truck, desc: "Logistics, medical, construction supply" },
+              { service: "Cleaning", tam: "CHF 95M", icon: Sparkles, desc: "Solar, facade, industrial cleaning" },
+              { service: "Agriculture", tam: "CHF 85M", icon: Wheat, desc: "Spraying, seeding, monitoring" },
+              { service: "Special Missions", tam: "CHF 60M", icon: Eye, desc: "Thermal, rescue, inspection" },
             ].map((s) => (
               <motion.div
                 key={s.service}
@@ -1473,7 +1476,7 @@ export function InvestorPitchDeck() {
               {
                 title: "Drone-as-a-Service",
                 sub: "DaaS — 4 Service Lines",
-                desc: "Transportflüge, Reinigung, Agrar-Drohnen, Spezialflüge — B2B contracts across all verticals.",
+                desc: "Transport, Cleaning, Agriculture, Special Missions — B2B contracts across all verticals.",
                 metric: "~65% gross margin",
                 revenue: "Per-flight fee + SLA retainer",
                 icon: Rocket,
@@ -1564,9 +1567,9 @@ export function InvestorPitchDeck() {
               <div className="grid grid-cols-4 gap-4">
                 {[
                   { service: "Transport", pct: "45%", icon: Truck },
-                  { service: "Reinigung", pct: "20%", icon: Sparkles },
-                  { service: "Agrar", pct: "20%", icon: Wheat },
-                  { service: "Spezial", pct: "15%", icon: Eye },
+                  { service: "Cleaning", pct: "20%", icon: Sparkles },
+                  { service: "Agriculture", pct: "20%", icon: Wheat },
+                  { service: "Special", pct: "15%", icon: Eye },
                 ].map((s) => (
                   <div key={s.service} className="text-center">
                     <s.icon className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
@@ -1900,14 +1903,207 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 8: COMPETITIVE LANDSCAPE ═══ */}
+      {/* ═══ SLIDE 8: SUSTAINABILITY / ZERO EMISSIONS ═══ */}
       <section
         ref={setRef(8)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
+      >
+        {/* Green gradient background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(22,163,74,0.04) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="relative max-w-6xl mx-auto w-full">
+          <SlideLabel number="08" text="Sustainability" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              Near-Zero Carbon Logistics.{" "}
+              <span style={{ color: C.green }}>Green by Design.</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-lg mt-4 mb-6 max-w-3xl"
+              style={{ color: C.textSecondary }}
+            >
+              AIRBASE doesn&apos;t just reduce costs &mdash; we eliminate emissions. Our drones are 100% electric,
+              and our fleet vehicles run on solar power. The result: a near-zero carbon logistics operation
+              that sets a new industry standard.
+            </motion.p>
+          </Stagger>
+
+          {/* CO2 comparison — visual impact */}
+          <Stagger className="grid md:grid-cols-2 gap-8 mt-8" delay={0.2}>
+            {/* Traditional */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-8 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Truck className="w-6 h-6" style={{ color: C.textMuted }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
+                  Traditional Diesel Courier
+                </span>
+              </div>
+              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.red }}>
+                ~210g
+              </div>
+              <div className="text-sm mb-4" style={{ color: C.textMuted }}>
+                CO&#8322; per km (diesel van, avg.)
+              </div>
+              <div className="space-y-3">
+                {[
+                  { label: "Fuel", detail: "Diesel — direct CO\u2082 emissions", pct: 70 },
+                  { label: "Fleet maintenance", detail: "Oil, parts, disposal", pct: 15 },
+                  { label: "Infrastructure", detail: "Depots, roads, parking", pct: 15 },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span style={{ color: C.textSecondary }}>{item.label}</span>
+                      <span style={{ color: C.textMuted }}>{item.detail}</span>
+                    </div>
+                    <div className="h-2 rounded-full overflow-hidden" style={{ background: C.border }}>
+                      <div className="h-full rounded-full" style={{ width: `${item.pct}%`, background: C.red + "60" }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* AIRBASE */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-8 border-2 relative"
+              style={{ background: C.greenLight, borderColor: C.green + "30", boxShadow: `0 4px 24px rgba(22,163,74,0.08)` }}
+            >
+              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
+                style={{ background: C.green }}>
+                NEAR-ZERO EMISSIONS
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <Leaf className="w-6 h-6" style={{ color: C.green }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                  AIRBASE (Electric + Solar)
+                </span>
+              </div>
+              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.green }}>
+                ~0g
+              </div>
+              <div className="text-sm mb-4" style={{ color: C.textSecondary }}>
+                CO&#8322; per delivery (direct emissions)
+              </div>
+              <div className="space-y-3">
+                {[
+                  { icon: Battery, text: "Electric drones — zero direct emissions per flight", color: C.green },
+                  { icon: Sun, text: "Solar-powered fleet vehicles — renewable ground ops", color: C.gold },
+                  { icon: Leaf, text: "No fuel, no exhaust, no noise pollution", color: C.green },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 text-sm" style={{ color: C.textSecondary }}>
+                    <item.icon className="w-4 h-4 shrink-0" style={{ color: item.color }} />
+                    {item.text}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* ESG key metrics */}
+          <Stagger className="grid md:grid-cols-4 gap-4 mt-8" delay={0.5}>
+            {[
+              { value: "0g", label: "Direct CO\u2082 per flight", sub: "100% electric drones", icon: Battery, color: C.green },
+              { value: "100%", label: "Solar fleet vehicles", sub: "Renewable ground ops", icon: Sun, color: C.gold },
+              { value: "~95%", label: "Less CO\u2082 vs diesel courier", sub: "Full lifecycle comparison", icon: Leaf, color: C.green },
+              { value: "Zero", label: "Noise pollution", sub: "Quiet urban operations", icon: Sparkles, color: C.accent },
+            ].map((kpi) => (
+              <motion.div
+                key={kpi.label}
+                variants={fadeUp}
+                className="rounded-xl p-5 border text-center"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                <kpi.icon className="w-5 h-5 mx-auto mb-2" style={{ color: kpi.color }} />
+                <div className="text-2xl font-bold font-mono" style={{ color: kpi.color }}>{kpi.value}</div>
+                <div className="text-xs mt-1 font-semibold" style={{ color: C.textSecondary }}>{kpi.label}</div>
+                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{kpi.sub}</div>
+              </motion.div>
+            ))}
+          </Stagger>
+
+          {/* The full green story */}
+          <Stagger delay={0.7}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl p-6 border"
+              style={{ background: C.greenLight, borderColor: C.green + "20" }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Leaf className="w-5 h-5" style={{ color: C.green }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                  The Full Green Story
+                </span>
+              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: "Electric Drones",
+                    desc: "The DJI FlyCart 100 runs on battery power — zero combustion, zero direct CO\u2082 emissions per flight. Charging from renewable grid sources reduces even indirect footprint.",
+                    icon: Battery,
+                  },
+                  {
+                    title: "Solar Fleet Vehicles",
+                    desc: "Our ground support and logistics vehicles are solar-powered — from transport to the launch pad to equipment hauling. The entire operational chain is renewable.",
+                    icon: Sun,
+                  },
+                  {
+                    title: "ESG Investor Appeal",
+                    desc: "Near-zero carbon logistics is a powerful ESG differentiator. Institutional investors increasingly require quantifiable sustainability metrics — AIRBASE delivers them.",
+                    icon: TrendingUp,
+                  },
+                ].map((col) => (
+                  <div key={col.title}>
+                    <col.icon className="w-5 h-5 mb-2" style={{ color: C.green }} />
+                    <div className="text-sm font-semibold mb-1" style={{ color: C.text }}>{col.title}</div>
+                    <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>{col.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* Punchline */}
+          <Stagger delay={0.9}>
+            <motion.blockquote
+              variants={fadeUp}
+              className="mt-10 text-xl md:text-2xl font-light italic text-center"
+              style={{ color: C.textSecondary }}
+            >
+              &ldquo;Electric drones + solar-powered fleet ={" "}
+              <span className="font-semibold not-italic" style={{ color: C.green }}>
+                near-zero carbon logistics
+              </span>
+              . The future of delivery is green.&rdquo;
+            </motion.blockquote>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 9: COMPETITIVE LANDSCAPE ═══ */}
+      <section
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="08" text="Competitive Landscape" />
+          <SlideLabel number="09" text="Competitive Landscape" />
 
           <Stagger>
             <motion.h2
@@ -2105,14 +2301,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 9: TRACTION ═══ */}
+      {/* ═══ SLIDE 10: TRACTION ═══ */}
       <section
-        ref={setRef(9)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="09" text="Traction" />
+          <SlideLabel number="10" text="Traction" />
 
           <Stagger>
             <motion.h2
@@ -2170,14 +2366,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 10: TEAM ═══ */}
+      {/* ═══ SLIDE 11: TEAM ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="10" text="Team" />
+          <SlideLabel number="11" text="Team" />
 
           <Stagger>
             <motion.h2
@@ -2311,14 +2507,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 11: FINANCIAL PROJECTIONS ═══ */}
+      {/* ═══ SLIDE 12: FINANCIAL PROJECTIONS ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(12)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="11" text="Financial Projections" />
+          <SlideLabel number="12" text="Financial Projections" />
 
           <Stagger>
             <motion.h2
@@ -2414,14 +2610,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 12: THE ASK + INVESTMENT SLIDER ═══ */}
+      {/* ═══ SLIDE 13: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(12)}
+        ref={setRef(13)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="12" text="The Ask" />
+          <SlideLabel number="13" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -2530,7 +2726,7 @@ export function InvestorPitchDeck() {
                           Convertible Note
                         </div>
                         <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>
-                          (Wandeldarlehen)
+                          (Convertible Loan)
                         </div>
                       </div>
                       <div className="rounded-xl p-4 border" style={{ borderColor: C.border, background: C.bgCard, boxShadow: C.shadow }}>
@@ -2553,9 +2749,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 13: VISION ═══ */}
+      {/* ═══ SLIDE 14: VISION ═══ */}
       <section
-        ref={setRef(13)}
+        ref={setRef(14)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -2569,7 +2765,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="13" text="Vision" />
+          <SlideLabel number="14" text="Vision" />
 
           <Stagger>
             <motion.h2
