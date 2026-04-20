@@ -2884,9 +2884,6 @@ export function InvestorPitchDeck() {
                 </div>
               </div>
               <div className="pt-8 space-y-2">
-                <div className="text-sm font-mono" style={{ color: C.accent }}>
-                  invest@airbase.swiss
-                </div>
                 <div className="text-xs font-mono" style={{ color: C.textMuted }}>
                   airbase.swiss &mdash; Confidential
                 </div>
