@@ -473,7 +473,34 @@ export function InvestorPitchDeck() {
     >
       <SlideNav current={currentSlide} total={totalSlides} onNavigate={navigateTo} />
 
-      {/* ═══ SLIDE 1: COVER ═══ */}
+      {/* ═══ PERSISTENT AIRBASE HEADER ═══ */}
+      <div
+        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-10 py-4"
+        style={{
+          background: "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 100%)",
+          pointerEvents: "none",
+        }}
+      >
+        <div className="flex items-center gap-3" style={{ pointerEvents: "auto" }}>
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center"
+            style={{ background: C.accent }}
+          >
+            <Rocket className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-xl font-bold tracking-tight" style={{ color: C.text }}>
+            AIRBASE
+          </span>
+          <span className="hidden md:inline text-xs font-mono tracking-wider ml-2" style={{ color: C.textMuted }}>
+            airbase.one
+          </span>
+        </div>
+        <div className="text-xs font-mono tracking-wider" style={{ color: C.textMuted, pointerEvents: "auto" }}>
+          Investor Pitch &middot; 2026
+        </div>
+      </div>
+
+      {/* ═══ SLIDE 1: COVER — BIG VISION ═══ */}
       <section
         ref={setRef(0)}
         className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden"
@@ -525,7 +552,7 @@ export function InvestorPitchDeck() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease }}
-          className="relative z-10 max-w-4xl"
+          className="relative z-10 max-w-5xl"
         >
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -541,50 +568,84 @@ export function InvestorPitchDeck() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight"
             style={{ color: C.text }}
           >
-            AIRBASE
+            We Are Turning the Drone World
+            <br />
+            in Switzerland &amp; DACH{" "}
+            <span style={{ color: C.accent }}>Upside Down</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-lg md:text-xl lg:text-2xl font-light mb-4"
+            className="text-lg md:text-xl lg:text-2xl font-light mb-10"
             style={{ color: C.textSecondary }}
-          >
-            Switzerland&apos;s AI-Powered Drone Services Platform
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.6 }}
-            className="text-base md:text-lg mb-6"
-            style={{ color: C.textMuted }}
           >
             15 Years of Drone Expertise &middot; Swiss Precision &middot; Market-Ready
           </motion.p>
 
-          <motion.p
+          {/* Three Pillars */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold mt-6"
-            style={{ color: C.accent }}
+            transition={{ delay: 1.0, duration: 0.7 }}
+            className="grid md:grid-cols-3 gap-6 mb-10"
           >
-            The Future of Logistics Flies.
-          </motion.p>
+            {[
+              {
+                icon: Cpu,
+                title: "Online System",
+                desc: "AI-powered platform for booking, dispatch & fleet management",
+                color: C.accent,
+              },
+              {
+                icon: MapPin,
+                title: "Logistics Centers",
+                desc: "Regional operations hubs across Switzerland & DACH",
+                color: C.gold,
+              },
+              {
+                icon: Globe,
+                title: "Franchise Model",
+                desc: "Scalable expansion through licensed partners",
+                color: C.green,
+              },
+            ].map((pillar, i) => (
+              <motion.div
+                key={pillar.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 + i * 0.15, duration: 0.5 }}
+                className="rounded-2xl p-5 border text-center"
+                style={{ background: C.bgCard, borderColor: pillar.color + "30", boxShadow: C.shadow }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
+                  style={{ background: pillar.color + "10" }}
+                >
+                  <pillar.icon className="w-6 h-6" style={{ color: pillar.color }} />
+                </div>
+                <div className="text-base font-bold mb-1" style={{ color: C.text }}>
+                  {pillar.title}
+                </div>
+                <div className="text-xs" style={{ color: C.textMuted }}>
+                  {pillar.desc}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.6, duration: 0.6 }}
-            className="text-sm font-mono tracking-wider mt-6"
+            transition={{ delay: 1.7, duration: 0.6 }}
+            className="text-sm font-mono tracking-wider"
             style={{ color: C.textMuted }}
           >
-            airbase.swiss &middot; Seed Round CHF 1.5M &middot; 2026
+            airbase.one &middot; Seed Round CHF 1.5M &middot; 2026
           </motion.div>
         </motion.div>
 
@@ -618,9 +679,9 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight"
               style={{ color: C.text }}
             >
-              Last-Mile Logistics
+              Traditional Services
               <br />
-              <span style={{ color: C.red }}>Is Broken.</span>
+              <span style={{ color: C.red }}>Are Grounded.</span>
             </motion.h2>
 
             <motion.div variants={fadeIn} className="h-px w-24 mt-4 mb-8" style={{ background: C.red + "60" }} />
@@ -629,10 +690,10 @@ export function InvestorPitchDeck() {
           <div className="grid md:grid-cols-2 gap-12 mt-12">
             <Stagger className="space-y-6" delay={0.3}>
               {[
-                { icon: Package, text: "Last-mile = 41% of total supply chain cost (McKinsey, 2023)", color: C.red },
-                { icon: DollarSign, text: "Swiss courier average: CHF 28 per delivery (Swiss Post, 2024)", color: C.red },
-                { icon: Clock, text: "Road congestion costs Switzerland CHF 2B/year (ASTRA, 2024)", color: C.accent },
-                { icon: Globe, text: "Road freight = 23% of Swiss transport emissions (BAFU, 2023)", color: C.gold },
+                { icon: Package, text: "Last-mile delivery = 41% of supply chain cost (McKinsey, 2023)", color: C.red },
+                { icon: Wheat, text: "Agricultural spraying by hand: slow, expensive, 3× chemical overuse", color: C.red },
+                { icon: Sparkles, text: "Facade & solar cleaning: scaffolding costs up to CHF 50K per job", color: C.accent },
+                { icon: Eye, text: "Infrastructure inspections require costly manned helicopter flights", color: C.gold },
               ].map((item, i) => (
                 <motion.div
                   key={i}
@@ -742,7 +803,7 @@ export function InvestorPitchDeck() {
                 title: "Transportflüge",
                 sub: "Cargo & Logistics",
                 desc: "Up to 100 kg payload with DJI FlyCart 100. Hospitals, retailers, construction sites.",
-                image: "/images/flycart-lastendrohne.webp",
+                image: "/images/flycart-scene-2.webp",
                 icon: Truck,
                 stat: "CHF 4/flight",
               },
@@ -750,7 +811,7 @@ export function InvestorPitchDeck() {
                 title: "Reinigung",
                 sub: "Cleaning & Facades",
                 desc: "Industrial building and facade cleaning. Solar panel maintenance at scale.",
-                image: "/images/flycart-scene-2.webp",
+                image: "/images/flycart-ingenieurverkehr.webp",
                 icon: Sparkles,
                 stat: "80% faster",
               },
@@ -758,7 +819,7 @@ export function InvestorPitchDeck() {
                 title: "Agrar-Drohnen",
                 sub: "Precision Agriculture",
                 desc: "Targeted spraying, seeding, and crop monitoring. Reduces chemical use by 60%.",
-                image: "/images/flycart-ingenieurverkehr.webp",
+                image: "/images/flycart-lastendrohne.webp",
                 icon: Wheat,
                 stat: "60% less chemicals",
               },
@@ -2225,7 +2286,7 @@ export function InvestorPitchDeck() {
               </p>
               <div className="pt-8">
                 <div className="text-3xl md:text-5xl font-bold" style={{ color: C.accent }}>
-                  The Future of Logistics Flies.
+                  The Future Flies with AIRBASE.
                 </div>
               </div>
               <div className="pt-8 space-y-2">
