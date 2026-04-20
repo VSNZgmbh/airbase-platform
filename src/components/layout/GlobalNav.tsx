@@ -29,13 +29,13 @@ export function GlobalNav() {
         style={{ background: "#0F172A", borderColor: "#1E293B" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-10">
+          <div className="flex items-center justify-between h-12">
             <Link
               href="/"
               className="flex items-center transition-opacity"
               style={{ opacity: pathname === "/" ? 1 : 0.7 }}
             >
-              <img src="/airbase-logo.png" alt="airBASE" className="h-5 w-auto brightness-0 invert" />
+              <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto brightness-0 invert" />
             </Link>
 
             <div className="flex items-center gap-1">

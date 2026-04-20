@@ -120,7 +120,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
+              <img src="/airbase-logo.png" alt="airBASE" className="h-10 w-auto" />
             </motion.a>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#64748B" }}>

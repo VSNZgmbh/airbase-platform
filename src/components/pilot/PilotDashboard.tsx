@@ -187,18 +187,9 @@ function PilotSidebar({
     <aside className="w-64 bg-white border-r border-gray-200 flex flex-col min-h-screen">
       {/* Logo */}
       <div className="px-5 pt-6 pb-5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20">
-            <span className="text-white font-black text-sm">A</span>
-          </div>
-          <div>
-            <div className="font-bold text-gray-900 text-lg tracking-tight leading-none">
-              AIRBASE
-            </div>
-            <div className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
-              Piloten-Cockpit
-            </div>
-          </div>
+        <div className="flex items-center gap-3">
+          <img src="/airbase-logo.png" alt="airBASE" className="h-10 w-auto" />
+          <div className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em]">Piloten-Cockpit</div>
         </div>
       </div>
 
