@@ -55,6 +55,40 @@ import {
   Battery,
 } from "lucide-react";
 
+/* ─── Touch-friendly range slider styles ─── */
+const rangeSliderStyles = `
+  .investor-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #D32F2F;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .investor-range::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #D32F2F;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  @media (max-width: 640px) {
+    .investor-range::-webkit-slider-thumb {
+      width: 32px;
+      height: 32px;
+    }
+    .investor-range::-moz-range-thumb {
+      width: 32px;
+      height: 32px;
+    }
+  }
+`;
+
 /* ─── Design Tokens — White / Light Theme ─── */
 const C = {
   bg: "#FFFFFF",
@@ -274,7 +308,7 @@ function InvestmentSlider() {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       transition={{ duration: 0.6, ease }}
-      className="rounded-2xl p-8 border"
+      className="rounded-2xl p-5 sm:p-8 border"
       style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadowLg }}
     >
       <div className="flex items-center gap-3 mb-6">
@@ -288,7 +322,7 @@ function InvestmentSlider() {
 
       <div className="text-center mb-8">
         <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment</div>
-        <div className="text-4xl md:text-5xl font-bold font-mono" style={{ color: C.text }}>
+        <div className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono" style={{ color: C.text }}>
           CHF {amount}K
         </div>
       </div>
@@ -301,7 +335,7 @@ function InvestmentSlider() {
           step={50}
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
-          className="w-full h-2 rounded-full appearance-none cursor-pointer"
+          className="investor-range w-full h-3 sm:h-2 rounded-full appearance-none cursor-pointer"
           style={{
             background: `linear-gradient(to right, ${C.accent} 0%, ${C.accent} ${((amount - 50) / 700) * 100}%, ${C.border} ${((amount - 50) / 700) * 100}%, ${C.border} 100%)`,
             accentColor: C.accent,
@@ -364,7 +398,7 @@ function InvestmentSlider() {
                     style={{ width: `${pct}%`, background: C.accent }}
                   />
                 </div>
-                <span className="text-xs font-mono w-28 text-right shrink-0" style={{ color: C.textSecondary }}>
+                <span className="text-[10px] sm:text-xs font-mono w-24 sm:w-28 text-right shrink-0" style={{ color: C.textSecondary }}>
                   +{accumulated}K = {total}K
                 </span>
               </div>
@@ -436,13 +470,13 @@ function SlideNav({
   onNavigate: (idx: number) => void;
 }) {
   return (
-    <nav className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
+    <nav className="fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-1.5 sm:gap-2">
       {Array.from({ length: total }, (_, i) => (
         <button
           key={i}
           onClick={() => onNavigate(i)}
           aria-label={`Go to slide ${i + 1}`}
-          className="w-2.5 h-2.5 rounded-full transition-all duration-300"
+          className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300"
           style={{
             background: i === current ? C.accent : C.textMuted + "40",
             transform: i === current ? "scale(1.4)" : "scale(1)",
@@ -495,7 +529,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
         className="relative w-full max-w-md mx-4"
       >
         <div
-          className="rounded-2xl p-10 border text-center"
+          className="rounded-2xl p-6 sm:p-10 border text-center"
           style={{
             background: "rgba(255,255,255,0.03)",
             borderColor: "rgba(255,255,255,0.08)",
@@ -628,20 +662,22 @@ export function InvestorPitchDeck() {
         background: C.bg,
         scrollSnapType: "y proximity",
         scrollBehavior: "smooth",
+        WebkitOverflowScrolling: "touch",
       }}
     >
+      <style dangerouslySetInnerHTML={{ __html: rangeSliderStyles }} />
       <SlideNav current={currentSlide} total={totalSlides} onNavigate={navigateTo} />
 
       {/* ═══ PERSISTENT AIRBASE HEADER ═══ */}
       <div
-        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-10 py-4"
+        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 sm:px-6 md:px-10 py-3 sm:py-4"
         style={{
           background: "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 100%)",
           pointerEvents: "none",
         }}
       >
         <div className="flex items-center gap-3" style={{ pointerEvents: "auto" }}>
-          <img src="/airbase-logo.png" alt="airBASE" className="h-14 w-auto" />
+          <img src="/airbase-logo.png" alt="airBASE" className="h-10 sm:h-14 w-auto" />
           <span className="hidden md:inline text-xs font-mono tracking-wider ml-2" style={{ color: C.textMuted }}>
             airbase.one
           </span>
@@ -711,14 +747,14 @@ export function InvestorPitchDeck() {
             transition={{ delay: 0.2, duration: 0.8, ease }}
             className="flex items-center justify-center mb-10"
           >
-            <img src="/airbase-logo.png" alt="airBASE AVIATION" className="h-28 md:h-36 lg:h-44 w-auto" />
+            <img src="/airbase-logo.png" alt="airBASE AVIATION" className="h-20 sm:h-28 md:h-36 lg:h-44 w-auto" />
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-sm font-mono tracking-[0.3em] uppercase mb-8"
+            className="text-xs sm:text-sm font-mono tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-6 sm:mb-8 px-2"
             style={{ color: C.accent }}
           >
             Confidential &mdash; For Accredited Investors Only
@@ -728,7 +764,7 @@ export function InvestorPitchDeck() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight"
+            className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight px-2"
             style={{ color: C.text }}
           >
             We Are Turning the Drone World
@@ -741,7 +777,7 @@ export function InvestorPitchDeck() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-lg md:text-xl lg:text-2xl font-light mb-10"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-8 sm:mb-10 px-2"
             style={{ color: C.textSecondary }}
           >
             15 Years of Drone Expertise &middot; Swiss Precision &middot; Market-Ready
@@ -752,7 +788,7 @@ export function InvestorPitchDeck() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.7 }}
-            className="grid md:grid-cols-3 gap-6 mb-10"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 px-2"
           >
             {[
               {
@@ -779,7 +815,7 @@ export function InvestorPitchDeck() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 + i * 0.15, duration: 0.5 }}
-                className="rounded-2xl p-5 border text-center"
+                className="rounded-2xl p-4 sm:p-5 border text-center"
                 style={{ background: C.bgCard, borderColor: pillar.color + "30", boxShadow: C.shadow }}
               >
                 <div
@@ -967,7 +1003,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           {/* Four service lines with website images */}
-          <Stagger className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8" delay={0.2}>
+          <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-8" delay={0.2}>
             {[
               {
                 title: "Transport Flights",
@@ -1029,7 +1065,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           {/* Key platform stats */}
-          <Stagger className="grid md:grid-cols-4 gap-6 mt-8" delay={0.4}>
+          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8" delay={0.4}>
             {[
               { value: "4", label: "service lines", sub: "fully integrated" },
               { value: "100 kg", label: "max payload", sub: "DJI FlyCart 100" },
@@ -1065,7 +1101,7 @@ export function InvestorPitchDeck() {
               <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
                 How It Works
               </div>
-              <div className="grid grid-cols-5 gap-2 md:gap-4">
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-2 md:gap-4">
                 {[
                   { step: "Order", desc: "Customer App", icon: Users },
                   { step: "Dispatch", desc: "AI Routes", icon: Cpu },
@@ -1083,7 +1119,7 @@ export function InvestorPitchDeck() {
                     <div className="text-xs font-bold" style={{ color: C.text }}>{s.step}</div>
                     <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{s.desc}</div>
                     {i < 4 && (
-                      <ArrowRight className="absolute top-4 -right-2 md:-right-3 w-3 h-3" style={{ color: C.accent + "60" }} />
+                      <ArrowRight className="hidden sm:block absolute top-4 -right-2 md:-right-3 w-3 h-3" style={{ color: C.accent + "60" }} />
                     )}
                   </motion.div>
                 ))}
@@ -1125,7 +1161,7 @@ export function InvestorPitchDeck() {
               <motion.img
                 src="/assets/flycart-100-cutout.png"
                 alt="DJI FlyCart 100 drone"
-                className="w-48 md:w-64 h-auto object-contain mb-4"
+                className="w-36 sm:w-48 md:w-64 h-auto object-contain mb-4"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
@@ -1231,9 +1267,9 @@ export function InvestorPitchDeck() {
                 <Cpu className="w-5 h-5" style={{ color: C.accent }} />
                 <span className="text-sm font-mono uppercase tracking-wider" style={{ color: C.accent }}>AI Layer</span>
               </div>
-              <div className="grid md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                 {["Autonomous quote generation", "Intelligent dispatch routing", "Safety redundancy (auto-abort)", "Post-flight analytics"].map((f, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
+                  <div key={i} className="flex items-center gap-2 text-xs sm:text-sm" style={{ color: C.textSecondary }}>
                     <Zap className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
                     {f}
                   </div>
@@ -1295,7 +1331,7 @@ export function InvestorPitchDeck() {
           </div>
 
           {/* Service-specific market breakdown */}
-          <Stagger className="grid md:grid-cols-4 gap-4 mt-8" delay={0.3}>
+          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8" delay={0.3}>
             {[
               { service: "Transport", tam: "CHF 180M", icon: Truck, desc: "Logistics, medical, construction supply" },
               { service: "Cleaning", tam: "CHF 95M", icon: Sparkles, desc: "Solar, facade, industrial cleaning" },
@@ -1557,14 +1593,14 @@ export function InvestorPitchDeck() {
               <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
                 Projected Year 3 Revenue Mix
               </div>
-              <div className="flex justify-center gap-12">
+              <div className="flex justify-center gap-6 sm:gap-12">
                 {[
                   { label: "DaaS", pct: "55%", color: C.accent },
                   { label: "SaaS", pct: "25%", color: C.gold },
                   { label: "Franchise", pct: "20%", color: C.green },
                 ].map((mix) => (
                   <div key={mix.label}>
-                    <div className="text-3xl font-bold font-mono" style={{ color: mix.color }}>{mix.pct}</div>
+                    <div className="text-2xl sm:text-3xl font-bold font-mono" style={{ color: mix.color }}>{mix.pct}</div>
                     <div className="text-xs mt-1" style={{ color: C.textMuted }}>{mix.label}</div>
                   </div>
                 ))}
@@ -1582,7 +1618,7 @@ export function InvestorPitchDeck() {
               <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.accent }}>
                 DaaS Revenue by Service Line (Year 3 Target)
               </div>
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
                   { service: "Transport", pct: "45%", icon: Truck },
                   { service: "Cleaning", pct: "20%", icon: Sparkles },
@@ -1643,16 +1679,16 @@ export function InvestorPitchDeck() {
             {/* Traditional */}
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl p-8 border"
+              className="rounded-2xl p-5 sm:p-8 border"
               style={{ background: C.bgAlt, borderColor: C.border, boxShadow: C.shadow }}
             >
               <div className="flex items-center gap-3 mb-6">
                 <Truck className="w-6 h-6" style={{ color: C.textMuted }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
+                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
                   Traditional Courier
                 </span>
               </div>
-              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.textMuted }}>
+              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.textMuted }}>
                 ~50
               </div>
               <div className="text-sm mb-6" style={{ color: C.textMuted }}>
@@ -1671,20 +1707,20 @@ export function InvestorPitchDeck() {
             {/* AIRBASE */}
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl p-8 border-2 relative"
+              className="rounded-2xl p-5 sm:p-8 border-2 relative"
               style={{ background: C.bgCard, borderColor: C.accent + "30", boxShadow: `0 4px 24px rgba(211,47,47,0.08)` }}
             >
-              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
+              <div className="absolute -top-3 right-4 sm:right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
                 style={{ background: C.accent }}>
                 95% LESS STAFF
               </div>
               <div className="flex items-center gap-3 mb-6">
                 <Cpu className="w-6 h-6" style={{ color: C.accent }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
                   AIRBASE (AI-Powered)
                 </span>
               </div>
-              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.accent }}>
+              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.accent }}>
                 ~3
               </div>
               <div className="text-sm mb-6" style={{ color: C.textSecondary }}>
@@ -1963,16 +1999,16 @@ export function InvestorPitchDeck() {
             {/* Traditional */}
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl p-8 border"
+              className="rounded-2xl p-5 sm:p-8 border"
               style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
               <div className="flex items-center gap-3 mb-6">
                 <Truck className="w-6 h-6" style={{ color: C.textMuted }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
+                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
                   Traditional Diesel Courier
                 </span>
               </div>
-              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.red }}>
+              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.red }}>
                 ~210g
               </div>
               <div className="text-sm mb-4" style={{ color: C.textMuted }}>
@@ -2000,20 +2036,20 @@ export function InvestorPitchDeck() {
             {/* AIRBASE */}
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl p-8 border-2 relative"
+              className="rounded-2xl p-5 sm:p-8 border-2 relative"
               style={{ background: C.greenLight, borderColor: C.green + "30", boxShadow: `0 4px 24px rgba(22,163,74,0.08)` }}
             >
-              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
+              <div className="absolute -top-3 right-4 sm:right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
                 style={{ background: C.green }}>
                 NEAR-ZERO EMISSIONS
               </div>
               <div className="flex items-center gap-3 mb-6">
                 <Leaf className="w-6 h-6" style={{ color: C.green }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
                   AIRBASE (Electric + Solar)
                 </span>
               </div>
-              <div className="text-5xl font-bold font-mono mb-2" style={{ color: C.green }}>
+              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.green }}>
                 ~0g
               </div>
               <div className="text-sm mb-4" style={{ color: C.textSecondary }}>
@@ -2035,7 +2071,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           {/* ESG key metrics */}
-          <Stagger className="grid md:grid-cols-4 gap-4 mt-8" delay={0.5}>
+          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8" delay={0.5}>
             {[
               { value: "0g", label: "Direct CO\u2082 per flight", sub: "100% electric drones", icon: Battery, color: C.green },
               { value: "100%", label: "Solar fleet vehicles", sub: "Renewable ground ops", icon: Sun, color: C.gold },
@@ -2149,17 +2185,17 @@ export function InvestorPitchDeck() {
               className="overflow-x-auto rounded-2xl border"
               style={{ borderColor: C.border, boxShadow: C.shadowLg }}
             >
-              <table className="w-full text-sm" style={{ background: C.bgCard }}>
+              <table className="w-full text-xs sm:text-sm" style={{ background: C.bgCard }}>
                 <thead>
                   <tr style={{ borderBottom: `2px solid ${C.border}` }}>
                     {["", "Matternet", "SwissDrones", "Others", "AIRBASE"].map((h, i) => (
                       <th
                         key={i}
-                        className={`px-4 py-4 text-left font-mono uppercase tracking-wider text-xs ${i === 4 ? "rounded-tr-2xl" : ""} ${i === 0 ? "rounded-tl-2xl" : ""}`}
+                        className={`px-2 sm:px-4 py-3 sm:py-4 text-left font-mono uppercase tracking-wider text-xs ${i === 4 ? "rounded-tr-2xl" : ""} ${i === 0 ? "rounded-tl-2xl" : ""}`}
                         style={{
                           color: i === 4 ? C.bg : C.textMuted,
                           background: i === 4 ? C.accent : "transparent",
-                          minWidth: i === 0 ? 140 : 150,
+                          minWidth: i === 0 ? 100 : 110,
                         }}
                       >
                         {h}
@@ -2227,7 +2263,7 @@ export function InvestorPitchDeck() {
                       }}
                     >
                       <td
-                        className="px-4 py-3 font-semibold text-xs uppercase tracking-wider"
+                        className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-xs uppercase tracking-wider"
                         style={{ color: C.textMuted }}
                       >
                         {row.label}
@@ -2235,7 +2271,7 @@ export function InvestorPitchDeck() {
                       {row.vals.map((v, vi) => (
                         <td
                           key={vi}
-                          className="px-4 py-3"
+                          className="px-2 sm:px-4 py-2 sm:py-3"
                           style={{
                             color: vi === 3 ? C.accent : C.textSecondary,
                             fontWeight: vi === 3 ? 600 : 400,
@@ -2355,7 +2391,7 @@ export function InvestorPitchDeck() {
               <motion.div
                 key={i}
                 variants={slideRight}
-                className="flex items-center gap-4 p-4 rounded-xl border"
+                className="flex items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border"
                 style={{
                   borderColor: milestone.done ? C.green + "20" : C.border,
                   background: milestone.done ? C.greenLight : C.bgCard,
@@ -2363,13 +2399,13 @@ export function InvestorPitchDeck() {
                 }}
               >
                 <div
-                  className="w-3 h-3 rounded-full shrink-0"
+                  className="w-3 h-3 rounded-full shrink-0 mt-1 sm:mt-0"
                   style={{ background: milestone.done ? C.green : C.textMuted + "30", border: milestone.done ? "none" : `2px dashed ${C.textMuted}40` }}
                 />
                 <span className="text-xs font-mono w-20 shrink-0" style={{ color: milestone.done ? C.green : C.textMuted }}>
                   {milestone.date}
                 </span>
-                <span className="text-sm" style={{ color: C.textSecondary }}>
+                <span className="text-xs sm:text-sm" style={{ color: C.textSecondary }}>
                   {milestone.text}
                 </span>
               </motion.div>
@@ -2411,17 +2447,17 @@ export function InvestorPitchDeck() {
           <Stagger delay={0.2}>
             <motion.div
               variants={fadeUp}
-              className="mt-10 rounded-2xl p-6 border flex items-center gap-6"
+              className="mt-10 rounded-2xl p-5 sm:p-6 border flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
               style={{ background: C.greenLight, borderColor: C.green + "20", boxShadow: C.shadow }}
             >
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
+                className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shrink-0"
                 style={{ background: C.green + "15" }}
               >
-                <Shield className="w-7 h-7" style={{ color: C.green }} />
+                <Shield className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: C.green }} />
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-bold font-mono" style={{ color: C.green }}>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono" style={{ color: C.green }}>
                   8 Licensed Pilots
                 </div>
                 <div className="text-sm mt-1" style={{ color: C.textSecondary }}>
@@ -2546,7 +2582,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           {/* Unit economics */}
-          <Stagger className="grid md:grid-cols-4 gap-4 mt-10" delay={0.2}>
+          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-10" delay={0.2}>
             {[
               { label: "Revenue per DaaS flight", value: "CHF 22-40" },
               { label: "Variable cost per flight", value: "CHF 4-6" },
@@ -2605,7 +2641,7 @@ export function InvestorPitchDeck() {
           </Stagger>
 
           {/* Year cards */}
-          <Stagger className="grid md:grid-cols-5 gap-4 mt-6" delay={0.7}>
+          <Stagger className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 mt-6" delay={0.7}>
             {[
               { year: "2026", rev: "120K", note: "Pilot ops" },
               { year: "2027", rev: "680K", note: "First contracts" },
@@ -2648,7 +2684,7 @@ export function InvestorPitchDeck() {
             </motion.h2>
           </Stagger>
 
-          <div className="grid lg:grid-cols-2 gap-12 mt-12">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 mt-8 sm:mt-12">
             {/* Left column: Fund allocation + milestones */}
             <div className="space-y-8">
               {/* Fund allocation pie */}
@@ -2874,7 +2910,7 @@ export function InvestorPitchDeck() {
                 <br />
                 We are not just building a drone company.
               </p>
-              <p className="text-2xl md:text-4xl font-bold" style={{ color: C.text }}>
+              <p className="text-xl sm:text-2xl md:text-4xl font-bold" style={{ color: C.text }}>
                 We are <span style={{ color: C.gold }}>creating a new category</span>
                 <br />
                 and building the operating system
@@ -2882,7 +2918,7 @@ export function InvestorPitchDeck() {
                 for the <span style={{ color: C.accent }}>drone economy</span>.
               </p>
               <div className="pt-8">
-                <div className="text-3xl md:text-5xl font-bold" style={{ color: C.accent }}>
+                <div className="text-2xl sm:text-3xl md:text-5xl font-bold" style={{ color: C.accent }}>
                   The Future Flies with AIRBASE.
                 </div>
               </div>
