@@ -28,14 +28,9 @@ export function Sidebar() {
       {/* Logo */}
       <div className="px-5 pt-6 pb-8">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">A</span>
-          </div>
-          <div>
-            <div className="font-bold text-gray-900 text-lg tracking-tight leading-none">AIRBASE</div>
-            <div className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em]">Aviation OS</div>
-          </div>
+          <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
         </div>
+        <div className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em] mt-1 ml-0.5">Aviation OS</div>
       </div>
 
       {/* Navigation */}

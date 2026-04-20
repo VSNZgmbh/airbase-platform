@@ -115,12 +115,12 @@ export function LandingPageContent({ locale }: { locale: string }) {
             {/* Logo */}
             <motion.a
               href="#"
-              className="flex items-center gap-1 text-2xl tracking-tight select-none"
+              className="flex items-center select-none"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <span className="font-black uppercase tracking-tight" style={{ color: "#D32F2F" }}>AIRBASE</span>
+              <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
             </motion.a>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#64748B" }}>
@@ -1504,8 +1504,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
               viewport={vp}
               transition={{ delay: 0.1, duration: 0.6, ease }}
             >
-              <a href="#" className="flex items-center gap-1 text-2xl tracking-tight select-none mb-3">
-                <span className="font-black uppercase tracking-tight" style={{ color: "#0F172A" }}>AIRBASE</span>
+              <a href="#" className="flex items-center select-none mb-3">
+                <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
               </a>
               <p className="text-sm" style={{ color: "#94A3B8" }}>VSNZ GmbH · Drohnenlogistik. Made in Switzerland.</p>
             </motion.div>

@@ -23,10 +23,7 @@ export default async function OperatorPage() {
       <header className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">A</span>
-            </div>
-            <span className="font-bold text-xl text-gray-900">AIRBASE</span>
+            <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
             <span className="text-xs font-semibold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ml-1">
               OPERATOR
             </span>

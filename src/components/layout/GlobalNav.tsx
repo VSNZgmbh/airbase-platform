@@ -32,10 +32,10 @@ export function GlobalNav() {
           <div className="flex items-center justify-between h-10">
             <Link
               href="/"
-              className="text-sm font-black tracking-tight transition-colors"
-              style={{ color: pathname === "/" ? "#FFFFFF" : "rgba(248,250,252,0.7)" }}
+              className="flex items-center transition-opacity"
+              style={{ opacity: pathname === "/" ? 1 : 0.7 }}
             >
-              AIRBASE
+              <img src="/airbase-logo.png" alt="airBASE" className="h-5 w-auto brightness-0 invert" />
             </Link>
 
             <div className="flex items-center gap-1">

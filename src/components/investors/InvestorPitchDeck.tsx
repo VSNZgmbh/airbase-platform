@@ -503,16 +503,8 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
             boxShadow: "0 8px 40px rgba(0,0,0,0.3)",
           }}
         >
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: C.accent }}
-            >
-              <Rocket className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-3xl font-bold tracking-tight text-white">
-              AIRBASE
-            </span>
+          <div className="flex items-center justify-center mb-8">
+            <img src="/airbase-logo.png" alt="airBASE" className="h-12 w-auto brightness-0 invert" />
           </div>
 
           <div className="text-sm font-mono uppercase tracking-[0.2em] mb-1 text-white/40">
@@ -649,15 +641,7 @@ export function InvestorPitchDeck() {
         }}
       >
         <div className="flex items-center gap-3" style={{ pointerEvents: "auto" }}>
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center"
-            style={{ background: C.accent }}
-          >
-            <Rocket className="w-4 h-4 text-white" />
-          </div>
-          <span className="text-xl font-bold tracking-tight" style={{ color: C.text }}>
-            AIRBASE
-          </span>
+          <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
           <span className="hidden md:inline text-xs font-mono tracking-wider ml-2" style={{ color: C.textMuted }}>
             airbase.one
           </span>
