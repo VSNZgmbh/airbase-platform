@@ -412,7 +412,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 12;
+  const totalSlides = 13;
 
   /* Track which slide is visible */
   useEffect(() => {
@@ -1369,14 +1369,219 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 8: TRACTION ═══ */}
+      {/* ═══ SLIDE 8: COMPETITIVE LANDSCAPE ═══ */}
       <section
         ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="07" text="Traction" />
+          <SlideLabel number="07" text="Competitive Landscape" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              The Heavy-Lift Niche Is{" "}
+              <span style={{ color: C.accent }}>Wide Open</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-lg mt-4 mb-12 max-w-2xl"
+              style={{ color: C.textSecondary }}
+            >
+              Swiss drone operators are certified — but none serve the 100 kg heavy-cargo B2B segment.
+              AIRBASE is the first mover in an uncontested niche.
+            </motion.p>
+          </Stagger>
+
+          {/* ── Comparison Matrix ── */}
+          <Stagger delay={0.2}>
+            <motion.div
+              variants={fadeUp}
+              className="overflow-x-auto rounded-2xl border"
+              style={{ borderColor: C.border, boxShadow: C.shadowLg }}
+            >
+              <table className="w-full text-sm" style={{ background: C.bgCard }}>
+                <thead>
+                  <tr style={{ borderBottom: `2px solid ${C.border}` }}>
+                    {["", "Matternet", "SwissDrones", "Others", "AIRBASE"].map((h, i) => (
+                      <th
+                        key={i}
+                        className={`px-4 py-4 text-left font-mono uppercase tracking-wider text-xs ${i === 4 ? "rounded-tr-2xl" : ""} ${i === 0 ? "rounded-tl-2xl" : ""}`}
+                        style={{
+                          color: i === 4 ? C.bg : C.textMuted,
+                          background: i === 4 ? C.accent : "transparent",
+                          minWidth: i === 0 ? 140 : 150,
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    {
+                      label: "LUC Status",
+                      vals: [
+                        "✅ BAZL LUC (Sep 2024)",
+                        "✅ EASA LUC via Malta (2022)",
+                        "❌ No LUC",
+                        "🔄 In Progress (BAZL)",
+                      ],
+                    },
+                    {
+                      label: "Payload",
+                      vals: [
+                        "~2 kg",
+                        ">50 kg (SDO50 V2)",
+                        "5–25 kg",
+                        "100 kg (FlyCart 100)",
+                      ],
+                    },
+                    {
+                      label: "Service Model",
+                      vals: [
+                        "Captive fleet ops",
+                        "Custom helicopter sales",
+                        "Project-based",
+                        "B2B Franchise (DaaS)",
+                      ],
+                    },
+                    {
+                      label: "Focus",
+                      vals: [
+                        "Medical lab samples",
+                        "Inspection & SAR",
+                        "Survey / Logistics",
+                        "Heavy cargo delivery",
+                      ],
+                    },
+                    {
+                      label: "Scalability",
+                      vals: [
+                        "Hospital networks only",
+                        "Custom builds — slow",
+                        "Per-project",
+                        "Franchise replication",
+                      ],
+                    },
+                    {
+                      label: "AI Platform",
+                      vals: ["No", "No", "Limited", "✅ Full AI dashboard"],
+                    },
+                  ].map((row, ri) => (
+                    <tr
+                      key={ri}
+                      style={{
+                        borderBottom: `1px solid ${C.border}`,
+                        background: ri % 2 === 0 ? "transparent" : C.bgAlt,
+                      }}
+                    >
+                      <td
+                        className="px-4 py-3 font-semibold text-xs uppercase tracking-wider"
+                        style={{ color: C.textMuted }}
+                      >
+                        {row.label}
+                      </td>
+                      {row.vals.map((v, vi) => (
+                        <td
+                          key={vi}
+                          className="px-4 py-3"
+                          style={{
+                            color: vi === 3 ? C.accent : C.textSecondary,
+                            fontWeight: vi === 3 ? 600 : 400,
+                            background: vi === 3 ? C.accentLight : "transparent",
+                          }}
+                        >
+                          {v}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </motion.div>
+          </Stagger>
+
+          {/* ── Positioning Punchline ── */}
+          <div className="grid md:grid-cols-3 gap-4 mt-10">
+            {[
+              {
+                icon: Package,
+                color: C.textMuted,
+                label: "Matternet",
+                desc: "Light medical cargo — few kg",
+              },
+              {
+                icon: Eye,
+                color: C.textMuted,
+                label: "SwissDrones",
+                desc: "Custom helicopters for inspection",
+              },
+              {
+                icon: Truck,
+                color: C.accent,
+                label: "AIRBASE",
+                desc: "100 kg heavy-lift B2B franchise with AI",
+              },
+            ].map((item, i) => (
+              <Stagger key={i} delay={0.4 + i * 0.15}>
+                <motion.div
+                  variants={fadeUp}
+                  className="rounded-2xl p-5 border text-center"
+                  style={{
+                    borderColor: i === 2 ? C.accent : C.border,
+                    background: i === 2 ? C.accentLight : C.bgCard,
+                    boxShadow: i === 2 ? C.shadowLg : C.shadow,
+                  }}
+                >
+                  <item.icon
+                    className="w-7 h-7 mx-auto mb-3"
+                    style={{ color: item.color }}
+                  />
+                  <div
+                    className="font-bold text-base mb-1"
+                    style={{ color: i === 2 ? C.accent : C.text }}
+                  >
+                    {item.label}
+                  </div>
+                  <div className="text-sm" style={{ color: C.textSecondary }}>
+                    {item.desc}
+                  </div>
+                </motion.div>
+              </Stagger>
+            ))}
+          </div>
+
+          <Stagger delay={1.0}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-10 rounded-2xl p-5 border text-center"
+              style={{ background: C.accentGlow, borderColor: C.borderAccent }}
+            >
+              <p className="text-lg md:text-xl font-semibold" style={{ color: C.accent }}>
+                The 100 kg heavy-lift B2B franchise niche in Switzerland is completely empty.
+              </p>
+              <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
+                AIRBASE would be the absolute pioneer in heavy-cargo drone services under LUC.
+              </p>
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 9: TRACTION ═══ */}
+      <section
+        ref={setRef(8)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
+      >
+        <div className="max-w-5xl mx-auto w-full">
+          <SlideLabel number="08" text="Traction" />
 
           <Stagger>
             <motion.h2
@@ -1434,14 +1639,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 9: TEAM ═══ */}
+      {/* ═══ SLIDE 10: TEAM ═══ */}
       <section
-        ref={setRef(8)}
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="08" text="Team" />
+          <SlideLabel number="09" text="Team" />
 
           <Stagger>
             <motion.h2
@@ -1575,14 +1780,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 10: FINANCIAL PROJECTIONS ═══ */}
+      {/* ═══ SLIDE 11: FINANCIAL PROJECTIONS ═══ */}
       <section
-        ref={setRef(9)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="09" text="Financial Projections" />
+          <SlideLabel number="10" text="Financial Projections" />
 
           <Stagger>
             <motion.h2
@@ -1678,14 +1883,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 11: THE ASK + INVESTMENT SLIDER ═══ */}
+      {/* ═══ SLIDE 12: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="10" text="The Ask" />
+          <SlideLabel number="11" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -1814,9 +2019,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 12: VISION ═══ */}
+      {/* ═══ SLIDE 13: VISION ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(12)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -1830,7 +2035,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="11" text="Vision" />
+          <SlideLabel number="12" text="Vision" />
 
           <Stagger>
             <motion.h2
