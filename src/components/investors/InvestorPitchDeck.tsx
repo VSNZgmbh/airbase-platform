@@ -1260,11 +1260,12 @@ export function InvestorPitchDeck() {
               >
                 <Lock className="w-8 h-8 mb-4" style={{ color: C.gold }} />
                 <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.gold }}>
-                  LUC Certification
+                  LUC Certification — In Progress
                 </div>
                 <ul className="space-y-2">
                   {[
-                    "Fly in populated areas without per-flight BAZL approval",
+                    "Actively pursuing LUC — SORA / BAZL applications filed",
+                    "Will enable flights in populated areas without per-flight approval",
                     "Fewer than 12 operators pursuing LUC in Switzerland",
                     "18-24 months minimum for competitors starting today",
                   ].map((text, i) => (
@@ -1330,10 +1331,32 @@ export function InvestorPitchDeck() {
             </Stagger>
           </div>
 
+          {/* Strategic Partnership */}
           <Stagger delay={0.8}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl p-6 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <Rocket className="w-5 h-5" style={{ color: C.accent }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                  Strategic Partnership
+                </span>
+              </div>
+              <div className="text-lg font-bold mb-2" style={{ color: C.text }}>
+                Loft Dynamics — World-Leading Flight Simulator Company
+              </div>
+              <p className="text-sm" style={{ color: C.textSecondary }}>
+                Partnership with Loft Dynamics gives AIRBASE access to world-class flight simulation training infrastructure — a strong signal for investors and a competitive edge in pilot proficiency and safety certification.
+              </p>
+            </motion.div>
+          </Stagger>
+
+          <Stagger delay={1.0}>
             <motion.blockquote
               variants={fadeUp}
-              className="mt-16 text-xl md:text-2xl font-light italic text-center"
+              className="mt-10 text-xl md:text-2xl font-light italic text-center"
               style={{ color: C.textSecondary }}
             >
               &ldquo;We are not selling drones. We are selling{" "}
@@ -1373,6 +1396,7 @@ export function InvestorPitchDeck() {
               { date: "Q4 2025", text: "DJI FlyCart 100 fleet acquired", done: true },
               { date: "Q1 2026", text: "AIRBASE platform v1.0 launched (portal + admin + pilot app)", done: true },
               { date: "Q1 2026", text: "SORA / BAZL applications filed", done: true },
+              { date: "Q1 2026", text: "8 fully licensed commercial drone pilots operational", done: true },
               { date: "Q2 2026", text: "First commercial pilot flights (internal ops)", done: true },
               { date: "Q3 2026*", text: "LUC certification expected", done: false },
               { date: "Q4 2026*", text: "First DaaS enterprise contracts", done: false },
@@ -1433,7 +1457,31 @@ export function InvestorPitchDeck() {
             </motion.p>
           </Stagger>
 
-          <div className="grid md:grid-cols-2 gap-8 mt-12">
+          {/* 8 Licensed Pilots — prominent callout */}
+          <Stagger delay={0.2}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-10 rounded-2xl p-6 border flex items-center gap-6"
+              style={{ background: C.greenLight, borderColor: C.green + "20", boxShadow: C.shadow }}
+            >
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
+                style={{ background: C.green + "15" }}
+              >
+                <Shield className="w-7 h-7" style={{ color: C.green }} />
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold font-mono" style={{ color: C.green }}>
+                  8 Licensed Pilots
+                </div>
+                <div className="text-sm mt-1" style={{ color: C.textSecondary }}>
+                  8 fully certified commercial drone pilots ready to operate — trained, licensed, and flight-ready from day one.
+                </div>
+              </div>
+            </motion.div>
+          </Stagger>
+
+          <div className="grid md:grid-cols-2 gap-8 mt-8">
             {/* Founder */}
             <Stagger delay={0.3}>
               <motion.div
@@ -1520,7 +1568,7 @@ export function InvestorPitchDeck() {
                 </span>
               </div>
               <p className="text-sm" style={{ color: C.textSecondary }}>
-                DJI Enterprise Channel &middot; Swiss aviation counsel (BAZL regulatory advisor) &middot; EASA compliance network
+                <strong>Loft Dynamics</strong> (world-leading flight simulator company) &middot; DJI Enterprise Channel &middot; Swiss aviation counsel (BAZL regulatory advisor) &middot; EASA compliance network
               </p>
             </motion.div>
           </Stagger>
