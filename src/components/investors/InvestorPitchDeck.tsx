@@ -254,14 +254,17 @@ function Bullet({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
-/* ─── Investment Slider (Convertible Note) ─── */
+/* ─── Investment Slider (Equity + Convertible Note) ─── */
 function InvestmentSlider() {
   const [amount, setAmount] = useState(250);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
 
+  const PRE_MONEY = 8500; // CHF 8.5M pre-money valuation (in K)
   const INTEREST_RATE = 6; // 6% p.a. — standard Swiss convertible note rate
+  const equityPercent = (amount / PRE_MONEY) * 100;
   const annualInterest = amount * INTEREST_RATE / 100; // CHF K per year
+  const fiveYearInterest = annualInterest * 5;
   const years = [1, 2, 3, 4, 5];
 
   return (
@@ -279,12 +282,12 @@ function InvestmentSlider() {
           <Banknote className="w-5 h-5" style={{ color: C.accent }} />
         </div>
         <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
-          Convertible Note Calculator
+          Investment Calculator
         </span>
       </div>
 
       <div className="text-center mb-8">
-        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment (Convertible Note)</div>
+        <div className="text-sm mb-2" style={{ color: C.textMuted }}>Your Investment</div>
         <div className="text-4xl md:text-5xl font-bold font-mono" style={{ color: C.text }}>
           CHF {amount}K
         </div>
@@ -310,21 +313,33 @@ function InvestmentSlider() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      {/* Equity + Interest summary cards */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="rounded-xl p-4 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
-          <Banknote className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
-          <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>CHF {amount}K</div>
-          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Loan Amount</div>
+          <Layers className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
+          <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>{equityPercent.toFixed(1)}%</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Equity Stake</div>
+          <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>of CHF 8.5M valuation</div>
         </div>
         <div className="rounded-xl p-4 text-center" style={{ background: C.greenLight, border: `1px solid rgba(22,163,74,0.15)` }}>
           <TrendingUp className="w-5 h-5 mx-auto mb-2" style={{ color: C.green }} />
-          <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{INTEREST_RATE}%</div>
-          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Annual Interest</div>
+          <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{INTEREST_RATE}% p.a.</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Convertible Note Interest</div>
+          <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>CHF {annualInterest}K / year</div>
         </div>
-        <div className="rounded-xl p-4 text-center" style={{ background: C.goldLight, border: `1px solid rgba(184,134,11,0.15)` }}>
-          <DollarSign className="w-5 h-5 mx-auto mb-2" style={{ color: C.gold }} />
-          <div className="text-2xl font-bold font-mono" style={{ color: C.gold }}>CHF {amount + annualInterest * 5}K</div>
-          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Total at Conversion (5 Yr)</div>
+      </div>
+
+      {/* 5-year total value */}
+      <div className="rounded-xl p-4 mb-6 text-center" style={{ background: C.goldLight, border: `1px solid rgba(184,134,11,0.15)` }}>
+        <DollarSign className="w-5 h-5 mx-auto mb-2" style={{ color: C.gold }} />
+        <div className="text-2xl font-bold font-mono" style={{ color: C.gold }}>
+          CHF {amount + fiveYearInterest}K
+        </div>
+        <div className="text-xs mt-1" style={{ color: C.textMuted }}>
+          Total Note Value at Conversion (5 Yr)
+        </div>
+        <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>
+          CHF {amount}K principal + CHF {fiveYearInterest}K interest &mdash; plus {equityPercent.toFixed(1)}% equity
         </div>
       </div>
 
@@ -337,7 +352,7 @@ function InvestmentSlider() {
           {years.map((yr) => {
             const accumulated = annualInterest * yr;
             const total = amount + accumulated;
-            const pct = (accumulated / (annualInterest * 5)) * 100;
+            const pct = (accumulated / fiveYearInterest) * 100;
             return (
               <div key={yr} className="flex items-center gap-3">
                 <span className="text-xs font-mono w-12 shrink-0" style={{ color: C.textMuted }}>
@@ -358,16 +373,16 @@ function InvestmentSlider() {
         </div>
       </div>
 
-      {/* How Convertible Note works */}
+      {/* How it works */}
       <div className="rounded-xl p-4" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
         <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
-          How the Convertible Note Works
+          What You Get
         </div>
         <ul className="text-xs space-y-1.5" style={{ color: C.textSecondary }}>
-          <li>1. You provide a loan to AIRBASE</li>
-          <li>2. Interest of {INTEREST_RATE}% p.a. accrues — not paid out in cash</li>
-          <li>3. At the next funding round, loan + accrued interest converts into equity</li>
-          <li>4. Conversion at a discount to the next-round valuation</li>
+          <li>1. <strong>Equity:</strong> {equityPercent.toFixed(1)}% ownership stake in AIRBASE (based on CHF 8.5M pre-money valuation)</li>
+          <li>2. <strong>Convertible Note:</strong> {INTEREST_RATE}% annual interest accrues on your investment</li>
+          <li>3. At the next funding round, the note + accrued interest converts into additional equity at a discount</li>
+          <li>4. You benefit from both company ownership and guaranteed interest returns</li>
         </ul>
       </div>
 
