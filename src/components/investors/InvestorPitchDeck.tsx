@@ -296,7 +296,8 @@ function InvestmentSlider() {
 
   const PRE_MONEY = 8500; // CHF 8.5M pre-money valuation (in K)
   const INTEREST_RATE = 6; // 6% p.a. — standard Swiss convertible note rate
-  const equityPercent = (amount / PRE_MONEY) * 100;
+  const DISCOUNT_RATE = 20; // 20% conversion discount at next round
+  const equityPercent = (amount / (PRE_MONEY + amount)) * 100; // post-money basis
   const annualInterest = amount * INTEREST_RATE / 100; // CHF K per year
   const fiveYearInterest = annualInterest * 5;
   const years = [1, 2, 3, 4, 5];
@@ -352,8 +353,8 @@ function InvestmentSlider() {
         <div className="rounded-xl p-4 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
           <Layers className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
           <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>{equityPercent.toFixed(1)}%</div>
-          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Equity Stake</div>
-          <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>of CHF 8.5M valuation</div>
+          <div className="text-xs mt-1" style={{ color: C.textMuted }}>Indicative Equity at Conversion</div>
+          <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>post-money basis (CHF 8.5M pre-money)</div>
         </div>
         <div className="rounded-xl p-4 text-center" style={{ background: C.greenLight, border: `1px solid rgba(22,163,74,0.15)` }}>
           <TrendingUp className="w-5 h-5 mx-auto mb-2" style={{ color: C.green }} />
@@ -373,7 +374,7 @@ function InvestmentSlider() {
           Total Note Value at Conversion (5 Yr)
         </div>
         <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>
-          CHF {amount}K principal + CHF {fiveYearInterest}K interest &mdash; plus {equityPercent.toFixed(1)}% equity
+          CHF {amount}K principal + CHF {fiveYearInterest}K accrued interest &mdash; converts at {DISCOUNT_RATE}% discount
         </div>
       </div>
 
@@ -413,10 +414,10 @@ function InvestmentSlider() {
           What You Get
         </div>
         <ul className="text-xs space-y-1.5" style={{ color: C.textSecondary }}>
-          <li>1. <strong>Equity:</strong> {equityPercent.toFixed(1)}% ownership stake in AIRBASE (based on CHF 8.5M pre-money valuation)</li>
-          <li>2. <strong>Convertible Note:</strong> {INTEREST_RATE}% annual interest accrues on your investment</li>
-          <li>3. At the next funding round, the note + accrued interest converts into additional equity at a discount</li>
-          <li>4. You benefit from both company ownership and guaranteed interest returns</li>
+          <li>1. <strong>Convertible Loan:</strong> Your investment is structured as a convertible note with {INTEREST_RATE}% p.a. contractually accruing interest</li>
+          <li>2. <strong>Interest:</strong> {INTEREST_RATE}% annual interest accrues on your principal over the note term</li>
+          <li>3. <strong>Conversion:</strong> At the next qualified funding round, the note + accrued interest converts into equity at a {DISCOUNT_RATE}% discount to the new round price</li>
+          <li>4. <strong>Indicative equity:</strong> ~{equityPercent.toFixed(1)}% on a post-money basis (CHF 8.5M pre-money valuation), subject to final conversion terms</li>
         </ul>
       </div>
 
@@ -430,12 +431,12 @@ function InvestmentSlider() {
 /* ─── Chart Data ─── */
 const tamData = [
   { year: "2024", value: 11.2 },
-  { year: "2025", value: 15.8 },
-  { year: "2026", value: 22.1 },
-  { year: "2027", value: 30.5 },
-  { year: "2028", value: 41.2 },
-  { year: "2029", value: 50.0 },
-  { year: "2030", value: 58.4 },
+  { year: "2025", value: 14.1 },
+  { year: "2026", value: 17.3 },
+  { year: "2027", value: 20.8 },
+  { year: "2028", value: 24.6 },
+  { year: "2029", value: 28.4 },
+  { year: "2030", value: 31.7 },
 ];
 
 const revenueProjection = [
@@ -452,11 +453,6 @@ const fundAllocation = [
   { name: "LUC + Legal", value: 20, amount: "300K", color: C.gold },
   { name: "Sales & Marketing", value: 10, amount: "150K", color: C.green },
   { name: "Working Capital", value: 10, amount: "150K", color: C.textMuted },
-];
-
-const costCompare = [
-  { name: "Traditional Courier", cost: 28, unit: "CHF/hr" },
-  { name: "AIRBASE Drone", cost: 4, unit: "CHF/hr" },
 ];
 
 /* ─── Slide Nav Dots ─── */
@@ -585,7 +581,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
           </form>
 
           <div className="mt-8 text-xs font-mono text-white/20">
-            airbase.one &mdash; Confidential &amp; Proprietary
+            airbase.swiss &mdash; Confidential &amp; Proprietary
           </div>
         </div>
       </motion.div>
@@ -679,7 +675,7 @@ export function InvestorPitchDeck() {
         <div className="flex items-center gap-3" style={{ pointerEvents: "auto" }}>
           <img src="/airbase-logo.png" alt="airBASE" className="h-10 sm:h-14 w-auto" />
           <span className="hidden md:inline text-xs font-mono tracking-wider ml-2" style={{ color: C.textMuted }}>
-            airbase.one
+            airbase.swiss
           </span>
         </div>
         <div className="text-xs font-mono tracking-wider" style={{ color: C.textMuted, pointerEvents: "auto" }}>
@@ -841,7 +837,7 @@ export function InvestorPitchDeck() {
             className="text-sm font-mono tracking-wider"
             style={{ color: C.textMuted }}
           >
-            airbase.one &middot; Seed Round CHF 1.5M &middot; 2026
+            airbase.swiss &middot; Seed Round CHF 1.5M &middot; 2026
           </motion.div>
         </motion.div>
 
@@ -890,7 +886,7 @@ export function InvestorPitchDeck() {
               { icon: Wheat, label: "Agriculture", text: "Spraying, seeding & crop monitoring still done by hand across steep terrain. Expensive labor, limited reach, 3× chemical overuse.", color: C.red },
               { icon: MapPin, label: "Hiking Trail Maintenance", text: "Maintained by hand crews or helicopter flights at CHF 2,800–4,500/hr. A single supply run can cost more than the repair itself.", color: C.accent },
               { icon: HardHat, label: "Alpine Construction Supply", text: "Remote building sites depend entirely on helicopter logistics. SAC mountain huts are resupplied exclusively by air — at extreme cost.", color: C.gold },
-              { icon: HeartPulse, label: "Emergency & Rescue Logistics", text: "Medical and supply transport in difficult terrain relies on slow ground vehicles or helicopters at CHF 100/min.", color: C.red },
+              { icon: HeartPulse, label: "Emergency & Rescue Logistics", text: "Medical and supply transport in difficult terrain relies on slow ground vehicles or helicopters at CHF 3,000–6,000/hr.", color: C.red },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -1068,9 +1064,9 @@ export function InvestorPitchDeck() {
           <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8" delay={0.4}>
             {[
               { value: "4", label: "service lines", sub: "fully integrated" },
-              { value: "100 kg", label: "max payload", sub: "DJI FlyCart 100" },
+              { value: "100 kg", label: "max cargo payload", sub: "DJI FlyCart 100 (single-battery config)*" },
               { value: "-85%", label: "cost vs traditional", sub: "at scale" },
-              { value: "<30 min", label: "deployment time", sub: "any service" },
+              { value: "<30 min", label: "deployment time", sub: "standard transport services" },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -1169,7 +1165,7 @@ export function InvestorPitchDeck() {
                 Our Workhorse
               </div>
               <div className="text-xl font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
-              <div className="text-sm mt-1" style={{ color: C.textMuted }}>100 kg payload · 16 km range · IP55</div>
+              <div className="text-sm mt-1" style={{ color: C.textMuted }}>100 kg max cargo payload · MTOW 170 kg · 16 km range · IP55</div>
             </motion.div>
           </Stagger>
         </div>
@@ -1310,14 +1306,14 @@ export function InvestorPitchDeck() {
             <KpiCard
               label="Global Drone Services TAM"
               value={<CountUp end={31.7} prefix="$" suffix="B" decimals={1} />}
-              sub="by 2030 (MarketsandMarkets)"
+              sub="by 2030 (MarketsandMarkets, UAV Market Report 2025)"
               icon={Globe}
               delay={0.2}
             />
             <KpiCard
               label="European UAM"
               value={<CountUp end={4.5} prefix="EUR " suffix="B" decimals={1} />}
-              sub="by 2030 (Roland Berger)"
+              sub="by 2030 (Roland Berger, Urban Air Mobility Study 2024)"
               icon={Target}
               delay={0.35}
             />
@@ -1786,7 +1782,7 @@ export function InvestorPitchDeck() {
             >
               {[
                 { metric: "~95%", label: "Lower headcount vs. traditional logistics", icon: Users },
-                { metric: "10x", label: "Deliveries per employee", icon: TrendingUp },
+                { metric: "10x", label: "Deliveries per employee (projected)", icon: TrendingUp },
                 { metric: "Linear", label: "Revenue scales, headcount doesn't", icon: Rocket },
               ].map((kpi) => (
                 <div
@@ -1879,7 +1875,7 @@ export function InvestorPitchDeck() {
                 </div>
                 <ul className="space-y-2">
                   {[
-                    "100 kg payload — largest commercial delivery drone",
+                    "100 kg max cargo payload (MTOW 170 kg) — largest commercial delivery drone",
                     "IP55 rated: rain, wind up to 12 m/s",
                     "16 km range, locked via DJI enterprise partnership",
                   ].map((text, i) => (
@@ -1989,7 +1985,7 @@ export function InvestorPitchDeck() {
               style={{ color: C.textSecondary }}
             >
               AIRBASE doesn&apos;t just reduce costs &mdash; we eliminate emissions. Our drones are 100% electric,
-              and our fleet vehicles run on solar power. The result: a near-zero carbon logistics operation
+              and our fleet vehicles are planned to run on solar power. The result: a near-zero carbon logistics operation
               that sets a new industry standard.
             </motion.p>
           </Stagger>
@@ -2058,8 +2054,8 @@ export function InvestorPitchDeck() {
               <div className="space-y-3">
                 {[
                   { icon: Battery, text: "Electric drones — zero direct emissions per flight", color: C.green },
-                  { icon: Sun, text: "Solar-powered fleet vehicles — renewable ground ops", color: C.gold },
-                  { icon: Leaf, text: "No fuel, no exhaust, no noise pollution", color: C.green },
+                  { icon: Sun, text: "Solar-powered fleet vehicles (planned) — renewable ground ops", color: C.gold },
+                  { icon: Leaf, text: "No fuel, no exhaust — significantly lower noise than helicopter alternatives", color: C.green },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm" style={{ color: C.textSecondary }}>
                     <item.icon className="w-4 h-4 shrink-0" style={{ color: item.color }} />
@@ -2074,9 +2070,9 @@ export function InvestorPitchDeck() {
           <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8" delay={0.5}>
             {[
               { value: "0g", label: "Direct CO\u2082 per flight", sub: "100% electric drones", icon: Battery, color: C.green },
-              { value: "100%", label: "Solar fleet vehicles", sub: "Renewable ground ops", icon: Sun, color: C.gold },
+              { value: "100%", label: "Solar fleet vehicles (target)", sub: "Planned renewable ground ops", icon: Sun, color: C.gold },
               { value: "~95%", label: "Less CO\u2082 vs diesel courier", sub: "Full lifecycle comparison", icon: Leaf, color: C.green },
-              { value: "Zero", label: "Noise pollution", sub: "Quiet urban operations", icon: Sparkles, color: C.accent },
+              { value: "Low", label: "Noise vs helicopters", sub: "Significantly quieter operations", icon: Sparkles, color: C.accent },
             ].map((kpi) => (
               <motion.div
                 key={kpi.label}
@@ -2113,8 +2109,8 @@ export function InvestorPitchDeck() {
                     icon: Battery,
                   },
                   {
-                    title: "Solar Fleet Vehicles",
-                    desc: "Our ground support and logistics vehicles are solar-powered — from transport to the launch pad to equipment hauling. The entire operational chain is renewable.",
+                    title: "Solar Fleet Vehicles (Planned)",
+                    desc: "Our ground support and logistics vehicles will be solar-powered — from transport to the launch pad to equipment hauling. The target is a fully renewable operational chain.",
                     icon: Sun,
                   },
                   {
@@ -2208,8 +2204,8 @@ export function InvestorPitchDeck() {
                     {
                       label: "LUC Status",
                       vals: [
-                        "✅ BAZL LUC (Sep 2024)",
-                        "✅ EASA LUC via Malta (2022)",
+                        "✅ FOCA/BAZL LUC (Sep 2024, Matternet press release)",
+                        "✅ EASA LUC via Transport Malta (May 2022, SwissDrones press release)",
                         "❌ No LUC",
                         "🔄 In Progress (BAZL)",
                       ],
@@ -2383,7 +2379,7 @@ export function InvestorPitchDeck() {
               { date: "Q1 2026", text: "AIRBASE platform v1.0 launched (portal + admin + pilot app)", done: true },
               { date: "Q1 2026", text: "SORA / BAZL applications filed", done: true },
               { date: "Q1 2026", text: "8 fully licensed commercial drone pilots operational", done: true },
-              { date: "Q2 2026", text: "First commercial pilot flights (internal ops)", done: true },
+              { date: "Q2 2026*", text: "First commercial pilot flights (internal ops)", done: false },
               { date: "Q3 2026*", text: "LUC certification expected", done: false },
               { date: "Q4 2026*", text: "First DaaS enterprise contracts", done: false },
               { date: "Q1 2027*", text: "Franchise pilot program (2 partners)", done: false },
