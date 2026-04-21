@@ -57,6 +57,14 @@ import {
 
 /* ─── Touch-friendly range slider styles ─── */
 const rangeSliderStyles = `
+  @media (max-width: 768px) {
+    .pitch-scroll-container {
+      scroll-snap-type: none !important;
+    }
+    .pitch-scroll-container section {
+      scroll-snap-align: unset !important;
+    }
+  }
   .investor-range::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -602,18 +610,34 @@ export function InvestorPitchDeck() {
     }
   }, []);
 
-  /* Track which slide is visible */
+  /* Track which slide is visible — picks the section with the highest visibility ratio */
+  const ratioMap = useRef(new Map<Element, number>());
+
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !authed) return;
+
+    ratioMap.current.clear();
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = slideRefs.current.indexOf(entry.target as HTMLElement);
-            if (idx !== -1) setCurrentSlide(idx);
+          ratioMap.current.set(entry.target, entry.intersectionRatio);
+        });
+        let maxRatio = 0;
+        let maxIdx = -1;
+        slideRefs.current.forEach((el, idx) => {
+          if (el) {
+            const ratio = ratioMap.current.get(el) ?? 0;
+            if (ratio > maxRatio) {
+              maxRatio = ratio;
+              maxIdx = idx;
+            }
           }
         });
+        if (maxIdx !== -1) setCurrentSlide(maxIdx);
       },
-      { threshold: 0.5 }
+      { root: container, threshold: [0, 0.1, 0.25, 0.5, 0.75] }
     );
 
     slideRefs.current.forEach((el) => {
@@ -621,7 +645,7 @@ export function InvestorPitchDeck() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [authed]);
 
   const navigateTo = useCallback((idx: number) => {
     slideRefs.current[idx]?.scrollIntoView({ behavior: "smooth" });
@@ -653,11 +677,10 @@ export function InvestorPitchDeck() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden"
+      className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden pitch-scroll-container"
       style={{
         background: C.bg,
         scrollSnapType: "y proximity",
-        scrollBehavior: "smooth",
         WebkitOverflowScrolling: "touch",
       }}
     >
@@ -686,7 +709,7 @@ export function InvestorPitchDeck() {
       {/* ═══ SLIDE 1: COVER — BIG VISION ═══ */}
       <section
         ref={setRef(0)}
-        className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden"
+        className="relative min-h-screen flex flex-col items-center justify-start pt-20 sm:justify-center sm:pt-0 px-6 text-center overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
         {/* Hero drone image background — stunning FlyCart mountain photo */}
@@ -741,9 +764,15 @@ export function InvestorPitchDeck() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.8, ease }}
-            className="flex items-center justify-center mb-10"
+            className="flex items-center justify-center mb-6 sm:mb-10"
           >
-            <img src="/airbase-logo.png" alt="airBASE AVIATION" className="h-20 sm:h-28 md:h-36 lg:h-44 w-auto" />
+            <img
+              src="/airbase-logo.png"
+              alt="airBASE AVIATION"
+              className="h-16 sm:h-28 md:h-36 lg:h-44 w-auto"
+              loading="eager"
+              style={{ filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.12))", minHeight: 64 }}
+            />
           </motion.div>
 
           <motion.div
@@ -962,10 +991,65 @@ export function InvestorPitchDeck() {
             </Stagger>
           </div>
 
+          {/* ── Animated Cost Comparison Bars ── */}
           <Stagger delay={1.0}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-14 rounded-2xl p-6 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
+                Cost Per Delivery — Traditional vs. AIRBASE
+              </div>
+              <div className="space-y-5">
+                {[
+                  { label: "Helicopter Supply Run", cost: 4500, unit: "CHF/hr", color: C.red },
+                  { label: "Materialseilbahn (Setup)", cost: 3200, unit: "CHF avg.", color: C.red },
+                  { label: "Manual Hand Crew", cost: 1800, unit: "CHF/day", color: C.red + "CC" },
+                  { label: "AIRBASE Drone Flight", cost: 180, unit: "CHF avg.", color: C.accent },
+                ].map((item, i) => {
+                  const maxCost = 4500;
+                  const pct = Math.min((item.cost / maxCost) * 100, 100);
+                  return (
+                    <motion.div
+                      key={i}
+                      variants={slideRight}
+                      className="flex items-center gap-3"
+                    >
+                      <span className="text-xs sm:text-sm w-32 sm:w-44 shrink-0 text-right" style={{ color: C.textSecondary }}>
+                        {item.label}
+                      </span>
+                      <div className="flex-1 h-6 sm:h-7 rounded-full overflow-hidden relative" style={{ background: C.border }}>
+                        <motion.div
+                          className="h-full rounded-full flex items-center justify-end pr-2"
+                          style={{ background: item.color }}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${pct}%` }}
+                          viewport={{ once: true, margin: "-50px" }}
+                          transition={{ duration: 1.2, delay: i * 0.15, ease: "easeOut" }}
+                        >
+                          <span className="text-[10px] sm:text-xs font-mono font-bold text-white whitespace-nowrap">
+                            {item.cost.toLocaleString()} {item.unit}
+                          </span>
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              <div className="mt-4 flex items-center gap-2 justify-center">
+                <TrendingUp className="w-4 h-4" style={{ color: C.accent }} />
+                <span className="text-sm font-semibold" style={{ color: C.accent }}>
+                  Up to 96% cost reduction with AIRBASE
+                </span>
+              </div>
+            </motion.div>
+          </Stagger>
+
+          <Stagger delay={1.2}>
             <motion.blockquote
               variants={fadeUp}
-              className="mt-16 text-xl md:text-2xl font-light italic text-center max-w-2xl mx-auto"
+              className="mt-10 text-xl md:text-2xl font-light italic text-center max-w-2xl mx-auto"
               style={{ color: C.textSecondary }}
             >
               &ldquo;Switzerland still moves materials the way it did 50 years ago. We&apos;re changing that.&rdquo;
@@ -2284,8 +2368,57 @@ export function InvestorPitchDeck() {
             </motion.div>
           </Stagger>
 
+          {/* ── Animated Payload Comparison ── */}
+          <Stagger delay={0.4}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-10 rounded-2xl p-6 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
+                Max Payload Capacity (kg) — Visual Comparison
+              </div>
+              <div className="space-y-4">
+                {[
+                  { name: "Matternet", payload: 2, color: C.textMuted + "80", scalability: "Low" },
+                  { name: "Others", payload: 15, color: C.textMuted + "60", scalability: "Med" },
+                  { name: "SwissDrones", payload: 50, color: C.textMuted, scalability: "Low" },
+                  { name: "AIRBASE", payload: 100, color: C.accent, scalability: "High" },
+                ].map((comp, i) => (
+                  <div key={comp.name} className="flex items-center gap-3">
+                    <span className="text-xs sm:text-sm font-semibold w-24 sm:w-28 text-right shrink-0" style={{ color: i === 3 ? C.accent : C.textSecondary }}>
+                      {comp.name}
+                    </span>
+                    <div className="flex-1 h-8 sm:h-9 rounded-lg overflow-hidden relative" style={{ background: C.border }}>
+                      <motion.div
+                        className="h-full rounded-lg flex items-center px-3"
+                        style={{ background: comp.color }}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${(comp.payload / 100) * 100}%` }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 1, delay: i * 0.15, ease: "easeOut" }}
+                      >
+                        <span className="text-xs font-mono font-bold text-white whitespace-nowrap">
+                          {comp.payload} kg
+                        </span>
+                      </motion.div>
+                    </div>
+                    <span className="text-[10px] font-mono w-10 shrink-0" style={{ color: i === 3 ? C.accent : C.textMuted }}>
+                      {comp.scalability}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between mt-3 text-[10px] font-mono" style={{ color: C.textMuted }}>
+                <span>0 kg</span>
+                <span>Scalability →</span>
+                <span>100 kg</span>
+              </div>
+            </motion.div>
+          </Stagger>
+
           {/* ── Positioning Punchline ── */}
-          <div className="grid md:grid-cols-3 gap-4 mt-10">
+          <div className="grid md:grid-cols-3 gap-4 mt-8">
             {[
               {
                 icon: Package,
@@ -2306,7 +2439,7 @@ export function InvestorPitchDeck() {
                 desc: "100 kg heavy-lift B2B franchise with AI",
               },
             ].map((item, i) => (
-              <Stagger key={i} delay={0.4 + i * 0.15}>
+              <Stagger key={i} delay={0.6 + i * 0.15}>
                 <motion.div
                   variants={fadeUp}
                   className="rounded-2xl p-5 border text-center"
