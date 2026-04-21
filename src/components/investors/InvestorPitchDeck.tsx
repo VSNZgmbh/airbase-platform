@@ -288,7 +288,7 @@ function Bullet({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
-/* ─── Investment Slider (Equity + Convertible Note) ─── */
+/* ─── Investment Slider (Convertible Note Calculator) ─── */
 function InvestmentSlider() {
   const [amount, setAmount] = useState(250);
   const ref = useRef(null);
@@ -430,13 +430,13 @@ function InvestmentSlider() {
 
 /* ─── Chart Data ─── */
 const tamData = [
-  { year: "2024", value: 11.2 },
-  { year: "2025", value: 14.1 },
-  { year: "2026", value: 17.3 },
-  { year: "2027", value: 20.8 },
-  { year: "2028", value: 24.6 },
-  { year: "2029", value: 28.4 },
-  { year: "2030", value: 31.7 },
+  { year: "2024", value: 23.9 },
+  { year: "2025", value: 26.1 },
+  { year: "2026", value: 28.5 },
+  { year: "2027", value: 31.1 },
+  { year: "2028", value: 34.0 },
+  { year: "2029", value: 37.1 },
+  { year: "2030", value: 40.6 },
 ];
 
 const revenueProjection = [
@@ -1304,9 +1304,9 @@ export function InvestorPitchDeck() {
 
           <div className="grid lg:grid-cols-3 gap-6 mt-10">
             <KpiCard
-              label="Global Drone Services TAM"
-              value={<CountUp end={31.7} prefix="$" suffix="B" decimals={1} />}
-              sub="by 2030 (MarketsandMarkets, UAV Market Report 2025)"
+              label="Global UAV Market"
+              value={<CountUp end={40.6} prefix="$" suffix="B" decimals={1} />}
+              sub="by 2030 (MarketsandMarkets, UAV Market Report 2025 — 9.2% CAGR)"
               icon={Globe}
               delay={0.2}
             />
@@ -1361,7 +1361,7 @@ export function InvestorPitchDeck() {
                 style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
-                  Global Drone Logistics Market ($B)
+                  Global UAV Market ($B) — MarketsandMarkets 2025
                 </div>
                 <ResponsiveContainer width="100%" height={260}>
                   <AreaChart data={tamData}>
