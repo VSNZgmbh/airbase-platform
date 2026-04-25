@@ -602,7 +602,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 16;
+  const totalSlides = 12;
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
@@ -911,11 +911,11 @@ export function InvestorPitchDeck() {
           {/* ── Swiss Pain Points ── */}
           <Stagger className="space-y-4 mt-12" delay={0.3}>
             {[
-              { icon: Mountain, label: "Material Cable Cars", text: "Temporary Materialgondelbahnen still built to haul construction materials to mountain sites — tens of thousands of CHF, weeks to erect.", color: C.red },
-              { icon: Wheat, label: "Agriculture", text: "Spraying, seeding & crop monitoring still done by hand across steep terrain. Expensive labor, limited reach, 3× chemical overuse.", color: C.red },
-              { icon: MapPin, label: "Hiking Trail Maintenance", text: "Maintained by hand crews or helicopter flights at CHF 2,800–4,500/hr. A single supply run can cost more than the repair itself.", color: C.accent },
-              { icon: HardHat, label: "Alpine Construction Supply", text: "Remote building sites depend entirely on helicopter logistics. SAC mountain huts are resupplied exclusively by air — at extreme cost.", color: C.gold },
-              { icon: HeartPulse, label: "Emergency & Rescue Logistics", text: "Medical and supply transport in difficult terrain relies on slow ground vehicles or helicopters at CHF 3,000–6,000/hr.", color: C.red },
+              { icon: Mountain, label: "Material Cable Cars", text: "Cable cars for construction materials — CHF 10K+, weeks to install.", color: C.red },
+              { icon: Wheat, label: "Agriculture", text: "Manual spraying & seeding on steep terrain — 3× chemical overuse.", color: C.red },
+              { icon: MapPin, label: "Hiking Trail Maintenance", text: "Hand crews or helicopters at CHF 3K–4.5K/hr for a single run.", color: C.accent },
+              { icon: HardHat, label: "Alpine Construction Supply", text: "Mountain huts & remote sites: helicopter-only supply at extreme cost.", color: C.gold },
+              { icon: HeartPulse, label: "Emergency & Rescue Logistics", text: "Terrain-locked transport: ground vehicles or CHF 3K–6K/hr helicopters.", color: C.red },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -1044,16 +1044,6 @@ export function InvestorPitchDeck() {
                 </span>
               </div>
             </motion.div>
-          </Stagger>
-
-          <Stagger delay={1.2}>
-            <motion.blockquote
-              variants={fadeUp}
-              className="mt-10 text-xl md:text-2xl font-light italic text-center max-w-2xl mx-auto"
-              style={{ color: C.textSecondary }}
-            >
-              &ldquo;Switzerland still moves materials the way it did 50 years ago. We&apos;re changing that.&rdquo;
-            </motion.blockquote>
           </Stagger>
         </div>
       </section>
@@ -1260,125 +1250,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 4: TECHNOLOGY PLATFORM ═══ */}
-      <section
-        ref={setRef(3)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
-      >
-        <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="03" text="Technology" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.text }}
-            >
-              The Operating System for{" "}
-              <span style={{ color: C.accent }}>Drone Services</span>
-            </motion.h2>
-          </Stagger>
-
-          {/* Three pillars */}
-          <Stagger className="grid md:grid-cols-3 gap-6 mt-10" delay={0.2}>
-            {[
-              { title: "Customer Portal", icon: Users, items: ["Order intake & tracking", "Real-time notifications", "Delivery confirmation"] },
-              { title: "Admin Dashboard", icon: BarChart3, items: ["Dispatch & fleet mgmt", "Compliance reporting", "Cost analytics"] },
-              { title: "Pilot App", icon: Rocket, items: ["Mission briefing", "Live telemetry", "Incident logging"] },
-            ].map((pillar) => (
-              <motion.div
-                key={pillar.title}
-                variants={fadeUp}
-                className="rounded-2xl p-6 border"
-                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-              >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: C.accentGlow }}>
-                  <pillar.icon className="w-5 h-5" style={{ color: C.accent }} />
-                </div>
-                <div className="text-lg font-bold mb-3" style={{ color: C.text }}>{pillar.title}</div>
-                <ul className="space-y-2">
-                  {pillar.items.map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
-                      <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </Stagger>
-
-          {/* Dashboard Screenshot — Hero Size */}
-          <Stagger delay={0.4}>
-            <motion.div
-              variants={scaleUp}
-              className="mt-10 rounded-2xl overflow-hidden border-2"
-              style={{ borderColor: C.accent + "30", boxShadow: `0 8px 40px rgba(211,47,47,0.12), ${C.shadowLg}` }}
-            >
-              <div
-                className="flex items-center justify-between px-6 py-3"
-                style={{ background: `linear-gradient(135deg, ${C.accent} 0%, #B71C1C 100%)` }}
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
-                </div>
-                <span className="text-xs font-mono uppercase tracking-widest text-white/80">
-                  Live Operations Dashboard — Real Product
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-xs font-mono text-white/60">LIVE</span>
-                </div>
-              </div>
-              <img
-                src="/images/investors/dashboard.png"
-                alt="AIRBASE Live Operations Dashboard with Swiss map, active missions, and real-time telemetry"
-                className="w-full"
-              />
-            </motion.div>
-          </Stagger>
-
-          {/* AI Layer */}
-          <Stagger delay={0.6}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.accentLight, borderColor: C.borderAccent }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Cpu className="w-5 h-5" style={{ color: C.accent }} />
-                <span className="text-sm font-mono uppercase tracking-wider" style={{ color: C.accent }}>AI Layer</span>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                {["Autonomous quote generation", "Intelligent dispatch routing", "Safety redundancy (auto-abort)", "Post-flight analytics"].map((f, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs sm:text-sm" style={{ color: C.textSecondary }}>
-                    <Zap className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
-                    {f}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </Stagger>
-
-          <Stagger delay={0.7}>
-            <motion.div variants={fadeUp} className="mt-6 text-xs font-mono" style={{ color: C.textMuted }}>
-              Tech stack: Next.js / Node.js / Real-time telemetry / EASA-compliant data logging
-            </motion.div>
-          </Stagger>
-        </div>
-      </section>
-
       {/* ═══ SLIDE 5: MARKET OPPORTUNITY ═══ */}
       <section
-        ref={setRef(4)}
+        ref={setRef(3)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="04" text="Market Opportunity" />
+          <SlideLabel number="03" text="Market Opportunity" />
 
           <Stagger>
             <motion.h2
@@ -1499,104 +1378,26 @@ export function InvestorPitchDeck() {
               </motion.div>
             </Stagger>
           </div>
-
-          {/* ── New Market Creation Section ── */}
-          <Stagger delay={0.8}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-16 rounded-2xl p-8 border"
-              style={{
-                borderColor: C.gold + "20",
-                background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.accentLight} 100%)`,
-                boxShadow: C.shadow,
-              }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: C.gold + "15" }}
-                >
-                  <Rocket className="w-5 h-5" style={{ color: C.gold }} />
-                </div>
-                <div>
-                  <div className="text-xs font-mono uppercase tracking-[0.2em]" style={{ color: C.gold }}>
-                    Beyond Disruption
-                  </div>
-                  <div className="text-lg md:text-xl font-bold" style={{ color: C.text }}>
-                    We Don&apos;t Just Compete &mdash; We Create New Markets
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-sm md:text-base leading-relaxed mb-8" style={{ color: C.textSecondary }}>
-                Logistics, agriculture, and industrial cleaning are existing markets where AIRBASE
-                offers a radically better solution. But our 100&nbsp;kg heavy-lift capability
-                <span style={{ color: C.gold, fontWeight: 600 }}> unlocks use cases that were previously impossible</span> &mdash;
-                creating entirely new revenue pools.
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  {
-                    icon: HardHat,
-                    title: "Remote Construction Supply",
-                    desc: "Deliver materials to alpine or off-grid build sites with zero road infrastructure",
-                  },
-                  {
-                    icon: HeartPulse,
-                    title: "Emergency Disaster Relief",
-                    desc: "Deploy up to 200 kg medical & survival payloads to flood, avalanche, or earthquake zones in minutes",
-                  },
-                  {
-                    icon: Mountain,
-                    title: "Alpine Infrastructure",
-                    desc: "Service ski lifts, telecom towers, and mountain huts unreachable by ground transport",
-                  },
-                  {
-                    icon: Truck,
-                    title: "Rural Medical Delivery",
-                    desc: "Rapid equipment & supply delivery to hospitals and clinics in underserved areas",
-                  },
-                ].map((item) => (
-                  <motion.div
-                    key={item.title}
-                    variants={fadeUp}
-                    className="rounded-xl p-4 border"
-                    style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-                  >
-                    <item.icon className="w-5 h-5 mb-3" style={{ color: C.accent }} />
-                    <div className="text-sm font-semibold mb-1" style={{ color: C.text }}>
-                      {item.title}
-                    </div>
-                    <div className="text-xs leading-relaxed" style={{ color: C.textMuted }}>
-                      {item.desc}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="mt-6 pt-5 border-t" style={{ borderColor: C.border }}>
-                <div className="text-sm font-semibold" style={{ color: C.gold }}>
-                  Category creators capture disproportionate value.
-                </div>
-                <div className="text-xs mt-1" style={{ color: C.textMuted }}>
-                  AIRBASE is not entering existing markets &mdash; we are defining the heavy-lift drone logistics
-                  category.
-                </div>
-              </div>
-            </motion.div>
-          </Stagger>
         </div>
       </section>
 
-      {/* ═══ SLIDE 6: BUSINESS MODEL ═══ */}
+      {/* ═══ SLIDE 5: COMPETITIVE ADVANTAGE + LANDSCAPE ═══ */}
       <section
-        ref={setRef(5)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
+        ref={setRef(4)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
+        style={{ scrollSnapAlign: "start" }}
       >
-        <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="05" text="Business Model" />
+        {/* Background drone image */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src="/images/flycart-scene-1.jpg"
+            alt=""
+            className="w-full h-full object-cover opacity-[0.04]"
+          />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto w-full">
+          <SlideLabel number="04" text="Competitive Edge" />
 
           <Stagger>
             <motion.h2
@@ -1604,8 +1405,482 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              Three Revenue Streams.{" "}
-              <span style={{ color: C.accent }}>One Platform.</span>
+              Our Moat Is{" "}
+              <span style={{ color: C.gold }}>Certified, Not Just Claimed</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-lg mt-2 max-w-2xl"
+              style={{ color: C.textSecondary }}
+            >
+              No Swiss operator serves the 100–200 kg heavy-cargo B2B segment. AIRBASE is the first mover.
+            </motion.p>
+          </Stagger>
+
+          {/* Three moat pillars */}
+          <div className="grid md:grid-cols-3 gap-6 mt-10">
+            <Stagger delay={0.2}>
+              <motion.div
+                variants={fadeUp}
+                className="rounded-2xl p-5 border"
+                style={{ borderColor: C.gold + "20", background: C.goldLight, boxShadow: C.shadow }}
+              >
+                <Lock className="w-7 h-7 mb-3" style={{ color: C.gold }} />
+                <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.gold }}>
+                  LUC Certification
+                </div>
+                <ul className="space-y-1.5">
+                  {[
+                    "SORA / BAZL applications filed",
+                    "Enables flights in populated areas",
+                    "<12 operators pursuing LUC in CH",
+                    "18–24 month head start",
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: C.textSecondary }}>
+                      <Shield className="w-3 h-3 mt-0.5 shrink-0" style={{ color: C.gold }} />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </Stagger>
+
+            <Stagger delay={0.35}>
+              <motion.div
+                variants={fadeUp}
+                className="rounded-2xl p-5 border relative overflow-hidden"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                <img
+                  src="/assets/flycart-100-cutout.png"
+                  alt="DJI FlyCart fleet"
+                  className="absolute -right-6 -top-2 w-24 h-24 object-contain opacity-15 pointer-events-none"
+                />
+                <Box className="w-7 h-7 mb-3 relative z-10" style={{ color: C.accent }} />
+                <div className="text-sm font-mono uppercase tracking-wider mb-2 relative z-10" style={{ color: C.accent }}>
+                  DJI FlyCart 100 + 200
+                </div>
+                <ul className="space-y-1.5">
+                  {[
+                    "FC100: 100 kg payload, IP55",
+                    "FC200: 200 kg, 36 km range",
+                    "Swarm: up to 600 kg (4× FC200)",
+                    "DJI enterprise partnership",
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: C.textSecondary }}>
+                      <CheckCircle2 className="w-3 h-3 mt-0.5 shrink-0" style={{ color: C.accent }} />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </Stagger>
+
+            <Stagger delay={0.5}>
+              <motion.div
+                variants={fadeUp}
+                className="rounded-2xl p-5 border"
+                style={{ background: C.greenLight, borderColor: C.green + "20", boxShadow: C.shadow }}
+              >
+                <Cpu className="w-7 h-7 mb-3" style={{ color: C.green }} />
+                <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.green }}>
+                  AI Safety System
+                </div>
+                <ul className="space-y-1.5">
+                  {[
+                    "Auto-abort on geofence/weather/battery",
+                    "Lower insurance = cost advantage",
+                    "Data flywheel: every flight improves",
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: C.textSecondary }}>
+                      <Zap className="w-3 h-3 mt-0.5 shrink-0" style={{ color: C.green }} />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </Stagger>
+          </div>
+
+          {/* Comparison Matrix */}
+          <Stagger delay={0.3}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 overflow-x-auto rounded-2xl border"
+              style={{ borderColor: C.border, boxShadow: C.shadowLg }}
+            >
+              <table className="w-full text-xs sm:text-sm" style={{ background: C.bgCard }}>
+                <thead>
+                  <tr style={{ borderBottom: `2px solid ${C.border}` }}>
+                    {["", "Matternet", "SwissDrones", "Others", "AIRBASE"].map((h, i) => (
+                      <th
+                        key={i}
+                        className={`px-2 sm:px-4 py-3 text-left font-mono uppercase tracking-wider text-xs ${i === 4 ? "rounded-tr-2xl" : ""} ${i === 0 ? "rounded-tl-2xl" : ""}`}
+                        style={{
+                          color: i === 4 ? C.bg : C.textMuted,
+                          background: i === 4 ? C.accent : "transparent",
+                          minWidth: i === 0 ? 90 : 100,
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { label: "LUC", vals: ["✅ FOCA LUC", "✅ EASA LUC (Malta)", "❌ No LUC", "🔄 In Progress"] },
+                    { label: "Payload", vals: ["~2 kg", ">50 kg", "5–25 kg", "100–200 kg"] },
+                    { label: "Model", vals: ["Captive fleet", "Custom heli sales", "Project-based", "B2B Franchise"] },
+                    { label: "Focus", vals: ["Medical samples", "Inspection/SAR", "Survey", "Heavy cargo"] },
+                    { label: "AI Platform", vals: ["No", "No", "Limited", "✅ Full AI"] },
+                  ].map((row, ri) => (
+                    <tr
+                      key={ri}
+                      style={{
+                        borderBottom: `1px solid ${C.border}`,
+                        background: ri % 2 === 0 ? "transparent" : C.bgAlt,
+                      }}
+                    >
+                      <td className="px-2 sm:px-4 py-2 font-semibold text-xs uppercase tracking-wider" style={{ color: C.textMuted }}>
+                        {row.label}
+                      </td>
+                      {row.vals.map((v, vi) => (
+                        <td
+                          key={vi}
+                          className="px-2 sm:px-4 py-2"
+                          style={{
+                            color: vi === 3 ? C.accent : C.textSecondary,
+                            fontWeight: vi === 3 ? 600 : 400,
+                            background: vi === 3 ? C.accentLight : "transparent",
+                          }}
+                        >
+                          {v}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </motion.div>
+          </Stagger>
+
+          {/* Payload Comparison Bars */}
+          <Stagger delay={0.5}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-6 rounded-2xl p-5 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
+                Max Payload (kg)
+              </div>
+              <div className="space-y-3">
+                {[
+                  { name: "Matternet", payload: 2, color: C.textMuted + "80" },
+                  { name: "Others", payload: 15, color: C.textMuted + "60" },
+                  { name: "SwissDrones", payload: 50, color: C.textMuted },
+                  { name: "AIRBASE", payload: 200, color: C.accent },
+                ].map((comp, i) => (
+                  <div key={comp.name} className="flex items-center gap-3">
+                    <span className="text-xs font-semibold w-24 text-right shrink-0" style={{ color: i === 3 ? C.accent : C.textSecondary }}>
+                      {comp.name}
+                    </span>
+                    <div className="flex-1 h-7 rounded-lg overflow-hidden relative" style={{ background: C.border }}>
+                      <motion.div
+                        className="h-full rounded-lg flex items-center px-3"
+                        style={{ background: comp.color }}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${(comp.payload / 200) * 100}%` }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 1, delay: i * 0.15, ease: "easeOut" }}
+                      >
+                        <span className="text-xs font-mono font-bold text-white whitespace-nowrap">
+                          {comp.payload} kg
+                        </span>
+                      </motion.div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* Loft Dynamics Partnership + Quote */}
+          <Stagger delay={0.6}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-6 rounded-2xl p-5 border"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Rocket className="w-4 h-4" style={{ color: C.accent }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                  Strategic Partnership: Loft Dynamics
+                </span>
+              </div>
+              <p className="text-sm" style={{ color: C.textSecondary }}>
+                World-leading flight simulator company — pilot training infrastructure &amp; safety certification edge.
+              </p>
+            </motion.div>
+          </Stagger>
+
+          <Stagger delay={0.7}>
+            <motion.blockquote
+              variants={fadeUp}
+              className="mt-8 text-lg md:text-xl font-light italic text-center"
+              style={{ color: C.textSecondary }}
+            >
+              &ldquo;We are not selling drones. We are selling{" "}
+              <span className="font-semibold not-italic" style={{ color: C.gold }}>
+                permission to fly
+              </span>
+              .&rdquo;
+            </motion.blockquote>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 6: TECHNOLOGY + AI + SUSTAINABILITY ═══ */}
+      <section
+        ref={setRef(5)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="05" text="Technology & Innovation" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              The Operating System for{" "}
+              <span style={{ color: C.accent }}>Drone Services</span>
+            </motion.h2>
+          </Stagger>
+
+          {/* Three platform pillars */}
+          <Stagger className="grid md:grid-cols-3 gap-5 mt-8" delay={0.2}>
+            {[
+              { title: "Customer Portal", icon: Users, items: ["Order intake & tracking", "Real-time notifications", "Delivery confirmation"] },
+              { title: "Admin Dashboard", icon: BarChart3, items: ["Dispatch & fleet mgmt", "Compliance reporting", "Cost analytics"] },
+              { title: "Pilot App", icon: Rocket, items: ["Mission briefing", "Live telemetry", "Incident logging"] },
+            ].map((pillar) => (
+              <motion.div
+                key={pillar.title}
+                variants={fadeUp}
+                className="rounded-2xl p-5 border"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: C.accentGlow }}>
+                  <pillar.icon className="w-5 h-5" style={{ color: C.accent }} />
+                </div>
+                <div className="text-base font-bold mb-2" style={{ color: C.text }}>{pillar.title}</div>
+                <ul className="space-y-1.5">
+                  {pillar.items.map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
+                      <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </Stagger>
+
+          {/* Dashboard + Mobile Mockup Side-by-Side */}
+          <Stagger className="grid md:grid-cols-2 gap-6 mt-8" delay={0.4}>
+            {/* Dashboard Screenshot */}
+            <motion.div
+              variants={scaleUp}
+              className="rounded-2xl overflow-hidden border-2"
+              style={{ borderColor: C.accent + "30", boxShadow: `0 8px 40px rgba(211,47,47,0.12), ${C.shadowLg}` }}
+            >
+              <div
+                className="flex items-center justify-between px-4 py-2"
+                style={{ background: `linear-gradient(135deg, ${C.accent} 0%, #B71C1C 100%)` }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-white/30" />
+                  <div className="w-2 h-2 rounded-full bg-white/30" />
+                  <div className="w-2 h-2 rounded-full bg-white/30" />
+                </div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-white/80">
+                  Operations Dashboard
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-[10px] font-mono text-white/60">LIVE</span>
+                </div>
+              </div>
+              <img
+                src="/images/investors/dashboard.png"
+                alt="AIRBASE Live Operations Dashboard"
+                className="w-full"
+              />
+            </motion.div>
+
+            {/* Mobile App Mockup Placeholder */}
+            <motion.div
+              variants={scaleUp}
+              className="rounded-2xl overflow-hidden border-2 flex flex-col items-center justify-center p-8 relative"
+              style={{ borderColor: C.accent + "20", background: `linear-gradient(135deg, ${C.bgAlt} 0%, ${C.accentLight} 100%)`, boxShadow: C.shadowLg }}
+            >
+              <div className="relative">
+                {/* Phone frame mockup */}
+                <div
+                  className="w-48 h-80 rounded-[2rem] border-4 overflow-hidden flex flex-col"
+                  style={{ borderColor: C.text + "20", background: C.bgCard }}
+                >
+                  {/* Status bar */}
+                  <div className="h-6 flex items-center justify-center" style={{ background: C.accent }}>
+                    <span className="text-[8px] font-mono text-white/80 tracking-wider">airBASE</span>
+                  </div>
+                  {/* App content placeholder */}
+                  <div className="flex-1 p-3 space-y-2">
+                    <div className="h-3 rounded-full w-3/4" style={{ background: C.border }} />
+                    <div className="h-3 rounded-full w-1/2" style={{ background: C.border }} />
+                    <div className="mt-3 rounded-xl p-2 border" style={{ borderColor: C.border }}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <MapPin className="w-3 h-3" style={{ color: C.accent }} />
+                        <div className="h-2 rounded-full w-16" style={{ background: C.accent + "30" }} />
+                      </div>
+                      <div className="h-2 rounded-full w-full mb-1" style={{ background: C.border }} />
+                      <div className="h-2 rounded-full w-2/3" style={{ background: C.border }} />
+                    </div>
+                    <div className="mt-2 rounded-xl p-2 border" style={{ borderColor: C.green + "30" }}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <CheckCircle2 className="w-3 h-3" style={{ color: C.green }} />
+                        <div className="h-2 rounded-full w-20" style={{ background: C.green + "30" }} />
+                      </div>
+                      <div className="h-2 rounded-full w-full" style={{ background: C.border }} />
+                    </div>
+                    <div className="mt-3 h-8 rounded-lg flex items-center justify-center" style={{ background: C.accent }}>
+                      <span className="text-[8px] font-bold text-white tracking-wider">BOOK FLIGHT</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <div className="text-xs font-mono uppercase tracking-wider" style={{ color: C.accent }}>
+                  Customer App
+                </div>
+                <div className="text-sm font-bold mt-1" style={{ color: C.text }}>
+                  Book &middot; Track &middot; Confirm
+                </div>
+                <div className="text-xs mt-1" style={{ color: C.textMuted }}>
+                  Real-time delivery tracking &amp; instant booking
+                </div>
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* AI-Powered Operations — Condensed */}
+          <Stagger delay={0.5}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl p-6 border"
+              style={{ background: C.accentLight, borderColor: C.borderAccent }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Zap className="w-5 h-5" style={{ color: C.accent }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
+                  AI-Powered — Almost Everything Automated
+                </span>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                {[
+                  { title: "Operations", items: ["Intelligent dispatch & routing", "Fleet management", "Mission planning"] },
+                  { title: "Business", items: ["Instant quote generation", "Invoice automation", "Customer notifications"] },
+                  { title: "Compliance", items: ["SORA risk assessment", "Airspace deconfliction", "Post-flight analytics"] },
+                ].map((col) => (
+                  <div key={col.title}>
+                    <div className="text-xs font-mono uppercase tracking-wider mb-2 font-semibold" style={{ color: C.accent }}>
+                      {col.title}
+                    </div>
+                    <ul className="space-y-1">
+                      {col.items.map((item, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
+                          <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-4 pt-4 border-t" style={{ borderColor: C.borderAccent }}>
+                {[
+                  { metric: "~95%", label: "Less headcount vs traditional" },
+                  { metric: "~3", label: "Core team for 100+ daily deliveries" },
+                  { metric: "Linear", label: "Revenue scales, headcount doesn't" },
+                ].map((kpi) => (
+                  <div key={kpi.label} className="text-center">
+                    <div className="text-xl font-bold font-mono" style={{ color: C.accent }}>{kpi.metric}</div>
+                    <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{kpi.label}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* Sustainability — Compact supplementary story */}
+          <Stagger delay={0.6}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-6 rounded-2xl p-5 border"
+              style={{ background: C.greenLight, borderColor: C.green + "20" }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <Leaf className="w-5 h-5" style={{ color: C.green }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                  Near-Zero Carbon — Green by Design
+                </span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { value: "0g", label: "Direct CO\u2082 per flight", icon: Battery },
+                  { value: "100%", label: "Electric drone fleet", icon: Zap },
+                  { value: "~95%", label: "Less CO\u2082 vs diesel", icon: Leaf },
+                  { value: "Solar", label: "Fleet vehicles (planned)", icon: Sun },
+                ].map((kpi) => (
+                  <div key={kpi.label} className="text-center">
+                    <kpi.icon className="w-4 h-4 mx-auto mb-1" style={{ color: C.green }} />
+                    <div className="text-lg font-bold font-mono" style={{ color: C.green }}>{kpi.value}</div>
+                    <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{kpi.label}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          <Stagger delay={0.7}>
+            <motion.div variants={fadeUp} className="mt-4 text-xs font-mono" style={{ color: C.textMuted }}>
+              Tech stack: Next.js / Node.js / Real-time telemetry / EASA-compliant data logging
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 6: BUSINESS MODEL ═══ */}
+      <section
+        ref={setRef(6)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="06" text="Business Model" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              Primary: DaaS &amp; SaaS.{" "}
+              <span style={{ color: C.accent }}>Secondary: Franchise.</span>
             </motion.h2>
           </Stagger>
 
@@ -1722,782 +1997,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 6B: AI-POWERED LEAN OPERATIONS ═══ */}
-      <section
-        ref={setRef(6)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
-        style={{ scrollSnapAlign: "start" }}
-      >
-        {/* Subtle tech background */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(211,47,47,0.03) 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative max-w-6xl mx-auto w-full">
-          <SlideLabel number="06" text="AI-Powered Operations" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.text }}
-            >
-              Almost Everything Is{" "}
-              <span style={{ color: C.accent }}>Automated</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-lg mt-4 mb-6 max-w-3xl"
-              style={{ color: C.textSecondary }}
-            >
-              AIRBASE needs minimal human staff. AI handles calculations, dispatch, safety checks,
-              quoting, compliance, and post-flight analytics — giving us an enormous cost and
-              scalability advantage over traditional logistics.
-            </motion.p>
-          </Stagger>
-
-          {/* Headcount comparison */}
-          <Stagger className="grid md:grid-cols-2 gap-8 mt-8" delay={0.2}>
-            {/* Traditional */}
-            <motion.div
-              variants={fadeUp}
-              className="rounded-2xl p-5 sm:p-8 border"
-              style={{ background: C.bgAlt, borderColor: C.border, boxShadow: C.shadow }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <Truck className="w-6 h-6" style={{ color: C.textMuted }} />
-                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
-                  Traditional Courier
-                </span>
-              </div>
-              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.textMuted }}>
-                ~50
-              </div>
-              <div className="text-sm mb-6" style={{ color: C.textMuted }}>
-                Employees needed for 100 daily deliveries
-              </div>
-              <ul className="space-y-2">
-                {["30+ drivers", "5 dispatchers", "4 warehouse staff", "3 customer service", "3 management", "5+ admin & compliance"].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textMuted }}>
-                    <Users className="w-3 h-3 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* AIRBASE */}
-            <motion.div
-              variants={fadeUp}
-              className="rounded-2xl p-5 sm:p-8 border-2 relative"
-              style={{ background: C.bgCard, borderColor: C.accent + "30", boxShadow: `0 4px 24px rgba(211,47,47,0.08)` }}
-            >
-              <div className="absolute -top-3 right-4 sm:right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
-                style={{ background: C.accent }}>
-                95% LESS STAFF
-              </div>
-              <div className="flex items-center gap-3 mb-6">
-                <Cpu className="w-6 h-6" style={{ color: C.accent }} />
-                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
-                  AIRBASE (AI-Powered)
-                </span>
-              </div>
-              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.accent }}>
-                ~3
-              </div>
-              <div className="text-sm mb-6" style={{ color: C.textSecondary }}>
-                Core team for 100+ daily deliveries
-              </div>
-              <ul className="space-y-2">
-                {[
-                  { text: "Licensed drone pilots (per-shift)", icon: Rocket },
-                  { text: "1 Safety Manager / Operations Lead", icon: Shield },
-                  { text: "AI: dispatch, routing, quoting, compliance", icon: Cpu },
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
-                    <item.icon className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
-                    {item.text}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </Stagger>
-
-          {/* What AI automates */}
-          <Stagger delay={0.5}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.accentLight, borderColor: C.borderAccent }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Zap className="w-5 h-5" style={{ color: C.accent }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
-                  What Our AI Automates
-                </span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4">
-                {[
-                  { title: "Operations", items: ["Intelligent dispatch & routing", "Real-time fleet management", "Automated mission planning"] },
-                  { title: "Business", items: ["Instant quote generation", "Invoice & billing automation", "Customer notifications"] },
-                  { title: "Compliance", items: ["SORA risk assessment", "Airspace deconfliction", "Post-flight safety analytics"] },
-                ].map((col) => (
-                  <div key={col.title}>
-                    <div className="text-xs font-mono uppercase tracking-wider mb-2 font-semibold" style={{ color: C.accent }}>
-                      {col.title}
-                    </div>
-                    <ul className="space-y-1.5">
-                      {col.items.map((item, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
-                          <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </Stagger>
-
-          {/* Investor punchline */}
-          <Stagger delay={0.7}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 grid md:grid-cols-3 gap-6"
-            >
-              {[
-                { metric: "~95%", label: "Lower headcount vs. traditional logistics", icon: Users },
-                { metric: "10x", label: "Deliveries per employee (projected)", icon: TrendingUp },
-                { metric: "Linear", label: "Revenue scales, headcount doesn't", icon: Rocket },
-              ].map((kpi) => (
-                <div
-                  key={kpi.label}
-                  className="rounded-xl p-5 border text-center"
-                  style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-                >
-                  <kpi.icon className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
-                  <div className="text-2xl font-bold font-mono" style={{ color: C.accent }}>{kpi.metric}</div>
-                  <div className="text-xs mt-1" style={{ color: C.textMuted }}>{kpi.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </Stagger>
-        </div>
-      </section>
-
-      {/* ═══ SLIDE 7: COMPETITIVE ADVANTAGE ═══ */}
-      <section
-        ref={setRef(7)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
-        style={{ scrollSnapAlign: "start" }}
-      >
-        {/* Background drone image */}
-        <div className="absolute inset-0 pointer-events-none">
-          <img
-            src="/images/flycart-scene-1.jpg"
-            alt=""
-            className="w-full h-full object-cover opacity-[0.04]"
-          />
-        </div>
-
-        <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="07" text="Competitive Advantage" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.text }}
-            >
-              Our Moat Is{" "}
-              <span style={{ color: C.gold }}>Certified, Not Just Claimed</span>
-            </motion.h2>
-          </Stagger>
-
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            {/* LUC */}
-            <Stagger delay={0.2}>
-              <motion.div
-                variants={fadeUp}
-                className="rounded-2xl p-6 border"
-                style={{ borderColor: C.gold + "20", background: C.goldLight, boxShadow: C.shadow }}
-              >
-                <Lock className="w-8 h-8 mb-4" style={{ color: C.gold }} />
-                <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.gold }}>
-                  LUC Certification — In Progress
-                </div>
-                <ul className="space-y-2">
-                  {[
-                    "Actively pursuing LUC — SORA / BAZL applications filed",
-                    "Will enable flights in populated areas without per-flight approval",
-                    "Fewer than 12 operators pursuing LUC in Switzerland",
-                    "18-24 months minimum for competitors starting today",
-                  ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
-                      <Shield className="w-3 h-3 mt-1 shrink-0" style={{ color: C.gold }} />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </Stagger>
-
-            {/* DJI Fleet: FlyCart 100 + 200 */}
-            <Stagger delay={0.4}>
-              <motion.div
-                variants={fadeUp}
-                className="rounded-2xl p-6 border relative overflow-hidden"
-                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-              >
-                <img
-                  src="/assets/flycart-100-cutout.png"
-                  alt="DJI FlyCart fleet"
-                  className="absolute -right-6 -top-2 w-28 h-28 object-contain opacity-15 pointer-events-none"
-                />
-                <Box className="w-8 h-8 mb-4 relative z-10" style={{ color: C.accent }} />
-                <div className="text-sm font-mono uppercase tracking-wider mb-2 relative z-10" style={{ color: C.accent }}>
-                  DJI FlyCart 100 + 200
-                </div>
-                <ul className="space-y-2">
-                  {[
-                    "FlyCart 100: 100 kg payload (MTOW 170 kg) — proven workhorse, IP55",
-                    "FlyCart 200: 200 kg payload, 36 km range — next-gen heavy-lift",
-                    "Swarm capability: up to 600 kg coordinated (4× FC200)",
-                    "DJI enterprise partnership — locked fleet access",
-                  ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
-                      <CheckCircle2 className="w-3 h-3 mt-1 shrink-0" style={{ color: C.accent }} />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </Stagger>
-
-            {/* AI Safety */}
-            <Stagger delay={0.6}>
-              <motion.div
-                variants={fadeUp}
-                className="rounded-2xl p-6 border"
-                style={{ background: C.greenLight, borderColor: C.green + "20", boxShadow: C.shadow }}
-              >
-                <Cpu className="w-8 h-8 mb-4" style={{ color: C.green }} />
-                <div className="text-sm font-mono uppercase tracking-wider mb-2" style={{ color: C.green }}>
-                  AI Safety System
-                </div>
-                <ul className="space-y-2">
-                  {[
-                    "Proprietary auto-abort on geofence, weather, or battery",
-                    "Lower insurance premiums = structural cost advantage",
-                    "Data flywheel: every flight improves routing & safety",
-                  ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
-                      <Zap className="w-3 h-3 mt-1 shrink-0" style={{ color: C.green }} />
-                      {text}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </Stagger>
-          </div>
-
-          {/* Strategic Partnership */}
-          <Stagger delay={0.8}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <Rocket className="w-5 h-5" style={{ color: C.accent }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.accent }}>
-                  Strategic Partnership
-                </span>
-              </div>
-              <div className="text-lg font-bold mb-2" style={{ color: C.text }}>
-                Loft Dynamics — World-Leading Flight Simulator Company
-              </div>
-              <p className="text-sm" style={{ color: C.textSecondary }}>
-                Partnership with Loft Dynamics gives AIRBASE access to world-class flight simulation training infrastructure — a strong signal for investors and a competitive edge in pilot proficiency and safety certification.
-              </p>
-            </motion.div>
-          </Stagger>
-
-          <Stagger delay={1.0}>
-            <motion.blockquote
-              variants={fadeUp}
-              className="mt-10 text-xl md:text-2xl font-light italic text-center"
-              style={{ color: C.textSecondary }}
-            >
-              &ldquo;We are not selling drones. We are selling{" "}
-              <span className="font-semibold not-italic" style={{ color: C.gold }}>
-                permission to fly
-              </span>
-              .&rdquo;
-            </motion.blockquote>
-          </Stagger>
-        </div>
-      </section>
-
-      {/* ═══ SLIDE 8: SUSTAINABILITY / ZERO EMISSIONS ═══ */}
-      <section
-        ref={setRef(8)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
-        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
-      >
-        {/* Green gradient background */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(22,163,74,0.04) 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative max-w-6xl mx-auto w-full">
-          <SlideLabel number="08" text="Sustainability" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.text }}
-            >
-              Near-Zero Carbon Logistics.{" "}
-              <span style={{ color: C.green }}>Green by Design.</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-lg mt-4 mb-6 max-w-3xl"
-              style={{ color: C.textSecondary }}
-            >
-              AIRBASE doesn&apos;t just reduce costs &mdash; we eliminate emissions. Our drones are 100% electric,
-              and our fleet vehicles are planned to run on solar power. The result: a near-zero carbon logistics operation
-              that sets a new industry standard.
-            </motion.p>
-          </Stagger>
-
-          {/* CO2 comparison — visual impact */}
-          <Stagger className="grid md:grid-cols-2 gap-8 mt-8" delay={0.2}>
-            {/* Traditional */}
-            <motion.div
-              variants={fadeUp}
-              className="rounded-2xl p-5 sm:p-8 border"
-              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <Truck className="w-6 h-6" style={{ color: C.textMuted }} />
-                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.textMuted }}>
-                  Traditional Diesel Courier
-                </span>
-              </div>
-              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.red }}>
-                ~210g
-              </div>
-              <div className="text-sm mb-4" style={{ color: C.textMuted }}>
-                CO&#8322; per km (diesel van, avg.)
-              </div>
-              <div className="space-y-3">
-                {[
-                  { label: "Fuel", detail: "Diesel — direct CO\u2082 emissions", pct: 70 },
-                  { label: "Fleet maintenance", detail: "Oil, parts, disposal", pct: 15 },
-                  { label: "Infrastructure", detail: "Depots, roads, parking", pct: 15 },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span style={{ color: C.textSecondary }}>{item.label}</span>
-                      <span style={{ color: C.textMuted }}>{item.detail}</span>
-                    </div>
-                    <div className="h-2 rounded-full overflow-hidden" style={{ background: C.border }}>
-                      <div className="h-full rounded-full" style={{ width: `${item.pct}%`, background: C.red + "60" }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* AIRBASE */}
-            <motion.div
-              variants={fadeUp}
-              className="rounded-2xl p-5 sm:p-8 border-2 relative"
-              style={{ background: C.greenLight, borderColor: C.green + "30", boxShadow: `0 4px 24px rgba(22,163,74,0.08)` }}
-            >
-              <div className="absolute -top-3 right-4 sm:right-6 px-3 py-1 rounded-full text-xs font-mono font-bold text-white"
-                style={{ background: C.green }}>
-                NEAR-ZERO EMISSIONS
-              </div>
-              <div className="flex items-center gap-3 mb-6">
-                <Leaf className="w-6 h-6" style={{ color: C.green }} />
-                <span className="text-xs sm:text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
-                  AIRBASE (Electric + Solar)
-                </span>
-              </div>
-              <div className="text-4xl sm:text-5xl font-bold font-mono mb-2" style={{ color: C.green }}>
-                ~0g
-              </div>
-              <div className="text-sm mb-4" style={{ color: C.textSecondary }}>
-                CO&#8322; per delivery (direct emissions)
-              </div>
-              <div className="space-y-3">
-                {[
-                  { icon: Battery, text: "Electric drones — zero direct emissions per flight", color: C.green },
-                  { icon: Sun, text: "Solar-powered fleet vehicles (planned) — renewable ground ops", color: C.gold },
-                  { icon: Leaf, text: "No fuel, no exhaust — significantly lower noise than helicopter alternatives", color: C.green },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm" style={{ color: C.textSecondary }}>
-                    <item.icon className="w-4 h-4 shrink-0" style={{ color: item.color }} />
-                    {item.text}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </Stagger>
-
-          {/* ESG key metrics */}
-          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8" delay={0.5}>
-            {[
-              { value: "0g", label: "Direct CO\u2082 per flight", sub: "100% electric drones", icon: Battery, color: C.green },
-              { value: "100%", label: "Solar fleet vehicles (target)", sub: "Planned renewable ground ops", icon: Sun, color: C.gold },
-              { value: "~95%", label: "Less CO\u2082 vs diesel courier", sub: "Full lifecycle comparison", icon: Leaf, color: C.green },
-              { value: "Low", label: "Noise vs helicopters", sub: "Significantly quieter operations", icon: Sparkles, color: C.accent },
-            ].map((kpi) => (
-              <motion.div
-                key={kpi.label}
-                variants={fadeUp}
-                className="rounded-xl p-5 border text-center"
-                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-              >
-                <kpi.icon className="w-5 h-5 mx-auto mb-2" style={{ color: kpi.color }} />
-                <div className="text-2xl font-bold font-mono" style={{ color: kpi.color }}>{kpi.value}</div>
-                <div className="text-xs mt-1 font-semibold" style={{ color: C.textSecondary }}>{kpi.label}</div>
-                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>{kpi.sub}</div>
-              </motion.div>
-            ))}
-          </Stagger>
-
-          {/* The full green story */}
-          <Stagger delay={0.7}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.greenLight, borderColor: C.green + "20" }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Leaf className="w-5 h-5" style={{ color: C.green }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
-                  The Full Green Story
-                </span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  {
-                    title: "Electric Drones",
-                    desc: "The DJI FlyCart 100 & 200 run on battery power — zero combustion, zero direct CO\u2082 emissions per flight. Charging from renewable grid sources reduces even indirect footprint.",
-                    icon: Battery,
-                  },
-                  {
-                    title: "Solar Fleet Vehicles (Planned)",
-                    desc: "Our ground support and logistics vehicles will be solar-powered — from transport to the launch pad to equipment hauling. The target is a fully renewable operational chain.",
-                    icon: Sun,
-                  },
-                  {
-                    title: "ESG Investor Appeal",
-                    desc: "Near-zero carbon logistics is a powerful ESG differentiator. Institutional investors increasingly require quantifiable sustainability metrics — AIRBASE delivers them.",
-                    icon: TrendingUp,
-                  },
-                ].map((col) => (
-                  <div key={col.title}>
-                    <col.icon className="w-5 h-5 mb-2" style={{ color: C.green }} />
-                    <div className="text-sm font-semibold mb-1" style={{ color: C.text }}>{col.title}</div>
-                    <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>{col.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </Stagger>
-
-          {/* Punchline */}
-          <Stagger delay={0.9}>
-            <motion.blockquote
-              variants={fadeUp}
-              className="mt-10 text-xl md:text-2xl font-light italic text-center"
-              style={{ color: C.textSecondary }}
-            >
-              &ldquo;Electric drones + solar-powered fleet ={" "}
-              <span className="font-semibold not-italic" style={{ color: C.green }}>
-                near-zero carbon logistics
-              </span>
-              . The future of delivery is green.&rdquo;
-            </motion.blockquote>
-          </Stagger>
-        </div>
-      </section>
-
-      {/* ═══ SLIDE 9: COMPETITIVE LANDSCAPE ═══ */}
-      <section
-        ref={setRef(9)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
-      >
-        <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="09" text="Competitive Landscape" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.text }}
-            >
-              The Heavy-Lift Niche Is{" "}
-              <span style={{ color: C.accent }}>Wide Open</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-lg mt-4 mb-12 max-w-2xl"
-              style={{ color: C.textSecondary }}
-            >
-              Swiss drone operators are certified — but none serve the 100–200 kg heavy-cargo B2B segment.
-              AIRBASE is the first mover in an uncontested niche.
-            </motion.p>
-          </Stagger>
-
-          {/* ── Comparison Matrix ── */}
-          <Stagger delay={0.2}>
-            <motion.div
-              variants={fadeUp}
-              className="overflow-x-auto rounded-2xl border"
-              style={{ borderColor: C.border, boxShadow: C.shadowLg }}
-            >
-              <table className="w-full text-xs sm:text-sm" style={{ background: C.bgCard }}>
-                <thead>
-                  <tr style={{ borderBottom: `2px solid ${C.border}` }}>
-                    {["", "Matternet", "SwissDrones", "Others", "AIRBASE"].map((h, i) => (
-                      <th
-                        key={i}
-                        className={`px-2 sm:px-4 py-3 sm:py-4 text-left font-mono uppercase tracking-wider text-xs ${i === 4 ? "rounded-tr-2xl" : ""} ${i === 0 ? "rounded-tl-2xl" : ""}`}
-                        style={{
-                          color: i === 4 ? C.bg : C.textMuted,
-                          background: i === 4 ? C.accent : "transparent",
-                          minWidth: i === 0 ? 100 : 110,
-                        }}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    {
-                      label: "LUC Status",
-                      vals: [
-                        "✅ FOCA/BAZL LUC (Sep 2024, Matternet press release)",
-                        "✅ EASA LUC via Transport Malta (May 2022, SwissDrones press release)",
-                        "❌ No LUC",
-                        "🔄 In Progress (BAZL)",
-                      ],
-                    },
-                    {
-                      label: "Payload",
-                      vals: [
-                        "~2 kg",
-                        ">50 kg (SDO50 V2)",
-                        "5–25 kg",
-                        "100–200 kg (FlyCart 100 & 200)",
-                      ],
-                    },
-                    {
-                      label: "Service Model",
-                      vals: [
-                        "Captive fleet ops",
-                        "Custom helicopter sales",
-                        "Project-based",
-                        "B2B Franchise (DaaS)",
-                      ],
-                    },
-                    {
-                      label: "Focus",
-                      vals: [
-                        "Medical lab samples",
-                        "Inspection & SAR",
-                        "Survey / Logistics",
-                        "Heavy cargo delivery",
-                      ],
-                    },
-                    {
-                      label: "Scalability",
-                      vals: [
-                        "Hospital networks only",
-                        "Custom builds — slow",
-                        "Per-project",
-                        "Franchise replication",
-                      ],
-                    },
-                    {
-                      label: "AI Platform",
-                      vals: ["No", "No", "Limited", "✅ Full AI dashboard"],
-                    },
-                  ].map((row, ri) => (
-                    <tr
-                      key={ri}
-                      style={{
-                        borderBottom: `1px solid ${C.border}`,
-                        background: ri % 2 === 0 ? "transparent" : C.bgAlt,
-                      }}
-                    >
-                      <td
-                        className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-xs uppercase tracking-wider"
-                        style={{ color: C.textMuted }}
-                      >
-                        {row.label}
-                      </td>
-                      {row.vals.map((v, vi) => (
-                        <td
-                          key={vi}
-                          className="px-2 sm:px-4 py-2 sm:py-3"
-                          style={{
-                            color: vi === 3 ? C.accent : C.textSecondary,
-                            fontWeight: vi === 3 ? 600 : 400,
-                            background: vi === 3 ? C.accentLight : "transparent",
-                          }}
-                        >
-                          {v}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </motion.div>
-          </Stagger>
-
-          {/* ── Animated Payload Comparison ── */}
-          <Stagger delay={0.4}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-10 rounded-2xl p-6 border"
-              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-            >
-              <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
-                Max Payload Capacity (kg) — Visual Comparison
-              </div>
-              <div className="space-y-4">
-                {[
-                  { name: "Matternet", payload: 2, color: C.textMuted + "80", scalability: "Low" },
-                  { name: "Others", payload: 15, color: C.textMuted + "60", scalability: "Med" },
-                  { name: "SwissDrones", payload: 50, color: C.textMuted, scalability: "Low" },
-                  { name: "AIRBASE", payload: 200, color: C.accent, scalability: "High" },
-                ].map((comp, i) => (
-                  <div key={comp.name} className="flex items-center gap-3">
-                    <span className="text-xs sm:text-sm font-semibold w-24 sm:w-28 text-right shrink-0" style={{ color: i === 3 ? C.accent : C.textSecondary }}>
-                      {comp.name}
-                    </span>
-                    <div className="flex-1 h-8 sm:h-9 rounded-lg overflow-hidden relative" style={{ background: C.border }}>
-                      <motion.div
-                        className="h-full rounded-lg flex items-center px-3"
-                        style={{ background: comp.color }}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(comp.payload / 200) * 100}%` }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ duration: 1, delay: i * 0.15, ease: "easeOut" }}
-                      >
-                        <span className="text-xs font-mono font-bold text-white whitespace-nowrap">
-                          {comp.payload} kg
-                        </span>
-                      </motion.div>
-                    </div>
-                    <span className="text-[10px] font-mono w-10 shrink-0" style={{ color: i === 3 ? C.accent : C.textMuted }}>
-                      {comp.scalability}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-between mt-3 text-[10px] font-mono" style={{ color: C.textMuted }}>
-                <span>0 kg</span>
-                <span>Scalability →</span>
-                <span>200 kg</span>
-              </div>
-            </motion.div>
-          </Stagger>
-
-          {/* ── Positioning Punchline ── */}
-          <div className="grid md:grid-cols-3 gap-4 mt-8">
-            {[
-              {
-                icon: Package,
-                color: C.textMuted,
-                label: "Matternet",
-                desc: "Light medical cargo — few kg",
-              },
-              {
-                icon: Eye,
-                color: C.textMuted,
-                label: "SwissDrones",
-                desc: "Custom helicopters for inspection",
-              },
-              {
-                icon: Truck,
-                color: C.accent,
-                label: "AIRBASE",
-                desc: "100–200 kg heavy-lift B2B franchise with AI",
-              },
-            ].map((item, i) => (
-              <Stagger key={i} delay={0.6 + i * 0.15}>
-                <motion.div
-                  variants={fadeUp}
-                  className="rounded-2xl p-5 border text-center"
-                  style={{
-                    borderColor: i === 2 ? C.accent : C.border,
-                    background: i === 2 ? C.accentLight : C.bgCard,
-                    boxShadow: i === 2 ? C.shadowLg : C.shadow,
-                  }}
-                >
-                  <item.icon
-                    className="w-7 h-7 mx-auto mb-3"
-                    style={{ color: item.color }}
-                  />
-                  <div
-                    className="font-bold text-base mb-1"
-                    style={{ color: i === 2 ? C.accent : C.text }}
-                  >
-                    {item.label}
-                  </div>
-                  <div className="text-sm" style={{ color: C.textSecondary }}>
-                    {item.desc}
-                  </div>
-                </motion.div>
-              </Stagger>
-            ))}
-          </div>
-
-          <Stagger delay={1.0}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-10 rounded-2xl p-5 border text-center"
-              style={{ background: C.accentGlow, borderColor: C.borderAccent }}
-            >
-              <p className="text-lg md:text-xl font-semibold" style={{ color: C.accent }}>
-                The 100–200 kg heavy-lift B2B franchise niche in Switzerland is completely empty.
-              </p>
-              <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
-                AIRBASE would be the absolute pioneer in heavy-cargo drone services under LUC.
-              </p>
-            </motion.div>
-          </Stagger>
-        </div>
-      </section>
-
       {/* ═══ SLIDE 10: TRACTION ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="10" text="Traction" />
+          <SlideLabel number="07" text="Traction" />
 
           <Stagger>
             <motion.h2
@@ -2556,14 +2063,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 11: TEAM ═══ */}
+      {/* ═══ SLIDE 9: TEAM ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(8)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
-        <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="11" text="Team" />
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="08" text="Team" />
 
           <Stagger>
             <motion.h2
@@ -2571,126 +2078,159 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              15 Years of Drone Expertise.{" "}
-              <span style={{ color: C.accent }}>Built by AI.</span>
+              The People Behind{" "}
+              <span style={{ color: C.accent }}>AIRBASE</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-lg" style={{ color: C.textMuted }}>
-              Lean headcount with enterprise-grade output.
-            </motion.p>
           </Stagger>
 
-          {/* 8 Licensed Pilots — prominent callout */}
+          {/* 8 Licensed Pilots callout */}
           <Stagger delay={0.2}>
             <motion.div
               variants={fadeUp}
-              className="mt-10 rounded-2xl p-5 sm:p-6 border flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+              className="mt-8 rounded-2xl p-4 sm:p-5 border flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5"
               style={{ background: C.greenLight, borderColor: C.green + "20", boxShadow: C.shadow }}
             >
               <div
-                className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shrink-0"
+                className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                 style={{ background: C.green + "15" }}
               >
-                <Shield className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: C.green }} />
+                <Shield className="w-6 h-6" style={{ color: C.green }} />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono" style={{ color: C.green }}>
+                <div className="text-2xl sm:text-3xl font-bold font-mono" style={{ color: C.green }}>
                   8 Licensed Pilots
                 </div>
-                <div className="text-sm mt-1" style={{ color: C.textSecondary }}>
-                  8 fully certified commercial drone pilots ready to operate — trained, licensed, and flight-ready from day one.
+                <div className="text-sm mt-0.5" style={{ color: C.textSecondary }}>
+                  Fully certified, trained, and flight-ready from day one.
                 </div>
               </div>
             </motion.div>
           </Stagger>
 
-          <div className="grid md:grid-cols-2 gap-8 mt-8">
-            {/* Founder */}
+          {/* Leadership */}
+          <div className="grid md:grid-cols-2 gap-6 mt-6">
             <Stagger delay={0.3}>
               <motion.div
                 variants={fadeUp}
-                className="rounded-2xl p-6 border"
+                className="rounded-2xl p-5 border"
                 style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
+                {/* Photo placeholder for founder */}
                 <div
-                  className="w-16 h-16 rounded-2xl mb-4 flex items-center justify-center"
+                  className="w-20 h-20 rounded-2xl mb-3 flex items-center justify-center overflow-hidden"
                   style={{ background: C.accentGlow }}
                 >
-                  <Users className="w-7 h-7" style={{ color: C.accent }} />
+                  <img
+                    src="/images/team/benjamin-rubi.jpg"
+                    alt="Benjamin Rubi"
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<span style="font-size:1.5rem;font-weight:bold;color:#D32F2F">BR</span>'; }}
+                  />
                 </div>
                 <div className="text-lg font-bold" style={{ color: C.text }}>
-                  Founder / CEO
+                  Benjamin Rubi
                 </div>
-                <div className="text-xs font-mono uppercase tracking-wider mt-1" style={{ color: C.accent }}>
-                  Vision &middot; Strategy &middot; Regulatory &middot; Operations
+                <div className="text-xs font-mono uppercase tracking-wider mt-0.5" style={{ color: C.accent }}>
+                  Founder &amp; CEO
                 </div>
-                <div className="mt-3 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ background: C.accentGlow, color: C.accent }}>
-                  15+ Years in the Drone Business
+                <div className="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ background: C.accentGlow, color: C.accent }}>
+                  15+ Years Drone Industry
                 </div>
-                <p className="text-sm mt-3" style={{ color: C.textSecondary }}>
-                  Over 15 years of hands-on experience in the drone industry — from operations and regulatory navigation to building Switzerland&apos;s first AI-powered drone logistics platform. Swiss precision meets Silicon Valley speed.
+                <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
+                  Operations, regulatory navigation, and building Switzerland&apos;s first AI-powered drone logistics platform.
                 </p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {["Drone Operations", "Strategy", "Swiss Market", "BAZL Relations", "15yr Industry Veteran"].map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-1 rounded-md" style={{ background: C.accentGlow, color: C.accent }}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
               </motion.div>
             </Stagger>
 
-            {/* AI Team */}
-            <Stagger delay={0.5}>
+            <Stagger delay={0.4}>
               <motion.div
                 variants={fadeUp}
-                className="rounded-2xl p-6 border"
+                className="rounded-2xl p-5 border"
                 style={{ background: C.accentLight, borderColor: C.borderAccent, boxShadow: C.shadow }}
               >
                 <div
-                  className="w-16 h-16 rounded-2xl mb-4 flex items-center justify-center"
+                  className="w-20 h-20 rounded-2xl mb-3 flex items-center justify-center overflow-hidden"
                   style={{ background: C.accentGlow }}
                 >
-                  <Cpu className="w-7 h-7" style={{ color: C.accent }} />
+                  <img
+                    src="/images/team/chris-graf.jpg"
+                    alt="Chris Jon Graf"
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<span style="font-size:1.5rem;font-weight:bold;color:#D32F2F">CG</span>'; }}
+                  />
                 </div>
                 <div className="text-lg font-bold" style={{ color: C.text }}>
-                  AI Operations Team
+                  Chris Jon Graf
                 </div>
-                <div className="text-xs font-mono uppercase tracking-wider mt-1" style={{ color: C.accent }}>
-                  Not assistants — operators
+                <div className="text-xs font-mono uppercase tracking-wider mt-0.5" style={{ color: C.accent }}>
+                  Head of AI Operations
                 </div>
-                <div className="grid grid-cols-2 gap-3 mt-4">
-                  {[
-                    "CTO / Technology",
-                    "CMO / Brand",
-                    "Legal / SORA",
-                    "Strategy & QA",
-                    "Sales & Finance",
-                    "Art Direction",
-                  ].map((role) => (
-                    <div key={role} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}>
-                      <Zap className="w-3 h-3 shrink-0" style={{ color: C.accent }} />
-                      {role}
-                    </div>
-                  ))}
-                </div>
+                <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
+                  Leads international tech teams across Hungary, Ukraine and India. AI-first approach to fleet operations.
+                </p>
               </motion.div>
             </Stagger>
           </div>
 
+          {/* Full team grid with photo placeholders */}
+          <Stagger className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-6" delay={0.5}>
+            {[
+              { name: "Dannick Riteco", title: "SORA & Safety", initials: "DR" },
+              { name: "Nikita Eberhart", title: "Deputy MD", initials: "NE" },
+              { name: "Claude Gfeller", title: "Operations", initials: "CG" },
+              { name: "Ralph Menth", title: "Marketing", initials: "RM" },
+              { name: "Jamie Wyss", title: "Support Lead", initials: "JW" },
+              { name: "Nicolas Jud", title: "Fleet Manager", initials: "NJ" },
+              { name: "Tobias Pohl", title: "Drone Pilot", initials: "TP" },
+              { name: "Lars Wanner", title: "Drone Pilot", initials: "LW" },
+              { name: "Sidario Belzarini", title: "Drone Pilot", initials: "SB" },
+              { name: "Janis Perron", title: "Drone Pilot", initials: "JP" },
+            ].map((member) => (
+              <motion.div
+                key={member.name}
+                variants={scaleUp}
+                className="rounded-xl border p-3 text-center flex flex-col items-center gap-2"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                {/* Photo placeholder with fallback initials */}
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center overflow-hidden"
+                  style={{ background: C.accentLight, color: C.accent }}
+                >
+                  <img
+                    src={`/images/team/${member.name.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:0.875rem;font-weight:bold">${member.initials}</span>`; }}
+                  />
+                </div>
+                <div>
+                  <div className="text-xs font-bold leading-tight" style={{ color: C.text }}>
+                    {member.name}
+                  </div>
+                  <div className="text-[10px] font-mono mt-0.5" style={{ color: C.accent }}>
+                    {member.title}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </Stagger>
+
+          {/* Advisory */}
           <Stagger delay={0.6}>
             <motion.div
               variants={fadeUp}
-              className="mt-8 rounded-2xl p-6 border"
+              className="mt-6 rounded-2xl p-5 border"
               style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-2">
                 <Shield className="w-4 h-4" style={{ color: C.gold }} />
                 <span className="text-sm font-mono uppercase tracking-wider" style={{ color: C.gold }}>
-                  Advisory / Partners
+                  Advisory &amp; Partners
                 </span>
               </div>
               <p className="text-sm" style={{ color: C.textSecondary }}>
-                <strong>Loft Dynamics</strong> (world-leading flight simulator company) &middot; DJI Enterprise Channel &middot; Swiss aviation counsel (BAZL regulatory advisor) &middot; EASA compliance network
+                <strong>Loft Dynamics</strong> (flight simulators) &middot; DJI Enterprise Channel &middot; Swiss aviation counsel (BAZL regulatory advisor)
               </p>
             </motion.div>
           </Stagger>
@@ -2699,12 +2239,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 12: FINANCIAL PROJECTIONS ═══ */}
       <section
-        ref={setRef(12)}
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="12" text="Financial Projections" />
+          <SlideLabel number="09" text="Financial Projections" />
 
           <Stagger>
             <motion.h2
@@ -2800,85 +2340,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 13: TEAM ═══ */}
-      <section
-        ref={setRef(13)}
-        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
-        style={{ scrollSnapAlign: "start" }}
-      >
-        <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="13" text="Our Team" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-              style={{ color: C.text }}
-            >
-              The People Behind{" "}
-              <span style={{ color: C.accent }}>AIRBASE</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-base md:text-lg max-w-2xl mb-12"
-              style={{ color: C.textSecondary }}
-            >
-              A dedicated team of aviation experts, licensed pilots, and technology leaders building the future of drone logistics in Switzerland.
-            </motion.p>
-          </Stagger>
-
-          <Stagger className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5" delay={0.2}>
-            {[
-              { name: "Benjamin Rubi", title: "Founder & CEO", desc: "15+ years aviation experience, Swiss drone franchise pioneer" },
-              { name: "Chris Jon Graf", title: "Head of AI Operations", desc: "Leads international tech teams across Hungary, Ukraine and India" },
-              { name: "Dannick Riteco", title: "SORA Specialist & Safety Manager", desc: "Aviation safety expert, partner at SORA Consulting" },
-              { name: "Jamie Wyss", title: "Customer Support Lead", desc: "First point of contact for franchise partners and clients" },
-              { name: "Nikita Eberhart", title: "Deputy Managing Director", desc: "Deputy to CEO, operational leadership" },
-              { name: "Claude Gfeller", title: "Operations Manager", desc: "Oversees day-to-day operations and coordination" },
-              { name: "Ralph Menth", title: "Marketing Project Manager", desc: "Manages marketing campaigns and brand partnerships" },
-              { name: "Tobias Pohl", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
-              { name: "Lars Wanner", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
-              { name: "Sidario Belzarini", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
-              { name: "Janis Perron", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
-              { name: "Nicolas Jud", title: "Operations & Fleet Manager", desc: "Fleet logistics and operational planning" },
-            ].map((member, i) => (
-              <motion.div
-                key={i}
-                variants={scaleUp}
-                className="rounded-xl border p-4 text-center flex flex-col items-center gap-3"
-                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
-              >
-                <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"
-                  style={{ background: C.accentLight, color: C.accent }}
-                >
-                  {member.name.split(" ").map((n) => n[0]).join("")}
-                </div>
-                <div>
-                  <div className="text-sm font-bold leading-tight" style={{ color: C.text }}>
-                    {member.name}
-                  </div>
-                  <div className="text-xs font-mono mt-1" style={{ color: C.accent }}>
-                    {member.title}
-                  </div>
-                  <div className="text-xs mt-1 leading-snug" style={{ color: C.textMuted }}>
-                    {member.desc}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
       {/* ═══ SLIDE 14: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(14)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="14" text="The Ask" />
+          <SlideLabel number="10" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -3012,7 +2481,7 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 15: VISION ═══ */}
       <section
-        ref={setRef(15)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -3026,7 +2495,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="15" text="Vision" />
+          <SlideLabel number="11" text="Vision" />
 
           <Stagger>
             <motion.h2
