@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUserId, getUserRole, isClerkConfigured } from "@/lib/demo-auth";
+import { getAuthUserId, getUserRole } from "@/lib/demo-auth";
 import { renderToBuffer, type DocumentProps } from "@react-pdf/renderer";
 import { createElement, type ReactElement } from "react";
 import { db } from "@/lib/db";
@@ -8,7 +8,7 @@ import {
   safetyOccurrences,
   franchiseTenants,
 } from "@/lib/db/schema";
-import { and, gte, lte, eq, desc } from "drizzle-orm";
+import { and, gte, lte, eq, desc, inArray, or } from "drizzle-orm";
 import archiver from "archiver";
 import { Readable } from "node:stream";
 import { randomUUID } from "node:crypto";
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
 
   // Accountable Manager only (BAZL LUC Tier 3)
   const role = await getUserRole(userId);
-  if (isClerkConfigured && role !== "accountable_manager") {
+  if (role !== "accountable_manager") {
     return NextResponse.json(
       { error: "Forbidden: accountable_manager role required for BAZL audit export" },
       { status: 403 }
@@ -72,6 +72,15 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const MAX_RANGE_DAYS = 180;
+  const rangeDays = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (rangeDays > MAX_RANGE_DAYS) {
+    return NextResponse.json(
+      { error: `Date range exceeds maximum of ${MAX_RANGE_DAYS} days. Please narrow your export period.` },
+      { status: 400 }
+    );
+  }
+
   // Fetch all authorizations in the date range
   const authorizations = await db
     .select()
@@ -84,14 +93,20 @@ export async function GET(req: NextRequest) {
     )
     .orderBy(desc(flightAuthorizations.decidedAt));
 
-  // Fetch all SORs in the date range
+  // Fetch SORs: those reported in the date range OR linked to in-range authorizations
+  const authIds = authorizations.map((a) => a.id);
   const occurrences = await db
     .select()
     .from(safetyOccurrences)
     .where(
-      and(
-        gte(safetyOccurrences.reportedAt, fromDate),
-        lte(safetyOccurrences.reportedAt, toDate)
+      or(
+        and(
+          gte(safetyOccurrences.reportedAt, fromDate),
+          lte(safetyOccurrences.reportedAt, toDate)
+        ),
+        ...(authIds.length > 0
+          ? [inArray(safetyOccurrences.authorizationId, authIds)]
+          : [])
       )
     )
     .orderBy(desc(safetyOccurrences.reportedAt));
@@ -106,11 +121,12 @@ export async function GET(req: NextRequest) {
   ];
   const tenantMap = new Map<string, string>();
   if (tenantIds.length > 0) {
-    for (const tid of tenantIds) {
-      const tenant = await db.query.franchiseTenants.findFirst({
-        where: eq(franchiseTenants.id, tid),
-      });
-      if (tenant) tenantMap.set(tid, tenant.name);
+    const tenants = await db
+      .select({ id: franchiseTenants.id, name: franchiseTenants.name })
+      .from(franchiseTenants)
+      .where(inArray(franchiseTenants.id, tenantIds));
+    for (const t of tenants) {
+      tenantMap.set(t.id, t.name);
     }
   }
 
@@ -261,10 +277,11 @@ export async function GET(req: NextRequest) {
   // CSV summary of authorizations
   const csvHeader =
     "authorization_id,decided_at,decision,decision_by,sail_level,grc_score,arc_level,overall_risk,pickup_lat,pickup_lng,delivery_lat,delivery_lng,altitude_agl\n";
+  const q = (v: string | null | undefined) => `"${(v ?? "").replace(/"/g, '""')}"`;
   const csvRows = authorizations
     .map(
       (a) =>
-        `${a.id},${a.decidedAt?.toISOString() ?? ""},${a.decision},${a.decisionBy},${a.sailLevel ?? ""},${a.grcScore ?? ""},${a.arcLevel ?? ""},${a.overallRisk ?? ""},${a.pickupLat},${a.pickupLng},${a.deliveryLat},${a.deliveryLng},${a.altitudeAgl ?? ""}`
+        `${a.id},${a.decidedAt?.toISOString() ?? ""},${q(a.decision)},${q(a.decisionBy)},${q(a.sailLevel)},${a.grcScore ?? ""},${q(a.arcLevel)},${q(a.overallRisk)},${a.pickupLat},${a.pickupLng},${a.deliveryLat},${a.deliveryLng},${a.altitudeAgl ?? ""}`
     )
     .join("\n");
   archive.append(csvHeader + csvRows, { name: "authorizations_summary.csv" });
@@ -315,15 +332,16 @@ export async function GET(req: NextRequest) {
   archive.finalize();
   await archiveFinished;
 
-  // Mark exported authorizations with bazlExportedAt timestamp
+  // Mark exported authorizations with bazlExportedAt timestamp (atomic batch)
   const now = new Date();
-  for (const auth of authorizations) {
-    if (!auth.bazlExportedAt) {
-      await db
-        .update(flightAuthorizations)
-        .set({ bazlExportedAt: now, updatedAt: now })
-        .where(eq(flightAuthorizations.id, auth.id));
-    }
+  const unexportedIds = authorizations
+    .filter((a) => !a.bazlExportedAt)
+    .map((a) => a.id);
+  if (unexportedIds.length > 0) {
+    await db
+      .update(flightAuthorizations)
+      .set({ bazlExportedAt: now, updatedAt: now })
+      .where(inArray(flightAuthorizations.id, unexportedIds));
   }
 
   const zipBuffer = Buffer.concat(chunks);

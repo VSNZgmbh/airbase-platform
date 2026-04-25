@@ -286,7 +286,9 @@ export interface FlightAuthorizationReportData {
 }
 
 function formatCoord(lat: string, lng: string): string {
-  return `${Number(lat).toFixed(5)}N, ${Number(lng).toFixed(5)}E`;
+  const latNum = Number(lat);
+  const lngNum = Number(lng);
+  return `${Math.abs(latNum).toFixed(5)}${latNum >= 0 ? "N" : "S"}, ${Math.abs(lngNum).toFixed(5)}${lngNum >= 0 ? "E" : "W"}`;
 }
 
 function DecisionBanner({ data }: { data: FlightAuthorizationReportData }) {
@@ -363,7 +365,7 @@ export function FlightAuthorizationReport({
               <Text style={styles.fieldValue}>{data.tenantName}</Text>
             </View>
             <View style={styles.gridItem}>
-              <Text style={styles.fieldLabel}>Geplant fuer</Text>
+              <Text style={styles.fieldLabel}>Geplant für</Text>
               <Text style={styles.fieldValue}>{data.requestedForDatetime}</Text>
             </View>
             <View style={styles.gridItem}>
@@ -450,9 +452,11 @@ export function FlightAuthorizationReport({
                 <View
                   style={[
                     styles.weatherBox,
-                    data.weather[point].warnings.length === 0
-                      ? styles.weatherSafe
-                      : styles.weatherMarginal,
+                    data.weather.overallCondition === "unsafe"
+                      ? styles.weatherUnsafe
+                      : data.weather.overallCondition === "marginal" || data.weather[point].warnings.length > 0
+                        ? styles.weatherMarginal
+                        : styles.weatherSafe,
                   ]}
                 >
                   <Text style={[styles.fieldLabel, { marginBottom: 4 }]}>
@@ -552,7 +556,7 @@ export function FlightAuthorizationReport({
         {/* Linked SORs */}
         {data.linkedSORs.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>VERKNUEPFTE SOR-BERICHTE</Text>
+            <Text style={styles.sectionTitle}>VERKNÜPFTE SOR-BERICHTE</Text>
             {data.linkedSORs.map((sor) => (
               <View key={sor.id} style={styles.sorRow}>
                 <Text style={styles.sorId}>{sor.id.slice(0, 8)}</Text>
@@ -568,14 +572,14 @@ export function FlightAuthorizationReport({
         <View style={styles.section}>
           <View style={styles.legalBox}>
             <Text style={styles.legalText}>
-              Aufbewahrungsfrist: 3 Jahre ab Erstellungsdatum (BAZL LUC-Anforderungen).
+              Aufbewahrungsfrist: 3 Jahre ab Flugdatum (BAZL LUC-Anforderungen).
               {data.retentionExpiresAt
                 ? ` Ablauf: ${data.retentionExpiresAt}.`
                 : ""}
             </Text>
             <Text style={[styles.legalText, { marginTop: 4 }]}>
               Dieses Dokument wurde automatisch generiert und ist Teil der
-              LUC-Selbstautorisierungsdokumentation gemaess EASA UAS Regulation
+              LUC-Selbstautorisierungsdokumentation gemäß EASA UAS Regulation
               (EU) 2019/947 und BAZL-Richtlinien.
             </Text>
             {data.bazlExportedAt && (

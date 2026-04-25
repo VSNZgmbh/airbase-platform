@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUserId, getUserRole } from "@/lib/demo-auth";
+import { getAuthUserId, getUserRole, getUserTenantId } from "@/lib/demo-auth";
 import { renderToBuffer, type DocumentProps } from "@react-pdf/renderer";
 import { createElement, type ReactElement } from "react";
 import { db } from "@/lib/db";
@@ -50,6 +50,17 @@ export async function GET(
       { error: "Flight authorization not found" },
       { status: 404 }
     );
+  }
+
+  // C-1 fix: Tenant isolation — operators and safety managers can only access their own tenant's records
+  if (role !== "accountable_manager" && authorization.franchiseTenantId) {
+    const requesterTenantId = await getUserTenantId(userId);
+    if (requesterTenantId !== authorization.franchiseTenantId) {
+      return NextResponse.json(
+        { error: "Forbidden: you do not have access to this tenant's records" },
+        { status: 403 }
+      );
+    }
   }
 
   // Fetch linked SORs for this authorization

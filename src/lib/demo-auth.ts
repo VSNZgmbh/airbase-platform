@@ -1,4 +1,7 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { db } from "@/lib/db";
+import { eq } from "drizzle-orm";
+import { franchiseTenants } from "@/lib/db/schema";
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
 export const isClerkConfigured =
@@ -30,4 +33,23 @@ export async function getUserRole(userId: string): Promise<string | undefined> {
   const client = await clerkClient();
   const user = await client.users.getUser(userId);
   return (user.publicMetadata as { role?: string })?.role;
+}
+
+/** Returns franchise tenant ID for the user — null in demo mode or if unresolvable */
+export async function getUserTenantId(userId: string): Promise<string | null> {
+  if (!isClerkConfigured) {
+    // Demo mode: resolve from DEFAULT_TENANT_SLUG
+    const defaultSlug = process.env.DEFAULT_TENANT_SLUG;
+    if (defaultSlug) {
+      const tenant = await db.query.franchiseTenants.findFirst({
+        where: eq(franchiseTenants.slug, defaultSlug),
+      }).catch(() => null);
+      if (tenant) return tenant.id;
+    }
+    return null;
+  }
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  const meta = user.publicMetadata as { franchiseTenantId?: string };
+  return meta.franchiseTenantId ?? null;
 }
