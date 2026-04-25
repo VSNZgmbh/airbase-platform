@@ -179,8 +179,10 @@ describe("Stripe webhook — payment_intent.succeeded", () => {
       metadata: null,
     } as any);
     mockTransaction.mockRejectedValue(new Error("DB connection lost"));
+    // POST() throws (rather than returning a 500 Response) when the transaction
+    // rejects, because the handler has no internal try/catch around db.transaction().
+    // We catch here to verify the throw happens — a non-200 tells Stripe to retry.
     const res = await POST(makeRequest("{}")).catch(() => new Response(null, { status: 500 }));
-    // Transaction error should result in non-200 (webhook will retry)
     expect(res.status).toBe(500);
   });
 });
@@ -219,13 +221,15 @@ describe("Stripe webhook — CTR permit creation", () => {
     } as any);
     vi.mocked(requiresBernBelpPermit).mockReturnValue(true);
 
+    const insertValuesCalls: unknown[] = [];
     mockTransaction.mockImplementation(async (fn: Function) => {
       const tx = {
         update: vi.fn(() => ({ set: vi.fn(() => ({ where: vi.fn() })) })),
         insert: vi.fn(() => ({
-          values: vi.fn((vals: any) => ({
-            returning: vi.fn(() => [{ id: "flight-1" }]),
-          })),
+          values: vi.fn((vals: unknown) => {
+            insertValuesCalls.push(vals);
+            return { returning: vi.fn(() => [{ id: "flight-1" }]) };
+          }),
         })),
       };
       return fn(tx);
@@ -234,5 +238,18 @@ describe("Stripe webhook — CTR permit creation", () => {
     const res = await POST(makeRequest("{}"));
     expect(res.status).toBe(200);
     expect(requiresBernBelpPermit).toHaveBeenCalled();
+
+    // tx.insert().values() called twice: once for flights, once for permits
+    expect(insertValuesCalls).toHaveLength(2);
+
+    // Second insert is the permits array — must contain both BAZL and Bern-Belp
+    const permitValues = insertValuesCalls[1] as Array<{ authority: string }>;
+    expect(permitValues).toHaveLength(2);
+    expect(permitValues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ authority: "BAZL", status: "pending" }),
+        expect.objectContaining({ authority: "Flughafen Bern-Belp", status: "pending" }),
+      ])
+    );
   });
 });
