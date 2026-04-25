@@ -82,6 +82,8 @@ export const pilotRouter = createTRPCRouter({
       // Advisory lock serialises invoice number generation across concurrent requests,
       // preventing duplicate invoice numbers under the UNIQUE constraint.
       // Atomic WHERE on flights.status guards against a double-submit race.
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://airbase.one";
+
       const result = await ctx.db.transaction(async (tx) => {
         // Acquire transaction-level advisory lock — released automatically at tx end.
         await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext('airbase_invoice_seq'))`);
@@ -145,8 +147,15 @@ export const pilotRouter = createTRPCRouter({
             vatAmountCHF: booking.vatAmountCHF ?? "0",
             totalCHF: booking.totalCHF ?? "0",
             dueDate,
+            pdfUrl: null, // placeholder — set below after we have the ID
           })
           .returning();
+
+        // Set pdfUrl now that we have the invoice ID
+        await tx
+          .update(invoices)
+          .set({ pdfUrl: `${appUrl}/api/invoices/${invoice.id}/pdf` })
+          .where(eq(invoices.id, invoice.id));
 
         return { flight: updatedFlight, booking, invoice };
       });
@@ -160,7 +169,6 @@ export const pilotRouter = createTRPCRouter({
         where: eq(customers.id, result.booking.customerId),
       });
       if (customer?.email) {
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://airbase.one";
         const reportUrl = `${appUrl}/api/reports/flight/${input.flightId}`;
         sendEmail({
           to: customer.email,

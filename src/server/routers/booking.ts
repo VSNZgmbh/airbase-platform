@@ -10,6 +10,10 @@ import { bookings, customers, airbaseHubs } from "@/lib/db/schema";
 import { createBookingSchema } from "@/lib/validations";
 import { calculatePrice, type PickupOption } from "@/lib/pricing";
 import { assessSora, soraAirspaceSurchargeCHF, isRushBooking } from "@/lib/sora";
+import { sendEmail } from "@/lib/email";
+import { OperatorNewBooking } from "@/emails/OperatorNewBooking";
+import { format } from "date-fns";
+import { de } from "date-fns/locale";
 
 export const bookingRouter = createTRPCRouter({
   // Get all hubs (for pickup option B)
@@ -103,6 +107,31 @@ export const bookingRouter = createTRPCRouter({
           customerNotes: input.customerNotes,
         })
         .returning();
+
+      // Notify operator(s) about the new booking (fire-and-forget)
+      const operatorEmail = process.env.OPERATOR_NOTIFICATION_EMAIL;
+      if (operatorEmail) {
+        const customerName = customer.firstName && customer.lastName
+          ? `${customer.firstName} ${customer.lastName}`
+          : customer.email || "Unbekannt";
+
+        sendEmail({
+          to: operatorEmail,
+          subject: `Neue Buchungsanfrage ${identifier} — AIRBASE`,
+          template: OperatorNewBooking,
+          props: {
+            bookingIdentifier: identifier,
+            customerName,
+            serviceType: input.serviceType,
+            requestedDate: format(new Date(input.requestedDate), "d. MMMM yyyy", { locale: de }),
+            payloadWeightKg: String(input.payloadWeightKg),
+            deliveryAddress: input.deliveryAddress ?? "Siehe Buchungsdetails",
+            totalCHF: String(price.total),
+          },
+        }).catch((err) => {
+          console.error("[Booking] Failed to send OperatorNewBooking email:", err);
+        });
+      }
 
       return booking;
     }),
