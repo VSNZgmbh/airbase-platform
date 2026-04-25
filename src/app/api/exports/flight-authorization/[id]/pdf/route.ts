@@ -53,9 +53,10 @@ export async function GET(
   }
 
   // C-1 fix: Tenant isolation — operators and safety managers can only access their own tenant's records
-  if (role !== "accountable_manager" && authorization.franchiseTenantId) {
+  // Tenantless authorizations are restricted to accountable_manager only (prevents null-tenant bypass)
+  if (role !== "accountable_manager") {
     const requesterTenantId = await getUserTenantId(userId);
-    if (requesterTenantId !== authorization.franchiseTenantId) {
+    if (!authorization.franchiseTenantId || requesterTenantId !== authorization.franchiseTenantId) {
       return NextResponse.json(
         { error: "Forbidden: you do not have access to this tenant's records" },
         { status: 403 }
