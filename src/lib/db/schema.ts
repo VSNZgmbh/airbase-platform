@@ -41,6 +41,7 @@ export const pickupOptionEnum = pgEnum("pickup_option", [
 ]);
 
 export const flightStatusEnum = pgEnum("flight_status", [
+  "pending_assignment",
   "scheduled",
   "pre_flight_check",
   "in_air",
@@ -99,7 +100,7 @@ export const droneModels = pgTable("drone_models", {
   foldedDimensions: text("folded_dimensions"),
 
   // Regulatory
-  mtomClass: text("mtom_class"), // C0-C6 or "uncertified"
+  mtomClass: text("mtom_class"), // C0-C6, "specific", or "uncertified"
   noiseClassDb: decimal("noise_class_db", { precision: 5, scale: 1 }),
 
   isActive: boolean("is_active").notNull().default(true),
