@@ -602,7 +602,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 15;
+  const totalSlides = 16;
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
@@ -1088,7 +1088,7 @@ export function InvestorPitchDeck() {
               {
                 title: "Transport Flights",
                 sub: "Cargo & Logistics",
-                desc: "Up to 100 kg payload with DJI FlyCart 100. Hospitals, retailers, construction sites.",
+                desc: "Up to 200 kg payload with DJI FlyCart 100 & 200. Hospitals, retailers, construction sites.",
                 image: "/images/flycart-scene-2.webp",
                 icon: Truck,
                 stat: "CHF 4/flight",
@@ -1148,7 +1148,7 @@ export function InvestorPitchDeck() {
           <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8" delay={0.4}>
             {[
               { value: "4", label: "service lines", sub: "fully integrated" },
-              { value: "100 kg", label: "max cargo payload", sub: "DJI FlyCart 100 (single-battery config)*" },
+              { value: "200 kg", label: "max cargo payload", sub: "DJI FlyCart 200 (single-drone) · 600 kg swarm*" },
               { value: "-85%", label: "cost vs traditional", sub: "at scale" },
               { value: "<30 min", label: "deployment time", sub: "standard transport services" },
             ].map((stat, i) => (
@@ -1241,15 +1241,20 @@ export function InvestorPitchDeck() {
               <motion.img
                 src="/assets/flycart-100-cutout.png"
                 alt="DJI FlyCart 100 drone"
-                className="w-36 sm:w-48 md:w-64 h-auto object-contain mb-4"
+                className="w-28 sm:w-36 md:w-44 h-auto object-contain mb-3"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
-              <div className="text-xs font-mono uppercase tracking-wider mb-2" style={{ color: C.accent }}>
-                Our Workhorse
+              <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.accent }}>
+                Our Fleet
               </div>
-              <div className="text-xl font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
-              <div className="text-sm mt-1" style={{ color: C.textMuted }}>100 kg max cargo payload · MTOW 170 kg · 16 km range · IP55</div>
+              <div className="text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
+              <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>100 kg payload · MTOW 170 kg · 16 km range</div>
+              <div className="w-full border-t my-3" style={{ borderColor: C.border }} />
+              <div className="text-lg font-bold" style={{ color: C.text }}>
+                DJI FlyCart 200 <span className="text-xs font-normal px-1.5 py-0.5 rounded-full ml-1" style={{ background: C.accentGlow, color: C.accent }}>NEW</span>
+              </div>
+              <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload · 36 km range · Swarm: up to 600 kg</div>
             </motion.div>
           </Stagger>
         </div>
@@ -1540,7 +1545,7 @@ export function InvestorPitchDeck() {
                   {
                     icon: HeartPulse,
                     title: "Emergency Disaster Relief",
-                    desc: "Deploy 100 kg medical & survival payloads to flood, avalanche, or earthquake zones in minutes",
+                    desc: "Deploy up to 200 kg medical & survival payloads to flood, avalanche, or earthquake zones in minutes",
                   },
                   {
                     icon: Mountain,
@@ -1941,7 +1946,7 @@ export function InvestorPitchDeck() {
               </motion.div>
             </Stagger>
 
-            {/* FlyCart 100 */}
+            {/* DJI Fleet: FlyCart 100 + 200 */}
             <Stagger delay={0.4}>
               <motion.div
                 variants={fadeUp}
@@ -1950,18 +1955,19 @@ export function InvestorPitchDeck() {
               >
                 <img
                   src="/assets/flycart-100-cutout.png"
-                  alt="DJI FlyCart 100"
+                  alt="DJI FlyCart fleet"
                   className="absolute -right-6 -top-2 w-28 h-28 object-contain opacity-15 pointer-events-none"
                 />
                 <Box className="w-8 h-8 mb-4 relative z-10" style={{ color: C.accent }} />
                 <div className="text-sm font-mono uppercase tracking-wider mb-2 relative z-10" style={{ color: C.accent }}>
-                  DJI FlyCart 100
+                  DJI FlyCart 100 + 200
                 </div>
                 <ul className="space-y-2">
                   {[
-                    "100 kg max cargo payload (MTOW 170 kg) — largest commercial delivery drone",
-                    "IP55 rated: rain, wind up to 12 m/s",
-                    "16 km range, locked via DJI enterprise partnership",
+                    "FlyCart 100: 100 kg payload (MTOW 170 kg) — proven workhorse, IP55",
+                    "FlyCart 200: 200 kg payload, 36 km range — next-gen heavy-lift",
+                    "Swarm capability: up to 600 kg coordinated (4× FC200)",
+                    "DJI enterprise partnership — locked fleet access",
                   ].map((text, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm" style={{ color: C.textSecondary }}>
                       <CheckCircle2 className="w-3 h-3 mt-1 shrink-0" style={{ color: C.accent }} />
@@ -2189,7 +2195,7 @@ export function InvestorPitchDeck() {
                 {[
                   {
                     title: "Electric Drones",
-                    desc: "The DJI FlyCart 100 runs on battery power — zero combustion, zero direct CO\u2082 emissions per flight. Charging from renewable grid sources reduces even indirect footprint.",
+                    desc: "The DJI FlyCart 100 & 200 run on battery power — zero combustion, zero direct CO\u2082 emissions per flight. Charging from renewable grid sources reduces even indirect footprint.",
                     icon: Battery,
                   },
                   {
@@ -2253,7 +2259,7 @@ export function InvestorPitchDeck() {
               className="text-lg mt-4 mb-12 max-w-2xl"
               style={{ color: C.textSecondary }}
             >
-              Swiss drone operators are certified — but none serve the 100 kg heavy-cargo B2B segment.
+              Swiss drone operators are certified — but none serve the 100–200 kg heavy-cargo B2B segment.
               AIRBASE is the first mover in an uncontested niche.
             </motion.p>
           </Stagger>
@@ -2300,7 +2306,7 @@ export function InvestorPitchDeck() {
                         "~2 kg",
                         ">50 kg (SDO50 V2)",
                         "5–25 kg",
-                        "100 kg (FlyCart 100)",
+                        "100–200 kg (FlyCart 100 & 200)",
                       ],
                     },
                     {
@@ -2383,7 +2389,7 @@ export function InvestorPitchDeck() {
                   { name: "Matternet", payload: 2, color: C.textMuted + "80", scalability: "Low" },
                   { name: "Others", payload: 15, color: C.textMuted + "60", scalability: "Med" },
                   { name: "SwissDrones", payload: 50, color: C.textMuted, scalability: "Low" },
-                  { name: "AIRBASE", payload: 100, color: C.accent, scalability: "High" },
+                  { name: "AIRBASE", payload: 200, color: C.accent, scalability: "High" },
                 ].map((comp, i) => (
                   <div key={comp.name} className="flex items-center gap-3">
                     <span className="text-xs sm:text-sm font-semibold w-24 sm:w-28 text-right shrink-0" style={{ color: i === 3 ? C.accent : C.textSecondary }}>
@@ -2394,7 +2400,7 @@ export function InvestorPitchDeck() {
                         className="h-full rounded-lg flex items-center px-3"
                         style={{ background: comp.color }}
                         initial={{ width: 0 }}
-                        whileInView={{ width: `${(comp.payload / 100) * 100}%` }}
+                        whileInView={{ width: `${(comp.payload / 200) * 100}%` }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 1, delay: i * 0.15, ease: "easeOut" }}
                       >
@@ -2412,7 +2418,7 @@ export function InvestorPitchDeck() {
               <div className="flex justify-between mt-3 text-[10px] font-mono" style={{ color: C.textMuted }}>
                 <span>0 kg</span>
                 <span>Scalability →</span>
-                <span>100 kg</span>
+                <span>200 kg</span>
               </div>
             </motion.div>
           </Stagger>
@@ -2436,7 +2442,7 @@ export function InvestorPitchDeck() {
                 icon: Truck,
                 color: C.accent,
                 label: "AIRBASE",
-                desc: "100 kg heavy-lift B2B franchise with AI",
+                desc: "100–200 kg heavy-lift B2B franchise with AI",
               },
             ].map((item, i) => (
               <Stagger key={i} delay={0.6 + i * 0.15}>
@@ -2474,7 +2480,7 @@ export function InvestorPitchDeck() {
               style={{ background: C.accentGlow, borderColor: C.borderAccent }}
             >
               <p className="text-lg md:text-xl font-semibold" style={{ color: C.accent }}>
-                The 100 kg heavy-lift B2B franchise niche in Switzerland is completely empty.
+                The 100–200 kg heavy-lift B2B franchise niche in Switzerland is completely empty.
               </p>
               <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
                 AIRBASE would be the absolute pioneer in heavy-cargo drone services under LUC.
@@ -2508,10 +2514,11 @@ export function InvestorPitchDeck() {
           <Stagger className="mt-12 space-y-4" delay={0.2}>
             {[
               { date: "Q3 2025", text: "Company incorporated (Switzerland)", done: true },
-              { date: "Q4 2025", text: "DJI FlyCart 100 fleet acquired", done: true },
+              { date: "Q4 2025", text: "DJI FlyCart 100 fleet acquired (5 units)", done: true },
               { date: "Q1 2026", text: "AIRBASE platform v1.0 launched (portal + admin + pilot app)", done: true },
               { date: "Q1 2026", text: "SORA / BAZL applications filed", done: true },
               { date: "Q1 2026", text: "8 fully licensed commercial drone pilots operational", done: true },
+              { date: "Q2 2026", text: "DJI FlyCart 200 fleet expansion (2 units — 200 kg payload)", done: true },
               { date: "Q2 2026*", text: "First commercial pilot flights (internal ops)", done: false },
               { date: "Q3 2026*", text: "LUC certification expected", done: false },
               { date: "Q4 2026*", text: "First DaaS enterprise contracts", done: false },
@@ -2793,14 +2800,85 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 13: THE ASK + INVESTMENT SLIDER ═══ */}
+      {/* ═══ SLIDE 13: TEAM ═══ */}
       <section
         ref={setRef(13)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="13" text="The Ask" />
+          <SlideLabel number="13" text="Our Team" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              The People Behind{" "}
+              <span style={{ color: C.accent }}>AIRBASE</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-base md:text-lg max-w-2xl mb-12"
+              style={{ color: C.textSecondary }}
+            >
+              A dedicated team of aviation experts, licensed pilots, and technology leaders building the future of drone logistics in Switzerland.
+            </motion.p>
+          </Stagger>
+
+          <Stagger className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5" delay={0.2}>
+            {[
+              { name: "Benjamin Rubi", title: "Founder & CEO", desc: "15+ years aviation experience, Swiss drone franchise pioneer" },
+              { name: "Chris Jon Graf", title: "Head of AI Operations", desc: "Leads international tech teams across Hungary, Ukraine and India" },
+              { name: "Dannick Riteco", title: "SORA Specialist & Safety Manager", desc: "Aviation safety expert, partner at SORA Consulting" },
+              { name: "Jamie Wyss", title: "Customer Support Lead", desc: "First point of contact for franchise partners and clients" },
+              { name: "Nikita Eberhart", title: "Deputy Managing Director", desc: "Deputy to CEO, operational leadership" },
+              { name: "Claude Gfeller", title: "Operations Manager", desc: "Oversees day-to-day operations and coordination" },
+              { name: "Ralph Menth", title: "Marketing Project Manager", desc: "Manages marketing campaigns and brand partnerships" },
+              { name: "Tobias Pohl", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
+              { name: "Lars Wanner", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
+              { name: "Sidario Belzarini", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
+              { name: "Janis Perron", title: "Licensed Drone Pilot", desc: "Certified commercial UAS operator" },
+              { name: "Nicolas Jud", title: "Operations & Fleet Manager", desc: "Fleet logistics and operational planning" },
+            ].map((member, i) => (
+              <motion.div
+                key={i}
+                variants={scaleUp}
+                className="rounded-xl border p-4 text-center flex flex-col items-center gap-3"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+              >
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"
+                  style={{ background: C.accentLight, color: C.accent }}
+                >
+                  {member.name.split(" ").map((n) => n[0]).join("")}
+                </div>
+                <div>
+                  <div className="text-sm font-bold leading-tight" style={{ color: C.text }}>
+                    {member.name}
+                  </div>
+                  <div className="text-xs font-mono mt-1" style={{ color: C.accent }}>
+                    {member.title}
+                  </div>
+                  <div className="text-xs mt-1 leading-snug" style={{ color: C.textMuted }}>
+                    {member.desc}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 14: THE ASK + INVESTMENT SLIDER ═══ */}
+      <section
+        ref={setRef(14)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        style={{ scrollSnapAlign: "start" }}
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="14" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -2932,9 +3010,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 14: VISION ═══ */}
+      {/* ═══ SLIDE 15: VISION ═══ */}
       <section
-        ref={setRef(14)}
+        ref={setRef(15)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -2948,7 +3026,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="14" text="Vision" />
+          <SlideLabel number="15" text="Vision" />
 
           <Stagger>
             <motion.h2

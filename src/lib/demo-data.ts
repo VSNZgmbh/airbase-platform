@@ -305,6 +305,32 @@ export const DEMO_DRONES = [
     lastMotorInspectionFlights: 200, nextMotorInspectionFlights: 250,
     lastMotorInspectionDate: "2026-03-10",
   },
+  // ─── DJI FlyCart 200 (FC200) — Placeholder specs, pending verification ───
+  // 200 kg max payload · DB2400 46 Ah battery · 68" carbon props · 120V platform
+  {
+    id: "d006", model: "DJI FlyCart 200", serialNumber: "FC200-2026-CH-0001",
+    specificationStatus: "placeholder_pending_verification" as const,
+    maxPayloadKg: 200, maxRangeKm: 10, batteryMode: "quad" as const,
+    isActive: true, totalFlights: 0, hoursFlown: 0, utilization: 0,
+    // Battery wear (DB2400, 46 Ah, max cycles TBC — using 1'500 placeholder)
+    batteryCyclesUsed: 0, batteryCyclesMax: 1500, batteryHealthPct: 100,
+    batteryInstalledDate: "2026-04-25",
+    // Propeller wear (68" carbon, replace interval TBC — using 1'000h placeholder)
+    propellerHours: 0, propellerMaxHours: 1000, propellerInstalledDate: "2026-04-25",
+    lastMotorInspectionFlights: 0, nextMotorInspectionFlights: 100,
+    lastMotorInspectionDate: "2026-04-25",
+  },
+  {
+    id: "d007", model: "DJI FlyCart 200", serialNumber: "FC200-2026-CH-0002",
+    specificationStatus: "placeholder_pending_verification" as const,
+    maxPayloadKg: 200, maxRangeKm: 10, batteryMode: "quad" as const,
+    isActive: true, totalFlights: 0, hoursFlown: 0, utilization: 0,
+    batteryCyclesUsed: 0, batteryCyclesMax: 1500, batteryHealthPct: 100,
+    batteryInstalledDate: "2026-04-25",
+    propellerHours: 0, propellerMaxHours: 1000, propellerInstalledDate: "2026-04-25",
+    lastMotorInspectionFlights: 0, nextMotorInspectionFlights: 100,
+    lastMotorInspectionDate: "2026-04-25",
+  },
 ];
 
 export const DEMO_FLIGHTS = [

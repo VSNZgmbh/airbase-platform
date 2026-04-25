@@ -79,7 +79,7 @@ function FleetOverview() {
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flottenübersicht — DJI FlyCart 100</h3>
+          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Flottenübersicht — DJI FlyCart 100 & 200</h3>
           <p className="text-[10px] text-gray-300 mt-0.5">{drones.length} Drohnen registriert</p>
         </div>
       </div>
@@ -131,8 +131,8 @@ function FleetOverview() {
               {/* Wear tracking */}
               {hasBatteryData && (
                 <div className="border-t border-gray-50 pt-2 mt-2">
-                  <WearBar label="DB2160 Batterie (41 Ah)" icon={<Battery className="w-2.5 h-2.5" />} value={d.batteryCyclesUsed} max={d.batteryCyclesMax} unit="Zyklen" warnAt={70} />
-                  <WearBar label="Propeller 62&quot;" icon={<RotateCcw className="w-2.5 h-2.5" />} value={d.propellerHours} max={d.propellerMaxHours} unit="h" warnAt={75} />
+                  <WearBar label={drone.model.includes("200") ? "DB2400 Batterie (46 Ah)" : "DB2160 Batterie (41 Ah)"} icon={<Battery className="w-2.5 h-2.5" />} value={d.batteryCyclesUsed} max={d.batteryCyclesMax} unit="Zyklen" warnAt={70} />
+                  <WearBar label={`Propeller ${drone.model.includes("200") ? '68' : '62'}"`} icon={<RotateCcw className="w-2.5 h-2.5" />} value={d.propellerHours} max={d.propellerMaxHours} unit="h" warnAt={75} />
                   <div className="flex items-center justify-between text-[9px] mt-1">
                     <span className="text-gray-400">Batterie-Zustand</span>
                     <span className={`font-bold ${d.batteryHealthPct >= 90 ? "text-emerald-600" : d.batteryHealthPct >= 80 ? "text-amber-600" : "text-red-600"}`}>{d.batteryHealthPct}%</span>

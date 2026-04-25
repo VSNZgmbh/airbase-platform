@@ -175,17 +175,60 @@ export const FLYCART_100 = {
   OPERATING_TEMP_MAX_C: 40,
 } as const;
 
-export function validatePayload(weightKg: number): {
+// DJI FlyCart 200 (FC200) — Placeholder specs (Source: dronexl.co, April 2026)
+// Pending verified data from Deep Researcher — will be updated once available
+// Single-drone: 200 kg payload, up to 36 km range (no load)
+// Multi-drone swarm: 2× = 360 kg, 4× = 600 kg coordinated payload
+export const FLYCART_200 = {
+  MODEL: "DJI FlyCart 200",
+  MAX_PAYLOAD_KG: 200,               // Single-drone max payload
+  MAX_PAYLOAD_QUAD_BATTERY_KG: 200,   // Quad-battery config, full payload
+  MAX_RANGE_KM: 36,                   // No-load transit range
+  MAX_RANGE_FULL_LOAD_DUAL_KM: 6,    // Dual-battery, 200 kg payload
+  MAX_RANGE_FULL_LOAD_QUAD_KM: 10,   // Quad-battery, 200 kg payload
+  CRUISE_SPEED_KMH: 72,              // 20 m/s loaded
+  MAX_SPEED_KMH: 72,                 // 20 m/s
+  CLIMB_SPEED_MS: 5,                 // Vertical climb/descend
+  EMPTY_WEIGHT_KG: 0,                // TBC — pending verified specs
+  MTOW_KG: 0,                        // TBC — pending verified specs
+  ROTOR_SYSTEM: "Coaxial multi-axis", // Flat-wire motors, 120V platform
+  PROPELLER_SIZE_INCH: 68,           // Carbon fiber composite
+  MOTOR_COUNT: 0,                     // TBC — pending verified specs
+  MOTOR_THRUST_KG_PER_AXIS: 183,    // Single motor axis thrust
+  MAX_ALTITUDE_M: 6000,              // Operating altitude
+  PAYLOAD_AT_3000M_KG: 200,         // Full payload at 3,000m
+  PAYLOAD_AT_4500M_KG: 170,         // Reduced payload at 4,500m
+  PAYLOAD_AT_6000M_KG: 140,         // Reduced payload at 6,000m
+  WIND_RESISTANCE_MS: 12,            // Placeholder — TBC
+  BATTERY_MODEL: "DB2400",           // 46 Ah
+  BATTERY_FAST_CHARGE_MIN: 8,       // ~7-8 min with C12000 charger
+  BATTERY_SLOTS: 4,                  // Up to 4 batteries simultaneously
+  SWARM_MAX_DRONES: 4,              // Multi-drone coordinated ops
+  SWARM_PAYLOAD_2X_KG: 360,         // 2 drones coordinated
+  SWARM_PAYLOAD_4X_KG: 600,         // 4 drones coordinated
+  SAFETY_LIDAR: true,
+  SAFETY_MMWAVE_RADAR: true,
+  SAFETY_VISION_DIRECTIONS: 5,
+  SAFETY_PARACHUTE: true,
+  IP_RATING: "IP55",                 // Placeholder — TBC
+  OPERATING_TEMP_MIN_C: -20,
+  OPERATING_TEMP_MAX_C: 40,
+  SPEC_STATUS: "placeholder_pending_verification" as const,
+} as const;
+
+export function validatePayload(weightKg: number, model: "FC100" | "FC200" = "FC100"): {
   valid: boolean;
   error?: string;
 } {
   if (weightKg <= 0) {
     return { valid: false, error: "Gewicht muss grösser als 0 kg sein." };
   }
-  if (weightKg > FLYCART_100.MAX_PAYLOAD_KG) {
+  const maxPayload = model === "FC200" ? FLYCART_200.MAX_PAYLOAD_KG : FLYCART_100.MAX_PAYLOAD_KG;
+  const modelName = model === "FC200" ? FLYCART_200.MODEL : FLYCART_100.MODEL;
+  if (weightKg > maxPayload) {
     return {
       valid: false,
-      error: `DJI FlyCart 100 Maximalnutzlast: ${FLYCART_100.MAX_PAYLOAD_KG} kg (Einzelbatterie). Bitte wenden Sie sich für Überlasten an uns.`,
+      error: `${modelName} Maximalnutzlast: ${maxPayload} kg. Bitte wenden Sie sich für Überlasten an uns.`,
     };
   }
   return { valid: true };
