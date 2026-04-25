@@ -75,14 +75,14 @@ export async function POST(req: NextRequest) {
         })
         .where(eq(bookings.id, bookingId));
 
-      // 2. Create flight record
+      // 2. Create flight record — pending_assignment until operator assigns drone + pilot
       const [flight] = await tx
         .insert(flights)
         .values({
           bookingId,
-          status: "scheduled",
+          status: "pending_assignment",
           scheduledDeparture: new Date(booking.requestedDate),
-          notes: "Auto-created on payment confirmation",
+          notes: "Auto-created on payment confirmation — awaiting resource assignment",
         })
         .returning();
 

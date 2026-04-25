@@ -25,8 +25,11 @@ import {
   bookings,
   droneModels,
 } from "@/lib/db/schema";
+import { sendEmail } from "@/lib/email";
+import { PilotFlightAssignment } from "@/emails/PilotFlightAssignment";
 
 const BUSY_FLIGHT_STATUSES = ["scheduled", "pre_flight_check", "in_air"] as const;
+const ASSIGNABLE_STATUSES = ["pending_assignment", "scheduled"] as const;
 
 export const flightAssignmentRouter = createTRPCRouter({
   /**
@@ -51,7 +54,7 @@ export const flightAssignmentRouter = createTRPCRouter({
       if (!flight) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Flight not found" });
       }
-      if (flight.status !== "scheduled") {
+      if (!ASSIGNABLE_STATUSES.includes(flight.status as typeof ASSIGNABLE_STATUSES[number])) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: `Cannot assign resources to flight in status '${flight.status}'`,
@@ -133,15 +136,21 @@ export const flightAssignmentRouter = createTRPCRouter({
         });
       }
 
-      // 4. Update flight with assignments
+      // 4. Update flight with assignments — transition to 'scheduled'
       const [updated] = await ctx.db
         .update(flights)
         .set({
           droneId: assignedDroneId,
           pilotId: assignedPilotId,
+          status: "scheduled",
           updatedAt: new Date(),
         })
-        .where(and(eq(flights.id, input.flightId), eq(flights.status, "scheduled")))
+        .where(
+          and(
+            eq(flights.id, input.flightId),
+            inArray(flights.status, [...ASSIGNABLE_STATUSES]),
+          ),
+        )
         .returning();
 
       if (!updated) {
@@ -149,6 +158,39 @@ export const flightAssignmentRouter = createTRPCRouter({
           code: "CONFLICT",
           message: "Flight was modified concurrently. Please reload.",
         });
+      }
+
+      // 5. Send assignment email to pilot (fire-and-forget — don't block the response)
+      if (assignedPilotId) {
+        const pilot = await ctx.db.query.pilots.findFirst({
+          where: eq(pilots.id, assignedPilotId),
+        });
+        const drone = assignedDroneId
+          ? await ctx.db.query.drones.findFirst({
+              where: eq(drones.id, assignedDroneId),
+            })
+          : null;
+
+        if (pilot?.email) {
+          sendEmail({
+            to: pilot.email,
+            subject: `Neuer Flugauftrag ${booking.identifier} — AIRBASE`,
+            template: PilotFlightAssignment,
+            props: {
+              pilotName: `${pilot.firstName} ${pilot.lastName}`,
+              bookingIdentifier: booking.identifier,
+              serviceType: booking.serviceType,
+              scheduledDeparture: flight.scheduledDeparture?.toISOString() ?? "TBD",
+              payloadWeightKg: booking.payloadWeightKg,
+              deliveryAddress: booking.deliveryAddress ?? "Siehe Buchungsdetails",
+              droneModel: drone?.model ?? "Wird zugewiesen",
+              soraCategory: flight.soraCategory ?? undefined,
+              notes: booking.operatorNotes ?? undefined,
+            },
+          }).catch((err) => {
+            console.error(`[FlightAssignment] Failed to send pilot email:`, err);
+          });
+        }
       }
 
       return {

@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq, ne, inArray, gte, lte, or } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import {
   createTRPCRouter,
@@ -17,6 +17,7 @@ import {
   tenantServiceAreas,
   pilots,
   drones,
+  flights,
   bookings,
 } from "@/lib/db/schema";
 
@@ -102,23 +103,87 @@ export const tenantRouter = createTRPCRouter({
     }),
 
   /**
-   * List all pilots scoped to the current tenant.
+   * List all pilots scoped to the current tenant, with current availability.
    */
   listPilots: franchiseAdminProcedure.query(async ({ ctx }) => {
-    return ctx.db
-      .select()
-      .from(pilots)
-      .where(eq(pilots.franchiseTenantId, ctx.tenantId));
+    const BUSY_STATUSES = ["scheduled", "pre_flight_check", "in_air"] as const;
+    const now = new Date();
+
+    const [tenantPilots, busyFlights] = await Promise.all([
+      ctx.db
+        .select()
+        .from(pilots)
+        .where(eq(pilots.franchiseTenantId, ctx.tenantId)),
+      ctx.db
+        .select({ pilotId: flights.pilotId })
+        .from(flights)
+        .where(
+          and(
+            inArray(flights.status, [...BUSY_STATUSES]),
+            lte(flights.scheduledDeparture, new Date(now.getTime() + 2 * 60 * 60 * 1000)),
+            or(
+              gte(flights.scheduledArrival, now),
+              // If no arrival time, assume in-progress flights are still busy
+              and(lte(flights.scheduledDeparture, now), eq(flights.status, "in_air")),
+            ),
+          ),
+        ),
+    ]);
+
+    const busyPilotIds = new Set(
+      busyFlights.map((f) => f.pilotId).filter(Boolean) as string[],
+    );
+
+    return tenantPilots.map((p) => ({
+      ...p,
+      availability: !p.isActive
+        ? ("inactive" as const)
+        : busyPilotIds.has(p.id)
+          ? ("busy" as const)
+          : ("available" as const),
+      hasValidLicense: !p.licenseExpiry || p.licenseExpiry > now,
+    }));
   }),
 
   /**
-   * List all drones scoped to the current tenant.
+   * List all drones scoped to the current tenant, with current availability.
    */
   listDrones: franchiseAdminProcedure.query(async ({ ctx }) => {
-    return ctx.db
-      .select()
-      .from(drones)
-      .where(eq(drones.franchiseTenantId, ctx.tenantId));
+    const BUSY_STATUSES = ["scheduled", "pre_flight_check", "in_air"] as const;
+    const now = new Date();
+
+    const [tenantDrones, busyFlights] = await Promise.all([
+      ctx.db
+        .select()
+        .from(drones)
+        .where(eq(drones.franchiseTenantId, ctx.tenantId)),
+      ctx.db
+        .select({ droneId: flights.droneId })
+        .from(flights)
+        .where(
+          and(
+            inArray(flights.status, [...BUSY_STATUSES]),
+            lte(flights.scheduledDeparture, new Date(now.getTime() + 2 * 60 * 60 * 1000)),
+            or(
+              gte(flights.scheduledArrival, now),
+              and(lte(flights.scheduledDeparture, now), eq(flights.status, "in_air")),
+            ),
+          ),
+        ),
+    ]);
+
+    const busyDroneIds = new Set(
+      busyFlights.map((f) => f.droneId).filter(Boolean) as string[],
+    );
+
+    return tenantDrones.map((d) => ({
+      ...d,
+      availability: !d.isActive
+        ? ("inactive" as const)
+        : busyDroneIds.has(d.id)
+          ? ("busy" as const)
+          : ("available" as const),
+    }));
   }),
 
   /**
