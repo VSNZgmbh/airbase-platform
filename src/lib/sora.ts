@@ -2,14 +2,21 @@
  * AIRBASE SORA (Specific Operations Risk Assessment) Engine
  *
  * Implements a simplified SORA v2.5 assessment for the DJI FlyCart 100
- * (MTOW 149.9 kg) operating in Swiss airspace, primarily the Berner Oberland corridors.
+ * operating in Swiss airspace, primarily the Berner Oberland corridors.
  *
- * Reference: EASA SORA v2.5 (AMC1 UAS.SPEC.040) and BAZL Betriebshandbuch.
+ * DJI FlyCart 100 weight references:
+ *   - Manufacturer MTOW: 170 kg (DJI spec sheet)
+ *   - Operational limit:  149.9 kg per flight (AIRBASE policy — stays below
+ *     150 kg threshold to remain in EASA SPECIFIC category and avoid
+ *     CERTIFIED category requirements)
+ *
+ * Reference: EASA SORA v2.5 (AMC1 UAS.SPEC.040), EASA ED Decision 2025/018/R,
+ * and BAZL Betriebshandbuch.
  *
  * IMPORTANT: This is a decision-support tool, not a certified assessment tool.
  * All flights require operator sign-off and may require official BAZL authorization.
  *
- * DJI FlyCart 100: At MTOW 149.9 kg, all operations fall into the SPECIFIC category
+ * At the 149.9 kg operational limit, all operations fall into the SPECIFIC category
  * and require a SORA assessment + BAZL operator authorisation.
  */
 
@@ -59,22 +66,31 @@ export const ARC_LABELS: Record<ARCLevel, string> = {
 
 export type SAILLevel = "I" | "II" | "III" | "IV" | "V" | "VI";
 
-/** SAIL lookup table from SORA v2.5 Table 3 (GRC rows × ARC cols). */
+/**
+ * SAIL lookup table — JARUS SORA v2.5 / EASA ED Decision 2025/018/R
+ * AMC1 UAS.SPEC.040 Table 3 (GRC rows × ARC cols).
+ *
+ * Verified 2026-04-25 against official JARUS SORA v2.5 Main Body (JAR_doc_25).
+ * Note: GRC 1 and 2 share the same row (≤2) in the official table.
+ *
+ * Source: https://dronetalks.online/blog/step-7-of-the-sora-methodology-final-specific-assurance-and-integrity-level-sail-and-operational-safety-objectives-oso-assignment/
+ */
 const SAIL_TABLE: Record<GRCLevel, Record<ARCLevel, SAILLevel>> = {
-  1: { a: "I",  b: "II", c: "IV", d: "VI" },
-  2: { a: "II", b: "III", c: "V",  d: "VI" },
-  3: { a: "III", b: "IV", c: "V",  d: "VI" },
-  4: { a: "IV",  b: "V",  c: "VI", d: "VI" },
-  5: { a: "V",   b: "V",  c: "VI", d: "VI" },
-  6: { a: "V",   b: "VI", c: "VI", d: "VI" },
-  7: { a: "VI",  b: "VI", c: "VI", d: "VI" },
+  1: { a: "I",   b: "II",  c: "IV", d: "VI" },
+  2: { a: "I",   b: "II",  c: "IV", d: "VI" },
+  3: { a: "II",  b: "II",  c: "IV", d: "VI" },
+  4: { a: "III", b: "III", c: "IV", d: "VI" },
+  5: { a: "IV",  b: "IV",  c: "IV", d: "VI" },
+  6: { a: "V",   b: "V",   c: "V",  d: "VI" },
+  7: { a: "VI",  b: "VI",  c: "VI", d: "VI" },
 };
 
 // ─── SORA Category ────────────────────────────────────────────────────────────
 
 /**
  * SORA Operational Category.
- * All DJI FlyCart 100 operations are SPECIFIC (MTOW > 25 kg) and require BAZL authorisation.
+ * All DJI FlyCart 100 operations are SPECIFIC (operational weight > 25 kg, capped
+ * at 149.9 kg to stay below 150 kg CERTIFIED threshold) and require BAZL authorisation.
  */
 export type SoraCategory = "OPEN_A1" | "OPEN_A2" | "OPEN_A3" | "SPECIFIC" | "CERTIFIED";
 
@@ -701,7 +717,8 @@ export function assessSora(input: SoraInput): SoraResult {
     pickupLng, pickupLat, deliveryLng, deliveryLat
   );
 
-  // DJI FlyCart 100 at 149.9 kg MTOW: ALWAYS SPECIFIC category + requires BAZL operator authorisation
+  // DJI FlyCart 100: MTOW 170 kg, operational limit 149.9 kg per flight.
+  // At 149.9 kg, stays in SPECIFIC category (< 150 kg) — requires BAZL operator authorisation.
   const requiresBazlPermit = true;
 
   const riskFactors: string[] = [];
@@ -715,7 +732,7 @@ export function assessSora(input: SoraInput): SoraResult {
   for (const reason of restrictedZones) {
     riskFactors.push(reason);
   }
-  riskFactors.push("DJI FlyCart 100 (149.9 kg MTOW) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
+  riskFactors.push("DJI FlyCart 100 (MTOW 170 kg, Betriebslimit 149.9 kg) — SPECIFIC Kategorie, BAZL-Betriebsgenehmigung erforderlich");
 
   // Overall risk
   let overallRisk: SoraResult["overallRisk"];
@@ -729,7 +746,7 @@ export function assessSora(input: SoraInput): SoraResult {
     {
       authority: "BAZL/FOCA",
       type: "SPECIFIC_AUTHORISATION",
-      description: "Betriebsgenehmigung für SPECIFIC-Kategorie UAS (DJI FlyCart 100, 149.9 kg MTOW)",
+      description: "Betriebsgenehmigung für SPECIFIC-Kategorie UAS (DJI FlyCart 100, MTOW 170 kg, Betriebslimit 149.9 kg)",
       isMandatory: true,
     },
   ];
@@ -739,6 +756,17 @@ export function assessSora(input: SoraInput): SoraResult {
       authority: "Flughafen Bern-Belp (LSZB)",
       type: "CTR_CLEARANCE",
       description: "Luftraum-Freigabe für Flüge im CTR Bern-Belp",
+      isMandatory: true,
+    });
+  }
+
+  // VBS military airspace clearance when route crosses restricted zones
+  // Rechtsgrundlage: Militärgesetz (MG, SR 510.10) Art. 80; LFV SR 748.132.1
+  if (restrictedZones.length > 0) {
+    recommendedPermits.push({
+      authority: "VBS / Schweizer Armee",
+      type: "MILITARY_AIRSPACE_CLEARANCE",
+      description: "Militärische Luftraumfreigabe erforderlich — Route kreuzt militärisches Sperrgebiet. Koordination mit VBS und aktuelle NOTAM-Prüfung obligatorisch.",
       isMandatory: true,
     });
   }

@@ -149,12 +149,12 @@ export const FLYCART_100 = {
   MODEL: "DJI FlyCart 100",
   MAX_PAYLOAD_KG: 100,               // Single-battery mode max
   MAX_PAYLOAD_DUAL_KG: 85,           // Dual-battery mode max
-  MAX_RANGE_KM: 12,                  // Dual-battery, at 149.9 kg MTOW
-  MAX_RANGE_SINGLE_KM: 6,            // Single-battery, at 149.9 kg MTOW
+  MAX_RANGE_KM: 12,                  // Dual-battery, at 149.9 kg operational limit
+  MAX_RANGE_SINGLE_KM: 6,            // Single-battery, at 149.9 kg operational limit
   CRUISE_SPEED_KMH: 54,              // 15 m/s
   MAX_SPEED_KMH: 72,                 // 20 m/s
   EMPTY_WEIGHT_KG: 55.2,             // With lifting system
-  MTOW_KG: 170,                      // Global max takeoff weight (150 kg in some countries)
+  MTOW_KG: 170,                      // Manufacturer MTOW (operational limit: 149.9 kg for SPECIFIC category)
   ROTOR_SYSTEM: "Coaxial 4-axis",    // 8 rotor blades, 62" propellers
   PROPELLER_SIZE_INCH: 62,           // Carbon fiber composite
   MOTOR_COUNT: 8,                     // 4-axis coaxial, 8 blades

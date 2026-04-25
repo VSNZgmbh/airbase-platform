@@ -1,10 +1,10 @@
 // ─── Demo Data for AIRBASE Platform ──────────────────────────────────────────
 // Based on real DJI FlyCart 100 specs — Source: dji.com/flycart-100/specs
-// MTOW: 170 kg (150 kg in CH/EU regulatory context)
+// MTOW: 170 kg (Hersteller) — Operatives Betriebslimit: 149.9 kg (< 150 kg → SPECIFIC Kategorie)
 // Leergewicht: 55.2 kg (Lifting) / 60.2 kg (Winch)
 // Max Nutzlast: 100 kg (Einzelbatterie) / 85 kg (Dualbatterie)
-// Reichweite: 12 km (Dual-Batterie) / 6 km (Einzel-Batterie) bei 149.9 kg MTOW
-// Flugzeit: 14 min (Dual) / 7 min (Einzel) bei 149.9 kg MTOW
+// Reichweite: 12 km (Dual-Batterie) / 6 km (Einzel-Batterie) bei 149.9 kg Betriebslimit
+// Flugzeit: 14 min (Dual) / 7 min (Einzel) bei 149.9 kg Betriebslimit
 // Batterie: DB2160 · 41 Ah · 52 V · 1'500 Zyklen · 9 min Schnellladung
 // Propeller: 62" (1574.8 mm) Carbon-Composite · Koaxial 4-Achsen, 8 Rotorblätter
 // Motoren: 155×16 mm Stator · 60 rpm/V KV

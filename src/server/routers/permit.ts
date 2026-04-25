@@ -304,7 +304,7 @@ BETRIEBSDETAILS:
 LUFTFAHRZEUG:
   Modell:             ${p.droneModel}
   Seriennummer:       ${p.droneSerial}
-  MTOW:               149.9 kg
+  MTOW:               170 kg (Betriebslimit: 149.9 kg)
   Betriebskategorie:  SPECIFIC (gemäss LFG SR 748.0 / LFV SR 748.01 / BAZL-Betriebsgenehmigungsregime)
 
 PILOT:
@@ -342,7 +342,7 @@ GEPLANTE OPERATION:
 
 LUFTFAHRZEUG:
   Typ:           UAS (Unbemannte Luftfahrtanlage) — ${p.droneModel}
-  MTOW:          149.9 kg
+  MTOW:          170 kg (Betriebslimit: 149.9 kg)
   Serien-Nr.:    ${p.droneSerial}
 
 PILOT:
