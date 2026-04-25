@@ -1856,14 +1856,203 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 6: BUSINESS MODEL ═══ */}
+      {/* ═══ SLIDE 6: SUSTAINABILITY — Core Differentiator ═══ */}
       <section
         ref={setRef(6)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        style={{ scrollSnapAlign: "start", background: `linear-gradient(170deg, #F0FDF4 0%, ${C.bg} 50%, ${C.bgAlt} 100%)` }}
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="06" text="Sustainability" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.green }}
+            >
+              100% Solar-Powered.{" "}
+              <span style={{ color: C.text }}>Zero Compromise.</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-lg mt-3 max-w-3xl" style={{ color: C.textSecondary }}>
+              Every drone and our transport vehicle run{" "}
+              <strong style={{ color: C.green }}>exclusively on solar energy</strong>.
+              Sustainability isn&apos;t an afterthought — it&apos;s our competitive edge.
+            </motion.p>
+          </Stagger>
+
+          {/* Emissions comparison: Transport */}
+          <Stagger className="grid md:grid-cols-2 gap-6 mt-10" delay={0.2}>
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-6 border"
+              style={{ background: C.bg, borderColor: C.green + "25", boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: C.green + "12" }}>
+                  <Package className="w-5 h-5" style={{ color: C.green }} />
+                </div>
+                <div>
+                  <div className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                    Transport &amp; Delivery
+                  </div>
+                  <div className="text-xs" style={{ color: C.textMuted }}>Drone vs Helicopter</div>
+                </div>
+              </div>
+
+              {/* Helicopter bar */}
+              <div className="mb-4">
+                <div className="flex justify-between items-baseline mb-1">
+                  <span className="text-sm font-semibold" style={{ color: C.textSecondary }}>Helicopter</span>
+                  <span className="text-sm font-mono font-bold" style={{ color: C.red }}>~68 kg CO₂/h</span>
+                </div>
+                <div className="h-4 rounded-full overflow-hidden" style={{ background: C.border }}>
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: `linear-gradient(90deg, ${C.red}, #EF5350)` }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "95%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                  />
+                </div>
+                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>Jet-A1 fuel · high noise · limited routes</div>
+              </div>
+
+              {/* Drone bar */}
+              <div>
+                <div className="flex justify-between items-baseline mb-1">
+                  <span className="text-sm font-semibold" style={{ color: C.textSecondary }}>AIRBASE Drone</span>
+                  <span className="text-sm font-mono font-bold" style={{ color: C.green }}>0 g CO₂</span>
+                </div>
+                <div className="h-4 rounded-full overflow-hidden" style={{ background: C.border }}>
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: `linear-gradient(90deg, ${C.green}, #4ADE80)` }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "3%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </div>
+                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>Solar-charged electric · silent · autonomous</div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t text-center" style={{ borderColor: C.green + "15" }}>
+                <span className="text-2xl font-bold font-mono" style={{ color: C.green }}>100%</span>
+                <span className="text-sm ml-2" style={{ color: C.textSecondary }}>emission reduction per flight</span>
+              </div>
+            </motion.div>
+
+            {/* Emissions comparison: Agriculture */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-6 border"
+              style={{ background: C.bg, borderColor: C.green + "25", boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: C.green + "12" }}>
+                  <Wheat className="w-5 h-5" style={{ color: C.green }} />
+                </div>
+                <div>
+                  <div className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                    Agriculture
+                  </div>
+                  <div className="text-xs" style={{ color: C.textMuted }}>Drone vs Tractor per hectare</div>
+                </div>
+              </div>
+
+              {/* Tractor bar */}
+              <div className="mb-4">
+                <div className="flex justify-between items-baseline mb-1">
+                  <span className="text-sm font-semibold" style={{ color: C.textSecondary }}>Diesel Tractor</span>
+                  <span className="text-sm font-mono font-bold" style={{ color: C.red }}>41.3 kg CO₂/ha</span>
+                </div>
+                <div className="h-4 rounded-full overflow-hidden" style={{ background: C.border }}>
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: `linear-gradient(90deg, ${C.red}, #EF5350)` }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "95%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                  />
+                </div>
+                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>Diesel fuel · soil compaction · 365 MJ/ha</div>
+              </div>
+
+              {/* Drone bar */}
+              <div>
+                <div className="flex justify-between items-baseline mb-1">
+                  <span className="text-sm font-semibold" style={{ color: C.textSecondary }}>AIRBASE Drone</span>
+                  <span className="text-sm font-mono font-bold" style={{ color: C.green }}>0 kg CO₂/ha</span>
+                </div>
+                <div className="h-4 rounded-full overflow-hidden" style={{ background: C.border }}>
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: `linear-gradient(90deg, ${C.green}, #4ADE80)` }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "3%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </div>
+                <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>Solar-charged electric · no soil damage · precision spray</div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t text-center" style={{ borderColor: C.green + "15" }}>
+                <span className="text-2xl font-bold font-mono" style={{ color: C.green }}>100%</span>
+                <span className="text-sm ml-2" style={{ color: C.textSecondary }}>emission reduction per hectare</span>
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* Solar powered KPIs */}
+          <Stagger delay={0.4}>
+            <motion.div
+              variants={fadeUp}
+              className="mt-8 rounded-2xl p-6 border"
+              style={{ background: C.greenLight, borderColor: C.green + "20" }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Sun className="w-5 h-5" style={{ color: C.green }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-semibold" style={{ color: C.green }}>
+                  Powered Exclusively by Solar Energy
+                </span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { value: "0g", label: "Direct CO₂ per flight", icon: Battery },
+                  { value: "100%", label: "Solar-powered fleet", icon: Sun },
+                  { value: "100%", label: "Solar transport vehicle", icon: Truck },
+                  { value: "~95%", label: "Less energy vs diesel", icon: Leaf },
+                ].map((kpi) => (
+                  <motion.div key={kpi.label} variants={fadeUp} className="text-center">
+                    <kpi.icon className="w-5 h-5 mx-auto mb-2" style={{ color: C.green }} />
+                    <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{kpi.value}</div>
+                    <div className="text-xs mt-1" style={{ color: C.textMuted }}>{kpi.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-5 pt-4 border-t text-center" style={{ borderColor: C.green + "20" }}>
+                <p className="text-sm" style={{ color: C.textSecondary }}>
+                  From charging stations to the transport van — our entire logistics chain runs on renewable solar energy.
+                  Green operations that save money <strong>and</strong> the planet.
+                </p>
+              </div>
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 7: BUSINESS MODEL ═══ */}
+      <section
+        ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="06" text="Business Model" />
+          <SlideLabel number="07" text="Business Model" />
 
           <Stagger>
             <motion.h2
@@ -1989,14 +2178,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 10: TRACTION ═══ */}
+      {/* ═══ SLIDE 8: TRACTION ═══ */}
       <section
-        ref={setRef(7)}
+        ref={setRef(8)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="07" text="Traction" />
+          <SlideLabel number="08" text="Traction" />
 
           <Stagger>
             <motion.h2
@@ -2057,12 +2246,12 @@ export function InvestorPitchDeck() {
 
       {/* ═══ SLIDE 9: TEAM ═══ */}
       <section
-        ref={setRef(8)}
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="08" text="Team" />
+          <SlideLabel number="09" text="Team" />
 
           <Stagger>
             <motion.h2
@@ -2243,14 +2432,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 12: FINANCIAL PROJECTIONS ═══ */}
+      {/* ═══ SLIDE 10: FINANCIAL PROJECTIONS ═══ */}
       <section
-        ref={setRef(9)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="09" text="Financial Projections" />
+          <SlideLabel number="10" text="Financial Projections" />
 
           <Stagger>
             <motion.h2
@@ -2346,14 +2535,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 14: THE ASK + INVESTMENT SLIDER ═══ */}
+      {/* ═══ SLIDE 11: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="10" text="The Ask" />
+          <SlideLabel number="11" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -2485,58 +2674,6 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE: SUSTAINABILITY — Cool Extra ═══ */}
-      <section
-        ref={setRef(11)}
-        className="relative min-h-[60vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-16"
-        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
-      >
-        <div className="max-w-5xl mx-auto w-full">
-          <SlideLabel number="11" text="Sustainability" />
-
-          <Stagger>
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-4xl font-bold leading-tight mb-2"
-              style={{ color: C.green }}
-            >
-              Near-Zero Carbon.{" "}
-              <span style={{ color: C.text }}>Green by Design.</span>
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-base mt-2" style={{ color: C.textMuted }}>
-              Our fleet runs 100% electric — every flight is a step toward cleaner logistics.
-            </motion.p>
-          </Stagger>
-
-          <Stagger delay={0.2}>
-            <motion.div
-              variants={fadeUp}
-              className="mt-8 rounded-2xl p-6 border"
-              style={{ background: C.greenLight, borderColor: C.green + "20" }}
-            >
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[
-                  { value: "0g", label: "Direct CO\u2082 per flight", icon: Battery },
-                  { value: "100%", label: "Electric drone fleet", icon: Zap },
-                  { value: "~95%", label: "Less CO\u2082 vs diesel", icon: Leaf },
-                  { value: "Solar", label: "Fleet vehicles (planned)", icon: Sun },
-                ].map((kpi) => (
-                  <motion.div key={kpi.label} variants={fadeUp} className="text-center">
-                    <kpi.icon className="w-5 h-5 mx-auto mb-2" style={{ color: C.green }} />
-                    <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>{kpi.value}</div>
-                    <div className="text-xs mt-1" style={{ color: C.textMuted }}>{kpi.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-              <div className="mt-6 pt-4 border-t text-center" style={{ borderColor: C.green + "20" }}>
-                <p className="text-sm" style={{ color: C.textSecondary }}>
-                  Drones replace diesel trucks &amp; helicopters — cutting emissions while cutting costs. Sustainability isn&apos;t a bolt-on; it&apos;s built into our unit economics.
-                </p>
-              </div>
-            </motion.div>
-          </Stagger>
-        </div>
-      </section>
 
       {/* ═══ SLIDE 15: VISION ═══ */}
       <section
