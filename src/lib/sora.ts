@@ -389,6 +389,27 @@ const URBAN_ZONES: GRCZone[] = [
     description: "Kantonshauptstadt Graubünden — besiedelt",
     bounds: { minLat: 46.84, maxLat: 46.87, minLng: 9.52, maxLng: 9.56 },
   },
+  {
+    id: "schaffhausen_city",
+    name: "Schaffhausen Stadtgebiet",
+    grc: 3,
+    description: "Kantonshauptstadt Schaffhausen — besiedelt (ca. 37'000 Einwohner)",
+    bounds: { minLat: 47.68, maxLat: 47.72, minLng: 8.61, maxLng: 8.66 },
+  },
+  {
+    id: "bellinzona_city",
+    name: "Bellinzona Stadtgebiet",
+    grc: 3,
+    description: "Kantonshauptstadt Tessin — besiedelt (ca. 43'000 Einwohner)",
+    bounds: { minLat: 46.17, maxLat: 46.21, minLng: 9.01, maxLng: 9.06 },
+  },
+  {
+    id: "appenzell_city",
+    name: "Appenzell Stadtgebiet",
+    grc: 3,
+    description: "Hauptort Appenzell Innerrhoden — besiedelt (ca. 6'000 Einwohner)",
+    bounds: { minLat: 47.32, maxLat: 47.35, minLng: 9.39, maxLng: 9.43 },
+  },
 ];
 
 // ─── Militärische Sonderzonen und Gefahrengebiete ─────────────────────────────
