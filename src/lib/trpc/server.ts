@@ -109,6 +109,48 @@ export const operatorProcedure = t.procedure
     return next({ ctx: { ...ctx, userId: ctx.userId } });
   });
 
+/**
+ * Safety Manager procedure — BAZL LUC Tier 2.
+ * Requires `safety_manager` Clerk role in production.
+ * In dev mode (Clerk not configured), falls back to auth-only.
+ */
+export const safetyManagerProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    if (!ctx.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    const role = await getUserRole(ctx.userId);
+    if (isClerkConfigured && role !== "safety_manager") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Safety Manager role required (BAZL LUC Tier 2)",
+      });
+    }
+    return next({ ctx: { ...ctx, userId: ctx.userId } });
+  });
+
+/**
+ * Accountable Manager procedure — BAZL LUC Tier 3 (final sign-off).
+ * Requires `accountable_manager` Clerk role in production.
+ * In dev mode (Clerk not configured), falls back to auth-only.
+ */
+export const accountableManagerProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    if (!ctx.userId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    const role = await getUserRole(ctx.userId);
+    if (isClerkConfigured && role !== "accountable_manager") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Accountable Manager role required (BAZL LUC Tier 3)",
+      });
+    }
+    return next({ ctx: { ...ctx, userId: ctx.userId } });
+  });
+
 export const pilotProcedure = t.procedure
   .use(timingMiddleware)
   .use(async ({ ctx, next }) => {

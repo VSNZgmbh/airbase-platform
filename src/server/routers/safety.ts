@@ -24,6 +24,8 @@ import {
   createTRPCRouter,
   operatorProcedure,
   protectedProcedure,
+  safetyManagerProcedure,
+  accountableManagerProcedure,
 } from "@/lib/trpc/server";
 import {
   flightAuthorizations,
@@ -423,7 +425,7 @@ export const safetyRouter = createTRPCRouter({
    * and the flight stays escalated pending Accountable Manager final sign-off.
    * For non-SAIL-IV escalations (weather/NOTAM): Safety Manager decision is final.
    */
-  overrideDecision: operatorProcedure
+  overrideDecision: safetyManagerProcedure
     .input(
       z.object({
         authorizationId: z.string().uuid(),
@@ -486,7 +488,7 @@ export const safetyRouter = createTRPCRouter({
    * the Safety Manager. This is the final authorization required by
    * EASA Art. 12 AMC1 for the three-tier signature chain.
    */
-  accountableManagerOverride: operatorProcedure
+  accountableManagerOverride: accountableManagerProcedure
     .input(
       z.object({
         authorizationId: z.string().uuid(),
