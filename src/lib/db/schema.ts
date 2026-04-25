@@ -20,6 +20,7 @@ export const bookingStatusEnum = pgEnum("booking_status", [
   "confirmed",
   "in_progress",
   "completed",
+  "delivery_confirmed",
   "cancelled",
 ]);
 

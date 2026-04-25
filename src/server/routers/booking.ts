@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import {
   createTRPCRouter,
@@ -190,5 +190,70 @@ export const bookingRouter = createTRPCRouter({
       }
 
       return booking;
+    }),
+
+  // Confirm delivery receipt — customer confirms they received the goods
+  confirmDelivery: protectedProcedure
+    .input(
+      z.object({
+        bookingId: z.string().uuid(),
+        signature: z.string().min(1).optional(),
+        notes: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const customer = await ctx.db.query.customers.findFirst({
+        where: eq(customers.clerkUserId, ctx.userId),
+      });
+      if (!customer) throw new TRPCError({ code: "NOT_FOUND" });
+
+      const booking = await ctx.db.query.bookings.findFirst({
+        where: eq(bookings.id, input.bookingId),
+      });
+
+      if (!booking || booking.customerId !== customer.id) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      if (booking.status !== "completed") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `Lieferbestätigung nur im Status 'completed' möglich (aktuell: '${booking.status}').`,
+        });
+      }
+
+      const now = new Date();
+
+      // Atomic transition: completed → delivery_confirmed
+      const [updated] = await ctx.db
+        .update(bookings)
+        .set({
+          status: "delivery_confirmed",
+          metadata: {
+            ...(booking.metadata as Record<string, unknown> ?? {}),
+            deliveryConfirmation: {
+              confirmedAt: now.toISOString(),
+              customerId: customer.id,
+              signature: input.signature ?? null,
+              notes: input.notes ?? null,
+            },
+          },
+          updatedAt: now,
+        })
+        .where(and(eq(bookings.id, input.bookingId), eq(bookings.status, "completed")))
+        .returning();
+
+      if (!updated) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Lieferbestätigung konnte nicht verarbeitet werden — Status wurde gleichzeitig geändert.",
+        });
+      }
+
+      console.log(
+        `[Booking] Delivery confirmed for booking ${booking.identifier} by customer ${customer.id}.`
+      );
+
+      return { booking: updated };
     }),
 });

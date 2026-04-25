@@ -44,6 +44,99 @@ export const pilotRouter = createTRPCRouter({
       return { flights: myFlights, pilotId: pilot.id };
     }),
 
+  // Submit pre-flight checklist — transitions flight from "scheduled" to "pre_flight_check"
+  submitPreFlightCheck: pilotProcedure
+    .input(
+      z.object({
+        flightId: z.string().uuid(),
+        checklistItems: z.array(
+          z.object({
+            category: z.string(),
+            item: z.string(),
+            checked: z.boolean(),
+          })
+        ),
+        pilotSignature: z.string().min(1),
+        missionRef: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Verify pilot owns this flight
+      const pilot = await ctx.db.query.pilots.findFirst({
+        where: eq(pilots.clerkUserId, ctx.userId),
+      });
+      if (!pilot) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Kein Piloten-Datensatz gefunden.",
+        });
+      }
+
+      const flight = await ctx.db.query.flights.findFirst({
+        where: eq(flights.id, input.flightId),
+      });
+
+      if (!flight) throw new TRPCError({ code: "NOT_FOUND" });
+      if (flight.pilotId !== pilot.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Dieser Flug ist Ihnen nicht zugewiesen.",
+        });
+      }
+
+      // Only allow pre-flight check from "scheduled" status
+      if (flight.status !== "scheduled") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `Vorflugcheck nur im Status 'scheduled' möglich (aktuell: '${flight.status}').`,
+        });
+      }
+
+      // Verify all checklist items are checked
+      const unchecked = input.checklistItems.filter((item) => !item.checked);
+      if (unchecked.length > 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `${unchecked.length} Checklistenpunkte sind noch nicht abgehakt.`,
+        });
+      }
+
+      const now = new Date();
+
+      // Atomic status transition: scheduled → pre_flight_check
+      const [updatedFlight] = await ctx.db
+        .update(flights)
+        .set({
+          status: "pre_flight_check",
+          flightPlanJson: {
+            ...(flight.flightPlanJson as Record<string, unknown> ?? {}),
+            preFlight: {
+              checklistItems: input.checklistItems,
+              pilotSignature: input.pilotSignature,
+              missionRef: input.missionRef ?? null,
+              submittedAt: now.toISOString(),
+              pilotId: pilot.id,
+            },
+          },
+          updatedAt: now,
+        })
+        .where(and(eq(flights.id, input.flightId), eq(flights.status, "scheduled")))
+        .returning();
+
+      if (!updatedFlight) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Vorflugcheck konnte nicht eingereicht werden — Status wurde gleichzeitig geändert.",
+        });
+      }
+
+      console.log(
+        `[Pilot] Pre-flight check submitted for flight ${input.flightId} by pilot ${pilot.id}.`
+      );
+
+      return { flight: updatedFlight };
+    }),
+
   // Submit post-flight log
   submitPostFlight: pilotProcedure
     .input(

@@ -47,6 +47,7 @@ import {
   HardHat,
   Siren,
   Sun,
+  Fingerprint,
 } from "lucide-react";
 
 // ─── Types & Data ───────────────────────────────────────────────────────────
@@ -81,6 +82,7 @@ const BOOKING_STATUS: Record<string, { label: string; color: string; step: numbe
   confirmed: { label: "Bestätigt", color: "bg-green-100 text-green-700", step: 3 },
   in_progress: { label: "In Zustellung", color: "bg-indigo-100 text-indigo-700", step: 4 },
   completed: { label: "Geliefert", color: "bg-emerald-100 text-emerald-700", step: 5 },
+  delivery_confirmed: { label: "Empfang bestätigt", color: "bg-teal-100 text-teal-700", step: 6 },
 };
 
 const STEPS = [
@@ -89,6 +91,7 @@ const STEPS = [
   { icon: CheckCircle2, label: "Bestätigt" },
   { icon: Plane, label: "In Zustellung" },
   { icon: CheckCheck, label: "Geliefert" },
+  { icon: Fingerprint, label: "Empfangen" },
 ];
 
 const SERVICES = [

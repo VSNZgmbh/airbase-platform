@@ -395,6 +395,37 @@ function MissionControlSection({ flights }: { flights: any[] }) {
   const preflightAllDone = preflightDone === preflightTotal;
   const preflightProgress = preflightTotal > 0 ? Math.round((preflightDone / preflightTotal) * 100) : 0;
   const [flightApproved, setFlightApproved] = useState(false);
+  const [preflightError, setPreflightError] = useState<string | null>(null);
+
+  const submitPreFlightMutation = trpc.pilot.submitPreFlightCheck.useMutation({
+    onSuccess: () => {
+      setFlightApproved(true);
+      setPreflightError(null);
+    },
+    onError: (err) => {
+      setPreflightError(err.message);
+    },
+  });
+
+  function handlePreFlightSubmit() {
+    if (!preflightAllDone || !activeFlight) return;
+    setPreflightError(null);
+
+    // Build checklist items from the checked state
+    const checklistItems = PREFLIGHT_CATEGORIES.flatMap((cat, catIdx) =>
+      cat.items.map((item, itemIdx) => ({
+        category: cat.title,
+        item,
+        checked: !!preflightChecked[`pf-${catIdx}-${itemIdx}`],
+      }))
+    );
+
+    submitPreFlightMutation.mutate({
+      flightId: activeFlight.id,
+      checklistItems,
+      pilotSignature: "digital-signature", // Signed via checklist completion
+    });
+  }
 
   function togglePreflight(catIdx: number, itemIdx: number) {
     const key = `pf-${catIdx}-${itemIdx}`;
@@ -930,15 +961,19 @@ function MissionControlSection({ flights }: { flights: any[] }) {
                 {!flightApproved ? (
                   <div className="space-y-2">
                     <button
-                      onClick={() => {
-                        if (preflightAllDone) setFlightApproved(true);
-                      }}
-                      disabled={!preflightAllDone}
+                      onClick={handlePreFlightSubmit}
+                      disabled={!preflightAllDone || submitPreFlightMutation.isPending}
                       className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       <CheckCheck className="w-4 h-4" />
-                      Flugstart genehmigen
+                      {submitPreFlightMutation.isPending ? "Wird eingereicht…" : "Flugstart genehmigen"}
                     </button>
+                    {preflightError && (
+                      <p className="text-[10px] text-red-600 text-center flex items-center justify-center gap-1">
+                        <AlertTriangle className="w-3 h-3" />
+                        {preflightError}
+                      </p>
+                    )}
                     {!preflightAllDone && (
                       <p className="text-[10px] text-amber-600 text-center flex items-center justify-center gap-1">
                         <AlertTriangle className="w-3 h-3" />
