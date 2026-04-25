@@ -18,10 +18,10 @@ import { validateIngestPayload } from "@/lib/telemetry";
 import type { TelemetryReport } from "@/lib/telemetry";
 
 export async function POST(req: NextRequest) {
-  // Auth check
+  // Auth check — reject if key is not configured or header does not match
   const authHeader = req.headers.get("authorization");
   const expectedKey = process.env.TELEMETRY_INGEST_API_KEY;
-  if (expectedKey && authHeader !== `Bearer ${expectedKey}`) {
+  if (!expectedKey || authHeader !== `Bearer ${expectedKey}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
