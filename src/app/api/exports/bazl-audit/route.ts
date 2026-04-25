@@ -292,7 +292,7 @@ export async function GET(req: NextRequest) {
   const sorCsvRows = occurrences
     .map(
       (o) =>
-        `${o.id},"${(o.title ?? "").replace(/"/g, '""')}",${o.severity},${o.status},${o.category},${o.reportedAt?.toISOString() ?? ""},${o.incidentOccurredAt?.toISOString() ?? ""},${o.phaseOfOperation ?? ""},${o.isNearMiss},${(o.rootCause ?? "").replace(/"/g, '""')},${(o.correctiveActions ?? "").replace(/"/g, '""')},${o.bazlReferenceNumber ?? ""},${o.eccairsReportId ?? ""}`
+        `${o.id},${q(o.title)},${q(o.severity)},${q(o.status)},${q(o.category)},${o.reportedAt?.toISOString() ?? ""},${o.incidentOccurredAt?.toISOString() ?? ""},${q(o.phaseOfOperation)},${o.isNearMiss},${q(o.rootCause)},${q(o.correctiveActions)},${q(o.bazlReferenceNumber)},${q(o.eccairsReportId)}`
     )
     .join("\n");
   archive.append(sorCsvHeader + sorCsvRows, {
