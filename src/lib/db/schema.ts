@@ -480,6 +480,14 @@ export const occurrenceStatusEnum = pgEnum("occurrence_status", [
   "resolved",
 ]);
 
+export const phaseOfOperationEnum = pgEnum("phase_of_operation", [
+  "takeoff",
+  "cruise",
+  "landing",
+  "ground",
+  "hover",
+]);
+
 /**
  * LUC Self-Authorization log — every automated Go/No-Go decision.
  * Provides the full audit trail required for BAZL LUC audits.
@@ -527,6 +535,12 @@ export const flightAuthorizations = pgTable("flight_authorizations", {
   safetyManagerUserId: text("safety_manager_user_id"),
   safetyManagerDecidedAt: timestamp("safety_manager_decided_at"),
 
+  // ─── Retention & export metadata ──────────────────────────────────────────
+  /** When this authorization was exported to BAZL */
+  bazlExportedAt: timestamp("bazl_exported_at"),
+  /** Flight authorizations: 3-year retention per BAZL LUC requirements */
+  retentionExpiresAt: timestamp("retention_expires_at"),
+
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -551,6 +565,37 @@ export const safetyOccurrences = pgTable("safety_occurrences", {
   status: occurrenceStatusEnum("status").notNull().default("open"),
   resolution: text("resolution"),
   resolvedAt: timestamp("resolved_at"),
+
+  // ─── ECCAIRS/ADREP mandatory fields (EU Regulation 376/2014) ──────────────
+  /** When the incident actually occurred (distinct from reportedAt) */
+  incidentOccurredAt: timestamp("incident_occurred_at"),
+  /** Location of the incident (WGS84) */
+  incidentLat: decimal("incident_lat", { precision: 10, scale: 7 }),
+  incidentLng: decimal("incident_lng", { precision: 10, scale: 7 }),
+  /** Phase of flight operation at time of incident */
+  phaseOfOperation: phaseOfOperationEnum("phase_of_operation"),
+  /** Whether the event qualifies as a near-miss */
+  isNearMiss: boolean("is_near_miss").notNull().default(false),
+  /** Root cause analysis */
+  rootCause: text("root_cause"),
+  /** Contributing factors (ECCAIRS taxonomy codes or free text) */
+  contributingFactors: jsonb("contributing_factors").$type<string[]>().default([]),
+  /** Corrective actions taken or recommended */
+  correctiveActions: text("corrective_actions"),
+  /** Clerk user ID of the investigator */
+  investigatedByUserId: text("investigated_by_user_id"),
+  /** When the investigation was completed */
+  investigationCompletedAt: timestamp("investigation_completed_at"),
+  /** When BAZL was notified of this occurrence */
+  bazlNotifiedAt: timestamp("bazl_notified_at"),
+  /** BAZL reference number for this report */
+  bazlReferenceNumber: text("bazl_reference_number"),
+  /** ECCAIRS report identifier */
+  eccairsReportId: text("eccairs_report_id"),
+
+  // ─── Retention metadata ───────────────────────────────────────────────────
+  /** Safety occurrences: 5-year retention per BAZL/EU 376/2014 */
+  retentionExpiresAt: timestamp("retention_expires_at"),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -641,6 +686,10 @@ export const droneTelemetry = pgTable("drone_telemetry", {
   source: telemetrySourceEnum("source").notNull(),
   deviceTimestamp: timestamp("device_timestamp"),
   receivedAt: timestamp("received_at").notNull().defaultNow(),
+
+  // ─── Retention metadata ───────────────────────────────────────────────────
+  /** Telemetry data: 1-year retention per BAZL requirements */
+  retentionExpiresAt: timestamp("retention_expires_at"),
 });
 
 /**

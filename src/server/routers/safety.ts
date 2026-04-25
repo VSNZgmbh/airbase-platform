@@ -365,9 +365,23 @@ export const safetyRouter = createTRPCRouter({
         flightId: z.string().uuid().optional(),
         authorizationId: z.string().uuid().optional(),
         franchiseTenantId: z.string().uuid().optional(),
+        // ECCAIRS/ADREP mandatory fields (EU Regulation 376/2014)
+        incidentOccurredAt: z.string().datetime().optional(),
+        incidentLat: z.number().min(-90).max(90).optional(),
+        incidentLng: z.number().min(-180).max(180).optional(),
+        phaseOfOperation: z.enum(["takeoff", "cruise", "landing", "ground", "hover"]).optional(),
+        isNearMiss: z.boolean().default(false),
+        rootCause: z.string().optional(),
+        contributingFactors: z.array(z.string()).default([]),
+        correctiveActions: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const now = new Date();
+      // 5-year retention for safety occurrences per BAZL/EU 376/2014
+      const retentionExpiresAt = new Date(now);
+      retentionExpiresAt.setFullYear(retentionExpiresAt.getFullYear() + 5);
+
       const [occurrence] = await ctx.db
         .insert(safetyOccurrences)
         .values({
@@ -379,7 +393,17 @@ export const safetyRouter = createTRPCRouter({
           authorizationId: input.authorizationId ?? null,
           franchiseTenantId: input.franchiseTenantId ?? null,
           reportedByUserId: ctx.userId,
-          reportedAt: new Date(),
+          reportedAt: now,
+          // ECCAIRS fields
+          incidentOccurredAt: input.incidentOccurredAt ? new Date(input.incidentOccurredAt) : null,
+          incidentLat: input.incidentLat?.toString() ?? null,
+          incidentLng: input.incidentLng?.toString() ?? null,
+          phaseOfOperation: input.phaseOfOperation ?? null,
+          isNearMiss: input.isNearMiss,
+          rootCause: input.rootCause ?? null,
+          contributingFactors: input.contributingFactors,
+          correctiveActions: input.correctiveActions ?? null,
+          retentionExpiresAt,
         })
         .returning();
 

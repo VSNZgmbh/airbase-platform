@@ -861,14 +861,26 @@ function SORPanel() {
     title: "", description: "",
     severity: "medium" as "low" | "medium" | "high" | "critical",
     category: "operational" as "operational" | "weather" | "airspace" | "technical" | "human",
+    incidentOccurredAt: "",
+    phaseOfOperation: "" as "" | "takeoff" | "cruise" | "landing" | "ground" | "hover",
+    isNearMiss: false,
   });
+
+  const initialForm = { title: "", description: "", severity: "medium" as const, category: "operational" as const, incidentOccurredAt: "", phaseOfOperation: "" as const, isNearMiss: false };
 
   const { data: occurrences, isLoading, refetch } = trpc.safety.listOccurrences.useQuery({ limit: 25 });
   const report = trpc.safety.reportOccurrence.useMutation({
-    onSuccess: () => { setShowForm(false); setForm({ title: "", description: "", severity: "medium", category: "operational" }); refetch(); },
+    onSuccess: () => { setShowForm(false); setForm(initialForm); refetch(); },
   });
 
-  function handleSubmit(e: React.FormEvent) { e.preventDefault(); report.mutate(form); }
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    report.mutate({
+      ...form,
+      incidentOccurredAt: form.incidentOccurredAt ? new Date(form.incidentOccurredAt).toISOString() : undefined,
+      phaseOfOperation: form.phaseOfOperation || undefined,
+    });
+  }
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
@@ -925,6 +937,32 @@ function SORPanel() {
                 </select>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[10px] font-medium text-slate-500 mb-1">Vorfall-Zeitpunkt</label>
+                <input type="datetime-local" value={form.incidentOccurredAt}
+                  onChange={(e) => setForm((f) => ({ ...f, incidentOccurredAt: e.target.value }))}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-[10px] font-medium text-slate-500 mb-1">Flugphase</label>
+                <select value={form.phaseOfOperation} onChange={(e) => setForm((f) => ({ ...f, phaseOfOperation: e.target.value as typeof form.phaseOfOperation }))}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500">
+                  <option value="">-- Optional --</option>
+                  <option value="takeoff">Start</option>
+                  <option value="cruise">Reiseflug</option>
+                  <option value="landing">Landung</option>
+                  <option value="ground">Boden</option>
+                  <option value="hover">Schweben</option>
+                </select>
+              </div>
+            </div>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={form.isNearMiss}
+                onChange={(e) => setForm((f) => ({ ...f, isNearMiss: e.target.checked }))}
+                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40" />
+              <span className="text-xs text-slate-700 font-medium">Beinahe-Unfall (Near Miss)</span>
+            </label>
             <button type="submit" disabled={report.isPending}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white font-semibold py-2.5 rounded-lg transition-all text-sm">
               {report.isPending ? "Wird gemeldet..." : "Vorfall einreichen"}
@@ -947,7 +985,7 @@ function SORPanel() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100">
-                {["Datum", "Titel", "Kategorie", "Schweregrad", "Status"].map((h) => (
+                {["Vorfall", "Titel", "Kategorie", "Schweregrad", "Status"].map((h) => (
                   <th key={h} className="text-left px-5 py-2.5 text-[10px] font-semibold text-slate-500 uppercase tracking-wider bg-slate-50/50">{h}</th>
                 ))}
               </tr>
@@ -955,8 +993,11 @@ function SORPanel() {
             <tbody className="divide-y divide-slate-50">
               {occurrences.map((occ) => (
                 <tr key={occ.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3 text-slate-500 whitespace-nowrap text-xs font-mono">{formatDateTime(occ.reportedAt)}</td>
-                  <td className="px-5 py-3 text-slate-900 font-medium max-w-xs truncate text-xs">{occ.title}</td>
+                  <td className="px-5 py-3 text-slate-500 whitespace-nowrap text-xs font-mono">{formatDateTime(occ.incidentOccurredAt ?? occ.reportedAt)}</td>
+                  <td className="px-5 py-3 text-slate-900 font-medium max-w-xs text-xs">
+                    <span className="truncate block">{occ.title}</span>
+                    {occ.isNearMiss && <span className="inline-flex px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 text-[9px] font-bold mt-0.5">NEAR MISS</span>}
+                  </td>
                   <td className="px-5 py-3 text-slate-500 capitalize text-xs">{occ.category}</td>
                   <td className="px-5 py-3">
                     <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-semibold ${
