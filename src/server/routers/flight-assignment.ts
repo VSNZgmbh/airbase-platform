@@ -62,8 +62,48 @@ export const flightAssignmentRouter = createTRPCRouter({
       const requiredPayloadKg = parseFloat(booking.payloadWeightKg);
       const tenantId = booking.franchiseTenantId;
 
+      // Tenant isolation — operator must belong to the flight's tenant
+      if (tenantId && ctx.tenantId && tenantId !== ctx.tenantId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You do not have access to flights in this tenant.",
+        });
+      }
+
       let assignedDroneId = input.droneId ?? null;
       let assignedPilotId = input.pilotId ?? null;
+
+      // Validate manual drone override belongs to the flight's tenant
+      if (input.droneId && tenantId) {
+        const drone = await ctx.db.query.drones.findFirst({
+          where: eq(drones.id, input.droneId),
+        });
+        if (!drone) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Drone not found" });
+        }
+        if (drone.franchiseTenantId !== tenantId) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Drone does not belong to the flight's tenant.",
+          });
+        }
+      }
+
+      // Validate manual pilot override belongs to the flight's tenant
+      if (input.pilotId && tenantId) {
+        const pilot = await ctx.db.query.pilots.findFirst({
+          where: eq(pilots.id, input.pilotId),
+        });
+        if (!pilot) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Pilot not found" });
+        }
+        if (pilot.franchiseTenantId !== tenantId) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Pilot does not belong to the flight's tenant.",
+          });
+        }
+      }
 
       // 2. Auto-select drone if not manually specified
       if (!assignedDroneId) {
@@ -139,6 +179,14 @@ export const flightAssignmentRouter = createTRPCRouter({
       const booking = flight.booking;
       const tenantId = booking.franchiseTenantId;
       const requiredPayloadKg = parseFloat(booking.payloadWeightKg);
+
+      // Tenant isolation — operator must belong to the flight's tenant
+      if (tenantId && ctx.tenantId && tenantId !== ctx.tenantId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You do not have access to flights in this tenant.",
+        });
+      }
 
       // Get all active drones for the tenant
       const tenantDrones = tenantId

@@ -12,9 +12,10 @@
  *   es.onmessage = (e) => { const data = JSON.parse(e.data); ... };
  */
 
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateMockTelemetry } from "@/lib/telemetry";
 import type { TelemetryReport, FleetTelemetrySnapshot } from "@/lib/telemetry";
+import { getAuthUserId } from "@/lib/demo-auth";
 
 const INTERVAL_MS = 2000; // Push every 2 seconds
 const MAX_DURATION_MS = 55000; // Close before Vercel 60s timeout
@@ -85,6 +86,12 @@ async function getTelemetrySnapshot(): Promise<FleetTelemetrySnapshot> {
 }
 
 export async function GET(req: NextRequest) {
+  // Auth check — reject unauthenticated users
+  const userId = await getAuthUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const encoder = new TextEncoder();
   let closed = false;
 
