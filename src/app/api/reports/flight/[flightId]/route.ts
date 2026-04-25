@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUserId } from "@/lib/demo-auth";
+import { getAuthUserId, getUserRole } from "@/lib/demo-auth";
 import { renderToBuffer, type DocumentProps } from "@react-pdf/renderer";
 import { createElement, type ReactElement } from "react";
 import { db } from "@/lib/db";
@@ -33,6 +33,16 @@ export async function GET(
 
   if (!flight) {
     return NextResponse.json({ error: "Flight not found" }, { status: 404 });
+  }
+
+  // Ownership check: operators can access all reports, others only their own
+  const role = await getUserRole(userId);
+  if (role !== "operator") {
+    const isCustomer = flight.booking.customer?.clerkUserId === userId;
+    const isPilot = flight.pilot?.clerkUserId === userId;
+    if (!isCustomer && !isPilot) {
+      return NextResponse.json({ error: "Forbidden: you do not have access to this flight report" }, { status: 403 });
+    }
   }
 
   const booking = flight.booking;

@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { droneTelemetry, droneLatestPosition } from "@/lib/db/schema";
+import { sql } from "drizzle-orm";
 import { validateBAZLReport } from "@/lib/telemetry";
 import type { BAZLRedundancyReport } from "@/lib/telemetry";
 
@@ -86,6 +87,7 @@ export async function POST(req: NextRequest) {
           isAirborne: true,
           updatedAt: new Date(),
         },
+        setWhere: sql`${droneLatestPosition.updatedAt} < now() - interval '30 seconds'`,
       });
 
     return NextResponse.json({

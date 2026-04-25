@@ -9,7 +9,7 @@
  */
 
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "@/lib/trpc/server";
+import { createTRPCRouter, protectedProcedure } from "@/lib/trpc/server";
 import { desc, eq, and, gte } from "drizzle-orm";
 import { droneTelemetry, droneLatestPosition } from "@/lib/db/schema";
 import { generateMockTelemetry } from "@/lib/telemetry";
@@ -20,7 +20,7 @@ export const telemetryRouter = createTRPCRouter({
    * Get latest position for all airborne drones.
    * Returns mock data in demo mode.
    */
-  getFleetPositions: publicProcedure.query(async ({ ctx }): Promise<FleetTelemetrySnapshot> => {
+  getFleetPositions: protectedProcedure.query(async ({ ctx }): Promise<FleetTelemetrySnapshot> => {
     try {
       const rows = await ctx.db
         .select()
@@ -48,7 +48,7 @@ export const telemetryRouter = createTRPCRouter({
   /**
    * Get telemetry history for a specific drone (last N minutes).
    */
-  getDroneHistory: publicProcedure
+  getDroneHistory: protectedProcedure
     .input(
       z.object({
         droneSerial: z.string(),
@@ -100,7 +100,7 @@ export const telemetryRouter = createTRPCRouter({
   /**
    * Get latest position for a single drone.
    */
-  getDronePosition: publicProcedure
+  getDronePosition: protectedProcedure
     .input(z.object({ droneSerial: z.string() }))
     .query(async ({ ctx, input }) => {
       try {

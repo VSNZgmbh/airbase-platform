@@ -67,6 +67,47 @@ export const invoiceStatusEnum = pgEnum("invoice_status", [
 
 // ─── Tables ───────────────────────────────────────────────────────────────────
 
+/**
+ * Drone model catalog — reference data for supported drone platforms.
+ * Specs used for payload validation, flight planning, and GRC calculations.
+ */
+export const droneModels = pgTable("drone_models", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  manufacturer: text("manufacturer").notNull(),
+  modelName: text("model_name").notNull().unique(),
+  /** e.g. "heavy_lift", "inspection", "survey" */
+  category: text("category").notNull().default("heavy_lift"),
+
+  // Performance specs
+  maxPayloadKg: decimal("max_payload_kg", { precision: 6, scale: 2 }).notNull(),
+  maxTakeoffWeightKg: decimal("max_takeoff_weight_kg", { precision: 6, scale: 2 }).notNull(),
+  emptyWeightKg: decimal("empty_weight_kg", { precision: 6, scale: 2 }).notNull(),
+  maxRangeKm: decimal("max_range_km", { precision: 6, scale: 2 }).notNull(),
+  maxSpeedKmh: decimal("max_speed_kmh", { precision: 6, scale: 2 }).notNull(),
+  cruiseSpeedKmh: decimal("cruise_speed_kmh", { precision: 6, scale: 2 }),
+  maxAltitudeM: integer("max_altitude_m"),
+  maxWindSpeedMs: decimal("max_wind_speed_ms", { precision: 5, scale: 1 }),
+
+  // Battery
+  batteryType: text("battery_type"),
+  batteryCapacityAh: decimal("battery_capacity_ah", { precision: 6, scale: 2 }),
+  batteryVoltageV: decimal("battery_voltage_v", { precision: 6, scale: 2 }),
+  maxFlightTimeMin: integer("max_flight_time_min"),
+
+  // Dimensions
+  rotorDiameterIn: decimal("rotor_diameter_in", { precision: 5, scale: 1 }),
+  foldedDimensions: text("folded_dimensions"),
+
+  // Regulatory
+  mtomClass: text("mtom_class"), // C0-C6 or "uncertified"
+  noiseClassDb: decimal("noise_class_db", { precision: 5, scale: 1 }),
+
+  isActive: boolean("is_active").notNull().default(true),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export const franchiseTenants = pgTable("franchise_tenants", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -99,6 +140,7 @@ export const customers = pgTable("customers", {
 export const drones = pgTable("drones", {
   id: uuid("id").primaryKey().defaultRandom(),
   model: text("model").notNull(),
+  droneModelId: uuid("drone_model_id").references(() => droneModels.id),
   serialNumber: text("serial_number").notNull().unique(),
   maxPayloadKg: decimal("max_payload_kg", { precision: 6, scale: 2 }).notNull(),
   maxRangeKm: decimal("max_range_km", { precision: 6, scale: 2 }).notNull(),
@@ -329,6 +371,21 @@ export const tenantServiceAreas = pgTable("tenant_service_areas", {
 });
 
 // ─── Relations ────────────────────────────────────────────────────────────────
+
+export const droneModelsRelations = relations(droneModels, ({ many }) => ({
+  drones: many(drones),
+}));
+
+export const dronesRelations = relations(drones, ({ one }) => ({
+  droneModel: one(droneModels, {
+    fields: [drones.droneModelId],
+    references: [droneModels.id],
+  }),
+  franchiseTenant: one(franchiseTenants, {
+    fields: [drones.franchiseTenantId],
+    references: [franchiseTenants.id],
+  }),
+}));
 
 export const franchiseTenantsRelations = relations(franchiseTenants, ({ one, many }) => ({
   pricingConfig: one(tenantPricingConfig, {

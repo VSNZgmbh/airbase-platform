@@ -11,6 +11,7 @@ import { permitRouter } from "./routers/permit";
 import { safetyRouter } from "./routers/safety";
 import { airspaceRouter } from "./routers/airspace";
 import { telemetryRouter } from "./routers/telemetry";
+import { flightAssignmentRouter } from "./routers/flight-assignment";
 
 export const appRouter = createTRPCRouter({
   booking: bookingRouter,
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
   safety: safetyRouter,
   airspace: airspaceRouter,
   telemetry: telemetryRouter,
+  flightAssignment: flightAssignmentRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -7,7 +7,7 @@
  */
 
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "@/lib/trpc/server";
+import { createTRPCRouter, protectedProcedure } from "@/lib/trpc/server";
 import {
   fetchAirspaceSnapshot,
   computeProximityAlerts,
@@ -21,7 +21,7 @@ export const airspaceRouter = createTRPCRouter({
    * Get live airspace traffic snapshot around a center point.
    * Falls back to demo data when SafeSky/INVOLI keys are missing.
    */
-  getTraffic: publicProcedure
+  getTraffic: protectedProcedure
     .input(
       z.object({
         lat: z.number().min(-90).max(90).default(46.6863),
@@ -67,7 +67,7 @@ export const airspaceRouter = createTRPCRouter({
   /**
    * Get proximity alerts for all active drones.
    */
-  getProximityAlerts: publicProcedure
+  getProximityAlerts: protectedProcedure
     .input(
       z.object({
         drones: z.array(

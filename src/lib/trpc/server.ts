@@ -115,11 +115,9 @@ export const pilotProcedure = t.procedure
     if (!ctx.userId) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
-    if (isClerkConfigured) {
-      const role = await getUserRole(ctx.userId);
-      if (role !== "pilot") {
-        throw new TRPCError({ code: "FORBIDDEN", message: "Pilot role required" });
-      }
+    const role = await getUserRole(ctx.userId);
+    if (role !== "pilot" && role !== "operator") {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Pilot role required" });
     }
     return next({ ctx: { ...ctx, userId: ctx.userId } });
   });

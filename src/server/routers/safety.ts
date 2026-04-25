@@ -120,6 +120,28 @@ function computeDecision(
   return { decision: "approved", reason: `Automatisch freigegeben: SAIL ${sail}, Wetter sicher, Luftraum frei.` };
 }
 
+// ─── Rate limiter for authorize endpoint ─────────────────────────────────────
+
+const authorizeRateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 10; // 10 requests per minute per user
+
+function checkAuthorizeRateLimit(userId: string): void {
+  const now = Date.now();
+  const entry = authorizeRateLimit.get(userId);
+  if (!entry || now > entry.resetAt) {
+    authorizeRateLimit.set(userId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return;
+  }
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: `Rate limit exceeded: max ${RATE_LIMIT_MAX} authorization requests per minute.`,
+    });
+  }
+}
+
 // ─── Router ───────────────────────────────────────────────────────────────────
 
 export const safetyRouter = createTRPCRouter({
@@ -127,8 +149,9 @@ export const safetyRouter = createTRPCRouter({
    * Core LUC authorization engine.
    * Runs SORA + weather + NOTAM checks and issues a Go/No-Go/Escalate decision.
    * Writes the full decision to the audit log.
+   * Protected: requires authentication. Rate-limited: 10 req/min per user.
    */
-  authorize: publicProcedure
+  authorize: protectedProcedure
     .input(
       z.object({
         pickupLat: z.number(),
@@ -143,6 +166,9 @@ export const safetyRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      // Rate limit check
+      checkAuthorizeRateLimit(ctx.userId);
+
       // 1. SORA
       const soraResult = assessSora({
         pickupLng: input.pickupLng,
