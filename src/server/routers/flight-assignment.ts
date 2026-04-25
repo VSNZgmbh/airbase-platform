@@ -27,6 +27,8 @@ import {
 } from "@/lib/db/schema";
 import { sendEmail } from "@/lib/email";
 import { PilotFlightAssignment } from "@/emails/PilotFlightAssignment";
+import { format } from "date-fns";
+import { de } from "date-fns/locale";
 
 const BUSY_FLIGHT_STATUSES = ["scheduled", "pre_flight_check", "in_air"] as const;
 const ASSIGNABLE_STATUSES = ["pending_assignment", "scheduled"] as const;
@@ -108,57 +110,79 @@ export const flightAssignmentRouter = createTRPCRouter({
         }
       }
 
-      // 2. Auto-select drone if not manually specified
-      if (!assignedDroneId) {
-        assignedDroneId = await findBestDrone(ctx.db, {
-          tenantId,
-          requiredPayloadKg,
-          scheduledDeparture: flight.scheduledDeparture,
-          scheduledArrival: flight.scheduledArrival,
-          excludeFlightId: flight.id,
-        });
-      }
+      // 2–4. Auto-select + assign inside a transaction to prevent double-booking
+      const updated = await ctx.db.transaction(async (tx) => {
+        // Auto-select drone if not manually specified
+        if (!assignedDroneId) {
+          assignedDroneId = await findBestDrone(tx, {
+            tenantId,
+            requiredPayloadKg,
+            scheduledDeparture: flight.scheduledDeparture,
+            scheduledArrival: flight.scheduledArrival,
+            excludeFlightId: flight.id,
+          });
+        }
 
-      // 3. Auto-select pilot if not manually specified
-      if (!assignedPilotId) {
-        assignedPilotId = await findBestPilot(ctx.db, {
-          tenantId,
-          scheduledDeparture: flight.scheduledDeparture,
-          scheduledArrival: flight.scheduledArrival,
-          excludeFlightId: flight.id,
-        });
-      }
+        // Auto-select pilot if not manually specified
+        if (!assignedPilotId) {
+          assignedPilotId = await findBestPilot(tx, {
+            tenantId,
+            scheduledDeparture: flight.scheduledDeparture,
+            scheduledArrival: flight.scheduledArrival,
+            excludeFlightId: flight.id,
+          });
+        }
 
-      if (!assignedDroneId && !assignedPilotId) {
-        throw new TRPCError({
-          code: "PRECONDITION_FAILED",
-          message: "No available drones or pilots found for this time window and payload requirements.",
-        });
-      }
+        // Both drone AND pilot are required for a flight to be scheduled (EASA/BAZL compliance)
+        if (!assignedDroneId || !assignedPilotId) {
+          throw new TRPCError({
+            code: "PRECONDITION_FAILED",
+            message: "Could not find both an available drone AND pilot for this time window and payload requirements.",
+          });
+        }
 
-      // 4. Update flight with assignments — transition to 'scheduled'
-      const [updated] = await ctx.db
-        .update(flights)
-        .set({
-          droneId: assignedDroneId,
-          pilotId: assignedPilotId,
-          status: "scheduled",
-          updatedAt: new Date(),
-        })
-        .where(
-          and(
-            eq(flights.id, input.flightId),
-            inArray(flights.status, [...ASSIGNABLE_STATUSES]),
-          ),
-        )
-        .returning();
+        // Re-verify availability inside the transaction to prevent race conditions
+        const busyDrones = await getBusyDroneIds(tx, flight.scheduledDeparture, flight.scheduledArrival, flight.id);
+        if (busyDrones.has(assignedDroneId)) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Selected drone was assigned concurrently. Please retry.",
+          });
+        }
+        const busyPilots = await getBusyPilotIds(tx, flight.scheduledDeparture, flight.scheduledArrival, flight.id);
+        if (busyPilots.has(assignedPilotId)) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Selected pilot was assigned concurrently. Please retry.",
+          });
+        }
 
-      if (!updated) {
-        throw new TRPCError({
-          code: "CONFLICT",
-          message: "Flight was modified concurrently. Please reload.",
-        });
-      }
+        // Update flight with assignments — transition to 'scheduled'
+        const [result] = await tx
+          .update(flights)
+          .set({
+            droneId: assignedDroneId,
+            pilotId: assignedPilotId,
+            status: "scheduled",
+            updatedAt: new Date(),
+          })
+          .where(
+            and(
+              eq(flights.id, input.flightId),
+              inArray(flights.status, [...ASSIGNABLE_STATUSES]),
+            ),
+          )
+          .returning();
+
+        if (!result) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Flight was modified concurrently. Please reload.",
+          });
+        }
+
+        return result;
+      });
 
       // 5. Send assignment email to pilot (fire-and-forget — don't block the response)
       if (assignedPilotId) {
@@ -180,7 +204,9 @@ export const flightAssignmentRouter = createTRPCRouter({
               pilotName: `${pilot.firstName} ${pilot.lastName}`,
               bookingIdentifier: booking.identifier,
               serviceType: booking.serviceType,
-              scheduledDeparture: flight.scheduledDeparture?.toISOString() ?? "TBD",
+              scheduledDeparture: flight.scheduledDeparture
+                ? format(flight.scheduledDeparture, "d. MMMM yyyy, HH:mm", { locale: de })
+                : "TBD",
               payloadWeightKg: booking.payloadWeightKg,
               deliveryAddress: booking.deliveryAddress ?? "Siehe Buchungsdetails",
               droneModel: drone?.model ?? "Wird zugewiesen",

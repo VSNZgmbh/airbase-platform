@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUserId } from "@/lib/demo-auth";
+import { getAuthUserId, getUserRole } from "@/lib/demo-auth";
 import { renderToBuffer, type DocumentProps } from "@react-pdf/renderer";
 import { createElement, type ReactElement } from "react";
 import { db } from "@/lib/db";
@@ -32,12 +32,14 @@ export async function GET(
     return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
   }
 
-  // Access control: customer can only access their own invoices
+  // Access control: operators can access all invoices, customers only their own
   const customer = invoice.customer;
-  if (customer.clerkUserId !== userId) {
-    // Allow operators too — they won't have a matching clerkUserId
-    // but they need access; for now, only block if the user is a customer
-    // with a different ID. Operators are handled by role middleware upstream.
+  const role = await getUserRole(userId);
+  if (role !== "operator" && customer.clerkUserId !== userId) {
+    return NextResponse.json(
+      { error: "Forbidden: you do not have access to this invoice" },
+      { status: 403 }
+    );
   }
 
   const booking = invoice.booking;
