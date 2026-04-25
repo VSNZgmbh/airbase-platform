@@ -63,10 +63,10 @@ export const bookingRouter = createTRPCRouter({
         isRushBooking: rush,
       });
 
-      // Generate booking identifier
+      // Generate booking identifier (UUID-based to avoid race condition on concurrent bookings)
       const year = new Date().getFullYear();
-      const count = await ctx.db.$count(bookings);
-      const identifier = `AIR-${year}-${String(count + 1).padStart(4, "0")}`;
+      const shortId = crypto.randomUUID().slice(0, 8).toUpperCase();
+      const identifier = `AIR-${year}-${shortId}`;
 
       const [booking] = await ctx.db
         .insert(bookings)

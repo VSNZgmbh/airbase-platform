@@ -22,7 +22,6 @@ import { desc, eq, and, gte, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import {
   createTRPCRouter,
-  publicProcedure,
   operatorProcedure,
   protectedProcedure,
 } from "@/lib/trpc/server";

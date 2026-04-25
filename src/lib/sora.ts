@@ -791,9 +791,10 @@ export function soraAirspaceSurchargeCHF(sail: SAILLevel): number {
 export function isRushBooking(
   requestedDate: string,
   requestedTimeFrom?: string,
-  bookingCreatedAt?: Date
+  bookingCreatedAt?: Date,
+  now?: Date
 ): boolean {
-  const today = new Date();
+  const today = now ?? new Date();
   const todayStr = today.toISOString().split("T")[0];
   const tomorrowStr = new Date(today.getTime() + 86400000).toISOString().split("T")[0];
 

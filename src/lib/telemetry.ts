@@ -171,7 +171,7 @@ export function djiOsdToTelemetry(
     payloadWeightKg: d.payload_weight / 1000,
     winchActive: d.winch_state === 1,
     cargoLocked: d.cargo_lock === 1,
-    cargoTempC: d.cargo_temperature,
+    cargoTempC: d.cargo_temperature ?? null,
     signalStrengthPct: d.signal_quality,
     gpsAccuracyM: d.position_accuracy,
     satelliteCount: d.gps_number,
