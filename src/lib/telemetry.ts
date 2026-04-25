@@ -111,7 +111,7 @@ export interface DJICloudOSDMessage {
     payload_weight: number; // grams
     winch_state: number; // 0=idle, 1=active
     cargo_lock: number; // 0=unlocked, 1=locked
-    cargo_temperature: number; // celsius
+    cargo_temperature?: number; // celsius
     wind_speed: number; // m/s
     signal_quality: number; // 0-100%
     gps_number: number; // satellite count

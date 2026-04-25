@@ -179,10 +179,7 @@ describe("Stripe webhook — payment_intent.succeeded", () => {
       metadata: null,
     } as any);
     mockTransaction.mockRejectedValue(new Error("DB connection lost"));
-    // POST() throws (rather than returning a 500 Response) when the transaction
-    // rejects, because the handler has no internal try/catch around db.transaction().
-    // We catch here to verify the throw happens — a non-200 tells Stripe to retry.
-    const res = await POST(makeRequest("{}")).catch(() => new Response(null, { status: 500 }));
+    const res = await POST(makeRequest("{}"));
     expect(res.status).toBe(500);
   });
 });

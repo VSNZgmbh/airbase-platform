@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
 
     // C1: Wrap all three mutations in a single transaction so a partial failure
     // (e.g. permits insert) cannot leave the booking confirmed with no regulatory records.
+    try {
     await db.transaction(async (tx) => {
       // 1. Update booking to confirmed
       await tx
@@ -136,6 +137,10 @@ export async function POST(req: NextRequest) {
         `[Stripe webhook] ${permitsToCreate.length} permit(s) created for flight ${flight.id}`
       );
     });
+    } catch (err) {
+      console.error("[Stripe webhook] Transaction failed:", err);
+      return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    }
   }
 
   return NextResponse.json({ received: true });
