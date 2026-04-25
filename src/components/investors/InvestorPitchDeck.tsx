@@ -1225,26 +1225,40 @@ export function InvestorPitchDeck() {
 
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl overflow-hidden border flex flex-col items-center justify-center p-8 relative"
-              style={{ background: `linear-gradient(135deg, ${C.bgAlt} 0%, ${C.accentLight} 100%)`, borderColor: C.border, boxShadow: C.shadow }}
+              className="rounded-2xl overflow-hidden border relative"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
-              <motion.img
-                src="/assets/flycart-100-cutout.png"
-                alt="DJI FlyCart 100 drone"
-                className="w-28 sm:w-36 md:w-44 h-auto object-contain mb-3"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.accent }}>
-                Our Fleet
+              {/* FC100 */}
+              <div className="flex items-center gap-4 p-4 sm:p-5">
+                <motion.img
+                  src="/assets/flycart-100-cutout.png"
+                  alt="DJI FlyCart 100 drone"
+                  className="w-20 sm:w-28 h-auto object-contain shrink-0"
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-wider mb-0.5" style={{ color: C.accent }}>Workhorse</div>
+                  <div className="text-base sm:text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
+                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>100 kg payload · MTOW 170 kg · 16 km range</div>
+                </div>
               </div>
-              <div className="text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
-              <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>100 kg payload · MTOW 170 kg · 16 km range</div>
-              <div className="w-full border-t my-3" style={{ borderColor: C.border }} />
-              <div className="text-lg font-bold" style={{ color: C.text }}>
-                DJI FlyCart 200 <span className="text-xs font-normal px-1.5 py-0.5 rounded-full ml-1" style={{ background: C.accentGlow, color: C.accent }}>NEW</span>
+              <div className="border-t" style={{ borderColor: C.border }} />
+              {/* FC200 */}
+              <div className="flex items-center gap-4 p-4 sm:p-5" style={{ background: `linear-gradient(135deg, ${C.bgAlt} 0%, ${C.accentLight} 100%)` }}>
+                <img
+                  src="/assets/t200-4.jpg"
+                  alt="DJI FlyCart 200"
+                  className="w-20 sm:w-28 h-20 sm:h-28 object-cover rounded-lg shrink-0"
+                />
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-wider mb-0.5" style={{ color: C.accent }}>
+                    Next-Gen <span className="text-[10px] font-normal px-1.5 py-0.5 rounded-full ml-1" style={{ background: C.accentGlow, color: C.accent }}>NEW</span>
+                  </div>
+                  <div className="text-base sm:text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 200</div>
+                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload · 36 km range · Swarm: up to 600 kg</div>
+                </div>
               </div>
-              <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload · 36 km range · Swarm: up to 600 kg</div>
             </motion.div>
           </Stagger>
         </div>
@@ -1452,9 +1466,9 @@ export function InvestorPitchDeck() {
                 style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <img
-                  src="/assets/flycart-100-cutout.png"
-                  alt="DJI FlyCart fleet"
-                  className="absolute -right-6 -top-2 w-24 h-24 object-contain opacity-15 pointer-events-none"
+                  src="/assets/t200-2.jpg"
+                  alt="DJI FlyCart 200"
+                  className="absolute -right-4 -top-4 w-32 h-32 object-cover rounded-lg opacity-10 pointer-events-none"
                 />
                 <Box className="w-7 h-7 mb-3 relative z-10" style={{ color: C.accent }} />
                 <div className="text-sm font-mono uppercase tracking-wider mb-2 relative z-10" style={{ color: C.accent }}>
