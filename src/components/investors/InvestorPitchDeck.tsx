@@ -1196,7 +1196,7 @@ export function InvestorPitchDeck() {
                 <FlowStep icon={FileText} label="B2B Order" sub="Client request" index={0} total={5} color={C.accent} />
                 <FlowStep icon={Shield} label="AI Safety Check" sub="SORA compliance" index={1} total={5} color={C.gold} />
                 <FlowStep icon={Users} label="Pilot Dispatched" sub="Licensed crew" index={2} total={5} color={C.accent} />
-                <FlowStep icon={Rocket} label="Drone Delivers" sub="100-200 kg cargo" index={3} total={5} color={C.green} />
+                <FlowStep icon={Rocket} label="Drone Delivers" sub="85-200 kg cargo" index={3} total={5} color={C.green} />
                 <FlowStep icon={Banknote} label="Invoice" sub="Automated billing" index={4} total={5} color={C.accent} />
               </div>
             </motion.div>
@@ -1261,7 +1261,7 @@ export function InvestorPitchDeck() {
                     Next-Gen <span className="text-[10px] font-normal px-1.5 py-0.5 rounded-full ml-1" style={{ background: C.accentGlow, color: C.accent }}>NEW</span>
                   </div>
                   <div className="text-base sm:text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 200</div>
-                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload &middot; 36 km range &middot; Swarm: up to 600 kg</div>
+                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload &middot; 10 km range (full load) &middot; Swarm: 4 units = 600 kg &middot; 7-min charge</div>
                 </div>
               </div>
             </motion.div>
@@ -1270,7 +1270,7 @@ export function InvestorPitchDeck() {
           {/* Key stats */}
           <Stagger className="grid grid-cols-3 gap-4 sm:gap-6 mt-8" delay={0.6}>
             {[
-              { value: "100-200 kg", label: "Payload capacity", sub: "FlyCart 100 + 200" },
+              { value: "85-200 kg", label: "Payload capacity", sub: "FC100 (85 kg) + FC200 (200 kg)" },
               { value: "-85%", label: "Cost vs traditional", sub: "Helicopter / tractor" },
               { value: "<30 min", label: "Deployment time", sub: "Order to takeoff" },
             ].map((stat, i) => (
@@ -1609,7 +1609,7 @@ export function InvestorPitchDeck() {
                 color: C.accent,
                 steps: [
                   { icon: FileText, label: "Order materials" },
-                  { icon: Rocket, label: "Drone lifts 200 kg" },
+                  { icon: Rocket, label: "Drone lifts 85-200 kg" },
                   { icon: MapPin, label: "Mountain delivery" },
                 ],
                 desc: "Materials to mountain sites, equipment supply. Replaces expensive helicopter transport.",
@@ -1865,7 +1865,7 @@ export function InvestorPitchDeck() {
               className="text-lg mt-2 max-w-2xl"
               style={{ color: C.textSecondary }}
             >
-              No Swiss operator serves the 100-200 kg heavy-cargo B2B segment. AIRBASE is the first mover.
+              No Swiss operator serves the 85-200 kg heavy-cargo B2B segment. AIRBASE is the first mover.
             </motion.p>
           </Stagger>
 
@@ -1910,9 +1910,9 @@ export function InvestorPitchDeck() {
                 <ul className="space-y-1.5">
                   {[
                     "FC100: 85 kg payload (dual-battery), IP55",
-                    "FC200: 200 kg, 36 km range",
-                    "Swarm: up to 600 kg (4x FC200)",
-                    "DJI enterprise partnership",
+                    "FC200: 200 kg, 10 km loaded, 120V platform",
+                    "Swarm: 4× FC200 = 600 kg, single operator",
+                    "256-line LiDAR, 7-min fast charge, IP55",
                   ].map((text, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs" style={{ color: C.textSecondary }}>
                       <CheckCircle2 className="w-3 h-3 mt-0.5 shrink-0" style={{ color: C.accent }} />
@@ -2207,7 +2207,7 @@ export function InvestorPitchDeck() {
               { date: "Q1 2026", text: "AIRBASE platform v1.0 launched (portal + admin + pilot app)", done: true },
               { date: "Q1 2026", text: "SORA / BAZL applications filed", done: true },
               { date: "Q1 2026", text: "8 fully licensed commercial drone pilots operational", done: true },
-              { date: "Q2 2026", text: "DJI FlyCart 200 fleet expansion (2 units — 200 kg payload)", done: true },
+              { date: "Q3-Q4 2026*", text: "DJI FlyCart 200 fleet expansion (200 kg payload — pending global launch + EASA certification)", done: false },
               { date: "Q2 2026*", text: "First commercial pilot flights (internal ops)", done: false },
               { date: "Q3 2026*", text: "LUC certification expected", done: false },
               { date: "Q4 2026*", text: "First DaaS enterprise contracts", done: false },
