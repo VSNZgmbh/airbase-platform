@@ -543,13 +543,13 @@ function InvestmentSlider() {
 
 /* ─── Chart Data ─── */
 const tamData = [
-  { year: "2024", value: 23.9 },
-  { year: "2025", value: 26.1 },
-  { year: "2026", value: 28.5 },
-  { year: "2027", value: 31.1 },
-  { year: "2028", value: 34.0 },
-  { year: "2029", value: 37.1 },
-  { year: "2030", value: 40.6 },
+  { year: "2024", value: 1.4 },
+  { year: "2025", value: 2.1 },
+  { year: "2026", value: 3.2 },
+  { year: "2027", value: 4.8 },
+  { year: "2028", value: 7.1 },
+  { year: "2029", value: 10.7 },
+  { year: "2030", value: 16.1 },
 ];
 
 const revenueProjection = [
@@ -1245,7 +1245,7 @@ export function InvestorPitchDeck() {
                 <div>
                   <div className="text-xs font-mono uppercase tracking-wider mb-0.5" style={{ color: C.accent }}>Workhorse</div>
                   <div className="text-base sm:text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 100</div>
-                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>100 kg payload &middot; MTOW 170 kg &middot; 16 km range</div>
+                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>Up to 100 kg payload (single-battery) &middot; 85 kg (dual-battery) &middot; 12 km range</div>
                 </div>
               </div>
               <div className="border-t" style={{ borderColor: C.border }} />
@@ -1734,8 +1734,8 @@ export function InvestorPitchDeck() {
           <div className="grid lg:grid-cols-3 gap-6 mt-10">
             <KpiCard
               label="Global UAV Market"
-              value={<CountUp end={40.6} prefix="$" suffix="B" decimals={1} />}
-              sub="by 2030 (MarketsandMarkets, UAV Market Report 2025 — 9.2% CAGR)"
+              value={<CountUp end={16.1} prefix="$" suffix="B" decimals={1} />}
+              sub="by 2030 (MarketsandMarkets, Drone Logistics Market — 50.1% CAGR)"
               icon={Globe}
               delay={0.2}
             />
@@ -1790,7 +1790,7 @@ export function InvestorPitchDeck() {
                 style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
                 <div className="text-xs font-mono uppercase tracking-wider mb-4" style={{ color: C.textMuted }}>
-                  Global UAV Market ($B) — MarketsandMarkets 2025
+                  Drone Logistics Market ($B) — MarketsandMarkets 2025
                 </div>
                 <ResponsiveContainer width="100%" height={260}>
                   <AreaChart data={tamData}>
@@ -1819,7 +1819,7 @@ export function InvestorPitchDeck() {
                   Regulatory Tailwind
                 </div>
                 <ul className="space-y-4">
-                  <Bullet delay={0}>EASA U-Space framework fully operative in CH by 2025 (BAZL/FOCA)</Bullet>
+                  <Bullet delay={0}>EASA U-Space framework advancing in CH — first zone (Zurich) planned end 2026 (BAZL/FOCA)</Bullet>
                   <Bullet delay={0.1}>SORA risk-based approvals replace blanket bans — first-mover window is NOW</Bullet>
                   <Bullet delay={0.2}>Switzerland among 3 EU-adjacent countries with LUC pathway legislated</Bullet>
                   <Bullet delay={0.3}>Highest labor costs in Europe = highest drone ROI</Bullet>
@@ -1909,7 +1909,7 @@ export function InvestorPitchDeck() {
                 </div>
                 <ul className="space-y-1.5">
                   {[
-                    "FC100: 100 kg payload, IP55",
+                    "FC100: 85 kg payload (dual-battery), IP55",
                     "FC200: 200 kg, 36 km range",
                     "Swarm: up to 600 kg (4x FC200)",
                     "DJI enterprise partnership",
@@ -2060,7 +2060,7 @@ export function InvestorPitchDeck() {
                   </span>
                 </div>
                 <p className="text-sm" style={{ color: C.textSecondary }}>
-                  World-leading flight simulator company — pilot training infrastructure &amp; safety certification edge.
+                  World-leading VR flight simulator company — pilot training infrastructure &amp; safety certification edge.
                 </p>
               </motion.div>
             </Stagger>
