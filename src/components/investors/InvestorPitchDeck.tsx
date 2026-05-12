@@ -707,7 +707,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 12;
+  const totalSlides = 13;
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
@@ -991,9 +991,88 @@ export function InvestorPitchDeck() {
         </motion.div>
       </section>
 
-      {/* ═══ SLIDE 1: THE PROBLEM ═══ */}
+      {/* ═══ SLIDE 1: DRONE HERO — What We Do ═══ */}
       <section
         ref={setRef(1)}
+        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+        style={{ scrollSnapAlign: "start", background: "#0A0A0A" }}
+      >
+        {/* Full-bleed drone image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/flycart-notfalltransport.webp"
+            alt="DJI FlyCart drone delivering a package over a mountain gorge"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: "center 40%" }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.85) 100%)",
+            }}
+          />
+        </div>
+
+        {/* Content pinned to bottom */}
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 mt-auto pb-16 sm:pb-24 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease }}
+          >
+            <img
+              src="/airbase-logo.png"
+              alt="airBASE"
+              className="h-10 sm:h-14 w-auto mx-auto mb-6"
+              style={{ filter: "brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.4))" }}
+            />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease }}
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
+            style={{ color: "#FFFFFF" }}
+          >
+            Drone Delivery up to{" "}
+            <span style={{ color: C.accent }}>600 kg</span> per Load
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, delay: 0.5, ease }}
+            className="text-base sm:text-lg md:text-xl lg:text-2xl font-light max-w-3xl mx-auto"
+            style={{ color: "rgba(255,255,255,0.85)" }}
+          >
+            Agriculture, construction sites, cleaning, and more.
+          </motion.p>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="absolute bottom-6"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="w-6 h-6" style={{ color: "rgba(255,255,255,0.5)" }} />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ═══ SLIDE 2: THE PROBLEM ═══ */}
+      <section
+        ref={setRef(2)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -1162,9 +1241,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 2: THE SOLUTION ═══ */}
+      {/* ═══ SLIDE 3: THE SOLUTION ═══ */}
       <section
-        ref={setRef(2)}
+        ref={setRef(3)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -1295,9 +1374,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 3: SUSTAINABILITY — MOVED UP! ═══ */}
+      {/* ═══ SLIDE 4: SUSTAINABILITY ═══ */}
       <section
-        ref={setRef(3)}
+        ref={setRef(4)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: `linear-gradient(170deg, #F0FDF4 0%, ${C.bg} 50%, ${C.bgAlt} 100%)` }}
       >
@@ -1579,9 +1658,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 4: INDUSTRY VERTICALS ═══ */}
+      {/* ═══ SLIDE 5: INDUSTRY VERTICALS ═══ */}
       <section
-        ref={setRef(4)}
+        ref={setRef(5)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -1711,9 +1790,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 5: MARKET OPPORTUNITY ═══ */}
+      {/* ═══ SLIDE 6: MARKET OPPORTUNITY ═══ */}
       <section
-        ref={setRef(5)}
+        ref={setRef(6)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -1842,9 +1921,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 6: COMPETITIVE EDGE ═══ */}
+      {/* ═══ SLIDE 7: COMPETITIVE EDGE ═══ */}
       <section
-        ref={setRef(6)}
+        ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -2068,9 +2147,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 7: BUSINESS MODEL ═══ */}
+      {/* ═══ SLIDE 8: BUSINESS MODEL ═══ */}
       <section
-        ref={setRef(7)}
+        ref={setRef(8)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -2179,9 +2258,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 8: TRACTION & TEAM ═══ */}
+      {/* ═══ SLIDE 9: TRACTION & TEAM ═══ */}
       <section
-        ref={setRef(8)}
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -2360,9 +2439,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 9: FINANCIAL PROJECTIONS ═══ */}
+      {/* ═══ SLIDE 10: FINANCIAL PROJECTIONS ═══ */}
       <section
-        ref={setRef(9)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -2463,9 +2542,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 10: THE ASK + INVESTMENT SLIDER ═══ */}
+      {/* ═══ SLIDE 11: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
@@ -2602,9 +2681,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 11: VISION ═══ */}
+      {/* ═══ SLIDE 12: VISION ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(12)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
