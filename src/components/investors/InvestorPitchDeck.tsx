@@ -707,7 +707,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 13;
+  const totalSlides = 14;
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
@@ -2374,80 +2374,85 @@ export function InvestorPitchDeck() {
             </motion.div>
           </Stagger>
 
-          {/* Leadership — Two Founders */}
-          <div className="grid md:grid-cols-2 gap-6 mt-10">
-            <Stagger delay={0.6}>
-              <motion.div
-                variants={fadeUp}
-                className="rounded-2xl p-5 border"
-                style={{ background: C.bgCard, borderColor: C.gold + "30", boxShadow: C.shadowLg }}
-              >
-                <div
-                  className="w-20 h-20 rounded-2xl mb-3 flex items-center justify-center overflow-hidden"
-                  style={{ background: C.accentGlow }}
+          {/* Leadership — Founders */}
+          <div className="grid md:grid-cols-3 gap-6 mt-10">
+            {[
+              { name: "Benjamin Rubi", role: "Founder & CEO", initials: "BR", img: "/images/team/benjamin-rubi.jpg", desc: "15 years building and operating drone companies. Deep expertise in regulatory navigation (BAZL/FOCA, EASA) and scaling aviation businesses.", tag: "15+ Years Drone Industry", featured: true },
+              { name: "Chris Jon Graf", role: "CTO & Head of AI", initials: "CG", img: "/images/team/chris-graf.jpg", desc: "Robotics and AI engineering background. Architecting the AI-powered platform that automates fleet operations, dispatch, and compliance.", tag: "Robotics & AI", featured: true },
+              { name: "Pascal Rubi", role: "COO", initials: "PR", img: "/images/team/pascal-rubi.jpg", desc: "Operational leadership and business development. Ensuring smooth day-to-day operations and franchise partner relations.", tag: "Operations", featured: true },
+            ].map((m, i) => (
+              <Stagger key={m.name} delay={0.6 + i * 0.1}>
+                <motion.div
+                  variants={fadeUp}
+                  className="rounded-2xl p-5 border"
+                  style={{ background: i === 0 ? C.bgCard : i === 1 ? C.accentLight : C.bgCard, borderColor: i === 1 ? C.borderAccent : C.gold + "30", boxShadow: C.shadowLg }}
                 >
-                  <img
-                    src="/images/team/benjamin-rubi.jpg"
-                    alt="Benjamin Rubi"
-                    className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<span style="font-size:1.5rem;font-weight:bold;color:#D32F2F">BR</span>'; }}
-                  />
-                </div>
-                <div className="text-lg font-bold" style={{ color: C.text }}>
-                  Benjamin Rubi
-                </div>
-                <div className="text-xs font-mono uppercase tracking-wider mt-0.5" style={{ color: C.accent }}>
-                  Founder &amp; CEO
-                </div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ background: C.accentGlow, color: C.accent }}>
-                    15+ Years Drone Industry
-                  </span>
-                </div>
-                <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
-                  15 years building and operating drone companies. Deep expertise in regulatory navigation (BAZL/FOCA, EASA), commercial drone operations, and scaling aviation businesses.
-                </p>
-              </motion.div>
-            </Stagger>
-
-            <Stagger delay={0.7}>
-              <motion.div
-                variants={fadeUp}
-                className="rounded-2xl p-5 border"
-                style={{ background: C.accentLight, borderColor: C.borderAccent, boxShadow: C.shadowLg }}
-              >
-                <div
-                  className="w-20 h-20 rounded-2xl mb-3 flex items-center justify-center overflow-hidden"
-                  style={{ background: C.accentGlow }}
-                >
-                  <img
-                    src="/images/team/chris-graf.jpg"
-                    alt="Chris Jon Graf"
-                    className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<span style="font-size:1.5rem;font-weight:bold;color:#D32F2F">CG</span>'; }}
-                  />
-                </div>
-                <div className="text-lg font-bold" style={{ color: C.text }}>
-                  Chris Jon Graf
-                </div>
-                <div className="text-xs font-mono uppercase tracking-wider mt-0.5" style={{ color: C.accent }}>
-                  CTO &amp; Head of AI
-                </div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ background: C.accentGlow, color: C.accent }}>
-                    Robotics &amp; AI
-                  </span>
-                </div>
-                <p className="text-sm mt-2" style={{ color: C.textSecondary }}>
-                  Robotics and AI engineering background. Leads international tech teams. Architecting the AI-powered platform that automates fleet operations, dispatch, and compliance.
-                </p>
-              </motion.div>
-            </Stagger>
+                  <div
+                    className="w-16 h-16 rounded-2xl mb-3 flex items-center justify-center overflow-hidden"
+                    style={{ background: C.accentGlow }}
+                  >
+                    <img
+                      src={m.img}
+                      alt={m.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#D32F2F">${m.initials}</span>`; }}
+                    />
+                  </div>
+                  <div className="text-base font-bold" style={{ color: C.text }}>{m.name}</div>
+                  <div className="text-xs font-mono uppercase tracking-wider mt-0.5" style={{ color: C.accent }}>{m.role}</div>
+                  <div className="mt-2">
+                    <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold" style={{ background: C.accentGlow, color: C.accent }}>{m.tag}</span>
+                  </div>
+                  <p className="text-sm mt-2" style={{ color: C.textSecondary }}>{m.desc}</p>
+                </motion.div>
+              </Stagger>
+            ))}
           </div>
 
-          {/* 8 Licensed Pilots callout + Advisory */}
+          {/* Pilot Commander + Pilot Team */}
+          <Stagger delay={0.9}>
+            <motion.div variants={fadeUp} className="mt-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-5 h-5" style={{ color: C.green }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-bold" style={{ color: C.green }}>
+                  Flight Operations Team — 10 Licensed Pilots
+                </span>
+              </div>
+              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3">
+                {[
+                  { name: "Silvan Schwab", role: "Pilot Commander", initials: "SS" },
+                  { name: "Flo Schwab", role: "Pilot", initials: "FS" },
+                  { name: "Tim Frischknecht", role: "Pilot", initials: "TF" },
+                  { name: "Nino Abegglen", role: "Pilot", initials: "NA" },
+                  { name: "Fabio Blum", role: "Pilot", initials: "FB" },
+                  { name: "Maurin Schwab", role: "Pilot", initials: "MS" },
+                  { name: "Reto Maurer", role: "Pilot", initials: "RM" },
+                  { name: "Alain Grossen", role: "Pilot", initials: "AG" },
+                  { name: "Joel Luder", role: "Pilot", initials: "JL" },
+                ].map((p) => (
+                  <motion.div
+                    key={p.name}
+                    variants={fadeUp}
+                    className="rounded-xl p-3 border text-center"
+                    style={{ background: p.role === "Pilot Commander" ? C.greenLight : C.bgCard, borderColor: p.role === "Pilot Commander" ? C.green + "20" : C.border, boxShadow: C.shadow }}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center"
+                      style={{ background: p.role === "Pilot Commander" ? C.green + "15" : C.accentGlow }}
+                    >
+                      <span className="text-xs font-bold" style={{ color: p.role === "Pilot Commander" ? C.green : C.accent }}>{p.initials}</span>
+                    </div>
+                    <div className="text-xs font-semibold leading-tight" style={{ color: C.text }}>{p.name}</div>
+                    <div className="text-[10px] mt-0.5" style={{ color: p.role === "Pilot Commander" ? C.green : C.textMuted }}>{p.role}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </Stagger>
+
+          {/* Advisory & Partners */}
           <div className="grid md:grid-cols-2 gap-6 mt-6">
-            <Stagger delay={0.8}>
+            <Stagger delay={1.0}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-4 sm:p-5 border flex items-center gap-4"
@@ -2457,20 +2462,20 @@ export function InvestorPitchDeck() {
                   className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                   style={{ background: C.green + "15" }}
                 >
-                  <Shield className="w-6 h-6" style={{ color: C.green }} />
+                  <Users className="w-6 h-6" style={{ color: C.green }} />
                 </div>
                 <div>
                   <div className="text-2xl font-bold font-mono" style={{ color: C.green }}>
-                    8 Licensed Pilots
+                    12 Team Members
                   </div>
                   <div className="text-sm" style={{ color: C.textSecondary }}>
-                    Fully certified, trained, and flight-ready from day one.
+                    3 founders + 1 pilot commander + 8 licensed commercial drone pilots, fully certified and flight-ready.
                   </div>
                 </div>
               </motion.div>
             </Stagger>
 
-            <Stagger delay={0.9}>
+            <Stagger delay={1.1}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-5 border"
@@ -2491,14 +2496,149 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 10: FINANCIAL PROJECTIONS ═══ */}
+      {/* ═══ SLIDE 10: AIRBASE PLATFORM ═══ */}
       <section
         ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="09" text="Financial Projections" />
+          <SlideLabel number="09" text="The Platform" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-3xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              airBASE Platform —{" "}
+              <span style={{ color: C.accent }}>The Brain Behind the Fleet</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-base md:text-lg mt-3 max-w-3xl" style={{ color: C.textSecondary }}>
+              A fully integrated, AI-powered operations platform managing every aspect of commercial drone operations — from customer booking to autonomous flight dispatch, compliance tracking, and real-time fleet monitoring.
+            </motion.p>
+          </Stagger>
+
+          {/* Three dashboard views */}
+          <Stagger className="grid md:grid-cols-3 gap-6 mt-10" delay={0.3}>
+            {[
+              {
+                title: "Admin Dashboard",
+                icon: BarChart3,
+                color: C.accent,
+                features: ["Fleet management & health monitoring", "Revenue analytics & KPIs", "Regulatory compliance tracking", "Franchise partner oversight"],
+              },
+              {
+                title: "Pilot App",
+                icon: MapPin,
+                color: C.green,
+                features: ["Real-time mission assignments", "Pre-flight checklists & NOTAM integration", "Flight logging & telemetry", "Weather & airspace alerts"],
+              },
+              {
+                title: "Customer Portal",
+                icon: Users,
+                color: C.gold,
+                features: ["Self-service booking & scheduling", "Live delivery tracking", "Automated invoicing", "Service history & reports"],
+              },
+            ].map((view, i) => (
+              <motion.div
+                key={view.title}
+                variants={fadeUp}
+                className="rounded-2xl p-6 border"
+                style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadowLg }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: view.color + "12" }}
+                  >
+                    <view.icon className="w-5 h-5" style={{ color: view.color }} />
+                  </div>
+                  <div className="text-sm font-mono uppercase tracking-wider font-bold" style={{ color: view.color }}>
+                    {view.title}
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {view.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" style={{ color: view.color }} />
+                      <span className="text-sm" style={{ color: C.textSecondary }}>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </Stagger>
+
+          {/* AI-Powered Capabilities */}
+          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8" delay={0.6}>
+            {[
+              { icon: Cpu, label: "AI-Powered Dispatch", desc: "Autonomous mission planning & optimization" },
+              { icon: Shield, label: "EASA/BAZL Compliant", desc: "Built-in regulatory framework & audit trails" },
+              { icon: Zap, label: "Real-Time Telemetry", desc: "Live fleet status, GPS, battery & payload data" },
+              { icon: Layers, label: "Franchise-Ready", desc: "Multi-tenant architecture for scalable licensing" },
+            ].map((cap) => (
+              <motion.div
+                key={cap.label}
+                variants={fadeUp}
+                className="rounded-xl p-4 border text-center"
+                style={{ background: C.accentLight, borderColor: C.borderAccent, boxShadow: C.shadow }}
+              >
+                <cap.icon className="w-6 h-6 mx-auto mb-2" style={{ color: C.accent }} />
+                <div className="text-xs font-mono font-bold uppercase" style={{ color: C.accent }}>{cap.label}</div>
+                <div className="text-xs mt-1" style={{ color: C.textSecondary }}>{cap.desc}</div>
+              </motion.div>
+            ))}
+          </Stagger>
+
+          {/* Live Demo CTA */}
+          <Stagger delay={0.9}>
+            <motion.div
+              variants={scaleUp}
+              className="mt-10 rounded-2xl p-8 border text-center"
+              style={{
+                borderColor: C.accent + "30",
+                background: `linear-gradient(135deg, ${C.accentLight} 0%, ${C.accentGlow} 100%)`,
+                boxShadow: C.shadowLg,
+              }}
+            >
+              <div className="text-xs font-mono uppercase tracking-[0.2em] mb-3" style={{ color: C.textMuted }}>
+                See It In Action
+              </div>
+              <div className="text-xl md:text-2xl font-bold mb-4" style={{ color: C.text }}>
+                Our platform is live. Try it yourself.
+              </div>
+              <a
+                href="https://airbase-platform.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold transition-transform hover:scale-105"
+                style={{
+                  background: C.accent,
+                  color: "#fff",
+                  boxShadow: `0 4px 20px ${C.accent}40`,
+                }}
+              >
+                <Rocket className="w-5 h-5" />
+                Try Our Live Demo
+                <ArrowRight className="w-5 h-5" />
+              </a>
+              <div className="text-xs mt-3" style={{ color: C.textMuted }}>
+                airbase-platform.vercel.app
+              </div>
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+      {/* ═══ SLIDE 11: FINANCIAL PROJECTIONS ═══ */}
+      <section
+        ref={setRef(11)}
+        className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
+        style={{ scrollSnapAlign: "start" }}
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="10" text="Financial Projections" />
 
           <Stagger>
             <motion.h2
@@ -2594,14 +2734,14 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 11: THE ASK + INVESTMENT SLIDER ═══ */}
+      {/* ═══ SLIDE 12: THE ASK + INVESTMENT SLIDER ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(12)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="10" text="The Ask" />
+          <SlideLabel number="11" text="The Ask" />
 
           <Stagger>
             <motion.h2
@@ -2733,9 +2873,9 @@ export function InvestorPitchDeck() {
         </div>
       </section>
 
-      {/* ═══ SLIDE 12: VISION ═══ */}
+      {/* ═══ SLIDE 13: VISION ═══ */}
       <section
-        ref={setRef(12)}
+        ref={setRef(13)}
         className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -2749,7 +2889,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="11" text="Vision" />
+          <SlideLabel number="12" text="Vision" />
 
           <Stagger>
             <motion.h2
