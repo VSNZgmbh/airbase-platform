@@ -897,9 +897,9 @@ export function InvestorPitchDeck() {
             className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight px-2"
             style={{ color: C.text }}
           >
-            We Don&rsquo;t Replace Industries.
+            We Move Industries
             <br />
-            <span style={{ color: C.accent }}>We Create New Ones.</span>
+            <span style={{ color: C.accent }}>Into the Sky.</span>
           </motion.h1>
 
           <motion.p
