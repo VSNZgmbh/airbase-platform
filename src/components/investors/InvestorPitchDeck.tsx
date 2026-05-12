@@ -1000,8 +1000,8 @@ export function InvestorPitchDeck() {
         {/* Full-bleed drone image */}
         <div className="absolute inset-0">
           <img
-            src="/images/flycart-notfalltransport.webp"
-            alt="DJI FlyCart drone delivering a package over a mountain gorge"
+            src="/assets/hero-flycart-mountains.jpg"
+            alt="DJI FlyCart drones over Swiss mountains"
             className="w-full h-full object-cover"
             style={{ objectPosition: "center 40%" }}
           />
@@ -1050,7 +1050,13 @@ export function InvestorPitchDeck() {
             className="text-base sm:text-lg md:text-xl lg:text-2xl font-light max-w-3xl mx-auto"
             style={{ color: "rgba(255,255,255,0.85)" }}
           >
-            Agriculture, construction sites, cleaning, and more.
+            airBASE replaces helicopters and tractors with heavy-lift drone
+            swarms capable of transporting up to 600&nbsp;kg per load — at 90%
+            lower cost and zero emissions. We serve agriculture (spraying,
+            seeding), construction logistics, industrial cleaning, and
+            emergency rescue across Switzerland and Austria as a fully
+            solar-powered, B2B Drone-as-a-Service platform. Clients simply
+            book; we operate.
           </motion.p>
         </div>
 
