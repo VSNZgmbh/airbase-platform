@@ -811,7 +811,7 @@ export function InvestorPitchDeck() {
         </div>
       </div>
 
-      {/* ═══ SLIDE 0: COVER — Replacing Helicopters & Tractors ═══ */}
+      {/* ═══ SLIDE 0: COVER — Creating a New Market ═══ */}
       <section
         ref={setRef(0)}
         className="relative min-h-screen flex flex-col items-center justify-start pt-20 sm:justify-center sm:pt-0 px-6 text-center overflow-hidden"
@@ -897,9 +897,9 @@ export function InvestorPitchDeck() {
             className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight px-2"
             style={{ color: C.text }}
           >
-            Replacing Helicopters &amp; Tractors
+            We Don&rsquo;t Replace Industries.
             <br />
-            <span style={{ color: C.accent }}>&mdash; With Drones.</span>
+            <span style={{ color: C.accent }}>We Create New Ones.</span>
           </motion.h1>
 
           <motion.p
@@ -909,7 +909,7 @@ export function InvestorPitchDeck() {
             className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-8 sm:mb-10 px-2"
             style={{ color: C.textSecondary }}
           >
-            B2B Heavy-Lift Drone Operations &middot; Swiss Precision &middot; 100% Solar-Powered
+            Helicopters &middot; Tractors &middot; Cranes &mdash; One Platform Replaces Them All &middot; 100% Solar
           </motion.p>
 
           {/* Three Animated Pillars: Construction, Agriculture, Emergency */}
@@ -922,8 +922,8 @@ export function InvestorPitchDeck() {
             {[
               {
                 icon: HardHat,
-                title: "Construction",
-                desc: "Materials to mountain sites, equipment supply — replacing helicopter transport",
+                title: "Construction & Cranes",
+                desc: "Materials to mountain sites, equipment lifting — replacing helicopters and cranes",
                 color: C.accent,
               },
               {
@@ -934,8 +934,8 @@ export function InvestorPitchDeck() {
               },
               {
                 icon: HeartPulse,
-                title: "Emergency",
-                desc: "Medical supply, rescue logistics — 24/7 rapid deployment anywhere",
+                title: "Emergency & Logistics",
+                desc: "Medical supply, rescue logistics, industrial transport — 24/7 rapid deployment",
                 color: C.green,
               },
             ].map((pillar, i) => (
@@ -1038,8 +1038,8 @@ export function InvestorPitchDeck() {
             className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
             style={{ color: "#FFFFFF" }}
           >
-            Drone Delivery up to{" "}
-            <span style={{ color: C.accent }}>600 kg</span> per Load
+            One Platform.{" "}
+            <span style={{ color: C.accent }}>Every Heavy Industry. Reinvented.</span>
           </motion.h2>
 
           <motion.p
@@ -1050,13 +1050,13 @@ export function InvestorPitchDeck() {
             className="text-base sm:text-lg md:text-xl lg:text-2xl font-light max-w-3xl mx-auto"
             style={{ color: "rgba(255,255,255,0.85)" }}
           >
-            airBASE replaces helicopters and tractors with heavy-lift drone
-            swarms capable of transporting up to 600&nbsp;kg per load — at 90%
-            lower cost and zero emissions. We serve agriculture (spraying,
-            seeding), construction logistics, industrial cleaning, and
-            emergency rescue across Switzerland and Austria as a fully
-            solar-powered, B2B Drone-as-a-Service platform. Clients simply
-            book; we operate.
+            airBASE replaces helicopters, tractors, and cranes with heavy-lift
+            drone swarms capable of transporting up to 600&nbsp;kg per load —
+            at 90% lower cost and zero emissions. We serve construction,
+            agriculture, infrastructure, and emergency rescue across
+            Switzerland and Austria as a fully solar-powered, B2B
+            Drone-as-a-Service platform. We aren&rsquo;t disrupting one
+            industry — we&rsquo;re creating an entirely new one.
           </motion.p>
         </div>
 
@@ -1091,16 +1091,16 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight"
               style={{ color: C.text }}
             >
-              The Old Way Is Expensive,
+              Helicopters. Tractors. Cranes.
               <br />
-              <span style={{ color: C.red }}>Loud, and Dirty.</span>
+              <span style={{ color: C.red }}>Billion-Dollar Machines. Last-Century Thinking.</span>
             </motion.h2>
 
             <motion.div variants={fadeIn} className="h-px w-24 mt-4 mb-8" style={{ background: C.red + "60" }} />
           </Stagger>
 
-          {/* Two-column: Helicopter Problems + Tractor Problems */}
-          <Stagger className="grid md:grid-cols-2 gap-6 mt-8" delay={0.2}>
+          {/* Three-column: Helicopter + Crane + Tractor Problems */}
+          <Stagger className="grid md:grid-cols-3 gap-6 mt-8" delay={0.2}>
             {/* Helicopter Problems */}
             <motion.div
               variants={fadeUp}
@@ -1126,6 +1126,51 @@ export function InvestorPitchDeck() {
                   { icon: CircleDollarSign, label: "CHF 3,500-4,500/h", sub: "Operating cost per hour" },
                   { icon: Leaf, label: "68 kg CO\u2082/h", sub: "Jet-A1 fuel emissions" },
                   { icon: Volume2, label: "100+ dB noise", sub: "Severe noise pollution" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-lg"
+                    style={{ background: C.red + "06" }}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.12 }}
+                  >
+                    <item.icon className="w-5 h-5 shrink-0" style={{ color: C.red }} />
+                    <div>
+                      <div className="text-sm font-bold font-mono" style={{ color: C.red }}>{item.label}</div>
+                      <div className="text-xs" style={{ color: C.textMuted }}>{item.sub}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Crane Problems */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl p-6 border"
+              style={{ background: C.bgCard, borderColor: C.red + "20", boxShadow: C.shadow }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <motion.div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ background: C.red + "10" }}
+                  animate={{ rotate: [0, 2, -2, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <HardHat className="w-6 h-6" style={{ color: C.red }} />
+                </motion.div>
+                <div>
+                  <div className="text-lg font-bold" style={{ color: C.text }}>Construction Cranes</div>
+                  <div className="text-xs" style={{ color: C.textMuted }}>Slow, expensive heavy lifting</div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { icon: CircleDollarSign, label: "CHF 2,000-5,000/day", sub: "Crane rental + operator cost" },
+                  { icon: Clock, label: "Days of setup", sub: "Permits, transport, assembly" },
+                  { icon: Volume2, label: "90+ dB noise", sub: "Disrupts entire neighborhoods" },
                 ].map((item, i) => (
                   <motion.div
                     key={i}
@@ -1200,11 +1245,12 @@ export function InvestorPitchDeck() {
               style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
             >
               <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
-                The Old Way vs. AIRBASE — Cost Per Operation
+                Helicopters, Tractors &amp; Cranes vs. AIRBASE — Cost Per Operation
               </div>
               <div className="space-y-4">
                 <ComparisonBar label="Helicopter Supply Run" value={4500} maxValue={4500} unit="CHF/hr" color={C.red} icon={Mountain} delay={0} />
-                <ComparisonBar label="Materialseilbahn" value={3200} maxValue={4500} unit="CHF avg." color={C.red} icon={Mountain} delay={0.15} />
+                <ComparisonBar label="Construction Crane" value={3500} maxValue={4500} unit="CHF/day" color={C.red} icon={HardHat} delay={0.15} />
+                <ComparisonBar label="Materialseilbahn" value={3200} maxValue={4500} unit="CHF avg." color={C.red} icon={Mountain} delay={0.22} />
                 <ComparisonBar label="Manual Hand Crew" value={1800} maxValue={4500} unit="CHF/day" color={C.red + "CC"} icon={Users} delay={0.3} />
                 {/* AIRBASE bar */}
                 <motion.div
@@ -1262,8 +1308,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4"
               style={{ color: C.text }}
             >
-              One Platform.{" "}
-              <span style={{ color: C.accent }}>Quieter. Cheaper. Greener.</span>
+              The Industry That Didn&rsquo;t Exist{" "}
+              <span style={{ color: C.accent }}>&mdash; Until Now.</span>
             </motion.h2>
           </Stagger>
 
@@ -1356,7 +1402,7 @@ export function InvestorPitchDeck() {
           <Stagger className="grid grid-cols-3 gap-4 sm:gap-6 mt-8" delay={0.6}>
             {[
               { value: "85-200 kg", label: "Payload capacity", sub: "FC100 (85 kg) + FC200 (200 kg)" },
-              { value: "-85%", label: "Cost vs traditional", sub: "Helicopter / tractor" },
+              { value: "-85%", label: "Cost vs traditional", sub: "Helicopter / tractor / crane" },
               { value: "<30 min", label: "Deployment time", sub: "Order to takeoff" },
             ].map((stat, i) => (
               <motion.div
@@ -1395,8 +1441,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.green }}
             >
-              100% Solar-Powered.{" "}
-              <span style={{ color: C.text }}>Zero Emissions.</span>
+              Zero Emissions. Zero Compromise.{" "}
+              <span style={{ color: C.text }}>100% Solar-Powered.</span>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-lg mt-3 max-w-3xl" style={{ color: C.textSecondary }}>
               Every drone and transport vehicle runs{" "}
@@ -1679,8 +1725,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              Four Industries.{" "}
-              <span style={{ color: C.accent }}>One Platform.</span>
+              Not One Vertical.{" "}
+              <span style={{ color: C.accent }}>An Entire Ecosystem.</span>
             </motion.h2>
           </Stagger>
 
@@ -1697,7 +1743,7 @@ export function InvestorPitchDeck() {
                   { icon: Rocket, label: "Drone lifts 85-200 kg" },
                   { icon: MapPin, label: "Mountain delivery" },
                 ],
-                desc: "Materials to mountain sites, equipment supply. Replaces expensive helicopter transport.",
+                desc: "Materials to mountain sites, equipment lifting. Replaces expensive helicopter and crane operations.",
               },
               {
                 title: "Agriculture",
@@ -1812,7 +1858,7 @@ export function InvestorPitchDeck() {
               style={{ color: C.text }}
             >
               A CHF 4 Billion Market{" "}
-              <span style={{ color: C.accent }}>Across Four Verticals</span>
+              <span style={{ color: C.accent }}>That Nobody Owns Yet</span>
             </motion.h2>
           </Stagger>
 
@@ -1942,15 +1988,15 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              The Modern Alternative to{" "}
-              <span style={{ color: C.gold }}>Helicopter Services</span>
+              Why Nobody Can Follow Us{" "}
+              <span style={{ color: C.gold }}>Into This Market</span>
             </motion.h2>
             <motion.p
               variants={fadeUp}
               className="text-lg mt-2 max-w-2xl"
               style={{ color: C.textSecondary }}
             >
-              No Swiss operator serves the 85-200 kg heavy-cargo B2B segment. AIRBASE is the first mover.
+              We&rsquo;re not competing with drone startups. We&rsquo;re replacing helicopters, tractors, and cranes — and no one else can.
             </motion.p>
           </Stagger>
 
@@ -2042,7 +2088,7 @@ export function InvestorPitchDeck() {
               style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadowLg }}
             >
               <div className="text-xs font-mono uppercase tracking-wider mb-6" style={{ color: C.textMuted }}>
-                Helicopter vs AIRBASE Drone — Head-to-Head
+                Legacy Machines vs AIRBASE Drone — Head-to-Head
               </div>
               <div className="space-y-5">
                 {[
@@ -2168,8 +2214,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              Drone-as-a-Service{" "}
-              <span style={{ color: C.accent }}>for B2B Clients</span>
+              Three Revenue Engines.{" "}
+              <span style={{ color: C.accent }}>One Unstoppable Platform.</span>
             </motion.h2>
           </Stagger>
 
@@ -2279,8 +2325,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              Not Pre-Product.{" "}
-              <span style={{ color: C.green }}>Pre-Scale.</span>
+              Fleet Ready. Team Ready.{" "}
+              <span style={{ color: C.green }}>Market Ready.</span>
             </motion.h2>
           </Stagger>
 
@@ -2460,8 +2506,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              Unit Economics{" "}
-              <span style={{ color: C.accent }}>That Scale</span>
+              Built to Print Money{" "}
+              <span style={{ color: C.accent }}>from Day One</span>
             </motion.h2>
           </Stagger>
 
@@ -2564,7 +2610,7 @@ export function InvestorPitchDeck() {
               style={{ color: C.text }}
             >
               <span style={{ color: C.accent }}>CHF 1.5M</span>{" "}
-              to Own the Swiss Sky
+              to Own the Market Before It Exists
             </motion.h2>
           </Stagger>
 
@@ -2711,8 +2757,8 @@ export function InvestorPitchDeck() {
               className="text-3xl md:text-5xl font-bold leading-tight mb-2"
               style={{ color: C.text }}
             >
-              Switzerland First.{" "}
-              <span style={{ color: C.accent }}>Europe Next.</span>
+              We&rsquo;re Not Entering a Market.{" "}
+              <span style={{ color: C.accent }}>We&rsquo;re Building One.</span>
             </motion.h2>
           </Stagger>
 
@@ -2769,7 +2815,7 @@ export function InvestorPitchDeck() {
               }}
             >
               <div className="text-xs font-mono uppercase tracking-[0.3em] mb-6" style={{ color: C.gold }}>
-                The Sky Is the Limit
+                Shaping the Future of Multiple Industries
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 {[
@@ -2795,7 +2841,7 @@ export function InvestorPitchDeck() {
           <Stagger delay={1}>
             <motion.div variants={fadeUp} className="mt-16 text-center space-y-6">
               <p className="text-2xl sm:text-3xl md:text-5xl font-bold" style={{ color: C.accent }}>
-                The Future Flies with AIRBASE.
+                The Future Doesn&rsquo;t Wait. Neither Do We.
               </p>
               <div className="pt-8 space-y-2">
                 <div className="text-xs font-mono" style={{ color: C.textMuted }}>
