@@ -2135,20 +2135,49 @@ export function InvestorPitchDeck() {
               style={{ color: C.text }}
             >
               Our Real Moat:{" "}
-              <span style={{ color: C.gold }}>AI + Franchise + Network</span>
+              <span style={{ color: C.gold }}>LUC + AI + Franchise + Network</span>
             </motion.h2>
             <motion.p
               variants={fadeUp}
               className="text-lg mt-2 max-w-2xl"
               style={{ color: C.textSecondary }}
             >
-              The drone hardware is commodity — anyone can buy a DJI drone. Our competitive advantage is the intelligent system behind it, the scalable franchise model, and our unmatched network.
+              The drone hardware is commodity — anyone can buy a DJI drone. Our competitive advantage is the LUC (Light UAS operator Certificate) making us a self-authorized drone airline, the intelligent AI system, the scalable franchise model, and our unmatched network.
             </motion.p>
           </Stagger>
 
-          {/* Three moat pillars — AI, Franchise, Network */}
-          <div className="grid md:grid-cols-3 gap-6 mt-10">
-            <Stagger delay={0.2}>
+          {/* Four moat pillars — LUC, AI, Franchise, Network */}
+          <div className="grid md:grid-cols-4 gap-6 mt-10">
+            <Stagger delay={0.15}>
+              <motion.div
+                variants={fadeUp}
+                className="rounded-2xl p-5 border relative overflow-hidden"
+                style={{ background: C.goldLight, borderColor: C.gold + "20", boxShadow: C.shadowLg }}
+              >
+                <Shield className="w-7 h-7 mb-3" style={{ color: C.gold }} />
+                <div className="text-sm font-mono uppercase tracking-wider mb-1" style={{ color: C.gold }}>
+                  LUC — Drone Airline
+                </div>
+                <div className="text-xs font-mono font-bold mb-3" style={{ color: C.gold }}>
+                  Self-Authorized Flights
+                </div>
+                <ul className="space-y-1.5">
+                  {[
+                    "Pursuing Light UAS operator Certificate (LUC)",
+                    "Self-authorize flights — no per-mission approvals",
+                    "We make the rules, competitors wait for permits",
+                    "Massive regulatory moat — near-impossible to replicate",
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: C.textSecondary }}>
+                      <CheckCircle2 className="w-3 h-3 mt-0.5 shrink-0" style={{ color: C.gold }} />
+                      {text}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </Stagger>
+
+            <Stagger delay={0.3}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-5 border"
@@ -2178,7 +2207,7 @@ export function InvestorPitchDeck() {
               </motion.div>
             </Stagger>
 
-            <Stagger delay={0.35}>
+            <Stagger delay={0.45}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-5 border relative overflow-hidden"
@@ -2204,7 +2233,7 @@ export function InvestorPitchDeck() {
               </motion.div>
             </Stagger>
 
-            <Stagger delay={0.5}>
+            <Stagger delay={0.6}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-5 border"
@@ -2529,7 +2558,7 @@ export function InvestorPitchDeck() {
             {[
               { name: "Benjamin Rubi", role: "Founder & CEO", initials: "BR", img: "/images/team/benjamin-rubi.jpg", desc: "15 years building and operating drone companies. Deep expertise in regulatory navigation (BAZL/FOCA, EASA) and scaling aviation businesses.", tag: "15+ Years Drone Industry", featured: true },
               { name: "Chris Jon Graf", role: "CTO & Head of AI", initials: "CG", img: "/images/team/chris-graf.jpg", desc: "Robotics and AI engineering background. Architecting the AI-powered platform that automates fleet operations, dispatch, and compliance.", tag: "Robotics & AI", featured: true },
-              { name: "Dannick Riteco", role: "SORA Specialist & Safety Manager", initials: "DR", img: "/images/team/dannick-riteco.jpg", desc: "Partner via soraconsulting.ch. Expert in SORA risk assessment and drone operations safety management.", tag: "SORA & Safety", featured: true },
+              { name: "Vertical Masters", role: "Training & LUC Partner", initials: "VM", img: "/images/team/vertical-masters.jpg", desc: "Strategic partner for LUC certification. Provides pilot training center and regulatory expertise to achieve airline-grade certification.", tag: "Training & LUC", featured: true },
             ].map((m, i) => (
               <Stagger key={m.name} delay={0.6 + i * 0.1}>
                 <motion.div
@@ -2631,7 +2660,7 @@ export function InvestorPitchDeck() {
               </div>
               <div className="mt-3 text-center">
                 <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold" style={{ background: C.green + "12", color: C.green, border: `1px solid ${C.green}20` }}>
-                  + 5 weitere Piloten in der Pipeline
+                  + 5 additional pilots in recruitment pipeline
                 </span>
               </div>
             </motion.div>
