@@ -2485,7 +2485,7 @@ export function InvestorPitchDeck() {
               { date: "Q1 2026", text: "Company incorporated & DJI FlyCart 100 fleet acquired (5 units)", done: true },
               { date: "Q1 2026", text: "AIRBASE platform v1.0 launched (portal + admin + pilot app)", done: true },
               { date: "Q1 2026", text: "SORA / BAZL applications filed", done: true },
-              { date: "Q1 2026", text: "9 fully licensed commercial drone pilots operational", done: true },
+              { date: "Q1 2026", text: "4 licensed drone pilots operational, 5 more in recruitment pipeline", done: true },
               { date: "Q2 2026*", text: "First commercial pilot flights (internal ops)", done: false },
               { date: "Q3-Q4 2026*", text: "DJI FlyCart 200 fleet expansion (200 kg payload — pending global launch + EASA certification)", done: false },
               { date: "Q4 2026*", text: "First DaaS enterprise contracts", done: false },
@@ -2527,7 +2527,7 @@ export function InvestorPitchDeck() {
             {[
               { name: "Benjamin Rubi", role: "Founder & CEO", initials: "BR", img: "/images/team/benjamin-rubi.jpg", desc: "15 years building and operating drone companies. Deep expertise in regulatory navigation (BAZL/FOCA, EASA) and scaling aviation businesses.", tag: "15+ Years Drone Industry", featured: true },
               { name: "Chris Jon Graf", role: "CTO & Head of AI", initials: "CG", img: "/images/team/chris-graf.jpg", desc: "Robotics and AI engineering background. Architecting the AI-powered platform that automates fleet operations, dispatch, and compliance.", tag: "Robotics & AI", featured: true },
-              { name: "Pascal Rubi", role: "COO", initials: "PR", img: "/images/team/pascal-rubi.jpg", desc: "Operational leadership and business development. Ensuring smooth day-to-day operations and franchise partner relations.", tag: "Operations", featured: true },
+              { name: "Dannick Riteco", role: "SORA Specialist & Safety Manager", initials: "DR", img: "/images/team/dannick-riteco.jpg", desc: "Partner via soraconsulting.ch. Expert in SORA risk assessment and drone operations safety management.", tag: "SORA & Safety", featured: true },
             ].map((m, i) => (
               <Stagger key={m.name} delay={0.6 + i * 0.1}>
                 <motion.div
@@ -2557,50 +2557,87 @@ export function InvestorPitchDeck() {
             ))}
           </div>
 
-          {/* Pilot Commander + Pilot Team */}
+          {/* Key Team */}
           <Stagger delay={0.9}>
             <motion.div variants={fadeUp} className="mt-6">
               <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-5 h-5" style={{ color: C.green }} />
-                <span className="text-sm font-mono uppercase tracking-wider font-bold" style={{ color: C.green }}>
-                  Flight Operations Team — 9 Licensed Pilots
+                <Users className="w-5 h-5" style={{ color: C.accent }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-bold" style={{ color: C.accent }}>
+                  Key Team
                 </span>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 {[
-                  { name: "Silvan Schwab", role: "Pilot Commander", initials: "SS" },
-                  { name: "Flo Schwab", role: "Pilot", initials: "FS" },
-                  { name: "Tim Frischknecht", role: "Pilot", initials: "TF" },
-                  { name: "Nino Abegglen", role: "Pilot", initials: "NA" },
-                  { name: "Fabio Blum", role: "Pilot", initials: "FB" },
-                  { name: "Maurin Schwab", role: "Pilot", initials: "MS" },
-                  { name: "Reto Maurer", role: "Pilot", initials: "RM" },
-                  { name: "Alain Grossen", role: "Pilot", initials: "AG" },
-                  { name: "Joel Luder", role: "Pilot", initials: "JL" },
+                  { name: "Nikita Eberhart", role: "Deputy Managing Director", initials: "NE" },
+                  { name: "Claude Gfeller", role: "Operations Manager", initials: "CG" },
+                  { name: "Nicolas Jud", role: "Operations & Fleet Manager", initials: "NJ" },
+                  { name: "Ralph Menth", role: "Marketing PM", initials: "RM" },
+                  { name: "Jamie Wyss", role: "Customer Support", initials: "JW" },
                 ].map((p) => (
                   <motion.div
                     key={p.name}
                     variants={fadeUp}
                     className="rounded-xl p-3 border text-center"
-                    style={{ background: p.role === "Pilot Commander" ? C.greenLight : C.bgCard, borderColor: p.role === "Pilot Commander" ? C.green + "20" : C.border, boxShadow: C.shadow }}
+                    style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
                   >
                     <div
                       className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center"
-                      style={{ background: p.role === "Pilot Commander" ? C.green + "15" : C.accentGlow }}
+                      style={{ background: C.accentGlow }}
                     >
-                      <span className="text-xs font-bold" style={{ color: p.role === "Pilot Commander" ? C.green : C.accent }}>{p.initials}</span>
+                      <span className="text-xs font-bold" style={{ color: C.accent }}>{p.initials}</span>
                     </div>
                     <div className="text-xs font-semibold leading-tight" style={{ color: C.text }}>{p.name}</div>
-                    <div className="text-[10px] mt-0.5" style={{ color: p.role === "Pilot Commander" ? C.green : C.textMuted }}>{p.role}</div>
+                    <div className="text-[10px] mt-0.5" style={{ color: C.textMuted }}>{p.role}</div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
           </Stagger>
 
+          {/* Licensed Drone Pilots */}
+          <Stagger delay={1.0}>
+            <motion.div variants={fadeUp} className="mt-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-5 h-5" style={{ color: C.green }} />
+                <span className="text-sm font-mono uppercase tracking-wider font-bold" style={{ color: C.green }}>
+                  Licensed Drone Pilots
+                </span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { name: "Tobias Pohl", initials: "TP" },
+                  { name: "Lars Wanner", initials: "LW" },
+                  { name: "Sidario Belzarini", initials: "SB" },
+                  { name: "Janis Perron", initials: "JP" },
+                ].map((p) => (
+                  <motion.div
+                    key={p.name}
+                    variants={fadeUp}
+                    className="rounded-xl p-3 border text-center"
+                    style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center"
+                      style={{ background: C.green + "15" }}
+                    >
+                      <span className="text-xs font-bold" style={{ color: C.green }}>{p.initials}</span>
+                    </div>
+                    <div className="text-xs font-semibold leading-tight" style={{ color: C.text }}>{p.name}</div>
+                    <div className="text-[10px] mt-0.5" style={{ color: C.green }}>Pilot</div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-3 text-center">
+                <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold" style={{ background: C.green + "12", color: C.green, border: `1px solid ${C.green}20` }}>
+                  + 5 weitere Piloten in der Pipeline
+                </span>
+              </div>
+            </motion.div>
+          </Stagger>
+
           {/* Advisory & Partners */}
           <div className="grid md:grid-cols-2 gap-6 mt-6">
-            <Stagger delay={1.0}>
+            <Stagger delay={1.1}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-4 sm:p-5 border flex items-center gap-4"
@@ -2617,13 +2654,13 @@ export function InvestorPitchDeck() {
                     12 Team Members
                   </div>
                   <div className="text-sm" style={{ color: C.textSecondary }}>
-                    3 founders + 1 pilot commander + 8 licensed commercial drone pilots — fully certified and flight-ready.
+                    3 leadership + 5 key team + 4 licensed drone pilots — fully certified and flight-ready.
                   </div>
                 </div>
               </motion.div>
             </Stagger>
 
-            <Stagger delay={1.1}>
+            <Stagger delay={1.2}>
               <motion.div
                 variants={fadeUp}
                 className="rounded-2xl p-5 border"
