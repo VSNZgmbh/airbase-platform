@@ -2094,9 +2094,9 @@ export function InvestorPitchDeck() {
               <div className="text-xl md:text-2xl font-bold mb-4" style={{ color: C.text }}>
                 Our platform is live. Try it yourself.
               </div>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex items-center justify-center">
                 <a
-                  href="https://airbase-platform.vercel.app/dashboard"
+                  href="https://airbase-platform.vercel.app/admin?section=live-ops"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold transition-transform hover:scale-105"
@@ -2107,27 +2107,12 @@ export function InvestorPitchDeck() {
                   }}
                 >
                   <Rocket className="w-5 h-5" />
-                  Live Operations Demo
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://airbase-platform.vercel.app/safety"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold transition-transform hover:scale-105"
-                  style={{
-                    background: "transparent",
-                    color: C.accent,
-                    border: `2px solid ${C.accent}`,
-                  }}
-                >
-                  <Shield className="w-5 h-5" />
-                  Safety Dashboard
+                  LIVE DEMO
                   <ArrowRight className="w-5 h-5" />
                 </a>
               </div>
               <div className="text-xs mt-3" style={{ color: C.textMuted }}>
-                airbase-platform.vercel.app/dashboard
+                airbase-platform.vercel.app/admin
               </div>
             </motion.div>
           </Stagger>

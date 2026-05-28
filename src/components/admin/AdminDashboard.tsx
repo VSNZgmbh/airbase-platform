@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { trpc } from "@/lib/trpc/client";
 import {
   DEMO_BOOKINGS,
@@ -1636,8 +1637,10 @@ const SECTION_TITLES: Record<AdminSection, { title: string; subtitle: string }> 
 
 // ─── Main Dashboard ─────────────────────────────────────────────────────────
 
-export function AdminDashboard() {
-  const [activeSection, setActiveSection] = useState<AdminSection>("overview");
+function AdminDashboardInner() {
+  const searchParams = useSearchParams();
+  const initialSection = (searchParams.get("section") as AdminSection) || "overview";
+  const [activeSection, setActiveSection] = useState<AdminSection>(initialSection);
   const sectionMeta = SECTION_TITLES[activeSection];
 
   const liveFlightCount = DEMO_FLIGHTS.filter(
@@ -1671,5 +1674,13 @@ export function AdminDashboard() {
         </main>
       </div>
     </div>
+  );
+}
+
+export function AdminDashboard() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen bg-gray-50/50 items-center justify-center">Loading…</div>}>
+      <AdminDashboardInner />
+    </Suspense>
   );
 }
