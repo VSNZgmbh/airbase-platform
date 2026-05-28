@@ -1390,7 +1390,7 @@ export function InvestorPitchDeck() {
               {/* FC200 */}
               <div className="flex items-center gap-4 p-4 sm:p-5" style={{ background: `linear-gradient(135deg, ${C.bgAlt} 0%, ${C.accentLight} 100%)` }}>
                 <motion.img
-                  src="/assets/t200-1.jpg"
+                  src="/assets/flycart-100-cutout.png"
                   alt="DJI FlyCart 200"
                   className="w-20 sm:w-28 h-auto object-contain shrink-0 rounded-lg"
                   animate={{ y: [0, -5, 0] }}
