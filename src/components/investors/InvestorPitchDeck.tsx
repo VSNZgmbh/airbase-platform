@@ -1132,7 +1132,7 @@ export function InvestorPitchDeck() {
               </div>
               <div className="space-y-3">
                 {[
-                  { icon: CircleDollarSign, label: "CHF 3,500-4,500/h", sub: "Operating cost per hour" },
+                  { icon: CircleDollarSign, label: "CHF 7,000/h", sub: "Cargo helicopter operating cost per hour" },
                   { icon: Leaf, label: "~500 kg CO\u2082/h", sub: "Jet-A1 fuel emissions" },
                   { icon: Volume2, label: "100+ dB noise", sub: "Severe noise pollution" },
                 ].map((item, i) => (
@@ -1270,7 +1270,7 @@ export function InvestorPitchDeck() {
               {/* Comparison rows */}
               <div className="space-y-2">
                 {[
-                  { method: "Helicopter", icon: Mountain, cost: "CHF 18,000", co2: "~2,500 kg", costVal: 18000, co2Val: 2500, color: C.red },
+                  { method: "Helicopter", icon: Mountain, cost: "CHF 59,500", co2: "~4,250 kg", costVal: 59500, co2Val: 4250, color: C.red },
                   { method: "Crane", icon: HardHat, cost: "CHF 2,500", co2: "~120 kg", costVal: 2500, co2Val: 120, color: C.red },
                   { method: "Heavy Truck", icon: Truck, cost: "CHF 1,200", co2: "~100 kg", costVal: 1200, co2Val: 100, color: C.red + "CC" },
                   { method: "AIRBASE Drone", icon: Zap, cost: "CHF 650", co2: "0 kg", costVal: 650, co2Val: 0, color: C.accent },
@@ -1310,9 +1310,9 @@ export function InvestorPitchDeck() {
                   Daily Cost Comparison
                 </div>
                 <div className="space-y-3">
-                  <ComparisonBar label="Helicopter" value={18000} maxValue={18000} unit="CHF/day" color={C.red} icon={Mountain} delay={0} />
-                  <ComparisonBar label="Crane" value={2500} maxValue={18000} unit="CHF/day" color={C.red} icon={HardHat} delay={0.1} />
-                  <ComparisonBar label="Heavy Truck" value={1200} maxValue={18000} unit="CHF/day" color={C.red + "CC"} icon={Truck} delay={0.2} />
+                  <ComparisonBar label="Helicopter" value={59500} maxValue={59500} unit="CHF/day" color={C.red} icon={Mountain} delay={0} />
+                  <ComparisonBar label="Crane" value={2500} maxValue={59500} unit="CHF/day" color={C.red} icon={HardHat} delay={0.1} />
+                  <ComparisonBar label="Heavy Truck" value={1200} maxValue={59500} unit="CHF/day" color={C.red + "CC"} icon={Truck} delay={0.2} />
                 </div>
                 {/* AIRBASE bar — highlighted */}
                 <motion.div
@@ -1348,7 +1348,7 @@ export function InvestorPitchDeck() {
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <div className="rounded-xl p-4 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
                   <TrendingUp className="w-5 h-5 mx-auto mb-2" style={{ color: C.accent }} />
-                  <div className="text-lg sm:text-xl font-bold font-mono" style={{ color: C.accent }}>Up to 96%</div>
+                  <div className="text-lg sm:text-xl font-bold font-mono" style={{ color: C.accent }}>Up to 99%</div>
                   <div className="text-xs mt-1" style={{ color: C.textMuted }}>Cost reduction vs. helicopter</div>
                 </div>
                 <div className="rounded-xl p-4 text-center" style={{ background: C.greenLight, border: `1px solid rgba(22,163,74,0.15)` }}>
