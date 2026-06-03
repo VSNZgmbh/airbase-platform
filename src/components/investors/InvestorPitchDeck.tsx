@@ -1742,24 +1742,54 @@ export function InvestorPitchDeck() {
             </motion.h2>
           </Stagger>
 
-          {/* Unit economics */}
-          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-10" delay={0.2}>
+          {/* Daily drone revenue by vertical — preliminary board-provided estimates, pending team verification */}
+          <Stagger className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-10" delay={0.2}>
             {[
-              { label: "Revenue per DaaS flight", value: "CHF 22-40" },
-              { label: "Variable cost per flight", value: "CHF 4-6" },
-              { label: "Gross margin per flight", value: "~75-82%" },
-              { label: "Break-even utilization", value: "6 flights/day" },
-            ].map((m) => (
+              { vertical: "Construction", revenue: "2,800", icon: "🏗️", desc: "Site surveys, mapping & inspections" },
+              { vertical: "Agriculture", revenue: "3,500", icon: "🌾", desc: "Precision spraying & crop monitoring" },
+              { vertical: "Mountain Delivery", revenue: "5,000", icon: "🏔️", desc: "High-altitude cargo & logistics" },
+            ].map((v) => (
               <motion.div
-                key={m.label}
+                key={v.vertical}
                 variants={fadeUp}
-                className="rounded-xl p-4 border text-center"
+                className="rounded-2xl p-5 sm:p-6 border text-center"
                 style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
               >
-                <div className="text-[10px] sm:text-xs font-mono uppercase" style={{ color: C.textMuted }}>{m.label}</div>
-                <div className="text-sm sm:text-lg font-bold font-mono mt-1" style={{ color: C.text }}>{m.value}</div>
+                <div className="text-3xl mb-2">{v.icon}</div>
+                <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.textMuted }}>{v.vertical}</div>
+                <div className="text-2xl sm:text-3xl font-bold font-mono" style={{ color: C.accent }}>CHF {v.revenue}</div>
+                <div className="text-[10px] sm:text-xs font-mono uppercase mt-1" style={{ color: C.textMuted }}>per drone / day</div>
+                <div className="text-xs mt-2" style={{ color: C.textMuted }}>{v.desc}</div>
               </motion.div>
             ))}
+          </Stagger>
+
+          {/* Operating cost & margin summary */}
+          <Stagger className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4" delay={0.35}>
+            <motion.div
+              variants={fadeUp}
+              className="rounded-xl p-4 border text-center"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-[10px] sm:text-xs font-mono uppercase" style={{ color: C.textMuted }}>Daily operating cost</div>
+              <div className="text-sm sm:text-lg font-bold font-mono mt-1" style={{ color: C.text }}>~CHF 650 / drone</div>
+            </motion.div>
+            <motion.div
+              variants={fadeUp}
+              className="rounded-xl p-4 border text-center"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-[10px] sm:text-xs font-mono uppercase" style={{ color: C.textMuted }}>Daily profit per drone</div>
+              <div className="text-sm sm:text-lg font-bold font-mono mt-1" style={{ color: C.accent }}>CHF 2,150 – 4,350</div>
+            </motion.div>
+            <motion.div
+              variants={fadeUp}
+              className="rounded-xl p-4 border text-center"
+              style={{ background: C.bgCard, borderColor: C.border, boxShadow: C.shadow }}
+            >
+              <div className="text-[10px] sm:text-xs font-mono uppercase" style={{ color: C.textMuted }}>Fleet scales linearly</div>
+              <div className="text-sm sm:text-lg font-bold font-mono mt-1" style={{ color: C.text }}>10 drones = CHF 50K+/day</div>
+            </motion.div>
           </Stagger>
 
           {/* Revenue projection chart */}
