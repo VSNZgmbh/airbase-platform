@@ -928,7 +928,7 @@ export function InvestorPitchDeck() {
               {
                 icon: HardHat,
                 title: "Construction & Cranes",
-                desc: "Materials to mountain sites, equipment lifting — replacing helicopters and cranes",
+                desc: "Precise material delivery on large construction sites — even where cranes can't reach",
                 color: C.accent,
               },
               {
@@ -1594,7 +1594,7 @@ export function InvestorPitchDeck() {
               <div className="space-y-4">
                 {[
                   { vertical: "Helicopter Mountain Cargo", icon: Mountain, market: "CHF 130M", target2030: "60%", target2035: "80%", desc: "Material transport, alpine supply flights — largest segment. Air Zermatt, Air-Glaciers, Swiss Helicopter combined." },
-                  { vertical: "Construction Logistics", icon: HardHat, market: "CHF 95M", target2030: "40%", target2035: "65%", desc: "Heavy materials to mountain construction sites, crane replacement for remote locations." },
+                  { vertical: "Construction Logistics", icon: HardHat, market: "CHF 95M", target2030: "40%", target2035: "65%", desc: "Precise material delivery on large construction sites, crane replacement where cranes cannot be placed." },
                   { vertical: "Agriculture", icon: Wheat, market: "CHF 45M", target2030: "50%", target2035: "75%", desc: "Precision spraying, seeding, vineyard management. Swiss vineyards & alpine farming." },
                   { vertical: "Emergency & Rescue", icon: HeartPulse, market: "CHF 30M", target2030: "30%", target2035: "60%", desc: "Medical supply, rescue support, disaster response. Supplements Rega operations." },
                 ].map((v, i) => (
@@ -1745,7 +1745,7 @@ export function InvestorPitchDeck() {
           {/* Daily drone revenue by vertical — preliminary board-provided estimates, pending team verification */}
           <Stagger className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-10" delay={0.2}>
             {[
-              { vertical: "Construction", revenue: "2,800", icon: "🏗️", desc: "Site surveys, mapping & inspections" },
+              { vertical: "Construction", revenue: "2,800", icon: "🏗️", desc: "Precise material delivery on large construction sites" },
               { vertical: "Agriculture", revenue: "3,500", icon: "🌾", desc: "Precision spraying & crop monitoring" },
               { vertical: "Mountain Delivery", revenue: "5,000", icon: "🏔️", desc: "High-altitude cargo & logistics" },
             ].map((v) => (
@@ -3350,9 +3350,9 @@ export function InvestorPitchDeck() {
                 steps: [
                   { icon: FileText, label: "Order materials" },
                   { icon: Rocket, label: "Drone lifts 85-200 kg" },
-                  { icon: MapPin, label: "Mountain delivery" },
+                  { icon: MapPin, label: "Site-to-site delivery" },
                 ],
-                desc: "Materials to mountain sites, equipment lifting. Replaces expensive helicopter and crane operations.",
+                desc: "Precise material delivery across large construction sites from A to B. Ideal where cranes simply cannot be placed.",
               },
               {
                 title: "Agriculture",
