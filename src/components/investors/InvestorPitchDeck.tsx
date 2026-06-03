@@ -712,7 +712,7 @@ export function InvestorPitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
-  const totalSlides = 14;
+  const totalSlides = 15;
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(AUTH_KEY) === "1") {
@@ -1999,16 +1999,232 @@ export function InvestorPitchDeck() {
       </section>
 
 
-      
 
-{/* ═══ SLIDE 7: THE PLATFORM ═══ */}
+
+{/* ═══ SLIDE 7: WHY 1.5M — CATALYST vs DOMINANCE ═══ */}
       <section
         ref={setRef(7)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="06" text="The Platform" />
+          <SlideLabel number="06" text="Why CHF 1.5M" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-xl sm:text-2xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              Speed is our Moat:{" "}
+              <span style={{ color: C.accent }}>200K Catalyst</span> vs.{" "}
+              <span style={{ color: C.accent }}>1.5M Market Dominance</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-sm sm:text-base md:text-lg mt-2 mb-8"
+              style={{ color: C.textSecondary }}
+            >
+              Capital is speed. Speed is the moat. Here&apos;s why we raise CHF 1.5M — not just 200K.
+            </motion.p>
+          </Stagger>
+
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 mt-4">
+            {/* Column 1: The Catalyst — CHF 200K */}
+            <Stagger delay={0.2}>
+              <motion.div
+                variants={fadeUp}
+                className="rounded-2xl p-6 sm:p-8 border relative overflow-hidden"
+                style={{
+                  background: C.bgCard,
+                  borderColor: C.border,
+                  boxShadow: C.shadow,
+                }}
+              >
+                <div
+                  className="absolute top-0 left-0 w-full h-1"
+                  style={{ background: C.gold }}
+                />
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center"
+                    style={{ background: C.goldLight }}
+                  >
+                    <Rocket className="w-5 h-5" style={{ color: C.gold }} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-mono uppercase tracking-wider" style={{ color: C.textMuted }}>
+                      Step 1
+                    </div>
+                    <div className="text-lg sm:text-xl font-bold" style={{ color: C.text }}>
+                      The Catalyst — CHF 200K
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm mb-4" style={{ color: C.textSecondary }}>
+                  The perfect entry ticket to get the ball rolling.
+                </p>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: C.gold }} />
+                    <span className="text-sm" style={{ color: C.textSecondary }}>
+                      Immediate start of operations
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: C.gold }} />
+                    <span className="text-sm" style={{ color: C.textSecondary }}>
+                      Marketing campaigns &amp; process testing
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: C.gold }} />
+                    <span className="text-sm" style={{ color: C.textSecondary }}>
+                      Finalization of first software version (MVP)
+                    </span>
+                  </li>
+                </ul>
+                <div
+                  className="mt-6 rounded-xl p-4 text-center"
+                  style={{ background: C.goldLight, border: `1px solid ${C.gold}20` }}
+                >
+                  <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.gold }}>
+                    Status Outcome
+                  </div>
+                  <div className="text-sm font-semibold" style={{ color: C.text }}>
+                    Active as a local service provider
+                  </div>
+                </div>
+              </motion.div>
+            </Stagger>
+
+            {/* Column 2: Market Dominance — CHF 1.5M */}
+            <Stagger delay={0.4}>
+              <motion.div
+                variants={fadeUp}
+                className="rounded-2xl p-6 sm:p-8 border relative overflow-hidden"
+                style={{
+                  background: C.bgCard,
+                  borderColor: C.borderAccent,
+                  boxShadow: C.shadowLg,
+                }}
+              >
+                <div
+                  className="absolute top-0 left-0 w-full h-1"
+                  style={{ background: `linear-gradient(90deg, ${C.accent}, #FF6659)` }}
+                />
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center"
+                    style={{ background: C.accentGlow }}
+                  >
+                    <Globe className="w-5 h-5" style={{ color: C.accent }} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-mono uppercase tracking-wider" style={{ color: C.textMuted }}>
+                      Step 2
+                    </div>
+                    <div className="text-lg sm:text-xl font-bold" style={{ color: C.text }}>
+                      Market Dominance — CHF 1.5M
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm mb-4" style={{ color: C.textSecondary }}>
+                  Capital as a weapon to occupy the market before competition catches up.
+                </p>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: C.accent }} />
+                    <span className="text-sm" style={{ color: C.textSecondary }}>
+                      Fleet redundancy for large enterprise contracts
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: C.accent }} />
+                    <span className="text-sm" style={{ color: C.textSecondary }}>
+                      LUC certifications (heavy transport &amp; autonomy)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: C.accent }} />
+                    <span className="text-sm" style={{ color: C.textSecondary }}>
+                      DaaS infrastructure — Drone-as-a-Service at scale
+                    </span>
+                  </li>
+                </ul>
+                <div
+                  className="mt-6 rounded-xl p-4 text-center"
+                  style={{ background: C.accentGlow, border: `1px solid ${C.accent}20` }}
+                >
+                  <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.accent }}>
+                    Status Outcome
+                  </div>
+                  <div className="text-sm font-semibold" style={{ color: C.text }}>
+                    Dominate the market &amp; scale Europe-wide
+                  </div>
+                </div>
+              </motion.div>
+            </Stagger>
+          </div>
+
+          {/* Early Bird Incentive Callout */}
+          <Stagger delay={0.6}>
+            <motion.div
+              variants={scaleUp}
+              className="mt-8 sm:mt-12 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${C.gold}12, ${C.gold}06)`,
+                border: `2px solid ${C.gold}`,
+                boxShadow: `0 0 40px ${C.gold}15, 0 4px 24px rgba(0,0,0,0.08)`,
+              }}
+            >
+              <div
+                className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
+                style={{ background: C.gold }}
+              />
+              <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                <div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: C.goldLight, border: `1px solid ${C.gold}30` }}
+                >
+                  <CircleDollarSign className="w-7 h-7" style={{ color: C.gold }} />
+                </div>
+                <div className="flex-1">
+                  <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.gold }}>
+                    Lead Investor / Early Bird Advantage
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2" style={{ color: C.text }}>
+                    Secure First-Mover Advantage with the CHF 200K Ticket
+                  </h3>
+                  <p className="text-sm" style={{ color: C.textSecondary }}>
+                    The investor who takes the initial CHF 200K catalyst ticket receives{" "}
+                    <span className="font-bold" style={{ color: C.gold }}>
+                      strongly improved conditions
+                    </span>{" "}
+                    on the Convertible Note — a{" "}
+                    <span className="font-bold text-lg" style={{ color: C.gold }}>
+                      30% discount
+                    </span>{" "}
+                    instead of the standard 20% on the next funding round.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+
+
+
+{/* ═══ SLIDE 8: THE PLATFORM ═══ */}
+      <section
+        ref={setRef(8)}
+        className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
+        style={{ scrollSnapAlign: "start" }}
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          <SlideLabel number="07" text="The Platform" />
 
           <Stagger>
             <motion.h2
@@ -2141,14 +2357,14 @@ export function InvestorPitchDeck() {
 
       
 
-{/* ═══ SLIDE 8: COMPETITIVE EDGE ═══ */}
+{/* ═══ SLIDE 9: COMPETITIVE EDGE ═══ */}
       <section
-        ref={setRef(8)}
+        ref={setRef(9)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="relative max-w-6xl mx-auto w-full">
-          <SlideLabel number="07" text="Competitive Edge" />
+          <SlideLabel number="08" text="Competitive Edge" />
 
           <Stagger>
             <motion.h2
@@ -2383,14 +2599,14 @@ export function InvestorPitchDeck() {
 
       
 
-{/* ═══ SLIDE 9: BUSINESS MODEL ═══ */}
+{/* ═══ SLIDE 10: BUSINESS MODEL ═══ */}
       <section
-        ref={setRef(9)}
+        ref={setRef(10)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
         style={{ scrollSnapAlign: "start" }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="08" text="Business Model" />
+          <SlideLabel number="09" text="Business Model" />
 
           <Stagger>
             <motion.h2
@@ -2511,14 +2727,14 @@ export function InvestorPitchDeck() {
 
       
 
-{/* ═══ SLIDE 10: TRACTION & TEAM ═══ */}
+{/* ═══ SLIDE 11: TRACTION & TEAM ═══ */}
       <section
-        ref={setRef(10)}
+        ref={setRef(11)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="09" text="Traction & Team" />
+          <SlideLabel number="10" text="Traction & Team" />
 
           <Stagger>
             <motion.h2
@@ -2816,14 +3032,14 @@ export function InvestorPitchDeck() {
 
       
 
-{/* ═══ SLIDE 11: SUSTAINABILITY ═══ */}
+{/* ═══ SLIDE 12: SUSTAINABILITY ═══ */}
       <section
-        ref={setRef(11)}
+        ref={setRef(12)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
         style={{ scrollSnapAlign: "start", background: `linear-gradient(170deg, #F0FDF4 0%, ${C.bg} 50%, ${C.bgAlt} 100%)` }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="10" text="Sustainability" />
+          <SlideLabel number="11" text="Sustainability" />
 
           <Stagger>
             <motion.h2
@@ -3103,14 +3319,14 @@ export function InvestorPitchDeck() {
 
       
 
-{/* ═══ SLIDE 12: INDUSTRY VERTICALS ═══ */}
+{/* ═══ SLIDE 13: INDUSTRY VERTICALS ═══ */}
       <section
-        ref={setRef(12)}
+        ref={setRef(13)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
         style={{ scrollSnapAlign: "start", background: C.bgAlt }}
       >
         <div className="max-w-6xl mx-auto w-full">
-          <SlideLabel number="11" text="Industry Verticals" />
+          <SlideLabel number="12" text="Industry Verticals" />
 
           <Stagger>
             <motion.h2
@@ -3238,9 +3454,9 @@ export function InvestorPitchDeck() {
 
       
 
-{/* ═══ SLIDE 13: VISION ═══ */}
+{/* ═══ SLIDE 14: VISION ═══ */}
       <section
-        ref={setRef(13)}
+        ref={setRef(14)}
         className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20 overflow-hidden"
         style={{ scrollSnapAlign: "start" }}
       >
@@ -3254,7 +3470,7 @@ export function InvestorPitchDeck() {
         </div>
 
         <div className="relative max-w-5xl mx-auto w-full">
-          <SlideLabel number="12" text="Vision" />
+          <SlideLabel number="13" text="Vision" />
 
           <Stagger>
             <motion.h2
