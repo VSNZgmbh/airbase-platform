@@ -1279,8 +1279,8 @@ export function InvestorPitchDeck() {
               <div className="space-y-2">
                 {[
                   { method: "Helicopter", icon: Mountain, cost: "CHF 59,500", co2: "~4,250 kg", costVal: 59500, co2Val: 4250, color: C.red },
-                  { method: "Crane", icon: HardHat, cost: "CHF 2,500", co2: "~120 kg", costVal: 2500, co2Val: 120, color: C.red },
-                  { method: "Heavy Truck", icon: Truck, cost: "CHF 1,200+", co2: "~100 kg", costVal: 1200, co2Val: 100, color: C.red + "CC" },
+                  { method: "Crane", icon: HardHat, cost: "CHF 4,000", co2: "~200 kg", costVal: 4000, co2Val: 200, color: C.red },
+                  { method: "Heavy Truck", icon: Truck, cost: "CHF 2,500", co2: "~150 kg", costVal: 2500, co2Val: 150, color: C.red + "CC" },
                   { method: "AIRBASE Drone", icon: Zap, cost: "CHF 650", co2: "0 kg", costVal: 650, co2Val: 0, color: C.accent },
                 ].map((row, i) => (
                   <motion.div
@@ -1319,8 +1319,8 @@ export function InvestorPitchDeck() {
                 </div>
                 <div className="space-y-3">
                   <ComparisonBar label="Helicopter" value={59500} maxValue={59500} unit="CHF/day" color={C.red} icon={Mountain} delay={0} />
-                  <ComparisonBar label="Crane" value={2500} maxValue={59500} unit="CHF/day" color={C.red} icon={HardHat} delay={0.1} />
-                  <ComparisonBar label="Heavy Truck" value={1200} maxValue={59500} unit="CHF/day" color={C.red + "CC"} icon={Truck} delay={0.2} />
+                  <ComparisonBar label="Crane" value={4000} maxValue={59500} unit="CHF/day" color={C.red} icon={HardHat} delay={0.1} />
+                  <ComparisonBar label="Heavy Truck" value={2500} maxValue={59500} unit="CHF/day" color={C.red + "CC"} icon={Truck} delay={0.2} />
                 </div>
                 <div className="mt-3">
                   <ComparisonBar label="AIRBASE Drone" value={650} maxValue={59500} unit="CHF/day" color={C.accent} icon={Zap} delay={0.35} highlight />
@@ -1404,8 +1404,8 @@ export function InvestorPitchDeck() {
                   Daily Fuel Cost
                 </div>
                 <div className="space-y-2">
-                  <ComparisonBar label="Heavy Truck" value={200} maxValue={200} unit="CHF/day" color={C.red} icon={Truck} delay={0.6} displayValue="CHF 200+/day" />
-                  <ComparisonBar label="Drone" value={0.01} maxValue={200} unit="CHF/day" color={C.accent} icon={Zap} delay={0.7} displayValue="CHF 0 (solar)" highlight />
+                  <ComparisonBar label="Heavy Truck" value={350} maxValue={350} unit="CHF/day" color={C.red} icon={Truck} delay={0.6} displayValue="CHF 300-400/day" />
+                  <ComparisonBar label="Drone" value={0.01} maxValue={350} unit="CHF/day" color={C.accent} icon={Zap} delay={0.7} displayValue="CHF 0 (solar)" highlight />
                 </div>
                 <div className="text-[10px] mt-1.5 ml-32 sm:ml-40 md:ml-52" style={{ color: C.textMuted }}>
                   100% solar-powered &middot; zero operating fuel cost
