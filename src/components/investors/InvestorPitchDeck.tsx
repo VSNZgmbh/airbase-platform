@@ -359,6 +359,8 @@ function ComparisonBar({
   color,
   icon: Icon,
   delay = 0,
+  displayValue,
+  highlight = false,
 }: {
   label: string;
   value: number;
@@ -367,8 +369,11 @@ function ComparisonBar({
   color: string;
   icon: React.ElementType;
   delay?: number;
+  displayValue?: string;
+  highlight?: boolean;
 }) {
-  const pct = Math.max(Math.min((value / maxValue) * 100, 100), 4);
+  const pct = Math.max(Math.min((value / maxValue) * 100, 100), 2);
+  const valueText = displayValue ?? `${value.toLocaleString()} ${unit}`;
   return (
     <motion.div
       className="flex items-center gap-3"
@@ -379,24 +384,23 @@ function ComparisonBar({
     >
       <div className="flex items-center gap-2 w-24 sm:w-32 md:w-44 shrink-0 justify-end">
         <Icon className="w-3.5 h-3.5 shrink-0 hidden sm:block" style={{ color }} />
-        <span className="text-[10px] sm:text-xs md:text-sm text-right" style={{ color: C.textSecondary }}>
+        <span className={`text-[10px] sm:text-xs md:text-sm text-right ${highlight ? "font-semibold" : ""}`} style={{ color: highlight ? color : C.textSecondary }}>
           {label}
         </span>
       </div>
-      <div className="flex-1 h-5 sm:h-6 md:h-7 rounded-full overflow-hidden relative" style={{ background: C.border }}>
+      <div className="flex-1 h-5 sm:h-6 md:h-7 rounded-full overflow-hidden" style={{ background: C.border }}>
         <motion.div
-          className="h-full rounded-full flex items-center justify-end pr-2"
+          className="h-full rounded-full"
           style={{ background: color }}
           initial={{ width: 0 }}
           whileInView={{ width: `${pct}%` }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 1.2, delay: delay + 0.1, ease: "easeOut" }}
-        >
-          <span className="text-[10px] sm:text-xs font-mono font-bold text-white whitespace-nowrap">
-            {value.toLocaleString()} {unit}
-          </span>
-        </motion.div>
+        />
       </div>
+      <span className="text-[10px] sm:text-xs font-mono font-bold whitespace-nowrap w-24 sm:w-28 md:w-32 text-right" style={{ color }}>
+        {valueText}
+      </span>
     </motion.div>
   );
 }
@@ -1318,35 +1322,9 @@ export function InvestorPitchDeck() {
                   <ComparisonBar label="Crane" value={2500} maxValue={59500} unit="CHF/day" color={C.red} icon={HardHat} delay={0.1} />
                   <ComparisonBar label="Heavy Truck" value={1200} maxValue={59500} unit="CHF/day" color={C.red + "CC"} icon={Truck} delay={0.2} />
                 </div>
-                {/* AIRBASE bar — highlighted */}
-                <motion.div
-                  className="flex items-center gap-3 mt-3"
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: 0.35 }}
-                >
-                  <div className="flex items-center gap-2 w-24 sm:w-32 md:w-44 shrink-0 justify-end">
-                    <Zap className="w-3.5 h-3.5 shrink-0 hidden sm:block" style={{ color: C.accent }} />
-                    <span className="text-[10px] sm:text-xs md:text-sm text-right font-semibold" style={{ color: C.accent }}>
-                      AIRBASE Drone
-                    </span>
-                  </div>
-                  <div className="flex-1 h-5 sm:h-6 md:h-7 rounded-full overflow-hidden relative" style={{ background: C.border }}>
-                    <motion.div
-                      className="h-full rounded-full flex items-center px-2"
-                      style={{ background: C.accent, minWidth: "120px" }}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "120px" }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 1.2, delay: 0.45, ease: "easeOut" }}
-                    >
-                      <span className="text-[10px] sm:text-xs font-mono font-bold text-white whitespace-nowrap">
-                        CHF 650/day
-                      </span>
-                    </motion.div>
-                  </div>
-                </motion.div>
+                <div className="mt-3">
+                  <ComparisonBar label="AIRBASE Drone" value={650} maxValue={59500} unit="CHF/day" color={C.accent} icon={Zap} delay={0.35} highlight />
+                </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
@@ -1377,39 +1355,60 @@ export function InvestorPitchDeck() {
               <div className="text-xs mb-6" style={{ color: C.textMuted }}>
                 It&rsquo;s not just about cost — it&rsquo;s speed, payload capacity, and zero setup time.
               </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { method: "Helicopter", icon: Mountain, stat: "~800 kg/flight", sub: "High capacity but CHF 7,000/h. Needs helipad, weather windows, fuel logistics.", color: C.red },
-                  { method: "Drone Swarm", icon: Zap, stat: "~600 kg/flight", sub: "4-unit FlyCart 200 swarm. Deploys in minutes, not hours. Zero fuel cost.", color: C.accent },
-                  { method: "Tractor", icon: Wheat, stat: "~15-20 ha/day", sub: "CHF 800-1,200/day + diesel. Soil compaction, limited terrain access.", color: C.red },
-                  { method: "Agri Drone", icon: Zap, stat: "~30-40 ha/day", sub: "2x coverage, 60% less chemicals, zero soil damage. Solar-powered.", color: C.accent },
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    className="rounded-xl p-4 border"
-                    style={{ background: i % 2 === 1 ? C.accentLight : C.bgAlt, borderColor: i % 2 === 1 ? C.borderAccent : C.border }}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
-                  >
-                    <item.icon className="w-5 h-5 mb-2" style={{ color: item.color }} />
-                    <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: item.color }}>{item.method}</div>
-                    <div className="text-base sm:text-lg font-bold font-mono" style={{ color: item.color }}>{item.stat}</div>
-                    <div className="text-xs mt-2" style={{ color: C.textSecondary }}>{item.sub}</div>
-                  </motion.div>
-                ))}
-              </div>
-              <div className="mt-6 pt-4 border-t grid grid-cols-2 gap-4" style={{ borderColor: C.border }}>
-                <div className="rounded-xl p-3 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
-                  <Clock className="w-4 h-4 mx-auto mb-1" style={{ color: C.accent }} />
-                  <div className="text-sm font-bold font-mono" style={{ color: C.accent }}>Crane: hours-days setup</div>
-                  <div className="text-xs" style={{ color: C.textMuted }}>Drone: immediately operational</div>
+
+              {/* Payload Comparison */}
+              <div className="mb-5">
+                <div className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: C.textMuted }}>
+                  Payload Capacity (per flight)
                 </div>
-                <div className="rounded-xl p-3 text-center" style={{ background: C.accentLight, border: `1px solid ${C.borderAccent}` }}>
-                  <Truck className="w-4 h-4 mx-auto mb-1" style={{ color: C.accent }} />
-                  <div className="text-sm font-bold font-mono" style={{ color: C.accent }}>Truck: CHF 200+/day fuel</div>
-                  <div className="text-xs" style={{ color: C.textMuted }}>Drone: CHF 0 fuel (100% solar)</div>
+                <div className="space-y-2">
+                  <ComparisonBar label="Helicopter" value={800} maxValue={800} unit="kg/flight" color={C.red} icon={Mountain} delay={0} displayValue="~800 kg/flight" />
+                  <ComparisonBar label="Drone Swarm" value={600} maxValue={800} unit="kg/flight" color={C.accent} icon={Zap} delay={0.1} displayValue="~600 kg/flight" highlight />
+                </div>
+                <div className="text-[10px] mt-1.5 ml-32 sm:ml-40 md:ml-52" style={{ color: C.textMuted }}>
+                  4-unit FlyCart 200 swarm &middot; zero fuel cost &middot; deploys in minutes
+                </div>
+              </div>
+
+              {/* Coverage Comparison */}
+              <div className="mb-5">
+                <div className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: C.textMuted }}>
+                  Agricultural Coverage (per day)
+                </div>
+                <div className="space-y-2">
+                  <ComparisonBar label="Tractor" value={17} maxValue={40} unit="ha/day" color={C.red} icon={Wheat} delay={0.2} displayValue="~15-20 ha/day" />
+                  <ComparisonBar label="Agri Drone" value={35} maxValue={40} unit="ha/day" color={C.accent} icon={Zap} delay={0.3} displayValue="~30-40 ha/day" highlight />
+                </div>
+                <div className="text-[10px] mt-1.5 ml-32 sm:ml-40 md:ml-52" style={{ color: C.textMuted }}>
+                  2x coverage &middot; 60% less chemicals &middot; zero soil damage
+                </div>
+              </div>
+
+              {/* Setup Time Comparison */}
+              <div className="mb-5">
+                <div className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: C.textMuted }}>
+                  Setup Time
+                </div>
+                <div className="space-y-2">
+                  <ComparisonBar label="Crane" value={480} maxValue={480} unit="min" color={C.red} icon={HardHat} delay={0.4} displayValue="8+ hours" />
+                  <ComparisonBar label="Drone" value={15} maxValue={480} unit="min" color={C.accent} icon={Zap} delay={0.5} displayValue="~15 min" highlight />
+                </div>
+                <div className="text-[10px] mt-1.5 ml-32 sm:ml-40 md:ml-52" style={{ color: C.textMuted }}>
+                  Immediately operational &middot; no permits, no crew
+                </div>
+              </div>
+
+              {/* Fuel Cost Comparison */}
+              <div>
+                <div className="text-[10px] font-mono uppercase tracking-wider mb-2" style={{ color: C.textMuted }}>
+                  Daily Fuel Cost
+                </div>
+                <div className="space-y-2">
+                  <ComparisonBar label="Heavy Truck" value={200} maxValue={200} unit="CHF/day" color={C.red} icon={Truck} delay={0.6} displayValue="CHF 200+/day" />
+                  <ComparisonBar label="Drone" value={0.01} maxValue={200} unit="CHF/day" color={C.accent} icon={Zap} delay={0.7} displayValue="CHF 0 (solar)" highlight />
+                </div>
+                <div className="text-[10px] mt-1.5 ml-32 sm:ml-40 md:ml-52" style={{ color: C.textMuted }}>
+                  100% solar-powered &middot; zero operating fuel cost
                 </div>
               </div>
             </motion.div>
