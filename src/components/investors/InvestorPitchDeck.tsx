@@ -2212,10 +2212,6 @@ export function InvestorPitchDeck() {
             </motion.div>
           </Stagger>
 
-          {/* Investment Slider — board requires it on this slide too */}
-          <div className="mt-8 sm:mt-12 max-w-xl mx-auto w-full">
-            <InvestmentSlider />
-          </div>
         </div>
       </section>
 
