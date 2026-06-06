@@ -35,7 +35,7 @@ export function GlobalNav() {
               className="flex items-center transition-opacity"
               style={{ opacity: pathname === "/" ? 1 : 0.7 }}
             >
-              <img src="/airbase-logo-transparent.png" alt="airBASE" className="h-8 w-auto brightness-0 invert" />
+              <img src="/airbase-logo-transparent.png" alt="airBASE" className="h-10 w-auto brightness-0 invert" />
             </Link>
 
             <div className="flex items-center gap-1">
