@@ -134,12 +134,12 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true, s
           ))}
 
           {/* Swiss outline */}
-          <path d={SWISS_PATH} fill="#fef2f2" stroke="#D32F2F" strokeWidth={1.5} strokeLinejoin="round" opacity={0.8} />
+          <path d={SWISS_PATH} fill="#fef2f2" stroke="#E30613" strokeWidth={1.5} strokeLinejoin="round" opacity={0.8} />
 
           {/* Active flight zones (red overlays) */}
           {showZones && FLIGHT_ZONES.map((zone, i) => (
             <g key={`zone-${i}`}>
-              <ellipse cx={zone.cx} cy={zone.cy} rx={zone.rx} ry={zone.ry} fill="#D32F2F" stroke="#D32F2F" strokeWidth={0.5} strokeDasharray="3,2" opacity={0.15}>
+              <ellipse cx={zone.cx} cy={zone.cy} rx={zone.rx} ry={zone.ry} fill="#E30613" stroke="#E30613" strokeWidth={0.5} strokeDasharray="3,2" opacity={0.15}>
                 <animate attributeName="opacity" values="0.08;0.15;0.08" dur="3s" repeatCount="indefinite" />
               </ellipse>
               {!compact && (
@@ -158,7 +158,7 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true, s
                   {/* HQ — larger diamond marker */}
                   <polygon
                     points={`${hub.x},${hub.y - 6} ${hub.x + 5},${hub.y} ${hub.x},${hub.y + 6} ${hub.x - 5},${hub.y}`}
-                    fill="#D32F2F"
+                    fill="#E30613"
                     stroke="white"
                     strokeWidth={1.5}
                   />
@@ -169,7 +169,7 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true, s
               ) : (
                 <>
                   {/* Hub — small square marker */}
-                  <rect x={hub.x - 2.5} y={hub.y - 2.5} width={5} height={5} fill="white" stroke="#D32F2F" strokeWidth={1} rx={1} />
+                  <rect x={hub.x - 2.5} y={hub.y - 2.5} width={5} height={5} fill="white" stroke="#E30613" strokeWidth={1} rx={1} />
                 </>
               )}
             </g>
@@ -187,23 +187,23 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true, s
                   <line
                     x1={pickup.x} y1={pickup.y}
                     x2={delivery.x} y2={delivery.y}
-                    stroke="#D32F2F" strokeWidth={1} strokeDasharray="4,3" opacity={0.5}
+                    stroke="#E30613" strokeWidth={1} strokeDasharray="4,3" opacity={0.5}
                   />
                 )}
                 {/* Pickup marker */}
                 {pickup && (
-                  <circle cx={pickup.x} cy={pickup.y} r={3.5} fill="white" stroke="#D32F2F" strokeWidth={1.5} />
+                  <circle cx={pickup.x} cy={pickup.y} r={3.5} fill="white" stroke="#E30613" strokeWidth={1.5} />
                 )}
                 {/* Delivery marker */}
                 {delivery && (
                   <g>
                     {flight.status === "in_progress" && (
-                      <circle cx={delivery.x} cy={delivery.y} r={8} fill="#D32F2F" opacity={0.15}>
+                      <circle cx={delivery.x} cy={delivery.y} r={8} fill="#E30613" opacity={0.15}>
                         <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.2;0.05;0.2" dur="2s" repeatCount="indefinite" />
                       </circle>
                     )}
-                    <circle cx={delivery.x} cy={delivery.y} r={3.5} fill="#D32F2F" />
+                    <circle cx={delivery.x} cy={delivery.y} r={3.5} fill="#E30613" />
                     <circle cx={delivery.x} cy={delivery.y} r={1.5} fill="white" />
                   </g>
                 )}
@@ -214,12 +214,12 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true, s
                       const pos = getDronePosition(pickup, delivery, 0.6);
                       return (
                         <>
-                          <circle cx={pos.x} cy={pos.y} r={6} fill="#D32F2F" opacity={0.2}>
+                          <circle cx={pos.x} cy={pos.y} r={6} fill="#E30613" opacity={0.2}>
                             <animate attributeName="r" values="4;8;4" dur="1.5s" repeatCount="indefinite" />
                           </circle>
                           <polygon
                             points={`${pos.x},${pos.y - 4} ${pos.x + 3},${pos.y + 2} ${pos.x},${pos.y + 1} ${pos.x - 3},${pos.y + 2}`}
-                            fill="#D32F2F"
+                            fill="#E30613"
                             stroke="white"
                             strokeWidth={0.5}
                           />
@@ -285,23 +285,23 @@ export function SwissMap({ compact = false, showHubs = true, showZones = true, s
       {!compact && (
         <div className="px-5 pb-3 flex items-center gap-4 text-[9px] text-gray-400 flex-wrap">
           <div className="flex items-center gap-1.5">
-            <svg width="10" height="10"><polygon points="5,1 8,5 5,9 2,5" fill="#D32F2F" /></svg>
+            <svg width="10" height="10"><polygon points="5,1 8,5 5,9 2,5" fill="#E30613" /></svg>
             <span>HQ</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <svg width="8" height="8"><rect width="6" height="6" x="1" y="1" fill="white" stroke="#D32F2F" strokeWidth="1" rx="1" /></svg>
+            <svg width="8" height="8"><rect width="6" height="6" x="1" y="1" fill="white" stroke="#E30613" strokeWidth="1" rx="1" /></svg>
             <span>Hub</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <svg width="8" height="8"><polygon points="4,0 7,3 4,5 1,3" fill="#D32F2F" stroke="white" strokeWidth="0.5" /></svg>
+            <svg width="8" height="8"><polygon points="4,0 7,3 4,5 1,3" fill="#E30613" stroke="white" strokeWidth="0.5" /></svg>
             <span>Drohne</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <svg width="12" height="8"><ellipse cx="6" cy="4" rx="5" ry="3" fill="none" stroke="#D32F2F" strokeWidth="0.5" strokeDasharray="2,1" /></svg>
+            <svg width="12" height="8"><ellipse cx="6" cy="4" rx="5" ry="3" fill="none" stroke="#E30613" strokeWidth="0.5" strokeDasharray="2,1" /></svg>
             <span>Flugzone</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <svg width="8" height="8"><circle cx="4" cy="4" r="3" fill="#D32F2F" /><circle cx="4" cy="4" r="1.5" fill="white" /></svg>
+            <svg width="8" height="8"><circle cx="4" cy="4" r="3" fill="#E30613" /><circle cx="4" cy="4" r="1.5" fill="white" /></svg>
             <span>Ziel</span>
           </div>
           {showAirTraffic && (

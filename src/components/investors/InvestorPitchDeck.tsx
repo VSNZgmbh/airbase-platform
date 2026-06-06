@@ -74,7 +74,7 @@ const rangeSliderStyles = `
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #D32F2F;
+    background: #E30613;
     cursor: pointer;
     border: 3px solid #fff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -83,7 +83,7 @@ const rangeSliderStyles = `
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #D32F2F;
+    background: #E30613;
     cursor: pointer;
     border: 3px solid #fff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -105,17 +105,17 @@ const C = {
   bg: "#FFFFFF",
   bgAlt: "#F8F9FA",
   bgCard: "#FFFFFF",
-  accent: "#D32F2F",
-  accentGlow: "rgba(211,47,47,0.08)",
-  accentLight: "rgba(211,47,47,0.05)",
+  accent: "#E30613",
+  accentGlow: "rgba(227,6,19,0.08)",
+  accentLight: "rgba(227,6,19,0.05)",
   gold: "#B8860B",
   goldLight: "rgba(184,134,11,0.08)",
   text: "#1A1A2E",
   textSecondary: "#4A4A5A",
   textMuted: "#8A8A9A",
   border: "#E8E8EE",
-  borderAccent: "rgba(211,47,47,0.15)",
-  red: "#D32F2F",
+  borderAccent: "rgba(227,6,19,0.15)",
+  red: "#E30613",
   green: "#16A34A",
   greenLight: "rgba(22,163,74,0.08)",
   shadow: "0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)",
@@ -652,7 +652,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
           }}
         >
           <div className="flex items-center justify-center mb-8">
-            <img src="/airbase-logo.png" alt="airBASE" className="h-12 w-auto brightness-0 invert" />
+            <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-12 w-auto brightness-0 invert" />
           </div>
 
           <div className="text-sm font-mono uppercase tracking-[0.2em] mb-1 text-white/40">
@@ -805,9 +805,9 @@ export function InvestorPitchDeck() {
           pointerEvents: "none",
         }}
       >
-        <div className="flex items-center gap-3" style={{ pointerEvents: "auto" }}>
-          <img src="/airbase-logo.png" alt="airBASE" className="h-10 sm:h-14 w-auto" />
-          <span className="hidden md:inline text-xs font-mono tracking-wider ml-2" style={{ color: C.textMuted }}>
+        <div className="flex items-center gap-2" style={{ pointerEvents: "auto" }}>
+          <img src="/airbase-logo-new.jpg" alt="airBASE AVIATION" className="h-8 sm:h-12 w-auto" style={{ filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.08))" }} />
+          <span className="hidden md:inline text-xs font-mono tracking-wider ml-1" style={{ color: C.textMuted }}>
             airbase.swiss
           </span>
         </div>
@@ -837,9 +837,19 @@ export function InvestorPitchDeck() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(211,47,47,0.04) 0%, transparent 70%)",
+              "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(227,6,19,0.04) 0%, transparent 70%)",
           }}
         />
+
+        {/* Emblem watermark — signature brand element */}
+        <div className="absolute right-0 top-0 bottom-0 pointer-events-none flex items-center" style={{ width: "45%" }}>
+          <img
+            src="/airbase-emblem.jpg"
+            alt=""
+            className="w-full h-auto object-contain"
+            style={{ opacity: 0.06, mixBlendMode: "multiply", transform: "translateX(15%)" }}
+          />
+        </div>
 
         {/* Floating particles */}
         {[...Array(6)].map((_, i) => (
@@ -877,7 +887,7 @@ export function InvestorPitchDeck() {
             className="flex items-center justify-center mb-6 sm:mb-10"
           >
             <img
-              src="/airbase-logo.png"
+              src="/airbase-logo-new.jpg"
               alt="airBASE AVIATION"
               className="h-16 sm:h-28 md:h-36 lg:h-44 w-auto"
               loading="eager"
@@ -1026,6 +1036,14 @@ export function InvestorPitchDeck() {
                 "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.85) 100%)",
             }}
           />
+          {/* Emblem accent — glowing brand mark on dark background */}
+          <div className="absolute top-1/2 right-8 -translate-y-1/2 pointer-events-none" style={{ width: "30%", maxWidth: 320 }}>
+            <img
+              src="/airbase-emblem.jpg"
+              alt=""
+              style={{ opacity: 0.12, filter: "invert(1) brightness(2) saturate(0)", width: "100%", height: "auto" }}
+            />
+          </div>
         </div>
 
         {/* Content pinned to bottom */}
@@ -1037,7 +1055,7 @@ export function InvestorPitchDeck() {
             transition={{ duration: 0.8, ease }}
           >
             <img
-              src="/airbase-logo.png"
+              src="/airbase-logo-new.jpg"
               alt="airBASE"
               className="h-10 sm:h-14 w-auto mx-auto mb-6"
               style={{ filter: "brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.4))" }}
@@ -2808,7 +2826,7 @@ export function InvestorPitchDeck() {
                     src="/images/team/benjamin-rubi.jpg"
                     alt="Benjamin Rubi"
                     className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#D32F2F">BR</span>`; }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#E30613">BR</span>`; }}
                   />
                 </div>
                 <div className="text-sm sm:text-base font-bold" style={{ color: C.text }}>Benjamin Rubi</div>
@@ -2847,7 +2865,7 @@ export function InvestorPitchDeck() {
                     src="/images/team/chris-graf.jpg"
                     alt="Chris Jon Graf"
                     className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#D32F2F">CG</span>`; }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#E30613">CG</span>`; }}
                   />
                 </div>
                 <div className="text-sm sm:text-base font-bold" style={{ color: C.text }}>Chris Jon Graf</div>
@@ -2874,7 +2892,7 @@ export function InvestorPitchDeck() {
                     src="/images/team/vertical-masters.jpg"
                     alt="Vertical Masters"
                     className="w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#D32F2F">VM</span>`; }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = `<span style="font-size:1.25rem;font-weight:bold;color:#E30613">VM</span>`; }}
                   />
                 </div>
                 <div className="text-sm sm:text-base font-bold" style={{ color: C.text }}>Vertical Masters</div>
@@ -3467,6 +3485,15 @@ export function InvestorPitchDeck() {
             src="/assets/hero-flycart-mountains.jpg"
             alt=""
             className="w-full h-full object-cover opacity-[0.08]"
+          />
+        </div>
+
+        {/* Emblem — large signature watermark on closing slide */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-end overflow-hidden">
+          <img
+            src="/airbase-emblem.jpg"
+            alt=""
+            style={{ opacity: 0.05, mixBlendMode: "multiply", width: "55%", height: "auto", transform: "translateX(10%)" }}
           />
         </div>
 

@@ -249,8 +249,8 @@ function RevenueBillingPanel() {
           <AreaChart data={DEMO_REVENUE_DATA}>
             <defs>
               <linearGradient id="franchiseRevGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#D32F2F" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#D32F2F" stopOpacity={0} />
+                <stop offset="0%" stopColor="#E30613" stopOpacity={0.15} />
+                <stop offset="100%" stopColor="#E30613" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="franchiseCostGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#9ca3af" stopOpacity={0.1} />
@@ -260,7 +260,7 @@ function RevenueBillingPanel() {
             <XAxis dataKey="month" tick={{ fill: "#9ca3af", fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: "#9ca3af", fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
             <Tooltip contentStyle={tooltipStyle} formatter={(value) => [`CHF ${Number(value).toLocaleString("de-CH")}`, ""]} />
-            <Area type="monotone" dataKey="revenue" stroke="#D32F2F" strokeWidth={2} fill="url(#franchiseRevGrad)" />
+            <Area type="monotone" dataKey="revenue" stroke="#E30613" strokeWidth={2} fill="url(#franchiseRevGrad)" />
             <Area type="monotone" dataKey="costs" stroke="#9ca3af" strokeWidth={1.5} fill="url(#franchiseCostGrad)" strokeDasharray="4,3" />
           </AreaChart>
         </ResponsiveContainer>
@@ -328,7 +328,7 @@ function ScalingPanel() {
             <Bar dataKey="revenue" fill="url(#scalingGrad)" radius={[6, 6, 0, 0]} />
             <defs>
               <linearGradient id="scalingGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#D32F2F" />
+                <stop offset="0%" stopColor="#E30613" />
                 <stop offset="100%" stopColor="#B71C1C" />
               </linearGradient>
             </defs>

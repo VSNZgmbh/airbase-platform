@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: "#D32F2F",
+    borderBottomColor: "#E30613",
   },
   brand: {
     fontSize: 22,
     fontFamily: "Helvetica-Bold",
-    color: "#D32F2F",
+    color: "#E30613",
   },
   brandSub: {
     fontSize: 9,

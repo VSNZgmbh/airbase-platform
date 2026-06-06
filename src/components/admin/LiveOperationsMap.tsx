@@ -670,7 +670,7 @@ export function LiveOperationsMap({ expanded = false }: { expanded?: boolean }) 
                 id="flight-zones-fill"
                 type="fill"
                 paint={{
-                  "fill-color": "#D32F2F",
+                  "fill-color": "#E30613",
                   "fill-opacity": 0.08,
                 }}
               />
@@ -678,7 +678,7 @@ export function LiveOperationsMap({ expanded = false }: { expanded?: boolean }) 
                 id="flight-zones-border"
                 type="line"
                 paint={{
-                  "line-color": "#D32F2F",
+                  "line-color": "#E30613",
                   "line-width": 1.5,
                   "line-dasharray": [4, 3],
                   "line-opacity": 0.4,
@@ -693,7 +693,7 @@ export function LiveOperationsMap({ expanded = false }: { expanded?: boolean }) 
               id="flight-routes-line"
               type="line"
               paint={{
-                "line-color": "#D32F2F",
+                "line-color": "#E30613",
                 "line-width": 2,
                 "line-dasharray": [6, 4],
                 "line-opacity": 0.6,

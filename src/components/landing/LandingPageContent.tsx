@@ -14,7 +14,7 @@ import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 // ── Design system ────────────────────────────────────────────────────────────
 // Swiss Modernism 2.0 × Light Glassmorphism edition
 // Bg: #FFFFFF / #F8FAFC  Surface: rgba(255,255,255,0.7)
-// Text: #0F172A  Muted: #64748B  Brand: #D32F2F  Green: #16A34A
+// Text: #0F172A  Muted: #64748B  Brand: #E30613  Green: #16A34A
 // Glassmorphism: backdrop-blur(16px), rgba(255,255,255,0.65), border rgba(255,255,255,0.4)
 
 // ── Animation constants ──────────────────────────────────────────────────────
@@ -120,7 +120,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <img src="/airbase-logo.png" alt="airBASE" className="h-10 w-auto" />
+              <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-10 w-auto" />
             </motion.a>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#64748B" }}>
@@ -135,7 +135,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     : "#"
                   }
                   className="hover:text-gray-900 transition-colors"
-                  style={label === "DIENSTLEISTUNGEN" ? { color: "#D32F2F" } : {}}
+                  style={label === "DIENSTLEISTUNGEN" ? { color: "#E30613" } : {}}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.07, duration: 0.4, ease }}
@@ -163,7 +163,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 <Link
                   href="/book"
                   className="inline-flex items-center gap-2 text-white text-sm font-black px-4 py-2 rounded transition-colors"
-                  style={{ background: "#D32F2F" }}
+                  style={{ background: "#E30613" }}
                 >
                   JETZT BUCHEN
                 </Link>
@@ -280,7 +280,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   <Link
                     href="/book"
                     className="inline-flex items-center gap-2 font-black text-lg px-8 py-4 rounded transition-colors text-white"
-                    style={{ background: "#D32F2F" }}
+                    style={{ background: "#E30613" }}
                   >
                     JETZT BUCHEN <ArrowRight className="w-5 h-5" />
                   </Link>
@@ -310,7 +310,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
               >
-                <div className="text-6xl font-black mb-2" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: "#D32F2F" }}>10&quot;</div>
+                <div className="text-6xl font-black mb-2" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: "#E30613" }}>10&quot;</div>
                 <div className="text-xl font-bold text-white mb-1">Offerte innert</div>
                 <div className="text-xl font-bold text-white mb-4">10 Sekunden</div>
                 <div className="text-sm text-white/70">Kein Warten. Kein Formular.</div>
@@ -352,7 +352,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
         <div className="max-w-5xl mx-auto px-4 text-center overflow-hidden">
           <motion.p
             className="font-bold text-lg sm:text-xl tracking-wide"
-            style={{ color: "#D32F2F" }}
+            style={{ color: "#E30613" }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={vp}
@@ -375,7 +375,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             <motion.p
               className="text-sm font-black uppercase tracking-widest mb-3"
-              style={{ color: "#D32F2F" }}
+              style={{ color: "#E30613" }}
               variants={fadeUp}
               transition={{ duration: 0.5, ease }}
             >
@@ -489,7 +489,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     <Link
                       href={service.href}
                       className="inline-flex items-center gap-2 font-bold text-sm mt-5 transition-all group-hover:gap-3"
-                      style={{ color: "#D32F2F" }}
+                      style={{ color: "#E30613" }}
                     >
                       Buchen <ArrowRight className="w-4 h-4" />
                     </Link>
@@ -574,7 +574,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ duration: 0.8, ease }}
             >
               <div className="rounded-3xl p-8 lg:p-12" style={{ background: "#0F172A", boxShadow: "0 20px 60px rgba(15,23,42,0.18)" }}>
-                <p className="text-sm font-black uppercase tracking-widest mb-4" style={{ color: "#D32F2F" }}>
+                <p className="text-sm font-black uppercase tracking-widest mb-4" style={{ color: "#E30613" }}>
                   Unsere Flotte
                 </p>
                 <h2
@@ -606,7 +606,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   <Link
                     href="/book"
                     className="inline-flex items-center gap-2 font-black px-8 py-4 rounded text-white"
-                    style={{ background: "#D32F2F" }}
+                    style={{ background: "#E30613" }}
                   >
                     JETZT BUCHEN <ArrowRight className="w-5 h-5" />
                   </Link>
@@ -620,7 +620,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
       {/* ── 6. Speed Promise ── */}
       <motion.section
         className="py-20 overflow-hidden"
-        style={{ background: "#D32F2F" }}
+        style={{ background: "#E30613" }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={vp}
@@ -668,7 +668,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             <Link
               href="/book"
               className="inline-flex items-center gap-2 font-black px-8 py-4 rounded text-lg"
-              style={{ background: "#FFFFFF", color: "#D32F2F" }}
+              style={{ background: "#FFFFFF", color: "#E30613" }}
             >
               JETZT BUCHEN <ArrowRight className="w-5 h-5" />
             </Link>
@@ -825,7 +825,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             <motion.p
               className="text-sm font-black uppercase tracking-widest mb-3"
-              style={{ color: "#D32F2F" }}
+              style={{ color: "#E30613" }}
               variants={fadeUp}
               transition={{ duration: 0.5, ease }}
             >
@@ -849,7 +849,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             {/* Animated connecting line */}
             <motion.div
               className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px origin-left"
-              style={{ background: "#D32F2F" }}
+              style={{ background: "#E30613" }}
               initial={{ scaleX: 0, opacity: 0 }}
               whileInView={{ scaleX: 1, opacity: 1 }}
               viewport={vp}
@@ -879,11 +879,11 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 >
                   <motion.div
                     className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10 border-2"
-                    style={{ background: "#FFFFFF", borderColor: "#D32F2F" }}
+                    style={{ background: "#FFFFFF", borderColor: "#E30613" }}
                     whileHover={{ scale: 1.15, boxShadow: "0 0 0 6px rgba(211,47,47,0.12)" }}
                     transition={spring}
                   >
-                    <span className="font-black text-lg" style={{ color: "#D32F2F" }}>{item.step}</span>
+                    <span className="font-black text-lg" style={{ color: "#E30613" }}>{item.step}</span>
                   </motion.div>
                   <h3
                     className="font-black text-xl mb-2"
@@ -911,7 +911,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             <motion.p
               className="text-sm font-black uppercase tracking-widest mb-3"
-              style={{ color: "#D32F2F" }}
+              style={{ color: "#E30613" }}
               variants={fadeUp}
               transition={{ duration: 0.5, ease }}
             >
@@ -998,7 +998,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   <Link
                     href={portal.href}
                     className="inline-flex items-center justify-center gap-2 font-bold px-6 py-3 rounded text-sm transition-colors text-white"
-                    style={{ background: "#D32F2F" }}
+                    style={{ background: "#E30613" }}
                   >
                     {portal.cta} <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -1084,7 +1084,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full cursor-default border shadow-sm"
                 style={{ borderColor: "rgba(255,255,255,0.3)", color: "#FFFFFF", background: "rgba(255,255,255,0.15)" }}
               >
-                <span className="w-2 h-2 rounded-full" style={{ background: "#D32F2F" }} />
+                <span className="w-2 h-2 rounded-full" style={{ background: "#E30613" }} />
                 {badge}
               </motion.span>
             ))}
@@ -1104,7 +1104,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             <motion.p
               className="text-sm font-black uppercase tracking-widest mb-3"
-              style={{ color: "#D32F2F" }}
+              style={{ color: "#E30613" }}
               variants={fadeUp}
               transition={{ duration: 0.5, ease }}
             >
@@ -1199,9 +1199,9 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   style={{
                     width: 18,
                     height: 18,
-                    background: "#D32F2F",
+                    background: "#E30613",
                     border: "3px solid #FFFFFF",
-                    boxShadow: "0 0 0 2px #D32F2F, 0 4px 12px rgba(211,47,47,0.5)",
+                    boxShadow: "0 0 0 2px #E30613, 0 4px 12px rgba(211,47,47,0.5)",
                   }}
                 />
 
@@ -1215,7 +1215,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   transition={{ delay: 0.9, duration: 0.5, ease }}
                 >
                   <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5" style={{ color: "#D32F2F" }} />
+                    <MapPin className="w-3.5 h-3.5" style={{ color: "#E30613" }} />
                     <span className="font-black text-xs" style={{ color: "#0F172A" }}>HQ — Wilderswil</span>
                   </div>
                   <div className="text-xs mt-0.5" style={{ color: "#64748B" }}>Mittelweg 9, 3812</div>
@@ -1277,7 +1277,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
             >
               <motion.p
                 className="text-sm font-black uppercase tracking-widest mb-4"
-                style={{ color: "#D32F2F" }}
+                style={{ color: "#E30613" }}
                 variants={slideLeft}
                 transition={{ duration: 0.5, ease }}
               >
@@ -1313,9 +1313,9 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 <a
                   href="#kontakt"
                   className="inline-flex items-center gap-2 font-black px-8 py-4 rounded border-2 transition-colors"
-                  style={{ borderColor: "#D32F2F", color: "#D32F2F" }}
-                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#D32F2F"; el.style.color = "#FFFFFF"; }}
-                  onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "transparent"; el.style.color = "#D32F2F"; }}
+                  style={{ borderColor: "#E30613", color: "#E30613" }}
+                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#E30613"; el.style.color = "#FFFFFF"; }}
+                  onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "transparent"; el.style.color = "#E30613"; }}
                 >
                   FRANCHISE-ANFRAGE <ArrowRight className="w-5 h-5" />
                 </a>
@@ -1349,7 +1349,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 >
                   <motion.span
                     className="font-black text-lg leading-none mt-0.5"
-                    style={{ color: "#D32F2F" }}
+                    style={{ color: "#E30613" }}
                     whileHover={{ scale: 1.3 }}
                     transition={spring}
                   >
@@ -1375,7 +1375,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
           >
             <motion.p
               className="text-sm font-black uppercase tracking-widest mb-3"
-              style={{ color: "#D32F2F" }}
+              style={{ color: "#E30613" }}
               variants={fadeUp}
               transition={{ duration: 0.5, ease }}
             >
@@ -1408,7 +1408,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ duration: 0.6, ease }}
             >
               E-Mail:{" "}
-              <a href="mailto:info@airbase.one" className="font-semibold hover:underline" style={{ color: "#D32F2F" }}>
+              <a href="mailto:info@airbase.one" className="font-semibold hover:underline" style={{ color: "#E30613" }}>
                 info@airbase.one
               </a>
             </motion.p>
@@ -1476,7 +1476,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               <motion.button
                 type="submit"
                 className="inline-flex items-center gap-2 font-black px-10 py-4 rounded text-lg text-white"
-                style={{ background: "#D32F2F" }}
+                style={{ background: "#E30613" }}
                 whileHover={{ scale: 1.04, boxShadow: "0 10px 30px rgba(211,47,47,0.3)" }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -1505,7 +1505,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ delay: 0.1, duration: 0.6, ease }}
             >
               <a href="#" className="flex items-center select-none mb-3">
-                <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto" />
+                <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-8 w-auto" />
               </a>
               <p className="text-sm" style={{ color: "#94A3B8" }}>VSNZ GmbH · Drohnenlogistik. Made in Switzerland.</p>
             </motion.div>

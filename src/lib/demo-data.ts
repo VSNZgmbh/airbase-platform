@@ -401,7 +401,7 @@ export const DEMO_REVENUE_DATA = [
 ];
 
 export const DEMO_SERVICE_DISTRIBUTION = [
-  { name: "Lastenflug", value: 38, color: "#D32F2F" },
+  { name: "Lastenflug", value: 38, color: "#E30613" },
   { name: "Berglogistik", value: 22, color: "#E57373" },
   { name: "Notfalltransport", value: 12, color: "#EF9A9A" },
   { name: "Inspektion", value: 14, color: "#B71C1C" },

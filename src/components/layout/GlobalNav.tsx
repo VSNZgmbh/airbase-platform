@@ -35,7 +35,7 @@ export function GlobalNav() {
               className="flex items-center transition-opacity"
               style={{ opacity: pathname === "/" ? 1 : 0.7 }}
             >
-              <img src="/airbase-logo.png" alt="airBASE" className="h-8 w-auto brightness-0 invert" />
+              <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-8 w-auto brightness-0 invert" />
             </Link>
 
             <div className="flex items-center gap-1">
@@ -48,7 +48,7 @@ export function GlobalNav() {
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-colors"
                     style={
                       isActive
-                        ? { background: "#D32F2F", color: "#FFFFFF" }
+                        ? { background: "#E30613", color: "#FFFFFF" }
                         : { color: "rgba(248,250,252,0.7)" }
                     }
                   >

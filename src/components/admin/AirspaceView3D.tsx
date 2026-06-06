@@ -259,7 +259,7 @@ function renderAirspace(
     ctx.moveTo(gx, gy);
     ctx.lineTo(screenX, screenY);
     ctx.setLineDash([2, 2]);
-    ctx.strokeStyle = obj.type === "drone" ? "#D32F2F50" : "#6b728050";
+    ctx.strokeStyle = obj.type === "drone" ? "#E3061350" : "#6b728050";
     ctx.lineWidth = 0.8;
     ctx.stroke();
     ctx.setLineDash([]);
@@ -267,7 +267,7 @@ function renderAirspace(
     // Ground shadow
     ctx.beginPath();
     ctx.arc(gx, gy, 3, 0, Math.PI * 2);
-    ctx.fillStyle = obj.type === "drone" ? "#D32F2F30" : "#6b728020";
+    ctx.fillStyle = obj.type === "drone" ? "#E3061330" : "#6b728020";
     ctx.fill();
 
     if (obj.type === "drone") {
@@ -279,9 +279,9 @@ function renderAirspace(
         const pulseR = 12 + Math.sin(time * 3) * 3;
         ctx.beginPath();
         ctx.arc(screenX, screenY, pulseR, 0, Math.PI * 2);
-        ctx.fillStyle = "#D32F2F15";
+        ctx.fillStyle = "#E3061315";
         ctx.fill();
-        ctx.strokeStyle = "#D32F2F40";
+        ctx.strokeStyle = "#E3061340";
         ctx.lineWidth = 0.5;
         ctx.stroke();
       }
@@ -290,7 +290,7 @@ function renderAirspace(
       const r = isHovered ? 8 : 6;
       ctx.beginPath();
       ctx.arc(screenX, screenY, r, 0, Math.PI * 2);
-      ctx.fillStyle = "#D32F2F";
+      ctx.fillStyle = "#E30613";
       ctx.fill();
       ctx.strokeStyle = "white";
       ctx.lineWidth = 2;

@@ -142,7 +142,7 @@ function AdminSidebar({
       {/* Logo */}
       <div className="px-5 pt-6 pb-5">
         <div className="flex items-center gap-3">
-          <img src="/airbase-logo.png" alt="airBASE" className="h-10 w-auto" />
+          <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-10 w-auto" />
           <div className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em]">Admin & Safety</div>
         </div>
       </div>
