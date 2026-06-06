@@ -120,7 +120,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
             >
-              <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-10 w-auto" />
+              <img src="/airbase-logo-transparent.png" alt="airBASE" className="h-10 w-auto" />
             </motion.a>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium" style={{ color: "#64748B" }}>
@@ -332,7 +332,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
         >
           <motion.div
             className="w-px h-12"
-            style={{ background: "linear-gradient(to bottom, rgba(211,47,47,0.8), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(227,6,19,0.8), transparent)" }}
             animate={{ scaleY: [1, 1.4, 1], opacity: [0.8, 0.3, 0.8] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           />
@@ -527,7 +527,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 <div
                   className="absolute inset-0 rounded-full pointer-events-none"
                   style={{
-                    background: "radial-gradient(ellipse, rgba(211,47,47,0.3) 0%, transparent 70%)",
+                    background: "radial-gradient(ellipse, rgba(227,6,19,0.3) 0%, transparent 70%)",
                     transform: "scale(1.6)",
                     filter: "blur(50px)",
                   }}
@@ -880,7 +880,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                   <motion.div
                     className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10 border-2"
                     style={{ background: "#FFFFFF", borderColor: "#E30613" }}
-                    whileHover={{ scale: 1.15, boxShadow: "0 0 0 6px rgba(211,47,47,0.12)" }}
+                    whileHover={{ scale: 1.15, boxShadow: "0 0 0 6px rgba(227,6,19,0.12)" }}
                     transition={spring}
                   >
                     <span className="font-black text-lg" style={{ color: "#E30613" }}>{item.step}</span>
@@ -1172,8 +1172,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    background: "rgba(211,47,47,0.2)",
-                    border: "2px solid rgba(211,47,47,0.4)",
+                    background: "rgba(227,6,19,0.2)",
+                    border: "2px solid rgba(227,6,19,0.4)",
                   }}
                   animate={{ scale: [1, 2.2, 1], opacity: [0.7, 0, 0.7] }}
                   transition={{ repeat: Infinity, duration: 2.5, ease: "easeOut" }}
@@ -1186,8 +1186,8 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    background: "rgba(211,47,47,0.25)",
-                    border: "1px solid rgba(211,47,47,0.5)",
+                    background: "rgba(227,6,19,0.25)",
+                    border: "1px solid rgba(227,6,19,0.5)",
                   }}
                   animate={{ scale: [1, 1.8, 1], opacity: [0.8, 0, 0.8] }}
                   transition={{ repeat: Infinity, duration: 2.5, ease: "easeOut", delay: 0.4 }}
@@ -1201,7 +1201,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                     height: 18,
                     background: "#E30613",
                     border: "3px solid #FFFFFF",
-                    boxShadow: "0 0 0 2px #E30613, 0 4px 12px rgba(211,47,47,0.5)",
+                    boxShadow: "0 0 0 2px #E30613, 0 4px 12px rgba(227,6,19,0.5)",
                   }}
                 />
 
@@ -1477,7 +1477,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
                 type="submit"
                 className="inline-flex items-center gap-2 font-black px-10 py-4 rounded text-lg text-white"
                 style={{ background: "#E30613" }}
-                whileHover={{ scale: 1.04, boxShadow: "0 10px 30px rgba(211,47,47,0.3)" }}
+                whileHover={{ scale: 1.04, boxShadow: "0 10px 30px rgba(227,6,19,0.3)" }}
                 whileTap={{ scale: 0.97 }}
               >
                 NACHRICHT SENDEN <ArrowRight className="w-5 h-5" />
@@ -1505,7 +1505,7 @@ export function LandingPageContent({ locale }: { locale: string }) {
               transition={{ delay: 0.1, duration: 0.6, ease }}
             >
               <a href="#" className="flex items-center select-none mb-3">
-                <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-8 w-auto" />
+                <img src="/airbase-logo-transparent.png" alt="airBASE" className="h-8 w-auto" />
               </a>
               <p className="text-sm" style={{ color: "#94A3B8" }}>VSNZ GmbH · Drohnenlogistik. Made in Switzerland.</p>
             </motion.div>

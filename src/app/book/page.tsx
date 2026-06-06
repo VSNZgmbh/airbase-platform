@@ -12,7 +12,7 @@ export default function BookPage() {
       <header className="bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-8 w-auto" />
+            <img src="/airbase-logo-transparent.png" alt="airBASE" className="h-8 w-auto" />
           </Link>
           <span className="text-sm text-gray-500">Flug buchen</span>
         </div>

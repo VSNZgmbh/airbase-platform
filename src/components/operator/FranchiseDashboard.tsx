@@ -329,7 +329,7 @@ function ScalingPanel() {
             <defs>
               <linearGradient id="scalingGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#E30613" />
-                <stop offset="100%" stopColor="#B71C1C" />
+                <stop offset="100%" stopColor="#9A040D" />
               </linearGradient>
             </defs>
           </BarChart>

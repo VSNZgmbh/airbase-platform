@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* AIRBASE brand: Swiss red + white */
-  --color-brand-50:  #fff5f5;
-  --color-brand-100: #ffe5e5;
-  --color-brand-200: #ffb3b3;
-  --color-brand-300: #ff7070;
-  --color-brand-400: #f44;
+  /* AIRBASE brand: PANTONE 186 C / #E30613 */
+  --color-brand-50:  #fff1f2;
+  --color-brand-100: #ffe4e6;
+  --color-brand-200: #ffb8bc;
+  --color-brand-300: #ff8088;
+  --color-brand-400: #f94046;
   --color-brand-500: #E30613;
-  --color-brand-600: #b71c1c;
-  --color-brand-700: #9a1212;
-  --color-brand-800: #7b0d0d;
-  --color-brand-900: #5c0909;
-  --color-brand-950: #3e0505;
+  --color-brand-600: #C00510;
+  --color-brand-700: #9A040D;
+  --color-brand-800: #7D060C;
+  --color-brand-900: #5F0810;
+  --color-brand-950: #370408;
 }
 
 :root {

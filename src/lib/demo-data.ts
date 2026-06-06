@@ -404,7 +404,7 @@ export const DEMO_SERVICE_DISTRIBUTION = [
   { name: "Lastenflug", value: 38, color: "#E30613" },
   { name: "Berglogistik", value: 22, color: "#E57373" },
   { name: "Notfalltransport", value: 12, color: "#EF9A9A" },
-  { name: "Inspektion", value: 14, color: "#B71C1C" },
+  { name: "Inspektion", value: 14, color: "#9A040D" },
   { name: "Baumaterial", value: 9, color: "#FF8A80" },
   { name: "Sonstiges", value: 5, color: "#9E9E9E" },
 ];

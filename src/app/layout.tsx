@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   description:
     "LASTENFLUG: Schwere Lasten per Drohne transportieren. Bis 100 kg Nutzlast. DJI FlyCart 100. SORA-zertifiziert. BAZL-konform. Für Bau, Alpine Logistik & Notfallversorgung in der Schweiz.",
   metadataBase: new URL("https://airbase.one"),
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "AIRBASE — Schweizer Drohnen-Logistik",
     description:
