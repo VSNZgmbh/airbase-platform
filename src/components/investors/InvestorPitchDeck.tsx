@@ -632,7 +632,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 50% 50% at 50% 40%, rgba(211,47,47,0.08) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 50% 50% at 50% 40%, rgba(227,6,19,0.08) 0%, transparent 70%)",
         }}
       />
 
@@ -652,7 +652,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
           }}
         >
           <div className="flex items-center justify-center mb-8">
-            <img src="/airbase-logo-new.jpg" alt="airBASE" className="h-12 w-auto brightness-0 invert" />
+            <img src="/airbase-logo-transparent.png" alt="airBASE" className="h-12 w-auto brightness-0 invert" />
           </div>
 
           <div className="text-sm font-mono uppercase tracking-[0.2em] mb-1 text-white/40">
@@ -806,7 +806,7 @@ export function InvestorPitchDeck() {
         }}
       >
         <div className="flex items-center gap-2" style={{ pointerEvents: "auto" }}>
-          <img src="/airbase-logo-new.jpg" alt="airBASE AVIATION" className="h-8 sm:h-12 w-auto" style={{ filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.08))" }} />
+          <img src="/airbase-logo-transparent.png" alt="airBASE AVIATION" className="h-8 sm:h-12 w-auto" style={{ filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.08))" }} />
           <span className="hidden md:inline text-xs font-mono tracking-wider ml-1" style={{ color: C.textMuted }}>
             airbase.swiss
           </span>
@@ -844,7 +844,7 @@ export function InvestorPitchDeck() {
         {/* Emblem watermark — signature brand element */}
         <div className="absolute right-0 top-0 bottom-0 pointer-events-none flex items-center" style={{ width: "45%" }}>
           <img
-            src="/airbase-emblem.jpg"
+            src="/airbase-emblem-transparent.png"
             alt=""
             className="w-full h-auto object-contain"
             style={{ opacity: 0.06, mixBlendMode: "multiply", transform: "translateX(15%)" }}
@@ -887,7 +887,7 @@ export function InvestorPitchDeck() {
             className="flex items-center justify-center mb-6 sm:mb-10"
           >
             <img
-              src="/airbase-logo-new.jpg"
+              src="/airbase-logo-transparent.png"
               alt="airBASE AVIATION"
               className="h-16 sm:h-28 md:h-36 lg:h-44 w-auto"
               loading="eager"
@@ -1039,7 +1039,7 @@ export function InvestorPitchDeck() {
           {/* Emblem accent — glowing brand mark on dark background */}
           <div className="absolute top-1/2 right-8 -translate-y-1/2 pointer-events-none" style={{ width: "30%", maxWidth: 320 }}>
             <img
-              src="/airbase-emblem.jpg"
+              src="/airbase-emblem-transparent.png"
               alt=""
               style={{ opacity: 0.12, filter: "invert(1) brightness(2) saturate(0)", width: "100%", height: "auto" }}
             />
@@ -1055,7 +1055,7 @@ export function InvestorPitchDeck() {
             transition={{ duration: 0.8, ease }}
           >
             <img
-              src="/airbase-logo-new.jpg"
+              src="/airbase-logo-transparent.png"
               alt="airBASE"
               className="h-10 sm:h-14 w-auto mx-auto mb-6"
               style={{ filter: "brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.4))" }}
@@ -3491,7 +3491,7 @@ export function InvestorPitchDeck() {
         {/* Emblem — large signature watermark on closing slide */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-end overflow-hidden">
           <img
-            src="/airbase-emblem.jpg"
+            src="/airbase-emblem-transparent.png"
             alt=""
             style={{ opacity: 0.05, mixBlendMode: "multiply", width: "55%", height: "auto", transform: "translateX(10%)" }}
           />
