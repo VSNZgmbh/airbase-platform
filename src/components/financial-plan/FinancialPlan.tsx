@@ -14,6 +14,7 @@ import {
   Area,
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   Tooltip,
@@ -948,11 +949,12 @@ const TOC_ITEMS = [
   { id: "six-year-pl", label: "6-Year P&L", number: "02" },
   { id: "break-even", label: "Break-Even Analysis", number: "03" },
   { id: "cash-flow", label: "Cash Flow", number: "04" },
-  { id: "investor-roi", label: "Investor ROI", number: "05" },
-  { id: "franchise", label: "Franchise Economics", number: "06" },
-  { id: "fleet-growth", label: "Fleet Growth", number: "07" },
-  { id: "platform-gmv", label: "Platform GMV", number: "08" },
-  { id: "sensitivity", label: "Sensitivity Analysis", number: "09" },
+  { id: "use-of-funds", label: "Use of Funds", number: "05" },
+  { id: "investor-roi", label: "Investor ROI", number: "06" },
+  { id: "franchise", label: "Franchise Economics", number: "07" },
+  { id: "fleet-growth", label: "Fleet Growth", number: "08" },
+  { id: "platform-gmv", label: "Platform GMV", number: "09" },
+  { id: "sensitivity", label: "Sensitivity Analysis", number: "10" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1655,10 +1657,144 @@ export function FinancialPlan() {
           </div>
         </section>
 
-        {/* ═══ SECTION 5: Investor ROI ═══ */}
+        {/* ═══ SECTION 5: Use of Funds ═══ */}
         <section>
           <SectionHeader
             number="05"
+            title="Use of Funds — CHF 1.5M"
+            subtitle="Allocation of seed round capital across five strategic pillars"
+            id="use-of-funds"
+          />
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Horizontal bar chart */}
+            <DataCard>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg" style={{ background: C.accentGlow }}>
+                  <BarChart3 className="w-4 h-4" style={{ color: C.accent }} />
+                </div>
+                <span
+                  className="text-sm font-mono uppercase tracking-wider font-semibold"
+                  style={{ color: C.accent }}
+                >
+                  Capital Allocation
+                </span>
+              </div>
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart
+                  layout="vertical"
+                  data={[
+                    { name: "Fleet Expansion", amount: 525, fill: C.accent },
+                    { name: "Platform Dev", amount: 375, fill: "#B91C1C" },
+                    { name: "LUC + Legal", amount: 300, fill: C.gold },
+                    { name: "Sales & Marketing", amount: 150, fill: C.green },
+                    { name: "Working Capital", amount: 150, fill: C.textMuted },
+                  ]}
+                  margin={{ top: 0, right: 40, left: 0, bottom: 0 }}
+                >
+                  <XAxis type="number" hide />
+                  <YAxis
+                    type="category"
+                    dataKey="name"
+                    width={110}
+                    tick={{ fontSize: 11, fill: C.textSecondary }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    formatter={(value) => [`CHF ${value}K`, "Amount"]}
+                    contentStyle={{
+                      background: C.bgCard,
+                      border: `1px solid ${C.border}`,
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  />
+                  <Bar dataKey="amount" radius={[0, 6, 6, 0]} barSize={28}>
+                    {[C.accent, "#B91C1C", C.gold, C.green, C.textMuted].map(
+                      (color, i) => (
+                        <Cell key={i} fill={color} />
+                      )
+                    )}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </DataCard>
+
+            {/* Allocation table */}
+            <DataCard>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg" style={{ background: C.accentGlow }}>
+                  <Layers className="w-4 h-4" style={{ color: C.accent }} />
+                </div>
+                <span
+                  className="text-sm font-mono uppercase tracking-wider font-semibold"
+                  style={{ color: C.accent }}
+                >
+                  Detailed Breakdown
+                </span>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { cat: "Fleet Expansion", desc: "Drones, batteries, equipment", pct: "35%", amt: "CHF 525K", color: C.accent },
+                  { cat: "Platform Development", desc: "AI, SaaS, flight system", pct: "25%", amt: "CHF 375K", color: "#B91C1C" },
+                  { cat: "LUC Certification + Legal", desc: "Regulatory approvals", pct: "20%", amt: "CHF 300K", color: C.gold },
+                  { cat: "Sales & Marketing", desc: "Go-to-market, BD", pct: "10%", amt: "CHF 150K", color: C.green },
+                  { cat: "Working Capital", desc: "Ops reserve", pct: "10%", amt: "CHF 150K", color: C.textMuted },
+                ].map((row, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-xl border"
+                    style={{ borderColor: C.border }}
+                  >
+                    <div
+                      className="w-3 h-3 rounded-full shrink-0"
+                      style={{ background: row.color }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold" style={{ color: C.text }}>
+                        {row.cat}
+                      </div>
+                      <div className="text-xs" style={{ color: C.textMuted }}>
+                        {row.desc}
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-sm font-bold font-mono" style={{ color: C.text }}>
+                        {row.amt}
+                      </div>
+                      <div className="text-xs font-mono" style={{ color: C.textMuted }}>
+                        {row.pct}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <div
+                  className="flex items-center justify-between p-3 rounded-xl border-2"
+                  style={{ borderColor: C.borderAccent, background: C.accentLight }}
+                >
+                  <span className="text-sm font-bold" style={{ color: C.accent }}>
+                    Total
+                  </span>
+                  <span className="text-sm font-bold font-mono" style={{ color: C.accent }}>
+                    CHF 1,500K
+                  </span>
+                </div>
+              </div>
+              <div
+                className="mt-4 p-3 rounded-lg text-xs"
+                style={{ background: C.greenLight, color: C.textSecondary }}
+              >
+                Runway: CHF 1.5M covers Year 1 operating loss (-CHF 370K) with CHF 1.1M+ reserve for Year 2 growth.
+              </div>
+            </DataCard>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 6: Investor ROI ═══ */}
+        <section>
+          <SectionHeader
+            number="06"
             title="Investor ROI"
             subtitle="Interactive calculator — pick your investment amount, see projected returns"
             id="investor-roi"
@@ -1699,10 +1835,10 @@ export function FinancialPlan() {
           </div>
         </section>
 
-        {/* ═══ SECTION 6: Franchise Economics ═══ */}
+        {/* ═══ SECTION 7: Franchise Economics ═══ */}
         <section>
           <SectionHeader
-            number="06"
+            number="07"
             title="Franchise Unit Economics"
             subtitle="Partner P&L + HQ recurring revenue per franchise partner"
             id="franchise"
@@ -1787,10 +1923,10 @@ export function FinancialPlan() {
           </div>
         </section>
 
-        {/* ═══ SECTION 7: Fleet Growth ═══ */}
+        {/* ═══ SECTION 8: Fleet Growth ═══ */}
         <section>
           <SectionHeader
-            number="07"
+            number="08"
             title="Fleet Growth"
             subtitle="From 1 hub / 2 drones (Year 1) to 6 own hubs / 30 drones + 35 franchise partners (Year 6)"
             id="fleet-growth"
@@ -1798,10 +1934,10 @@ export function FinancialPlan() {
           <FleetGrowthChart />
         </section>
 
-        {/* ═══ SECTION 8: Platform GMV ═══ */}
+        {/* ═══ SECTION 9: Platform GMV ═══ */}
         <section>
           <SectionHeader
-            number="08"
+            number="09"
             title="Platform GMV"
             subtitle="Total ecosystem value — own operations + franchise partner gross revenue"
             id="platform-gmv"
@@ -1863,10 +1999,10 @@ export function FinancialPlan() {
           </DataCard>
         </section>
 
-        {/* ═══ SECTION 9: Sensitivity Analysis ═══ */}
+        {/* ═══ SECTION 10: Sensitivity Analysis ═══ */}
         <section>
           <SectionHeader
-            number="09"
+            number="10"
             title="Sensitivity Analysis"
             subtitle="Revenue sensitivity to utilisation rates, daily pricing, and franchise scale"
             id="sensitivity"
