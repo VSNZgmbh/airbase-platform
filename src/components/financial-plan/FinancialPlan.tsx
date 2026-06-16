@@ -1146,7 +1146,7 @@ export function FinancialPlan() {
           >
             {[
               { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "76% EBITDA margin" },
-              { label: "Contribution Margin", value: "80.8%", sub: "Per drone unit" },
+              { label: "Contribution Margin", value: "82.7%", sub: "Per drone unit" },
               { label: "Break-Even", value: "Year 2", sub: "Operational" },
               { label: "6-Yr Cumulative", value: "+CHF 40.6M", sub: "Cash flow" },
             ].map((kpi, i) => (
@@ -1210,22 +1210,22 @@ export function FinancialPlan() {
           <SectionHeader
             number="01"
             title="Unit Economics"
-            subtitle="Per drone profit & loss — CHF 630K revenue, 81% contribution margin"
+            subtitle="Per drone profit & loss — CHF 700K revenue, 83% contribution margin"
             id="unit-economics"
           />
 
           <Stagger className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
             <KpiCard
               label="Revenue / Drone"
-              value={<CountUp end={630} prefix="CHF " suffix="K" />}
-              sub="180 days x CHF 3,500/day"
+              value={<CountUp end={700} prefix="CHF " suffix="K" />}
+              sub="200 days x CHF 3,500/day"
               icon={DollarSign}
               color={C.green}
             />
             <KpiCard
               label="Contribution Margin"
-              value={<CountUp end={509} prefix="CHF " suffix="K" />}
-              sub="80.8% margin"
+              value={<CountUp end={579} prefix="CHF " suffix="K" />}
+              sub="82.7% margin"
               icon={TrendingUp}
               color={C.accent}
               delay={0.1}
@@ -1278,13 +1278,13 @@ export function FinancialPlan() {
               <StyledTable
                 headers={["Metric", "Value"]}
                 rows={[
-                  ["Operational days/year", "180"],
+                  ["Operational days/year", "200"],
                   ["Average daily rate (blended)", "CHF 3,500"],
-                  ["Gross revenue per drone/year", "CHF 630,000"],
+                  ["Gross revenue per drone/year", "CHF 700,000"],
                   ["Direct costs (crew, maintenance)", "CHF 12,900"],
                   ["Crew cost allocation (2-person team)", "CHF 108,000"],
-                  ["Contribution margin per drone", "CHF 509,100"],
-                  ["Contribution margin %", "80.8%"],
+                  ["Contribution margin per drone", "CHF 579,100"],
+                  ["Contribution margin %", "82.7%"],
                 ]}
                 highlightLast
               />
@@ -1724,14 +1724,14 @@ export function FinancialPlan() {
               <StyledTable
                 headers={["Item", "Amount"]}
                 rows={[
-                  ["Revenue (180 days x CHF 3,500)", "CHF 630,000"],
-                  ["Royalty to HQ (9%)", "-CHF 56,700"],
-                  ["Marketing pool (2%)", "-CHF 12,600"],
+                  ["Revenue (200 days x CHF 3,500)", "CHF 700,000"],
+                  ["Royalty to HQ (9%)", "-CHF 63,000"],
+                  ["Marketing pool (2%)", "-CHF 14,000"],
                   ["SaaS + LUC fee", "-CHF 18,000"],
                   ["Crew costs (2 persons)", "-CHF 175,000"],
                   ["Drone OPEX", "-CHF 12,900"],
                   ["Vehicle OPEX", "-CHF 8,000"],
-                  ["Partner Net Income", "CHF 346,800"],
+                  ["Partner Net Income", "CHF 409,100"],
                 ]}
                 highlightLast
               />
@@ -1740,7 +1740,7 @@ export function FinancialPlan() {
                 style={{ background: C.greenLight }}
               >
                 <span className="text-lg font-bold font-mono" style={{ color: C.green }}>
-                  ~4x ROI
+                  ~5x ROI
                 </span>
                 <span className="text-xs block mt-0.5" style={{ color: C.textMuted }}>
                   Partner return on entry investment in Year 1
@@ -1765,10 +1765,10 @@ export function FinancialPlan() {
                 rows={[
                   ["Entry fee (one-time, amortised)", "CHF 7,000"],
                   ["Hardware margin (one-time, amortised)", "CHF 6,000"],
-                  ["Royalties (9%)", "CHF 56,700"],
-                  ["Marketing pool (2%)", "CHF 12,600"],
+                  ["Royalties (9%)", "CHF 63,000"],
+                  ["Marketing pool (2%)", "CHF 14,000"],
                   ["SaaS + LUC fee", "CHF 18,000"],
-                  ["HQ recurring revenue per partner", "CHF 87,300"],
+                  ["HQ recurring revenue per partner", "CHF 95,000"],
                 ]}
                 highlightLast
               />
@@ -1777,7 +1777,7 @@ export function FinancialPlan() {
                 style={{ background: C.goldLight }}
               >
                 <span className="text-lg font-bold font-mono" style={{ color: C.gold }}>
-                  CHF 87.3K
+                  CHF 95K
                 </span>
                 <span className="text-xs block mt-0.5" style={{ color: C.textMuted }}>
                   Recurring annual revenue per franchise partner

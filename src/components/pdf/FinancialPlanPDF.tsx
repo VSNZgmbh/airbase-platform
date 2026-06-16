@@ -190,7 +190,7 @@ export function FinancialPlanPDF() {
         <View style={{ flexDirection: "row", gap: 8 }}>
           {[
             { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "77% EBITDA margin" },
-            { label: "Contribution Margin", value: "80.8%", sub: "Per drone unit" },
+            { label: "Contribution Margin", value: "82.7%", sub: "Per drone unit" },
             { label: "Break-Even", value: "Year 2", sub: "Operational" },
             { label: "6-Yr Cumulative", value: "+CHF 38.8M", sub: "Cash flow" },
           ].map((kpi) => (
@@ -242,7 +242,7 @@ export function FinancialPlanPDF() {
         <Text style={s.h2}>Table of Contents</Text>
         <View style={s.divider} />
         {[
-          { num: "01", title: "Unit Economics", sub: "Per drone P&L -- CHF 630K revenue, 81% margin" },
+          { num: "01", title: "Unit Economics", sub: "Per drone P&L -- CHF 700K revenue, 83% margin" },
           { num: "02", title: "6-Year P&L", sub: "CHF 120K to CHF 24.3M with 77% EBITDA margin" },
           { num: "03", title: "Break-Even Analysis", sub: "Operational break-even Year 2" },
           { num: "04", title: "Cash Flow", sub: "-CHF 370K to +CHF 38.8M cumulative" },
@@ -282,13 +282,13 @@ export function FinancialPlanPDF() {
         <Text style={s.sectionNum}>01</Text>
         <Text style={s.h2}>Unit Economics</Text>
         <Text style={s.subtitle}>
-          Per drone profit & loss -- CHF 630K revenue, 80.8% contribution margin
+          Per drone profit & loss -- CHF 700K revenue, 82.7% contribution margin
         </Text>
 
         <View style={{ flexDirection: "row", gap: 6, marginBottom: 10 }}>
           {[
-            { label: "Revenue / Drone", value: "CHF 630K", sub: "180 days x CHF 3,500/day" },
-            { label: "Contribution Margin", value: "CHF 509K", sub: "80.8% margin" },
+            { label: "Revenue / Drone", value: "CHF 700K", sub: "200 days x CHF 3,500/day" },
+            { label: "Contribution Margin", value: "CHF 579K", sub: "82.7% margin" },
             { label: "CAPEX / Drone", value: "CHF 49K", sub: "FC200 full set (base)" },
             { label: "Annual OPEX", value: "CHF 12.9K", sub: "Maint + insurance + battery" },
           ].map((kpi) => (
@@ -342,9 +342,9 @@ export function FinancialPlanPDF() {
             <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Value</Text>
           </View>
           {[
-            ["Operational days/year", "180"],
+            ["Operational days/year", "200"],
             ["Average daily rate (blended)", "CHF 3,500"],
-            ["Gross revenue per drone/year", "CHF 630,000"],
+            ["Gross revenue per drone/year", "CHF 700,000"],
             ["Direct costs (crew, maintenance)", "CHF 12,900"],
             ["Crew cost allocation (2-person team)", "CHF 108,000"],
           ].map((row, i) => (
@@ -355,7 +355,7 @@ export function FinancialPlanPDF() {
           ))}
           <View style={[s.tRow, { backgroundColor: C.accent + "08" }]}>
             <Text style={[s.tCellAccent, { flex: 2 }]}>Contribution margin per drone</Text>
-            <Text style={[s.tCellAccent, { flex: 1, textAlign: "right" }]}>CHF 509,100 (80.8%)</Text>
+            <Text style={[s.tCellAccent, { flex: 1, textAlign: "right" }]}>CHF 579,100 (82.7%)</Text>
           </View>
         </View>
 
@@ -751,9 +751,9 @@ export function FinancialPlanPDF() {
               <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Amount</Text>
             </View>
             {[
-              ["Revenue (180d x CHF 3,500)", "CHF 630,000"],
-              ["Royalty to HQ (9%)", "-CHF 56,700"],
-              ["Marketing pool (2%)", "-CHF 12,600"],
+              ["Revenue (200d x CHF 3,500)", "CHF 700,000"],
+              ["Royalty to HQ (9%)", "-CHF 63,000"],
+              ["Marketing pool (2%)", "-CHF 14,000"],
               ["SaaS + LUC fee", "-CHF 18,000"],
               ["Crew costs (2 persons)", "-CHF 175,000"],
               ["Drone OPEX", "-CHF 12,900"],
@@ -766,10 +766,10 @@ export function FinancialPlanPDF() {
             ))}
             <View style={[s.tRow, { backgroundColor: C.green + "10" }]}>
               <Text style={[s.tCellGreen, { flex: 2 }]}>Partner Net Income</Text>
-              <Text style={[s.tCellGreen, { flex: 1, textAlign: "right" }]}>CHF 346,800</Text>
+              <Text style={[s.tCellGreen, { flex: 1, textAlign: "right" }]}>CHF 409,100</Text>
             </View>
             <View style={{ alignItems: "center", marginTop: 8 }}>
-              <Text style={{ fontSize: 14, fontWeight: "bold", color: C.green }}>~4x ROI</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: C.green }}>~5x ROI</Text>
               <Text style={{ fontSize: 6, color: C.textMuted }}>on entry investment</Text>
             </View>
           </View>
@@ -786,8 +786,8 @@ export function FinancialPlanPDF() {
             {[
               ["Entry fee (amortised)", "CHF 7,000"],
               ["Hardware margin (amortised)", "CHF 6,000"],
-              ["Royalties (9%)", "CHF 56,700"],
-              ["Marketing pool (2%)", "CHF 12,600"],
+              ["Royalties (9%)", "CHF 63,000"],
+              ["Marketing pool (2%)", "CHF 14,000"],
               ["SaaS + LUC fee", "CHF 18,000"],
             ].map((row, i) => (
               <View key={i} style={s.tRow}>
@@ -800,11 +800,11 @@ export function FinancialPlanPDF() {
                 HQ recurring per partner
               </Text>
               <Text style={[{ ...s.tCellBold, color: C.gold }, { flex: 1, textAlign: "right" }]}>
-                CHF 87,300
+                CHF 95,000
               </Text>
             </View>
             <View style={{ alignItems: "center", marginTop: 8 }}>
-              <Text style={{ fontSize: 14, fontWeight: "bold", color: C.gold }}>CHF 87.3K</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: C.gold }}>CHF 95K</Text>
               <Text style={{ fontSize: 6, color: C.textMuted }}>recurring per partner/year</Text>
             </View>
           </View>
