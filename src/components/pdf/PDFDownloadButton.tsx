@@ -49,6 +49,7 @@ export default function PDFDownloadButton({
       setBlobUrl(url);
     } catch (err) {
       console.error("PDF generation failed:", err);
+      alert("PDF generation failed. Please try again.");
     } finally {
       setGenerating(false);
     }

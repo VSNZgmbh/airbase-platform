@@ -64,7 +64,7 @@ const PDFDownloadButton = dynamic(() => import("../pdf/PDFDownloadButton"), {
   ssr: false,
   loading: () => (
     <button
-      className="no-print fixed top-4 left-4 sm:top-6 sm:left-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-lg opacity-70"
+      className="no-print fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-lg opacity-70"
       style={{ background: "#E30613" }}
       disabled
     >
@@ -848,7 +848,7 @@ export function InvestorPitchDeck() {
         document={<PitchdeckPDF />}
         fileName="airBASE_Investor_Pitchdeck.pdf"
         accent={C.accent}
-        className="top-4 left-4 sm:top-6 sm:left-6"
+        className="top-4 right-4 sm:top-6 sm:right-6"
       />
 
       <SlideNav current={currentSlide} total={totalSlides} onNavigate={navigateTo} />

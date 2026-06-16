@@ -5,7 +5,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
 
 /* ─── Brand Colors ─── */
@@ -20,15 +19,6 @@ const C = {
   bgAlt: "#F8F9FA",
   border: "#E8E8EE",
 };
-
-/* ─── Fonts ─── */
-Font.register({
-  family: "Helvetica",
-  fonts: [
-    { src: "Helvetica" },
-    { src: "Helvetica-Bold", fontWeight: "bold" },
-  ],
-});
 
 /* ─── Styles ─── */
 const s = StyleSheet.create({
