@@ -56,6 +56,7 @@ import {
   FileText,
   CircleDollarSign,
   Wrench,
+  Download,
 } from "lucide-react";
 
 /* ─── Touch-friendly range slider styles ─── */
@@ -97,6 +98,32 @@ const rangeSliderStyles = `
       width: 32px;
       height: 32px;
     }
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    * { animation: none !important; transition: none !important; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pitch-scroll-container {
+      position: static !important;
+      overflow: visible !important;
+      height: auto !important;
+      scroll-snap-type: none !important;
+    }
+    .pitch-scroll-container section {
+      min-height: auto !important;
+      height: auto !important;
+      scroll-snap-align: unset !important;
+      break-after: page;
+      page-break-after: always;
+    }
+    .pitch-scroll-container section:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+    table { break-inside: avoid; page-break-inside: avoid; }
+    .rounded-2xl { break-inside: avoid; page-break-inside: avoid; }
+    @page { size: A4; margin: 1.5cm; }
   }
 `;
 
@@ -584,7 +611,7 @@ function SlideNav({
   onNavigate: (idx: number) => void;
 }) {
   return (
-    <nav className="fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-1.5 sm:gap-2">
+    <nav className="no-print fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-1.5 sm:gap-2">
       {Array.from({ length: total }, (_, i) => (
         <button
           key={i}
@@ -795,6 +822,17 @@ export function InvestorPitchDeck() {
       }}
     >
       <style dangerouslySetInnerHTML={{ __html: rangeSliderStyles }} />
+
+      {/* ─── Download PDF Button ─── */}
+      <button
+        onClick={() => window.print()}
+        className="no-print fixed top-4 left-4 sm:top-6 sm:left-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110 shadow-lg"
+        style={{ background: C.accent }}
+      >
+        <Download className="w-4 h-4" />
+        <span className="hidden sm:inline">Download PDF</span>
+      </button>
+
       <SlideNav current={currentSlide} total={totalSlides} onNavigate={navigateTo} />
 
       {/* ═══ PERSISTENT AIRBASE HEADER ═══ */}

@@ -39,6 +39,7 @@ import {
   Cpu,
   Wrench,
   AlertTriangle,
+  Download,
 } from "lucide-react";
 
 /* ─── Touch-friendly range slider styles ─── */
@@ -72,6 +73,16 @@ const rangeSliderStyles = `
       width: 32px;
       height: 32px;
     }
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    * { animation: none !important; transition: none !important; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section { break-inside: avoid; page-break-inside: avoid; }
+    table { break-inside: avoid; page-break-inside: avoid; }
+    .rounded-2xl { break-inside: avoid; page-break-inside: avoid; }
+    @page { size: A4; margin: 1.5cm; }
   }
 `;
 
@@ -1061,6 +1072,16 @@ export function FinancialPlan() {
   return (
     <div className="min-h-screen" style={{ background: C.bg }}>
       <style dangerouslySetInnerHTML={{ __html: rangeSliderStyles }} />
+
+      {/* ─── Download PDF Button ─── */}
+      <button
+        onClick={() => window.print()}
+        className="no-print fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110 shadow-lg"
+        style={{ background: C.accent }}
+      >
+        <Download className="w-4 h-4" />
+        <span className="hidden sm:inline">Download PDF</span>
+      </button>
 
       {/* ─── Hero Header ─── */}
       <header
