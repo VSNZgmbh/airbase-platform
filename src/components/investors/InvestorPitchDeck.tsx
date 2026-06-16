@@ -613,13 +613,13 @@ const revenueProjection = [
 ];
 
 const fundAllocation = [
-  { name: "Fleet Expansion", value: 43, amount: "650K", color: C.accent },
-  { name: "Hub Infrastructure", value: 17, amount: "250K", color: C.gold },
-  { name: "Working Capital", value: 12, amount: "180K", color: C.textMuted },
+  { name: "Fleet Expansion", value: 37, amount: "550K", color: C.accent },
+  { name: "Hub Infrastructure", value: 23, amount: "350K", color: C.gold },
+  { name: "Working Capital", value: 15, amount: "220K", color: C.textMuted },
   { name: "Sales & Marketing", value: 10, amount: "150K", color: C.green },
-  { name: "Insurance", value: 7, amount: "100K", color: "#FF6B6B" },
   { name: "LUC + Legal", value: 6, amount: "90K", color: "#8B5CF6" },
   { name: "Software & APIs", value: 5, amount: "80K", color: "#06B6D4" },
+  { name: "Insurance", value: 4, amount: "60K", color: "#FF6B6B" },
 ];
 
 /* ─── Slide Nav Dots ─── */

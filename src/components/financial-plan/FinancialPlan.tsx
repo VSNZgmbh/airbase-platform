@@ -1684,13 +1684,13 @@ export function FinancialPlan() {
                 <BarChart
                   layout="vertical"
                   data={[
-                    { name: "Fleet", amount: 650, fill: C.accent },
-                    { name: "Hub Infrastructure", amount: 250, fill: C.gold },
-                    { name: "Working Capital", amount: 180, fill: C.textMuted },
+                    { name: "Fleet", amount: 550, fill: C.accent },
+                    { name: "Hub Infrastructure", amount: 350, fill: C.gold },
+                    { name: "Working Capital", amount: 220, fill: C.textMuted },
                     { name: "Sales & Marketing", amount: 150, fill: C.green },
-                    { name: "Insurance", amount: 100, fill: "#FF6B6B" },
                     { name: "LUC + Legal", amount: 90, fill: "#8B5CF6" },
                     { name: "Software & APIs", amount: 80, fill: "#06B6D4" },
+                    { name: "Insurance", amount: 60, fill: "#FF6B6B" },
                   ]}
                   margin={{ top: 0, right: 40, left: 0, bottom: 0 }}
                 >
@@ -1713,7 +1713,7 @@ export function FinancialPlan() {
                     }}
                   />
                   <Bar dataKey="amount" radius={[0, 6, 6, 0]} barSize={28}>
-                    {[C.accent, C.gold, C.textMuted, C.green, "#FF6B6B", "#8B5CF6", "#06B6D4"].map(
+                    {[C.accent, C.gold, C.textMuted, C.green, "#8B5CF6", "#06B6D4", "#FF6B6B"].map(
                       (color, i) => (
                         <Cell key={i} fill={color} />
                       )
@@ -1738,13 +1738,13 @@ export function FinancialPlan() {
               </div>
               <div className="space-y-3">
                 {[
-                  { cat: "Fleet", desc: "Drones, batteries, ground equipment", pct: "43%", amt: "CHF 650K", color: C.accent },
-                  { cat: "Hub Infrastructure", desc: "Setup, rent, vehicles", pct: "17%", amt: "CHF 250K", color: C.gold },
-                  { cat: "Working Capital", desc: "Ops reserve", pct: "12%", amt: "CHF 180K", color: C.textMuted },
+                  { cat: "Fleet", desc: "Drones, batteries, ground equipment", pct: "37%", amt: "CHF 550K", color: C.accent },
+                  { cat: "Hub Infrastructure", desc: "Setup, rent, vehicles", pct: "23%", amt: "CHF 350K", color: C.gold },
+                  { cat: "Working Capital", desc: "Ops reserve", pct: "15%", amt: "CHF 220K", color: C.textMuted },
                   { cat: "Sales & Marketing", desc: "Go-to-market, BD", pct: "10%", amt: "CHF 150K", color: C.green },
-                  { cat: "Insurance", desc: "Liability, fleet, operations", pct: "7%", amt: "CHF 100K", color: "#FF6B6B" },
                   { cat: "LUC + Legal", desc: "Certification & regulatory", pct: "6%", amt: "CHF 90K", color: "#8B5CF6" },
                   { cat: "Software & APIs", desc: "Airspace APIs (SUSI, U-Space), weather, UTM", pct: "5%", amt: "CHF 80K", color: "#06B6D4" },
+                  { cat: "Insurance", desc: "Liability, fleet, operations", pct: "4%", amt: "CHF 60K", color: "#FF6B6B" },
                 ].map((row, i) => (
                   <div
                     key={i}
