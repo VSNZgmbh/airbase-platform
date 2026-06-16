@@ -133,7 +133,7 @@ function Footer({ page, total }: { page: number; total: number }) {
   );
 }
 
-const TOTAL = 11;
+const TOTAL = 12;
 
 export function FinancialPlanPDF() {
   return (
@@ -155,8 +155,8 @@ export function FinancialPlanPDF() {
         }}
       >
         <Image
-          src="/airbase-logo-transparent.png"
-          style={{ width: 140, height: "auto", marginBottom: 24, opacity: 0.9 }}
+          src="/airbase-logo-pdf.png"
+          style={{ width: 140, marginBottom: 24, opacity: 0.9 }}
         />
         <Text
           style={{
@@ -246,11 +246,12 @@ export function FinancialPlanPDF() {
           { num: "02", title: "6-Year P&L", sub: "CHF 120K to CHF 24.3M with 77% EBITDA margin" },
           { num: "03", title: "Break-Even Analysis", sub: "Operational break-even Year 2" },
           { num: "04", title: "Cash Flow", sub: "-CHF 370K to +CHF 44.7M cumulative" },
-          { num: "05", title: "Investor ROI", sub: "Convertible note returns by scenario" },
-          { num: "06", title: "Franchise Economics", sub: "Partner P&L + HQ recurring revenue" },
-          { num: "07", title: "Fleet Growth", sub: "2 to 30 own drones + 35 franchise partners over 6 years" },
-          { num: "08", title: "Platform GMV", sub: "CHF 97.6M total ecosystem value" },
-          { num: "09", title: "Sensitivity Analysis", sub: "Revenue sensitivity grid + risk factors" },
+          { num: "05", title: "Use of Funds", sub: "CHF 1.5M across seven strategic pillars" },
+          { num: "06", title: "Investor ROI", sub: "Convertible note returns by scenario" },
+          { num: "07", title: "Franchise Economics", sub: "Partner P&L + HQ recurring revenue" },
+          { num: "08", title: "Fleet Growth", sub: "2 to 30 own drones + 35 franchise partners over 6 years" },
+          { num: "09", title: "Platform GMV", sub: "CHF 97.6M total ecosystem value" },
+          { num: "10", title: "Sensitivity Analysis", sub: "Revenue sensitivity grid + risk factors" },
         ].map((item) => (
           <View
             key={item.num}
@@ -666,9 +667,83 @@ export function FinancialPlanPDF() {
         <Footer page={5} total={TOTAL} />
       </Page>
 
-      {/* ═══ SECTION 5: INVESTOR ROI ═══ */}
+      {/* ═══ SECTION 5: USE OF FUNDS ═══ */}
       <Page size="A4" style={s.page}>
         <Text style={s.sectionNum}>05</Text>
+        <Text style={s.h2}>Use of Funds — CHF 1.5M</Text>
+        <Text style={s.subtitle}>
+          Allocation of seed round capital across seven strategic pillars
+        </Text>
+
+        <View style={s.card}>
+          <Text style={{ fontSize: 8, fontWeight: "bold", color: C.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>
+            Capital Allocation
+          </Text>
+          <View style={s.tHead}>
+            <Text style={[s.tCellBold, { flex: 2 }]}>Category</Text>
+            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Amount</Text>
+            <Text style={[s.tCellBold, { width: 40, textAlign: "right" }]}>%</Text>
+          </View>
+          {[
+            { name: "Fleet", amount: "CHF 550K", pct: "37%", color: C.accent },
+            { name: "Hub Infrastructure", amount: "CHF 350K", pct: "23%", color: C.gold },
+            { name: "Working Capital", amount: "CHF 220K", pct: "15%", color: C.textMuted },
+            { name: "Sales & Marketing", amount: "CHF 150K", pct: "10%", color: C.green },
+            { name: "LUC + Legal", amount: "CHF 90K", pct: "6%", color: "#8B5CF6" },
+            { name: "Software & APIs", amount: "CHF 80K", pct: "5%", color: "#06B6D4" },
+            { name: "Insurance", amount: "CHF 60K", pct: "4%", color: "#FF6B6B" },
+          ].map((item) => (
+            <View key={item.name} style={s.tRow}>
+              <View style={{ flex: 2, flexDirection: "row", alignItems: "center", gap: 4 }}>
+                <View style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: item.color }} />
+                <Text style={s.tCell}>{item.name}</Text>
+              </View>
+              <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>{item.amount}</Text>
+              <Text style={[s.tCell, { width: 40, textAlign: "right" }]}>{item.pct}</Text>
+            </View>
+          ))}
+          <View style={[s.tRow, { backgroundColor: C.accent + "08", borderBottomWidth: 2, borderBottomColor: C.accent }]}>
+            <Text style={[s.tCellAccent, { flex: 2 }]}>Total</Text>
+            <Text style={[s.tCellAccent, { flex: 1, textAlign: "right" }]}>CHF 1,500K</Text>
+            <Text style={[s.tCellAccent, { width: 40, textAlign: "right" }]}>100%</Text>
+          </View>
+        </View>
+
+        {/* Visual bar representation */}
+        <View style={s.card}>
+          <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 8 }}>
+            Allocation Breakdown
+          </Text>
+          {[
+            { name: "Fleet", amount: 550, color: C.accent },
+            { name: "Hub Infrastructure", amount: 350, color: C.gold },
+            { name: "Working Capital", amount: 220, color: C.textMuted },
+            { name: "Sales & Marketing", amount: 150, color: C.green },
+            { name: "LUC + Legal", amount: 90, color: "#8B5CF6" },
+            { name: "Software & APIs", amount: 80, color: "#06B6D4" },
+            { name: "Insurance", amount: 60, color: "#FF6B6B" },
+          ].map((item) => (
+            <View key={item.name} style={{ flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 3 }}>
+              <Text style={{ fontSize: 6, color: C.textMuted, width: 70 }}>{item.name}</Text>
+              <View style={[s.barBg, { flex: 1 }]}>
+                <View style={{ height: 6, width: `${(item.amount / 550) * 100}%`, backgroundColor: item.color, borderRadius: 3 }} />
+              </View>
+              <Text style={{ fontSize: 7, fontWeight: "bold", color: item.color, width: 50, textAlign: "right" }}>
+                CHF {item.amount}K
+              </Text>
+            </View>
+          ))}
+        </View>
+
+        <Text style={{ fontSize: 7, color: C.textSecondary, marginTop: 4 }}>
+          Primary focus: fleet acquisition (37%) and hub infrastructure (23%) to establish operational capacity across 4 hubs with 10 drones by Year 2.
+        </Text>
+        <Footer page={6} total={TOTAL} />
+      </Page>
+
+      {/* ═══ SECTION 6: INVESTOR ROI ═══ */}
+      <Page size="A4" style={s.page}>
+        <Text style={s.sectionNum}>06</Text>
         <Text style={s.h2}>Investor ROI</Text>
         <Text style={s.subtitle}>
           Interactive calculator -- pick your investment amount, see projected returns
@@ -729,12 +804,12 @@ export function FinancialPlanPDF() {
             </View>
           ))}
         </View>
-        <Footer page={6} total={TOTAL} />
+        <Footer page={7} total={TOTAL} />
       </Page>
 
-      {/* ═══ SECTION 6: FRANCHISE ECONOMICS ═══ */}
+      {/* ═══ SECTION 7: FRANCHISE ECONOMICS ═══ */}
       <Page size="A4" style={s.page}>
-        <Text style={s.sectionNum}>06</Text>
+        <Text style={s.sectionNum}>07</Text>
         <Text style={s.h2}>Franchise Unit Economics</Text>
         <Text style={s.subtitle}>
           Partner P&L + HQ recurring revenue per franchise partner
@@ -810,9 +885,9 @@ export function FinancialPlanPDF() {
           </View>
         </View>
 
-        {/* ═══ SECTION 7: FLEET GROWTH ═══ */}
+        {/* ═══ SECTION 8: FLEET GROWTH ═══ */}
         <View style={{ marginTop: 16 }}>
-          <Text style={s.sectionNum}>07</Text>
+          <Text style={s.sectionNum}>08</Text>
           <Text style={s.h2}>Fleet Growth</Text>
           <Text style={s.subtitle}>
             From 2 drones (Year 1) to 30 own drones + 35 franchise partners (Year 6)
@@ -868,12 +943,12 @@ export function FinancialPlanPDF() {
             ))}
           </View>
         </View>
-        <Footer page={7} total={TOTAL} />
+        <Footer page={8} total={TOTAL} />
       </Page>
 
-      {/* ═══ SECTION 8: PLATFORM GMV ═══ */}
+      {/* ═══ SECTION 9: PLATFORM GMV ═══ */}
       <Page size="A4" style={s.page}>
-        <Text style={s.sectionNum}>08</Text>
+        <Text style={s.sectionNum}>09</Text>
         <Text style={s.h2}>Platform GMV</Text>
         <Text style={s.subtitle}>
           Total ecosystem value -- own operations + franchise partner gross revenue
@@ -925,9 +1000,9 @@ export function FinancialPlanPDF() {
           HQ captures ~25% as direct revenue through own operations, royalties, SaaS fees, and franchise margins.
         </Text>
 
-        {/* ═══ SECTION 9: SENSITIVITY ANALYSIS ═══ */}
+        {/* ═══ SECTION 10: SENSITIVITY ANALYSIS ═══ */}
         <View style={{ marginTop: 20 }}>
-          <Text style={s.sectionNum}>09</Text>
+          <Text style={s.sectionNum}>10</Text>
           <Text style={s.h2}>Sensitivity Analysis</Text>
           <Text style={s.subtitle}>
             Revenue sensitivity to utilisation rates and daily pricing (Year 6, 125 drones, 35 partners)
@@ -1000,7 +1075,7 @@ export function FinancialPlanPDF() {
         <Text style={{ fontSize: 7, color: C.textMuted, marginTop: 8, fontStyle: "italic" }}>
           Based on management estimates. Subject to market conditions and regulatory timelines.
         </Text>
-        <Footer page={8} total={TOTAL} />
+        <Footer page={9} total={TOTAL} />
       </Page>
     </Document>
   );

@@ -309,8 +309,8 @@ export function PitchdeckPDF() {
           }}
         >
           <Image
-            src="/airbase-logo-transparent.png"
-            style={{ width: 200, height: "auto", marginBottom: 24 }}
+            src="/airbase-logo-pdf.png"
+            style={{ width: 200, marginBottom: 24 }}
           />
           <Text
             style={{
@@ -407,8 +407,8 @@ export function PitchdeckPDF() {
       <Page size="A4" orientation="landscape" style={s.pageDark}>
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <Image
-            src="/airbase-logo-transparent.png"
-            style={{ width: 120, height: "auto", marginBottom: 16, opacity: 0.9 }}
+            src="/airbase-logo-pdf.png"
+            style={{ width: 120, marginBottom: 16, opacity: 0.9 }}
           />
           <Text
             style={{
@@ -909,11 +909,11 @@ export function PitchdeckPDF() {
           </Text>
           {[
             { year: "2026", revenue: 0.12, label: "Pilot ops" },
-            { year: "2027", revenue: 0.68, label: "First contracts" },
-            { year: "2028", revenue: 2.4, label: "Scale" },
-            { year: "2029", revenue: 7.2, label: "Expansion" },
-            { year: "2030", revenue: 14.0, label: "Growth" },
-            { year: "2031", revenue: 22.0, label: "Market lead" },
+            { year: "2027", revenue: 2.12, label: "4 hubs, 10 drones" },
+            { year: "2028", revenue: 6.63, label: "Franchise launch" },
+            { year: "2029", revenue: 11.8, label: "Expansion" },
+            { year: "2030", revenue: 17.4, label: "Growth" },
+            { year: "2031", revenue: 24.3, label: "Market lead" },
           ].map((yr) => (
             <View
               key={yr.year}
@@ -931,7 +931,7 @@ export function PitchdeckPDF() {
                 <View
                   style={{
                     height: 8,
-                    width: `${(yr.revenue / 22) * 100}%`,
+                    width: `${(yr.revenue / 24.3) * 100}%`,
                     backgroundColor: C.accent,
                     borderRadius: 4,
                   }}
@@ -974,11 +974,13 @@ export function PitchdeckPDF() {
               Use of Funds -- CHF 1.5M
             </Text>
             {[
-              { name: "Fleet Expansion", amount: "CHF 525K", pct: "35%", color: C.accent },
-              { name: "Platform Development", amount: "CHF 375K", pct: "25%", color: "#FF6B6B" },
-              { name: "LUC + Legal", amount: "CHF 300K", pct: "20%", color: C.gold },
+              { name: "Fleet", amount: "CHF 550K", pct: "37%", color: C.accent },
+              { name: "Hub Infrastructure", amount: "CHF 350K", pct: "23%", color: C.gold },
+              { name: "Working Capital", amount: "CHF 220K", pct: "15%", color: C.textMuted },
               { name: "Sales & Marketing", amount: "CHF 150K", pct: "10%", color: C.green },
-              { name: "Working Capital", amount: "CHF 150K", pct: "10%", color: C.textMuted },
+              { name: "LUC + Legal", amount: "CHF 90K", pct: "6%", color: "#8B5CF6" },
+              { name: "Software & APIs", amount: "CHF 80K", pct: "5%", color: "#06B6D4" },
+              { name: "Insurance", amount: "CHF 60K", pct: "4%", color: "#FF6B6B" },
             ].map((item) => (
               <View
                 key={item.name}
