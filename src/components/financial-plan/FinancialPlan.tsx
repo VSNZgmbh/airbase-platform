@@ -1662,7 +1662,7 @@ export function FinancialPlan() {
           <SectionHeader
             number="05"
             title="Use of Funds — CHF 1.5M"
-            subtitle="Allocation of seed round capital across five strategic pillars"
+            subtitle="Allocation of seed round capital across seven strategic pillars"
             id="use-of-funds"
           />
 
@@ -1684,11 +1684,13 @@ export function FinancialPlan() {
                 <BarChart
                   layout="vertical"
                   data={[
-                    { name: "Fleet Expansion", amount: 525, fill: C.accent },
-                    { name: "Platform Dev", amount: 375, fill: "#B91C1C" },
-                    { name: "LUC + Legal", amount: 300, fill: C.gold },
+                    { name: "Fleet", amount: 650, fill: C.accent },
+                    { name: "Hub Infrastructure", amount: 250, fill: C.gold },
+                    { name: "Working Capital", amount: 180, fill: C.textMuted },
                     { name: "Sales & Marketing", amount: 150, fill: C.green },
-                    { name: "Working Capital", amount: 150, fill: C.textMuted },
+                    { name: "Insurance", amount: 100, fill: "#FF6B6B" },
+                    { name: "LUC + Legal", amount: 90, fill: "#8B5CF6" },
+                    { name: "Software & APIs", amount: 80, fill: "#06B6D4" },
                   ]}
                   margin={{ top: 0, right: 40, left: 0, bottom: 0 }}
                 >
@@ -1711,7 +1713,7 @@ export function FinancialPlan() {
                     }}
                   />
                   <Bar dataKey="amount" radius={[0, 6, 6, 0]} barSize={28}>
-                    {[C.accent, "#B91C1C", C.gold, C.green, C.textMuted].map(
+                    {[C.accent, C.gold, C.textMuted, C.green, "#FF6B6B", "#8B5CF6", "#06B6D4"].map(
                       (color, i) => (
                         <Cell key={i} fill={color} />
                       )
@@ -1736,11 +1738,13 @@ export function FinancialPlan() {
               </div>
               <div className="space-y-3">
                 {[
-                  { cat: "Fleet Expansion", desc: "Drones, batteries, equipment", pct: "35%", amt: "CHF 525K", color: C.accent },
-                  { cat: "Platform Development", desc: "AI, SaaS, flight system", pct: "25%", amt: "CHF 375K", color: "#B91C1C" },
-                  { cat: "LUC Certification + Legal", desc: "Regulatory approvals", pct: "20%", amt: "CHF 300K", color: C.gold },
+                  { cat: "Fleet", desc: "Drones, batteries, ground equipment", pct: "43%", amt: "CHF 650K", color: C.accent },
+                  { cat: "Hub Infrastructure", desc: "Setup, rent, vehicles", pct: "17%", amt: "CHF 250K", color: C.gold },
+                  { cat: "Working Capital", desc: "Ops reserve", pct: "12%", amt: "CHF 180K", color: C.textMuted },
                   { cat: "Sales & Marketing", desc: "Go-to-market, BD", pct: "10%", amt: "CHF 150K", color: C.green },
-                  { cat: "Working Capital", desc: "Ops reserve", pct: "10%", amt: "CHF 150K", color: C.textMuted },
+                  { cat: "Insurance", desc: "Liability, fleet, operations", pct: "7%", amt: "CHF 100K", color: "#FF6B6B" },
+                  { cat: "LUC + Legal", desc: "Certification & regulatory", pct: "6%", amt: "CHF 90K", color: "#8B5CF6" },
+                  { cat: "Software & APIs", desc: "Airspace APIs (SUSI, U-Space), weather, UTM", pct: "5%", amt: "CHF 80K", color: "#06B6D4" },
                 ].map((row, i) => (
                   <div
                     key={i}
