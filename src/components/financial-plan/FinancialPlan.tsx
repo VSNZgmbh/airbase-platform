@@ -41,6 +41,26 @@ import {
   AlertTriangle,
   Download,
 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const PDFDownloadButton = dynamic(() => import("../pdf/PDFDownloadButton"), {
+  ssr: false,
+  loading: () => (
+    <button
+      className="no-print fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold shadow-lg opacity-70"
+      style={{ background: "#E30613" }}
+      disabled
+    >
+      <Download className="w-4 h-4" />
+      <span className="hidden sm:inline">Download PDF</span>
+    </button>
+  ),
+});
+
+const FinancialPlanPDF = dynamic(
+  () => import("../pdf/FinancialPlanPDF").then((mod) => ({ default: mod.FinancialPlanPDF })),
+  { ssr: false }
+);
 
 /* ─── Touch-friendly range slider styles ─── */
 const rangeSliderStyles = `
@@ -1074,14 +1094,12 @@ export function FinancialPlan() {
       <style dangerouslySetInnerHTML={{ __html: rangeSliderStyles }} />
 
       {/* ─── Download PDF Button ─── */}
-      <button
-        onClick={() => window.print()}
-        className="no-print fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-all hover:brightness-110 shadow-lg"
-        style={{ background: C.accent }}
-      >
-        <Download className="w-4 h-4" />
-        <span className="hidden sm:inline">Download PDF</span>
-      </button>
+      <PDFDownloadButton
+        document={<FinancialPlanPDF />}
+        fileName="airBASE_Financial_Plan.pdf"
+        accent={C.accent}
+        className="top-4 right-4 sm:top-6 sm:right-6"
+      />
 
       {/* ─── Hero Header ─── */}
       <header
