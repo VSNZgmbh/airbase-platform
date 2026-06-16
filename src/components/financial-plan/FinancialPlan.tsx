@@ -436,9 +436,9 @@ function ROICalculator() {
   const fiveYearInterest = annualInterest * 6;
 
   const scenarios = [
-    { label: "Conservative", multiple: 3, color: C.textSecondary },
-    { label: "Base", multiple: 5, color: C.accent },
-    { label: "Optimistic", multiple: 6.5, color: C.green },
+    { label: "Conservative", multiple: 5, color: C.textSecondary },
+    { label: "Base", multiple: 7, color: C.accent },
+    { label: "Optimistic", multiple: 10, color: C.green },
   ];
 
   return (
@@ -479,13 +479,13 @@ function ROICalculator() {
         <input
           type="range"
           min={50}
-          max={750}
+          max={1500}
           step={50}
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
           className="fp-range w-full h-3 sm:h-2 rounded-full appearance-none cursor-pointer"
           style={{
-            background: `linear-gradient(to right, ${C.accent} 0%, ${C.accent} ${((amount - 50) / 700) * 100}%, ${C.border} ${((amount - 50) / 700) * 100}%, ${C.border} 100%)`,
+            background: `linear-gradient(to right, ${C.accent} 0%, ${C.accent} ${((amount - 50) / 1450) * 100}%, ${C.border} ${((amount - 50) / 1450) * 100}%, ${C.border} 100%)`,
           }}
         />
         <div className="flex justify-between mt-2">
@@ -493,7 +493,7 @@ function ROICalculator() {
             CHF 50K
           </span>
           <span className="text-xs font-mono" style={{ color: C.textMuted }}>
-            CHF 750K
+            CHF 1,500K
           </span>
         </div>
       </div>
@@ -560,7 +560,7 @@ function ROICalculator() {
             const totalNote = amount + fiveYearInterest;
             const effectivePrice = 1 - DISCOUNT_RATE / 100;
             const effectiveEquity = totalNote / effectivePrice / (PRE_MONEY + amount);
-            const exitValue = s.multiple * 22200;
+            const exitValue = s.multiple * 22000;
             const investorReturn = effectiveEquity * exitValue;
             const roi = investorReturn / amount;
 
@@ -622,7 +622,7 @@ function ROICalculator() {
             3. <strong>Pre-money valuation:</strong> CHF 8.5M
           </li>
           <li>
-            4. <strong>Exit target:</strong> Trade sale in 6-8 years (3-6.5x
+            4. <strong>Exit target:</strong> Trade sale in 6-8 years (5-10x
             ARR tech multiple)
           </li>
         </ul>
@@ -1632,7 +1632,7 @@ export function FinancialPlan() {
                 <ul className="space-y-3">
                   {[
                     { label: "Timeline", value: "Trade sale in 6-8 years" },
-                    { label: "Valuation basis", value: "3-6.5x ARR tech multiple (AI + LUC moat)" },
+                    { label: "Valuation basis", value: "5-10x ARR tech multiple (AI + LUC moat)" },
                     { label: "Potential acquirers", value: "Die Post, Planzer, Kuehne+Nagel, Implenia, intl. drone infra companies" },
                   ].map((item, i) => (
                     <li key={i} className="flex gap-3 text-sm" style={{ color: C.textSecondary }}>
@@ -1660,9 +1660,9 @@ export function FinancialPlan() {
                 <StyledTable
                   headers={["Scenario", "ARR Multiple", "Valuation", "Return", "ROI"]}
                   rows={[
-                    ["Conservative", "3x", "CHF 67M", "CHF 3,200K", "12.8x"],
-                    ["Base", "5x", "CHF 111M", "CHF 5,200K", "20.8x"],
-                    ["Optimistic", "6.5x", "CHF 144M", "CHF 6,375K", "25.5x"],
+                    ["Conservative", "5x", "CHF 110M", "CHF 5,343K", "21.4x"],
+                    ["Base", "7x", "CHF 154M", "CHF 7,480K", "29.9x"],
+                    ["Optimistic", "10x", "CHF 220M", "CHF 10,686K", "42.7x"],
                   ]}
                 />
                 <p className="mt-3 text-[10px]" style={{ color: C.textMuted }}>

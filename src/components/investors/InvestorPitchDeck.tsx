@@ -449,19 +449,19 @@ function InvestmentSlider() {
         <input
           type="range"
           min={50}
-          max={750}
+          max={1500}
           step={50}
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
           className="investor-range w-full h-3 sm:h-2 rounded-full appearance-none cursor-pointer"
           style={{
-            background: `linear-gradient(to right, ${C.accent} 0%, ${C.accent} ${((amount - 50) / 700) * 100}%, ${C.border} ${((amount - 50) / 700) * 100}%, ${C.border} 100%)`,
+            background: `linear-gradient(to right, ${C.accent} 0%, ${C.accent} ${((amount - 50) / 1450) * 100}%, ${C.border} ${((amount - 50) / 1450) * 100}%, ${C.border} 100%)`,
             accentColor: C.accent,
           }}
         />
         <div className="flex justify-between mt-2">
           <span className="text-xs font-mono" style={{ color: C.textMuted }}>CHF 50K</span>
-          <span className="text-xs font-mono" style={{ color: C.textMuted }}>CHF 750K</span>
+          <span className="text-xs font-mono" style={{ color: C.textMuted }}>CHF 1,500K</span>
         </div>
       </div>
 
