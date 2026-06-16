@@ -291,7 +291,7 @@ const TOTAL_PAGES = 15;
 /* ═══════════════════════════════════════════════════════════════
    PITCHDECK PDF DOCUMENT
    ═══════════════════════════════════════════════════════════════ */
-export function PitchdeckPDF() {
+export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: string } = {}) {
   return (
     <Document
       title="airBASE Aviation - Investor Pitch Deck 2026"
@@ -309,7 +309,7 @@ export function PitchdeckPDF() {
           }}
         >
           <Image
-            src="/airbase-logo-pdf.png"
+            src={logoSrc}
             style={{ width: 200, marginBottom: 24 }}
           />
           <Text
@@ -407,7 +407,7 @@ export function PitchdeckPDF() {
       <Page size="A4" orientation="landscape" style={s.pageDark}>
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <Image
-            src="/airbase-logo-pdf.png"
+            src={logoSrc}
             style={{ width: 120, marginBottom: 16, opacity: 0.9 }}
           />
           <Text

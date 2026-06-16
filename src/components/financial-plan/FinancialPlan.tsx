@@ -58,11 +58,6 @@ const PDFDownloadButton = dynamic(() => import("../pdf/PDFDownloadButton"), {
   ),
 });
 
-const FinancialPlanPDF = dynamic(
-  () => import("../pdf/FinancialPlanPDF").then((mod) => ({ default: mod.FinancialPlanPDF })),
-  { ssr: false }
-);
-
 /* ─── Touch-friendly range slider styles ─── */
 const rangeSliderStyles = `
   .fp-range::-webkit-slider-thumb {
@@ -1097,7 +1092,7 @@ export function FinancialPlan() {
 
       {/* ─── Download PDF Button ─── */}
       <PDFDownloadButton
-        document={<FinancialPlanPDF />}
+        href="/api/pdf/financial-plan"
         fileName="airBASE_Financial_Plan.pdf"
         accent={C.accent}
         className="top-4 right-4 sm:top-6 sm:right-6"

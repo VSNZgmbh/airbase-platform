@@ -135,7 +135,7 @@ function Footer({ page, total }: { page: number; total: number }) {
 
 const TOTAL = 12;
 
-export function FinancialPlanPDF() {
+export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: string } = {}) {
   return (
     <Document
       title="airBASE Aviation - Financial Plan 2026"
@@ -155,7 +155,7 @@ export function FinancialPlanPDF() {
         }}
       >
         <Image
-          src="/airbase-logo-pdf.png"
+          src={logoSrc}
           style={{ width: 140, marginBottom: 24, opacity: 0.9 }}
         />
         <Text

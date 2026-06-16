@@ -74,11 +74,6 @@ const PDFDownloadButton = dynamic(() => import("../pdf/PDFDownloadButton"), {
   ),
 });
 
-const PitchdeckPDF = dynamic(
-  () => import("../pdf/PitchdeckPDF").then((mod) => ({ default: mod.PitchdeckPDF })),
-  { ssr: false }
-);
-
 /* ─── Touch-friendly range slider styles ─── */
 const rangeSliderStyles = `
   @media (max-width: 768px) {
@@ -847,7 +842,7 @@ export function InvestorPitchDeck() {
 
       {/* ─── Download PDF Button ─── */}
       <PDFDownloadButton
-        document={<PitchdeckPDF />}
+        href="/api/pdf/pitchdeck"
         fileName="airBASE_Investor_Pitchdeck.pdf"
         accent={C.accent}
         className="top-4 right-4 sm:top-6 sm:right-6"
