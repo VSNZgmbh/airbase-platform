@@ -248,7 +248,7 @@ export function FinancialPlanPDF() {
           { num: "04", title: "Cash Flow", sub: "-CHF 203K to +CHF 35.2M cumulative" },
           { num: "05", title: "Investor ROI", sub: "Convertible note returns by scenario" },
           { num: "06", title: "Franchise Economics", sub: "Partner P&L + HQ recurring revenue" },
-          { num: "07", title: "Fleet Growth", sub: "2 to 125 drones over 6 years" },
+          { num: "07", title: "Fleet Growth", sub: "2 to 5 own drones + 35 franchise partners over 6 years" },
           { num: "08", title: "Platform GMV", sub: "CHF 95.5M total ecosystem value" },
           { num: "09", title: "Sensitivity Analysis", sub: "Revenue sensitivity grid + risk factors" },
         ].map((item) => (
@@ -398,7 +398,7 @@ export function FinancialPlanPDF() {
           {[
             { label: "Year 6 Revenue", value: "CHF 22.2M" },
             { label: "Year 6 EBITDA", value: "CHF 16.1M" },
-            { label: "Fleet (Year 6)", value: "125 drones" },
+            { label: "Own Drones (Y6)", value: "5 drones" },
             { label: "Franchise Partners", value: "35" },
           ].map((kpi) => (
             <View key={kpi.label} style={s.kpiBox}>
@@ -422,9 +422,10 @@ export function FinancialPlanPDF() {
           </View>
           {/* Fleet */}
           {[
-            { label: "Own Drones", vals: ["2", "5", "8", "10", "12", "15"] },
-            { label: "Franchise Drones", vals: ["--", "--", "12", "35", "68", "110"] },
-            { label: "Total Fleet", vals: ["2", "5", "20", "45", "80", "125"], bold: true },
+            { label: "Own Drones", vals: ["2", "3", "5", "5", "5", "5"] },
+            { label: "Pilots", vals: ["2", "5", "10", "15", "20", "25"] },
+            { label: "Core Team", vals: ["0", "2", "4", "6", "8", "10"] },
+            { label: "Franchise Partners", vals: ["0", "0", "5", "12", "24", "35"], bold: true },
           ].map((row) => (
             <View key={row.label} style={[s.tRow, row.bold ? { borderBottomWidth: 2, borderBottomColor: C.border } : {}]}>
               <Text style={[row.bold ? s.tCellBold : s.tCell, { width: 90 }]}>{row.label}</Text>
@@ -438,14 +439,15 @@ export function FinancialPlanPDF() {
             <Text style={{ fontSize: 6, color: C.accent, letterSpacing: 1, textTransform: "uppercase" }}>Revenue</Text>
           </View>
           {[
-            { label: "Own ops", vals: ["315K", "3,150K", "5,040K", "7,600K", "9,600K", "12,000K"] },
-            { label: "Gov/Military", vals: ["--", "200K", "400K", "600K", "800K", "1,200K"] },
-            { label: "Subtotal DaaS", vals: ["315K", "3,350K", "5,440K", "8,200K", "10,400K", "13,200K"], accent: true },
-            { label: "Franchise entry fees", vals: ["--", "--", "70K", "100K", "140K", "180K"] },
-            { label: "Hardware margin", vals: ["--", "--", "140K", "280K", "400K", "500K"] },
-            { label: "Royalties (9%)", vals: ["--", "--", "680K", "2,400K", "4,900K", "7,690K"] },
-            { label: "SaaS + LUC fee", vals: ["--", "--", "90K", "220K", "400K", "630K"] },
-            { label: "Subtotal Franchise", vals: ["--", "--", "980K", "3,000K", "5,840K", "9,000K"], gold: true },
+            { label: "Own DaaS", vals: ["315K", "1,575K", "3,150K", "5,700K", "8,000K", "10,500K"] },
+            { label: "Gov/Military", vals: ["--", "120K", "240K", "480K", "720K", "960K"] },
+            { label: "Subtotal Own Ops", vals: ["315K", "1,695K", "3,390K", "6,180K", "8,720K", "11,460K"], accent: true },
+            { label: "Franchise entry fees", vals: ["--", "--", "175K", "245K", "350K", "455K"] },
+            { label: "Hardware margin", vals: ["--", "--", "150K", "210K", "300K", "390K"] },
+            { label: "Royalties (9%)", vals: ["--", "--", "567K", "2,052K", "4,320K", "7,560K"] },
+            { label: "SaaS + LUC fees", vals: ["--", "--", "90K", "216K", "396K", "630K"] },
+            { label: "Marketing pool (2%)", vals: ["--", "--", "126K", "456K", "960K", "1,680K"] },
+            { label: "Subtotal Franchise", vals: ["--", "--", "1,108K", "3,179K", "6,326K", "10,715K"], gold: true },
           ].map((row) => (
             <View
               key={row.label}
@@ -479,7 +481,7 @@ export function FinancialPlanPDF() {
           {/* Total Revenue */}
           <View style={[s.tRow, { backgroundColor: C.accent + "12", borderBottomWidth: 2, borderBottomColor: C.accent }]}>
             <Text style={[s.tCellAccent, { width: 90, fontSize: 8 }]}>TOTAL REVENUE</Text>
-            {["315K", "3,350K", "6,420K", "11,200K", "16,240K", "22,200K"].map((v, i) => (
+            {["315K", "1,695K", "4,498K", "9,359K", "15,046K", "22,175K"].map((v, i) => (
               <Text key={i} style={[s.tCellAccent, { flex: 1, textAlign: "right", fontSize: 8 }]}>{v}</Text>
             ))}
           </View>
@@ -488,14 +490,15 @@ export function FinancialPlanPDF() {
             <Text style={{ fontSize: 6, color: C.textMuted, letterSpacing: 1, textTransform: "uppercase" }}>Costs</Text>
           </View>
           {[
-            { label: "Drone CAPEX", vals: ["98K", "147K", "147K", "98K", "98K", "147K"] },
-            { label: "Fleet OPEX", vals: ["26K", "65K", "103K", "129K", "155K", "194K"] },
-            { label: "Crew costs", vals: ["124K", "800K", "1,100K", "1,500K", "1,800K", "1,650K"] },
-            { label: "Ops vehicles", vals: ["50K", "50K", "75K", "100K", "125K", "150K"] },
-            { label: "Fixed & platform", vals: ["190K", "500K", "700K", "900K", "1,050K", "980K"] },
-            { label: "Core team", vals: ["0", "650K", "900K", "1,200K", "1,500K", "1,450K"] },
-            { label: "Marketing", vals: ["30K", "300K", "500K", "700K", "900K", "850K"] },
-            { label: "Franchise ops", vals: ["--", "--", "200K", "400K", "650K", "680K"] },
+            { label: "Drone CAPEX", vals: ["98K", "147K", "245K", "245K", "245K", "245K"] },
+            { label: "Fleet OPEX", vals: ["26K", "65K", "129K", "194K", "258K", "323K"] },
+            { label: "Crew costs", vals: ["124K", "310K", "620K", "930K", "1,240K", "1,550K"] },
+            { label: "Ops vehicles", vals: ["50K", "50K", "100K", "100K", "100K", "100K"] },
+            { label: "Fixed costs & platform", vals: ["190K", "243K", "300K", "380K", "460K", "540K"] },
+            { label: "Core team salaries", vals: ["0", "240K", "480K", "720K", "960K", "1,200K"] },
+            { label: "Franchise ops", vals: ["0", "0", "180K", "360K", "600K", "900K"] },
+            { label: "Marketing", vals: ["30K", "60K", "150K", "250K", "400K", "600K"] },
+            { label: "Intl. expansion", vals: ["0", "0", "0", "200K", "400K", "600K"] },
           ].map((row) => (
             <View key={row.label} style={s.tRow}>
               <Text style={[s.tCell, { width: 90 }]}>{row.label}</Text>
@@ -506,7 +509,7 @@ export function FinancialPlanPDF() {
           ))}
           <View style={[s.tRow, { borderBottomWidth: 2, borderBottomColor: C.border }]}>
             <Text style={[s.tCellBold, { width: 90 }]}>TOTAL COSTS</Text>
-            {["518K", "2,750K", "3,820K", "5,100K", "6,140K", "6,100K"].map((v, i) => (
+            {["518K", "1,115K", "2,204K", "3,379K", "4,663K", "6,058K"].map((v, i) => (
               <Text key={i} style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>{v}</Text>
             ))}
           </View>
@@ -515,11 +518,11 @@ export function FinancialPlanPDF() {
             <Text style={[s.tCellGreen, { width: 90, fontSize: 8 }]}>EBITDA</Text>
             {[
               { v: "-203K", neg: true },
-              { v: "600K", neg: false },
-              { v: "2,600K", neg: false },
-              { v: "6,100K", neg: false },
-              { v: "10,100K", neg: false },
-              { v: "16,100K", neg: false },
+              { v: "580K", neg: false },
+              { v: "2,294K", neg: false },
+              { v: "5,980K", neg: false },
+              { v: "10,383K", neg: false },
+              { v: "16,117K", neg: false },
             ].map((item, i) => (
               <Text
                 key={i}
@@ -534,7 +537,7 @@ export function FinancialPlanPDF() {
           </View>
           <View style={s.tRow}>
             <Text style={[s.tCell, { width: 90 }]}>EBITDA Margin</Text>
-            {["-64%", "18%", "40%", "54%", "62%", "73%"].map((v, i) => (
+            {["-64%", "34%", "51%", "64%", "69%", "73%"].map((v, i) => (
               <Text
                 key={i}
                 style={[
@@ -639,11 +642,11 @@ export function FinancialPlanPDF() {
           </View>
           {[
             { yr: "Year 1", ci: "315K", co: "518K", net: "-203K", cum: "-203K", neg: true },
-            { yr: "Year 2", ci: "3,350K", co: "2,750K", net: "+600K", cum: "+397K", neg: false },
-            { yr: "Year 3", ci: "6,420K", co: "3,820K", net: "+2,600K", cum: "+2,997K", neg: false },
-            { yr: "Year 4", ci: "11,200K", co: "5,100K", net: "+6,100K", cum: "+9,097K", neg: false },
-            { yr: "Year 5", ci: "16,240K", co: "6,140K", net: "+10,100K", cum: "+19,197K", neg: false },
-            { yr: "Year 6", ci: "22,200K", co: "6,100K", net: "+16,100K", cum: "+35,200K", neg: false },
+            { yr: "Year 2", ci: "1,695K", co: "1,115K", net: "+580K", cum: "+377K", neg: false },
+            { yr: "Year 3", ci: "4,498K", co: "2,204K", net: "+2,294K", cum: "+2,671K", neg: false },
+            { yr: "Year 4", ci: "9,359K", co: "3,379K", net: "+5,980K", cum: "+8,651K", neg: false },
+            { yr: "Year 5", ci: "15,046K", co: "4,663K", net: "+10,383K", cum: "+19,034K", neg: false },
+            { yr: "Year 6", ci: "22,175K", co: "6,058K", net: "+16,117K", cum: "+35,151K", neg: false },
           ].map((row) => (
             <View key={row.yr} style={s.tRow}>
               <Text style={[s.tCellBold, { width: 50 }]}>{row.yr}</Text>
@@ -666,7 +669,7 @@ export function FinancialPlanPDF() {
         <Text style={s.sectionNum}>05</Text>
         <Text style={s.h2}>Investor ROI</Text>
         <Text style={s.subtitle}>
-          Convertible note returns by scenario (CHF 250K example investment)
+          Investor ROI at CHF 200K (convertible note)
         </Text>
 
         <View style={{ flexDirection: "row", gap: 6, marginBottom: 10 }}>
@@ -686,26 +689,24 @@ export function FinancialPlanPDF() {
         {/* ROI Scenarios */}
         <View style={s.card}>
           <Text style={{ fontSize: 8, fontWeight: "bold", color: C.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>
-            Example: CHF 250K Investment -- Exit Scenarios
+            Investor ROI at CHF 200K (convertible note)
           </Text>
           <View style={s.tHead}>
-            <Text style={[s.tCellBold, { flex: 1 }]}>Scenario</Text>
-            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>ARR Multiple</Text>
-            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Valuation</Text>
-            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Return</Text>
-            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>ROI</Text>
+            <Text style={[s.tCellBold, { flex: 1 }]}> </Text>
+            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Company Valuation</Text>
+            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Investor Equity</Text>
+            <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Multiple</Text>
           </View>
           {[
-            ["Conservative", "5x", "CHF 110M", "CHF 5,343K", "21.4x"],
-            ["Base", "7x", "CHF 154M", "CHF 7,480K", "29.9x"],
-            ["Optimistic", "10x", "CHF 220M", "CHF 10,686K", "42.7x"],
+            ["Year 3", "~CHF 45M", "~CHF 1.1M", "5.5\u00d7"],
+            ["Year 5", "~CHF 150M", "~CHF 3.5M", "17.5\u00d7"],
+            ["Year 6", "~CHF 240M", "~CHF 5.6M", "28\u00d7"],
           ].map((row, i) => (
-            <View key={i} style={[s.tRow, i === 1 ? { backgroundColor: C.accent + "08" } : {}]}>
-              <Text style={[i === 1 ? s.tCellAccent : s.tCellBold, { flex: 1 }]}>{row[0]}</Text>
-              <Text style={[i === 1 ? s.tCellAccent : s.tCell, { flex: 1, textAlign: "right" }]}>{row[1]}</Text>
-              <Text style={[i === 1 ? s.tCellAccent : s.tCell, { flex: 1, textAlign: "right" }]}>{row[2]}</Text>
-              <Text style={[i === 1 ? s.tCellAccent : s.tCellBold, { flex: 1, textAlign: "right" }]}>{row[3]}</Text>
-              <Text style={[i === 1 ? s.tCellAccent : s.tCellBold, { flex: 1, textAlign: "right" }]}>{row[4]}</Text>
+            <View key={i} style={[s.tRow, i === 2 ? { backgroundColor: C.accent + "08" } : {}]}>
+              <Text style={[i === 2 ? s.tCellAccent : s.tCellBold, { flex: 1 }]}>{row[0]}</Text>
+              <Text style={[i === 2 ? s.tCellAccent : s.tCell, { flex: 1, textAlign: "right" }]}>{row[1]}</Text>
+              <Text style={[i === 2 ? s.tCellAccent : s.tCellBold, { flex: 1, textAlign: "right" }]}>{row[2]}</Text>
+              <Text style={[i === 2 ? s.tCellAccent : s.tCellBold, { flex: 1, textAlign: "right" }]}>{row[3]}</Text>
             </View>
           ))}
         </View>
@@ -837,13 +838,13 @@ export function FinancialPlanPDF() {
           <Text style={s.sectionNum}>07</Text>
           <Text style={s.h2}>Fleet Growth</Text>
           <Text style={s.subtitle}>
-            From 2 drones (Year 1) to 125 drones (Year 6)
+            From 2 drones (Year 1) to 5 own drones + 35 franchise partners (Year 6)
           </Text>
         </View>
 
         <View style={s.card}>
           <Text style={{ fontSize: 8, fontWeight: "bold", color: C.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>
-            Fleet Growth -- 2 to 125 Drones
+            Fleet & Crew Scale
           </Text>
           <View style={s.tHead}>
             <Text style={[s.tCellBold, { width: 50 }]}> </Text>
@@ -853,11 +854,11 @@ export function FinancialPlanPDF() {
           </View>
           {[
             { year: "Year 1", own: 2, franchise: 0, total: 2 },
-            { year: "Year 2", own: 5, franchise: 0, total: 5 },
-            { year: "Year 3", own: 8, franchise: 12, total: 20 },
-            { year: "Year 4", own: 10, franchise: 35, total: 45 },
-            { year: "Year 5", own: 12, franchise: 68, total: 80 },
-            { year: "Year 6", own: 15, franchise: 110, total: 125 },
+            { year: "Year 2", own: 3, franchise: 0, total: 3 },
+            { year: "Year 3", own: 5, franchise: 5, total: 10 },
+            { year: "Year 4", own: 5, franchise: 12, total: 17 },
+            { year: "Year 5", own: 5, franchise: 24, total: 29 },
+            { year: "Year 6", own: 5, franchise: 35, total: 40 },
           ].map((row) => (
             <View key={row.year} style={s.tRow}>
               <Text style={[s.tCellBold, { width: 50 }]}>{row.year}</Text>
@@ -872,16 +873,16 @@ export function FinancialPlanPDF() {
           <View style={{ marginTop: 8 }}>
             {[
               { year: "Year 1", total: 2 },
-              { year: "Year 2", total: 5 },
-              { year: "Year 3", total: 20 },
-              { year: "Year 4", total: 45 },
-              { year: "Year 5", total: 80 },
-              { year: "Year 6", total: 125 },
+              { year: "Year 2", total: 3 },
+              { year: "Year 3", total: 10 },
+              { year: "Year 4", total: 17 },
+              { year: "Year 5", total: 29 },
+              { year: "Year 6", total: 40 },
             ].map((row) => (
               <View key={row.year} style={{ flexDirection: "row", alignItems: "center", gap: 4, marginBottom: 3 }}>
                 <Text style={{ fontSize: 6, color: C.textMuted, width: 35 }}>{row.year}</Text>
                 <View style={[s.barBg, { flex: 1 }]}>
-                  <View style={{ height: 6, width: `${(row.total / 125) * 100}%`, backgroundColor: C.accent, borderRadius: 3 }} />
+                  <View style={{ height: 6, width: `${(row.total / 40) * 100}%`, backgroundColor: C.accent, borderRadius: 3 }} />
                 </View>
                 <Text style={{ fontSize: 7, fontWeight: "bold", color: C.accent, width: 30, textAlign: "right" }}>
                   {row.total}
@@ -905,7 +906,7 @@ export function FinancialPlanPDF() {
           {[
             { label: "Year 6 Platform GMV", value: "CHF 95.5M" },
             { label: "HQ Take Rate", value: "23%" },
-            { label: "Ecosystem Drones", value: "125 units" },
+            { label: "Franchise Partners", value: "35" },
           ].map((kpi) => (
             <View key={kpi.label} style={s.kpiBox}>
               <Text style={[s.kpiValue, { fontSize: 14 }]}>{kpi.value}</Text>
@@ -925,7 +926,7 @@ export function FinancialPlanPDF() {
             ))}
           </View>
           {[
-            { label: "Own Operations", vals: ["315K", "3,350K", "5,440K", "8,200K", "10,400K", "13,200K"] },
+            { label: "Own Operations", vals: ["315K", "1,695K", "3,390K", "6,180K", "8,720K", "11,460K"] },
             { label: "Franchise Gross Rev.", vals: ["--", "--", "7,560K", "26,600K", "54,400K", "82,300K"] },
           ].map((row) => (
             <View key={row.label} style={s.tRow}>

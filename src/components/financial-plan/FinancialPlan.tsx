@@ -790,20 +790,20 @@ function SensitivityGrid() {
 /* ─── Chart Data ─── */
 const cashFlowData = [
   { year: "Year 1", net: -203, cumulative: -203 },
-  { year: "Year 2", net: 600, cumulative: 397 },
-  { year: "Year 3", net: 2600, cumulative: 2997 },
-  { year: "Year 4", net: 6100, cumulative: 9097 },
-  { year: "Year 5", net: 10100, cumulative: 19197 },
-  { year: "Year 6", net: 16100, cumulative: 35200 },
+  { year: "Year 2", net: 580, cumulative: 377 },
+  { year: "Year 3", net: 2294, cumulative: 2671 },
+  { year: "Year 4", net: 5980, cumulative: 8651 },
+  { year: "Year 5", net: 10383, cumulative: 19034 },
+  { year: "Year 6", net: 16117, cumulative: 35151 },
 ];
 
 const fleetGrowthData = [
   { year: "Year 1", own: 2, franchise: 0, total: 2 },
-  { year: "Year 2", own: 5, franchise: 0, total: 5 },
-  { year: "Year 3", own: 8, franchise: 12, total: 20 },
-  { year: "Year 4", own: 10, franchise: 35, total: 45 },
-  { year: "Year 5", own: 12, franchise: 68, total: 80 },
-  { year: "Year 6", own: 15, franchise: 110, total: 125 },
+  { year: "Year 2", own: 3, franchise: 0, total: 3 },
+  { year: "Year 3", own: 5, franchise: 5, total: 10 },
+  { year: "Year 4", own: 5, franchise: 12, total: 17 },
+  { year: "Year 5", own: 5, franchise: 24, total: 29 },
+  { year: "Year 6", own: 5, franchise: 35, total: 40 },
 ];
 
 /* ─── Fleet Growth Chart ─── */
@@ -829,7 +829,7 @@ function FleetGrowthChart() {
           className="text-sm font-mono uppercase tracking-wider font-semibold"
           style={{ color: C.accent }}
         >
-          Fleet Growth — 2 to 125 Drones
+          Fleet Growth — 2 to 40 Units
         </span>
       </div>
       <div className="flex items-center gap-4 mb-4">
@@ -936,7 +936,7 @@ function CashFlowChart() {
         </AreaChart>
       </ResponsiveContainer>
       <div className="mt-4 text-center text-xs" style={{ color: C.textMuted }}>
-        From -CHF 203K (Year 1) to +CHF 35.2M cumulative (Year 6) &mdash; with CHF 1.5M raised
+        From -CHF 203K (Year 1) to +CHF 35.2M cumulative (Year 6)
       </div>
     </motion.div>
   );
@@ -1319,9 +1319,9 @@ export function FinancialPlan() {
               delay={0.1}
             />
             <KpiCard
-              label="Fleet (Year 6)"
-              value={<CountUp end={125} suffix=" drones" />}
-              sub="15 own + 110 franchise"
+              label="Own Drones (Year 6)"
+              value={<CountUp end={5} suffix=" drones" />}
+              sub="5 own drones"
               icon={Layers}
               delay={0.2}
             />
@@ -1366,73 +1366,78 @@ export function FinancialPlan() {
                   {/* Fleet */}
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Own Drones</td>
-                    {[2, 5, 8, 10, 12, 15].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {[2, 3, 5, 5, 5, 5].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
-                    <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Franchise Drones</td>
-                    {["\u2014", "\u2014", 12, 35, 68, 110].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Pilots</td>
+                    {[2, 5, 10, 15, 20, 25].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
-                    <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Franchise Partners</td>
-                    {["\u2014", "\u2014", 5, 12, 22, 35].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Core Team</td>
+                    {[0, 2, 4, 6, 8, 10].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `2px solid ${C.border}` }}>
-                    <td className="px-2 sm:px-3 py-2 font-bold" style={{ color: C.text }}>Total Fleet</td>
-                    {[2, 5, 20, 45, 80, 125].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
+                    <td className="px-2 sm:px-3 py-2 font-bold" style={{ color: C.text }}>Franchise Partners</td>
+                    {[0, 0, 5, 12, 24, 35].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
                   </tr>
 
                   {/* Revenue section header */}
                   <tr><td colSpan={7} className="px-2 sm:px-3 pt-4 pb-1"><span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: C.accent }}>Revenue</span></td></tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
-                    <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Own ops (days x rate)</td>
-                    {["315K", "3,150K", "5,040K", "7,600K", "9,600K", "12,000K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Own DaaS</td>
+                    {["315K", "1,575K", "3,150K", "5,700K", "8,000K", "10,500K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Gov/Military retainers</td>
-                    {["\u2014", "200K", "400K", "600K", "800K", "1,200K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "120K", "240K", "480K", "720K", "960K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}`, background: C.accentLight }}>
-                    <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.accent }}>Subtotal DaaS</td>
-                    {["315K", "3,350K", "5,440K", "8,200K", "10,400K", "13,200K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.accent }}>{v}</td>)}
+                    <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.accent }}>Subtotal Own Ops</td>
+                    {["315K", "1,695K", "3,390K", "6,180K", "8,720K", "11,460K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.accent }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Franchise entry fees</td>
-                    {["\u2014", "\u2014", "70K", "100K", "140K", "180K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "\u2014", "175K", "245K", "350K", "455K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Hardware margin</td>
-                    {["\u2014", "\u2014", "140K", "280K", "400K", "500K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "\u2014", "150K", "210K", "300K", "390K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Royalties (9%)</td>
-                    {["\u2014", "\u2014", "680K", "2,400K", "4,900K", "7,690K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "\u2014", "567K", "2,052K", "4,320K", "7,560K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
-                    <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>SaaS + LUC fee</td>
-                    {["\u2014", "\u2014", "90K", "220K", "400K", "630K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>SaaS + LUC fees</td>
+                    {["\u2014", "\u2014", "90K", "216K", "396K", "630K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                  </tr>
+                  <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+                    <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Marketing pool (2%)</td>
+                    {["\u2014", "\u2014", "126K", "456K", "960K", "1,680K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}`, background: C.goldLight }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.gold }}>Subtotal Franchise</td>
-                    {["\u2014", "\u2014", "980K", "3,000K", "5,840K", "9,000K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.gold }}>{v}</td>)}
+                    {["\u2014", "\u2014", "1,108K", "3,179K", "6,326K", "10,715K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.gold }}>{v}</td>)}
                   </tr>
 
                   {/* Total Revenue */}
                   <tr style={{ borderBottom: `2px solid ${C.accent}`, background: C.accentLight }}>
                     <td className="px-2 sm:px-3 py-3 font-bold text-sm" style={{ color: C.accent }}>TOTAL REVENUE</td>
-                    {["315K", "3,350K", "6,420K", "11,200K", "16,240K", "22,200K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: C.accent }}>{v}</td>)}
+                    {["315K", "1,695K", "4,498K", "9,359K", "15,046K", "22,175K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: C.accent }}>{v}</td>)}
                   </tr>
 
                   {/* Costs section header */}
                   <tr><td colSpan={7} className="px-2 sm:px-3 pt-4 pb-1"><span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: C.textMuted }}>Costs</span></td></tr>
                   {[
-                    { label: "Drone CAPEX", vals: ["98K", "147K", "147K", "98K", "98K", "147K"] },
-                    { label: "Fleet OPEX", vals: ["26K", "65K", "103K", "129K", "155K", "194K"] },
-                    { label: "Crew costs", vals: ["124K", "800K", "1,100K", "1,500K", "1,800K", "1,650K"] },
-                    { label: "Operations vehicles", vals: ["50K", "50K", "75K", "100K", "125K", "150K"] },
-                    { label: "Fixed & platform", vals: ["190K", "500K", "700K", "900K", "1,050K", "980K"] },
-                    { label: "Core team salaries", vals: ["0", "650K", "900K", "1,200K", "1,500K", "1,450K"] },
-                    { label: "Marketing", vals: ["30K", "300K", "500K", "700K", "900K", "850K"] },
-                    { label: "Franchise ops", vals: ["\u2014", "\u2014", "200K", "400K", "650K", "680K"] },
+                    { label: "Drone CAPEX", vals: ["98K", "147K", "245K", "245K", "245K", "245K"] },
+                    { label: "Fleet OPEX", vals: ["26K", "65K", "129K", "194K", "258K", "323K"] },
+                    { label: "Crew costs", vals: ["124K", "310K", "620K", "930K", "1,240K", "1,550K"] },
+                    { label: "Ops vehicles", vals: ["50K", "50K", "100K", "100K", "100K", "100K"] },
+                    { label: "Fixed costs & platform", vals: ["190K", "243K", "300K", "380K", "460K", "540K"] },
+                    { label: "Core team salaries", vals: ["0", "240K", "480K", "720K", "960K", "1,200K"] },
+                    { label: "Franchise ops", vals: ["0", "0", "180K", "360K", "600K", "900K"] },
+                    { label: "Marketing", vals: ["30K", "60K", "150K", "250K", "400K", "600K"] },
+                    { label: "International expansion", vals: ["0", "0", "0", "200K", "400K", "600K"] },
                   ].map((row, ri) => (
                     <tr key={ri} style={{ borderBottom: `1px solid ${C.border}` }}>
                       <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>{row.label}</td>
@@ -1441,7 +1446,7 @@ export function FinancialPlan() {
                   ))}
                   <tr style={{ borderBottom: `2px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-3 font-bold" style={{ color: C.text }}>TOTAL COSTS</td>
-                    {["518K", "2,750K", "3,820K", "5,100K", "6,140K", "6,100K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
+                    {["518K", "1,115K", "2,204K", "3,379K", "4,663K", "6,058K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
                   </tr>
 
                   {/* EBITDA */}
@@ -1449,11 +1454,11 @@ export function FinancialPlan() {
                     <td className="px-2 sm:px-3 py-3 font-bold text-sm" style={{ color: C.green }}>EBITDA</td>
                     {[
                       { v: "-203K", neg: true },
-                      { v: "600K", neg: false },
-                      { v: "2,600K", neg: false },
-                      { v: "6,100K", neg: false },
-                      { v: "10,100K", neg: false },
-                      { v: "16,100K", neg: false },
+                      { v: "580K", neg: false },
+                      { v: "2,294K", neg: false },
+                      { v: "5,980K", neg: false },
+                      { v: "10,383K", neg: false },
+                      { v: "16,117K", neg: false },
                     ].map((item, i) => (
                       <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: item.neg ? C.red : C.green }}>
                         {item.v}
@@ -1462,7 +1467,7 @@ export function FinancialPlan() {
                   </tr>
                   <tr>
                     <td className="px-2 sm:px-3 py-2 font-semibold text-xs" style={{ color: C.textMuted }}>EBITDA Margin</td>
-                    {["-64%", "18%", "40%", "54%", "62%", "73%"].map((v, i) => (
+                    {["-64%", "34%", "51%", "64%", "69%", "73%"].map((v, i) => (
                       <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono text-xs" style={{ color: v.startsWith("-") ? C.red : C.green }}>
                         {v}
                       </td>
@@ -1620,11 +1625,11 @@ export function FinancialPlan() {
                   <tbody>
                     {[
                       { yr: "Year 1", ci: "315K", co: "518K", net: "-203K", cum: "-203K", neg: true },
-                      { yr: "Year 2", ci: "3,350K", co: "2,750K", net: "+600K", cum: "+397K", neg: false },
-                      { yr: "Year 3", ci: "6,420K", co: "3,820K", net: "+2,600K", cum: "+2,997K", neg: false },
-                      { yr: "Year 4", ci: "11,200K", co: "5,100K", net: "+6,100K", cum: "+9,097K", neg: false },
-                      { yr: "Year 5", ci: "16,240K", co: "6,140K", net: "+10,100K", cum: "+19,197K", neg: false },
-                      { yr: "Year 6", ci: "22,200K", co: "6,100K", net: "+16,100K", cum: "+35,200K", neg: false },
+                      { yr: "Year 2", ci: "1,695K", co: "1,115K", net: "+580K", cum: "+377K", neg: false },
+                      { yr: "Year 3", ci: "4,498K", co: "2,204K", net: "+2,294K", cum: "+2,671K", neg: false },
+                      { yr: "Year 4", ci: "9,359K", co: "3,379K", net: "+5,980K", cum: "+8,651K", neg: false },
+                      { yr: "Year 5", ci: "15,046K", co: "4,663K", net: "+10,383K", cum: "+19,034K", neg: false },
+                      { yr: "Year 6", ci: "22,175K", co: "6,058K", net: "+16,117K", cum: "+35,151K", neg: false },
                     ].map((row, ri) => (
                       <tr key={ri} style={{ borderBottom: `1px solid ${C.border}` }}>
                         <td className="px-2 py-2 font-semibold" style={{ color: C.text }}>{row.yr}</td>
@@ -1693,15 +1698,15 @@ export function FinancialPlan() {
                     className="text-sm font-mono uppercase tracking-wider font-semibold"
                     style={{ color: C.accent }}
                   >
-                    Example: CHF 250K Investment
+                    Investor ROI at CHF 200K (convertible note)
                   </span>
                 </div>
                 <StyledTable
-                  headers={["Scenario", "ARR Multiple", "Valuation", "Return", "ROI"]}
+                  headers={["", "Company Valuation", "Investor Equity Value", "Multiple"]}
                   rows={[
-                    ["Conservative", "5x", "CHF 110M", "CHF 5,343K", "21.4x"],
-                    ["Base", "7x", "CHF 154M", "CHF 7,480K", "29.9x"],
-                    ["Optimistic", "10x", "CHF 220M", "CHF 10,686K", "42.7x"],
+                    ["Year 3", "~CHF 45M", "~CHF 1.1M", "5.5\u00d7"],
+                    ["Year 5", "~CHF 150M", "~CHF 3.5M", "17.5\u00d7"],
+                    ["Year 6", "~CHF 240M", "~CHF 5.6M", "28\u00d7"],
                   ]}
                 />
                 <p className="mt-3 text-[10px]" style={{ color: C.textMuted }}>
@@ -1805,7 +1810,7 @@ export function FinancialPlan() {
           <SectionHeader
             number="07"
             title="Fleet Growth"
-            subtitle="From 2 drones (Year 1) to 125 drones (Year 6) — own fleet + 35 franchise partners"
+            subtitle="From 2 drones (Year 1) to 5 own drones + 35 franchise partners (Year 6)"
             id="fleet-growth"
           />
           <FleetGrowthChart />
@@ -1837,9 +1842,9 @@ export function FinancialPlan() {
               delay={0.1}
             />
             <KpiCard
-              label="Ecosystem Drones"
-              value={<CountUp end={125} suffix=" units" />}
-              sub="15 own + 110 franchise"
+              label="Franchise Partners"
+              value={<CountUp end={35} suffix=" partners" />}
+              sub="5 own drones + 35 franchise partners"
               icon={Layers}
               color={C.gold}
               delay={0.2}
@@ -1861,7 +1866,7 @@ export function FinancialPlan() {
             <StyledTable
               headers={["", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6"]}
               rows={[
-                ["Own Operations", "315K", "3,350K", "5,440K", "8,200K", "10,400K", "13,200K"],
+                ["Own Operations", "315K", "1,695K", "3,390K", "6,180K", "8,720K", "11,460K"],
                 ["Franchise Gross Rev.", "\u2014", "\u2014", "7,560K", "26,600K", "54,400K", "82,300K"],
                 ["Total Platform GMV", "315K", "3,350K", "13,000K", "34,800K", "64,800K", "95,500K"],
               ]}
