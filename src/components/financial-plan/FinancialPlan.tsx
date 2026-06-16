@@ -791,19 +791,19 @@ function SensitivityGrid() {
 /* ─── Chart Data ─── */
 const cashFlowData = [
   { year: "Year 1", net: -370, cumulative: -370 },
-  { year: "Year 2", net: 555, cumulative: 185 },
-  { year: "Year 3", net: 2840, cumulative: 3025 },
-  { year: "Year 4", net: 6534, cumulative: 9559 },
-  { year: "Year 5", net: 12495, cumulative: 22054 },
-  { year: "Year 6", net: 18522, cumulative: 40576 },
+  { year: "Year 2", net: 536, cumulative: 166 },
+  { year: "Year 3", net: 4314, cumulative: 4480 },
+  { year: "Year 4", net: 8452, cumulative: 12932 },
+  { year: "Year 5", net: 13116, cumulative: 26048 },
+  { year: "Year 6", net: 18621, cumulative: 44669 },
 ];
 
 const fleetGrowthData = [
   { year: "Year 1", own: 2, franchise: 0, total: 2 },
-  { year: "Year 2", own: 5, franchise: 0, total: 5 },
-  { year: "Year 3", own: 10, franchise: 5, total: 15 },
-  { year: "Year 4", own: 16, franchise: 12, total: 28 },
-  { year: "Year 5", own: 25, franchise: 24, total: 49 },
+  { year: "Year 2", own: 10, franchise: 0, total: 10 },
+  { year: "Year 3", own: 16, franchise: 5, total: 21 },
+  { year: "Year 4", own: 22, franchise: 12, total: 34 },
+  { year: "Year 5", own: 26, franchise: 24, total: 50 },
   { year: "Year 6", own: 30, franchise: 35, total: 65 },
 ];
 
@@ -937,7 +937,7 @@ function CashFlowChart() {
         </AreaChart>
       </ResponsiveContainer>
       <div className="mt-4 text-center text-xs" style={{ color: C.textMuted }}>
-        From -CHF 370K (Year 1) to +CHF 40.6M cumulative (Year 6)
+        From -CHF 370K (Year 1) to +CHF 44.7M cumulative (Year 6)
       </div>
     </motion.div>
   );
@@ -1147,10 +1147,10 @@ export function FinancialPlan() {
             className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-10 sm:mt-14 max-w-4xl mx-auto"
           >
             {[
-              { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "76% EBITDA margin" },
+              { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "77% EBITDA margin" },
               { label: "Contribution Margin", value: "82.7%", sub: "Per drone unit" },
               { label: "Break-Even", value: "Year 2", sub: "Operational" },
-              { label: "6-Yr Cumulative", value: "+CHF 40.6M", sub: "Cash flow" },
+              { label: "6-Yr Cumulative", value: "+CHF 44.7M", sub: "Cash flow" },
             ].map((kpi, i) => (
               <div
                 key={i}
@@ -1299,7 +1299,7 @@ export function FinancialPlan() {
           <SectionHeader
             number="02"
             title="6-Year Profit & Loss"
-            subtitle="From CHF 120K revenue (Year 1) to CHF 24.3M (Year 6) with 76% EBITDA margin"
+            subtitle="From CHF 120K revenue (Year 1) to CHF 24.3M (Year 6) with 77% EBITDA margin"
             id="six-year-pl"
           />
 
@@ -1314,8 +1314,8 @@ export function FinancialPlan() {
             />
             <KpiCard
               label="Year 6 EBITDA"
-              value={<CountUp end={18.5} prefix="CHF " suffix="M" decimals={1} />}
-              sub="76% margin"
+              value={<CountUp end={18.6} prefix="CHF " suffix="M" decimals={1} />}
+              sub="77% margin"
               icon={TrendingUp}
               color={C.accent}
               delay={0.1}
@@ -1368,15 +1368,15 @@ export function FinancialPlan() {
                   {/* Fleet */}
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Own hubs (Switzerland)</td>
-                    {[1, 2, 3, 4, 5, 6].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {[1, 4, 5, 6, 6, 6].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Own Drones</td>
-                    {[2, 5, 10, 16, 25, 30].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {[2, 10, 16, 22, 26, 30].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Pilots</td>
-                    {[2, 3, 5, 7, 10, 12].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {[2, 4, 6, 8, 10, 12].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ background: C.bgAlt, borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.textMuted }}>Core Team</td>
@@ -1391,7 +1391,7 @@ export function FinancialPlan() {
                   <tr><td colSpan={7} className="px-2 sm:px-3 pt-4 pb-1"><span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: C.accent }}>airBASE AG Revenue — Own Operations (6 Swiss Hubs)</span></td></tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>DaaS Revenue</td>
-                    {["120K", "1,500K", "3,500K", "6,000K", "10,000K", "12,600K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["120K", "2,000K", "5,280K", "8,140K", "10,400K", "12,600K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Gov/Military retainers</td>
@@ -1399,7 +1399,7 @@ export function FinancialPlan() {
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}`, background: C.accentLight }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.accent }}>Subtotal Own Ops</td>
-                    {["120K", "1,620K", "3,740K", "6,480K", "10,720K", "13,560K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.accent }}>{v}</td>)}
+                    {["120K", "2,120K", "5,520K", "8,620K", "11,120K", "13,560K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.accent }}>{v}</td>)}
                   </tr>
                   <tr><td colSpan={7} className="px-2 sm:px-3 pt-3 pb-1"><span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: C.gold }}>Franchise Platform Revenue (International)</span></td></tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
@@ -1430,21 +1430,21 @@ export function FinancialPlan() {
                   {/* Total Revenue */}
                   <tr style={{ borderBottom: `2px solid ${C.accent}`, background: C.accentLight }}>
                     <td className="px-2 sm:px-3 py-3 font-bold text-sm" style={{ color: C.accent }}>TOTAL airBASE AG REVENUE</td>
-                    {["120K", "1,620K", "4,848K", "9,659K", "17,046K", "24,275K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: C.accent }}>{v}</td>)}
+                    {["120K", "2,120K", "6,628K", "11,799K", "17,446K", "24,275K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: C.accent }}>{v}</td>)}
                   </tr>
 
                   {/* Costs section header */}
                   <tr><td colSpan={7} className="px-2 sm:px-3 pt-4 pb-1"><span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: C.textMuted }}>Costs</span></td></tr>
                   {[
-                    { label: "Drone CAPEX", vals: ["98K", "147K", "245K", "294K", "441K", "343K"] },
-                    { label: "Fleet OPEX", vals: ["26K", "65K", "130K", "208K", "325K", "390K"] },
-                    { label: "Crew costs", vals: ["90K", "186K", "310K", "434K", "620K", "744K"] },
-                    { label: "Hub/HQ rent", vals: ["36K", "72K", "108K", "144K", "180K", "216K"] },
-                    { label: "Ops vehicles", vals: ["50K", "75K", "125K", "175K", "225K", "300K"] },
-                    { label: "Fixed, R&D & Insurance", vals: ["160K", "220K", "280K", "340K", "400K", "460K"] },
+                    { label: "Drone CAPEX", vals: ["98K", "392K", "294K", "294K", "196K", "294K"] },
+                    { label: "Fleet OPEX", vals: ["26K", "130K", "208K", "286K", "338K", "390K"] },
+                    { label: "Crew costs", vals: ["90K", "248K", "372K", "496K", "620K", "744K"] },
+                    { label: "Hub/HQ rent", vals: ["36K", "144K", "180K", "216K", "216K", "216K"] },
+                    { label: "Ops vehicles", vals: ["50K", "100K", "150K", "175K", "200K", "250K"] },
+                    { label: "Fixed, R&D & Insurance", vals: ["160K", "250K", "300K", "350K", "400K", "460K"] },
                     { label: "Core team salaries", vals: ["0", "240K", "480K", "720K", "960K", "1,200K"] },
                     { label: "Franchise ops", vals: ["0", "0", "180K", "360K", "600K", "900K"] },
-                    { label: "Marketing", vals: ["30K", "60K", "150K", "250K", "400K", "600K"] },
+                    { label: "Marketing", vals: ["30K", "80K", "150K", "250K", "400K", "600K"] },
                     { label: "International expansion", vals: ["0", "0", "0", "200K", "400K", "600K"] },
                   ].map((row, ri) => (
                     <tr key={ri} style={{ borderBottom: `1px solid ${C.border}` }}>
@@ -1454,7 +1454,7 @@ export function FinancialPlan() {
                   ))}
                   <tr style={{ borderBottom: `2px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-3 font-bold" style={{ color: C.text }}>TOTAL COSTS</td>
-                    {["490K", "1,065K", "2,008K", "3,125K", "4,551K", "5,753K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
+                    {["490K", "1,584K", "2,314K", "3,347K", "4,330K", "5,654K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
                   </tr>
 
                   {/* EBITDA */}
@@ -1462,11 +1462,11 @@ export function FinancialPlan() {
                     <td className="px-2 sm:px-3 py-3 font-bold text-sm" style={{ color: C.green }}>EBITDA</td>
                     {[
                       { v: "-370K", neg: true },
-                      { v: "555K", neg: false },
-                      { v: "2,840K", neg: false },
-                      { v: "6,534K", neg: false },
-                      { v: "12,495K", neg: false },
-                      { v: "18,522K", neg: false },
+                      { v: "536K", neg: false },
+                      { v: "4,314K", neg: false },
+                      { v: "8,452K", neg: false },
+                      { v: "13,116K", neg: false },
+                      { v: "18,621K", neg: false },
                     ].map((item, i) => (
                       <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: item.neg ? C.red : C.green }}>
                         {item.v}
@@ -1475,7 +1475,7 @@ export function FinancialPlan() {
                   </tr>
                   <tr>
                     <td className="px-2 sm:px-3 py-2 font-semibold text-xs" style={{ color: C.textMuted }}>EBITDA Margin</td>
-                    {["neg.", "34%", "59%", "68%", "73%", "76%"].map((v, i) => (
+                    {["neg.", "25%", "65%", "72%", "75%", "77%"].map((v, i) => (
                       <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono text-xs" style={{ color: v === "neg." ? C.red : C.green }}>
                         {v}
                       </td>
@@ -1597,7 +1597,7 @@ export function FinancialPlan() {
           <SectionHeader
             number="04"
             title="Cash Flow & Runway"
-            subtitle="Cumulative cash flow from -CHF 370K to +CHF 40.6M over 6 years"
+            subtitle="Cumulative cash flow from -CHF 370K to +CHF 44.7M over 6 years"
             id="cash-flow"
           />
 
@@ -1633,11 +1633,11 @@ export function FinancialPlan() {
                   <tbody>
                     {[
                       { yr: "Year 1", ci: "120K", co: "490K", net: "-370K", cum: "-370K", neg: true },
-                      { yr: "Year 2", ci: "1,620K", co: "1,065K", net: "+555K", cum: "+185K", neg: false },
-                      { yr: "Year 3", ci: "4,848K", co: "2,008K", net: "+2,840K", cum: "+3,025K", neg: false },
-                      { yr: "Year 4", ci: "9,659K", co: "3,125K", net: "+6,534K", cum: "+9,559K", neg: false },
-                      { yr: "Year 5", ci: "17,046K", co: "4,551K", net: "+12,495K", cum: "+22,054K", neg: false },
-                      { yr: "Year 6", ci: "24,275K", co: "5,753K", net: "+18,522K", cum: "+40,576K", neg: false },
+                      { yr: "Year 2", ci: "2,120K", co: "1,584K", net: "+536K", cum: "+166K", neg: false },
+                      { yr: "Year 3", ci: "6,628K", co: "2,314K", net: "+4,314K", cum: "+4,480K", neg: false },
+                      { yr: "Year 4", ci: "11,799K", co: "3,347K", net: "+8,452K", cum: "+12,932K", neg: false },
+                      { yr: "Year 5", ci: "17,446K", co: "4,330K", net: "+13,116K", cum: "+26,048K", neg: false },
+                      { yr: "Year 6", ci: "24,275K", co: "5,654K", net: "+18,621K", cum: "+44,669K", neg: false },
                     ].map((row, ri) => (
                       <tr key={ri} style={{ borderBottom: `1px solid ${C.border}` }}>
                         <td className="px-2 py-2 font-semibold" style={{ color: C.text }}>{row.yr}</td>
@@ -1651,7 +1651,7 @@ export function FinancialPlan() {
                 </table>
               </div>
               <div className="mt-4 p-3 rounded-lg text-xs" style={{ background: C.greenLight, color: C.textSecondary }}>
-                With CHF 1.5M raised: runway covers Year 1 negative cash flow with CHF 1.1M+ reserve. Franchise model drives margin expansion to 76% by Year 6.
+                With CHF 1.5M raised: covers Year 1 loss (-CHF 370K) with CHF 1.13M reserve to fund aggressive Year 2 expansion (4 hubs, 10 drones). Cash-positive from Year 2.
               </div>
             </DataCard>
           </div>
@@ -1785,7 +1785,7 @@ export function FinancialPlan() {
                 className="mt-4 p-3 rounded-lg text-xs"
                 style={{ background: C.greenLight, color: C.textSecondary }}
               >
-                Runway: CHF 1.5M covers Year 1 operating loss (-CHF 370K) with CHF 1.1M+ reserve for Year 2 growth.
+                Runway: CHF 1.5M covers Year 1 loss (-CHF 370K) with CHF 1.13M reserve to fund aggressive Year 2 expansion (4 hubs, 10 drones). Cash-positive from Year 2.
               </div>
             </DataCard>
           </div>
@@ -1984,9 +1984,9 @@ export function FinancialPlan() {
             <StyledTable
               headers={["", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6"]}
               rows={[
-                ["Own Operations (6 Swiss Hubs)", "120K", "1,620K", "3,740K", "6,480K", "10,720K", "13,560K"],
+                ["Own Operations (6 Swiss Hubs)", "120K", "2,120K", "5,520K", "8,620K", "11,120K", "13,560K"],
                 ["Franchise Gross Rev. (intl.)", "\u2014", "\u2014", "6,300K", "22,800K", "48,000K", "84,000K"],
-                ["Total Platform GMV", "120K", "1,620K", "10,040K", "29,280K", "58,720K", "97,560K"],
+                ["Total Platform GMV", "120K", "2,120K", "11,820K", "31,420K", "59,120K", "97,560K"],
               ]}
               highlightLast
             />
