@@ -805,7 +805,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
               Year-5 Target (SOM)
             </Text>
             <Text style={{ fontSize: 22, fontWeight: "bold", color: C.gold }}>
-              CHF 22M ARR
+              CHF 24M ARR
             </Text>
           </View>
         </View>
@@ -912,8 +912,8 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
             { year: "2027", revenue: 2.12, label: "4 hubs, 10 drones" },
             { year: "2028", revenue: 6.63, label: "Franchise launch" },
             { year: "2029", revenue: 11.8, label: "Expansion" },
-            { year: "2030", revenue: 17.4, label: "Growth" },
-            { year: "2031", revenue: 24.3, label: "Market lead" },
+            { year: "2030", revenue: 17.6, label: "Growth" },
+            { year: "2031", revenue: 24.1, label: "Market lead" },
           ].map((yr) => (
             <View
               key={yr.year}
@@ -931,7 +931,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 <View
                   style={{
                     height: 8,
-                    width: `${(yr.revenue / 24.3) * 100}%`,
+                    width: `${(yr.revenue / 24.1) * 100}%`,
                     backgroundColor: C.accent,
                     borderRadius: 4,
                   }}
@@ -1019,7 +1019,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
               "LUC certification achieved",
               "3 enterprise DaaS contracts signed",
               "Franchise program live (2 active partners)",
-              "CHF 680K ARR target reached",
+              "CHF 2.1M ARR target reached",
             ].map((text) => (
               <View key={text} style={s.bullet}>
                 <View style={s.bulletDot} />
@@ -1130,29 +1130,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
           </View>
         </View>
 
-        {/* Early bird */}
-        <View
-          style={{
-            borderWidth: 2,
-            borderColor: C.gold,
-            borderRadius: 8,
-            padding: 12,
-            marginTop: 10,
-            backgroundColor: C.gold + "08",
-          }}
-        >
-          <Text style={{ fontSize: 8, color: C.gold, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4 }}>
-            Lead Investor / Early Bird Advantage
-          </Text>
-          <Text style={{ fontSize: 10, fontWeight: "bold", color: C.text, marginBottom: 4 }}>
-            Secure First-Mover Advantage with the CHF 200K Ticket
-          </Text>
-          <Text style={{ fontSize: 9, color: C.textSecondary }}>
-            The investor who takes the initial CHF 200K catalyst ticket receives
-            strongly improved conditions -- a 30% discount instead of the
-            standard 20% on the next funding round.
-          </Text>
-        </View>
+
         <PageFooter pageNum={8} total={TOTAL_PAGES} />
       </Page>
 
@@ -1765,7 +1743,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
             {[
               { value: "10+", label: "Operators Licensed" },
               { value: "5", label: "Countries" },
-              { value: "CHF 22M", label: "ARR Target" },
+              { value: "CHF 24M", label: "ARR Target" },
               { value: "75%+", label: "Gross Margin" },
             ].map((m) => (
               <View key={m.label} style={{ alignItems: "center" }}>

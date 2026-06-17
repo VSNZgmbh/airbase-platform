@@ -600,11 +600,11 @@ const tamData = [
 
 const revenueProjection = [
   { year: "2026", revenue: 0.12, label: "Pilot ops" },
-  { year: "2027", revenue: 0.68, label: "First contracts" },
-  { year: "2028", revenue: 2.4, label: "Scale" },
-  { year: "2029", revenue: 7.2, label: "Expansion" },
-  { year: "2030", revenue: 14.0, label: "Growth" },
-  { year: "2031", revenue: 22.0, label: "Market lead" },
+  { year: "2027", revenue: 2.12, label: "4 hubs, 10 drones" },
+  { year: "2028", revenue: 6.63, label: "Franchise launch" },
+  { year: "2029", revenue: 11.8, label: "Expansion" },
+  { year: "2030", revenue: 17.6, label: "Growth" },
+  { year: "2031", revenue: 24.1, label: "Market lead" },
 ];
 
 const fundAllocation = [
@@ -1712,7 +1712,7 @@ export function InvestorPitchDeck() {
                 </div>
                 <div className="text-right">
                   <div className="text-xs font-mono uppercase" style={{ color: C.textMuted }}>Year-5 Target (SOM)</div>
-                  <div className="text-2xl sm:text-3xl font-bold font-mono" style={{ color: C.gold }}>CHF 22M ARR</div>
+                  <div className="text-2xl sm:text-3xl font-bold font-mono" style={{ color: C.gold }}>CHF 24M ARR</div>
                 </div>
               </div>
             </motion.div>
@@ -1906,11 +1906,11 @@ export function InvestorPitchDeck() {
           <Stagger className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 mt-6" delay={0.7}>
             {[
               { year: "2026", rev: "120K", note: "Pilot ops" },
-              { year: "2027", rev: "680K", note: "First contracts" },
-              { year: "2028", rev: "2.4M", note: "DaaS + SaaS" },
-              { year: "2029", rev: "7.2M", note: "10 franchise partners" },
-              { year: "2030", rev: "14M", note: "Growth phase" },
-              { year: "2031", rev: "22M", note: "Market leadership" },
+              { year: "2027", rev: "2.1M", note: "4 hubs, 10 drones" },
+              { year: "2028", rev: "6.6M", note: "Franchise launch" },
+              { year: "2029", rev: "11.8M", note: "12 franchise partners" },
+              { year: "2030", rev: "17.6M", note: "Growth phase" },
+              { year: "2031", rev: "24.1M", note: "Market leadership" },
             ].map((yr) => (
               <motion.div
                 key={yr.year}
@@ -2022,7 +2022,7 @@ export function InvestorPitchDeck() {
                     <Bullet delay={0}>LUC certification achieved</Bullet>
                     <Bullet delay={0.1}>3 enterprise DaaS contracts signed</Bullet>
                     <Bullet delay={0.2}>Franchise program live (2 active partners)</Bullet>
-                    <Bullet delay={0.3}>CHF 680K ARR target reached</Bullet>
+                    <Bullet delay={0.3}>CHF 2.1M ARR target reached</Bullet>
                   </ul>
 
                   <div className="space-y-4 mt-6">
@@ -2238,50 +2238,6 @@ export function InvestorPitchDeck() {
             </Stagger>
           </div>
 
-          {/* Early Bird Incentive Callout */}
-          <Stagger delay={0.6}>
-            <motion.div
-              variants={scaleUp}
-              className="mt-8 sm:mt-12 rounded-2xl p-6 sm:p-8 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${C.gold}12, ${C.gold}06)`,
-                border: `2px solid ${C.gold}`,
-                boxShadow: `0 0 40px ${C.gold}15, 0 4px 24px rgba(0,0,0,0.08)`,
-              }}
-            >
-              <div
-                className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
-                style={{ background: C.gold }}
-              />
-              <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: C.goldLight, border: `1px solid ${C.gold}30` }}
-                >
-                  <CircleDollarSign className="w-7 h-7" style={{ color: C.gold }} />
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs font-mono uppercase tracking-wider mb-1" style={{ color: C.gold }}>
-                    Lead Investor / Early Bird Advantage
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-2" style={{ color: C.text }}>
-                    Secure First-Mover Advantage with the CHF 200K Ticket
-                  </h3>
-                  <p className="text-sm" style={{ color: C.textSecondary }}>
-                    The investor who takes the initial CHF 200K catalyst ticket receives{" "}
-                    <span className="font-bold" style={{ color: C.gold }}>
-                      strongly improved conditions
-                    </span>{" "}
-                    on the Convertible Note — a{" "}
-                    <span className="font-bold text-lg" style={{ color: C.gold }}>
-                      30% discount
-                    </span>{" "}
-                    instead of the standard 20% on the next funding round.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </Stagger>
 
         </div>
       </section>
@@ -3623,7 +3579,7 @@ export function InvestorPitchDeck() {
                 {[
                   { value: "10+", label: "Operators Licensed" },
                   { value: "5", label: "Countries" },
-                  { value: "CHF 22M", label: "ARR Target" },
+                  { value: "CHF 24M", label: "ARR Target" },
                   { value: "75%+", label: "Gross Margin" },
                 ].map((m) => (
                   <div key={m.label}>
