@@ -785,12 +785,12 @@ function SensitivityGrid() {
 
 /* ─── Chart Data ─── */
 const cashFlowData = [
-  { year: "Year 1", net: -515, cumulative: -515 },
-  { year: "Year 2", net: 387, cumulative: -128 },
-  { year: "Year 3", net: 4167, cumulative: 4039 },
-  { year: "Year 4", net: 8257, cumulative: 12296 },
-  { year: "Year 5", net: 12893, cumulative: 25189 },
-  { year: "Year 6", net: 18400, cumulative: 43589 },
+  { year: "Year 1", net: -465, cumulative: -465 },
+  { year: "Year 2", net: 437, cumulative: -28 },
+  { year: "Year 3", net: 4217, cumulative: 4189 },
+  { year: "Year 4", net: 8307, cumulative: 12496 },
+  { year: "Year 5", net: 12943, cumulative: 25439 },
+  { year: "Year 6", net: 18450, cumulative: 43889 },
 ];
 
 const fleetGrowthData = [
@@ -932,7 +932,7 @@ function CashFlowChart() {
         </AreaChart>
       </ResponsiveContainer>
       <div className="mt-4 text-center text-xs" style={{ color: C.textMuted }}>
-        From -CHF 370K (Year 1) to +CHF 44.7M cumulative (Year 6)
+        From -CHF 465K (Year 1) to +CHF 43.9M cumulative (Year 6)
       </div>
     </motion.div>
   );
@@ -1145,7 +1145,7 @@ export function FinancialPlan() {
               { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "76% EBITDA margin" },
               { label: "Contribution Margin", value: "82.7%", sub: "Per drone unit" },
               { label: "Break-Even", value: "Year 2", sub: "Operational" },
-              { label: "6-Yr Cumulative", value: "+CHF 43.6M", sub: "Cash flow" },
+              { label: "6-Yr Cumulative", value: "+CHF 43.9M", sub: "Cash flow" },
             ].map((kpi, i) => (
               <div
                 key={i}
@@ -1309,8 +1309,8 @@ export function FinancialPlan() {
             />
             <KpiCard
               label="Year 6 EBITDA"
-              value={<CountUp end={18.6} prefix="CHF " suffix="M" decimals={1} />}
-              sub="77% margin"
+              value={<CountUp end={18.5} prefix="CHF " suffix="M" decimals={1} />}
+              sub="76% margin"
               icon={TrendingUp}
               color={C.accent}
               delay={0.1}
@@ -1439,7 +1439,7 @@ export function FinancialPlan() {
                     { label: "Safety Manager", vals: ["20K", "40K", "60K", "80K", "100K", "100K"] },
                     { label: "Hub/HQ rent", vals: ["36K", "144K", "180K", "216K", "216K", "216K"] },
                     { label: "Ops vehicles", vals: ["50K", "100K", "150K", "175K", "200K", "250K"] },
-                    { label: "Fixed, R&D & Insurance", vals: ["160K", "250K", "300K", "350K", "400K", "460K"] },
+                    { label: "Fixed, R&D & Insurance", vals: ["110K", "200K", "250K", "300K", "350K", "410K"] },
                     { label: "Core team salaries", vals: ["0", "240K", "480K", "720K", "960K", "1,200K"] },
                     { label: "Franchise ops", vals: ["0", "0", "180K", "360K", "600K", "900K"] },
                     { label: "Marketing", vals: ["30K", "80K", "150K", "250K", "400K", "600K"] },
@@ -1453,19 +1453,19 @@ export function FinancialPlan() {
                   ))}
                   <tr style={{ borderBottom: `2px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-3 font-bold" style={{ color: C.text }}>TOTAL COSTS</td>
-                    {["635K", "1,733K", "2,461K", "3,542K", "4,553K", "5,875K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
+                    {["585K", "1,683K", "2,411K", "3,492K", "4,503K", "5,825K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold" style={{ color: C.text }}>{v}</td>)}
                   </tr>
 
                   {/* EBITDA */}
                   <tr style={{ background: C.greenLight }}>
                     <td className="px-2 sm:px-3 py-3 font-bold text-sm" style={{ color: C.green }}>EBITDA</td>
                     {[
-                      { v: "-515K", neg: true },
-                      { v: "387K", neg: false },
-                      { v: "4,167K", neg: false },
-                      { v: "8,257K", neg: false },
-                      { v: "12,893K", neg: false },
-                      { v: "18,400K", neg: false },
+                      { v: "-465K", neg: true },
+                      { v: "437K", neg: false },
+                      { v: "4,217K", neg: false },
+                      { v: "8,307K", neg: false },
+                      { v: "12,943K", neg: false },
+                      { v: "18,450K", neg: false },
                     ].map((item, i) => (
                       <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: item.neg ? C.red : C.green }}>
                         {item.v}
@@ -1474,7 +1474,7 @@ export function FinancialPlan() {
                   </tr>
                   <tr>
                     <td className="px-2 sm:px-3 py-2 font-semibold text-xs" style={{ color: C.textMuted }}>EBITDA Margin</td>
-                    {["neg.", "18%", "63%", "70%", "74%", "76%"].map((v, i) => (
+                    {["neg.", "21%", "64%", "70%", "74%", "76%"].map((v, i) => (
                       <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono text-xs" style={{ color: v === "neg." ? C.red : C.green }}>
                         {v}
                       </td>
@@ -1491,14 +1491,14 @@ export function FinancialPlan() {
           <SectionHeader
             number="03"
             title="Break-Even Analysis"
-            subtitle="Operational break-even at Month 8-9, full P&L break-even at Month 26"
+            subtitle="Operational break-even at Month 7-8, full P&L break-even at Month 25"
             id="break-even"
           />
 
           <Stagger className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
             <KpiCard
               label="Monthly Fixed Costs"
-              value="CHF 30K"
+              value="CHF 26K"
               sub="Year 1 incl. CEO, team"
               icon={DollarSign}
             />
@@ -1512,15 +1512,15 @@ export function FinancialPlan() {
             />
             <KpiCard
               label="Operational B/E"
-              value="Month 8-9"
-              sub="~17 ops days/month"
+              value="Month 7-8"
+              sub="~15 ops days/month"
               icon={Target}
               color={C.gold}
               delay={0.2}
             />
             <KpiCard
               label="Full P&L B/E"
-              value="Month 26"
+              value="Month 25"
               sub="Early Year 3"
               icon={CheckCircle2}
               color={C.green}
@@ -1557,8 +1557,8 @@ export function FinancialPlan() {
               <div className="flex justify-between text-center">
                 {[
                   { month: "M1", label: "Launch", color: C.red },
-                  { month: "M8-9", label: "Ops B/E", color: C.gold },
-                  { month: "M26", label: "Full B/E", color: C.green },
+                  { month: "M7-8", label: "Ops B/E", color: C.gold },
+                  { month: "M25", label: "Full B/E", color: C.green },
                   { month: "M36+", label: "Scale", color: C.green },
                 ].map((m, i) => (
                   <div key={i} className="flex flex-col items-center">
@@ -1580,11 +1580,11 @@ export function FinancialPlan() {
               <StyledTable
                 headers={["Metric", "Value"]}
                 rows={[
-                  ["Monthly fixed costs (Year 1)", "CHF 30,000"],
+                  ["Monthly fixed costs (Year 1)", "CHF 26,000"],
                   ["Average daily contribution (1 drone)", "CHF 1,750"],
-                  ["Break-even point", "~17 operational days/month"],
-                  ["Operational break-even (projected)", "Month 8-9 (after ramp-up)"],
-                  ["Annual break-even (full P&L)", "Month 26 (early Year 3)"],
+                  ["Break-even point", "~15 operational days/month"],
+                  ["Operational break-even (projected)", "Month 7-8 (after ramp-up)"],
+                  ["Annual break-even (full P&L)", "Month 25 (early Year 3)"],
                 ]}
               />
             </Expandable>
@@ -1596,7 +1596,7 @@ export function FinancialPlan() {
           <SectionHeader
             number="04"
             title="Cash Flow & Runway"
-            subtitle="Cumulative cash flow from -CHF 515K to +CHF 43.6M over 6 years"
+            subtitle="-CHF 465K to +CHF 43.9M"
             id="cash-flow"
           />
 
@@ -1631,12 +1631,12 @@ export function FinancialPlan() {
                   </thead>
                   <tbody>
                     {[
-                      { yr: "Year 1", ci: "120K", co: "635K", net: "-515K", cum: "-515K", neg: true },
-                      { yr: "Year 2", ci: "2,120K", co: "1,733K", net: "+387K", cum: "-128K", neg: true },
-                      { yr: "Year 3", ci: "6,628K", co: "2,461K", net: "+4,167K", cum: "+4,039K", neg: false },
-                      { yr: "Year 4", ci: "11,799K", co: "3,542K", net: "+8,257K", cum: "+12,296K", neg: false },
-                      { yr: "Year 5", ci: "17,446K", co: "4,553K", net: "+12,893K", cum: "+25,189K", neg: false },
-                      { yr: "Year 6", ci: "24,275K", co: "5,875K", net: "+18,400K", cum: "+43,589K", neg: false },
+                      { yr: "Year 1", ci: "120K", co: "585K", net: "-465K", cum: "-465K", neg: true },
+                      { yr: "Year 2", ci: "2,120K", co: "1,683K", net: "+437K", cum: "-28K", neg: true },
+                      { yr: "Year 3", ci: "6,628K", co: "2,411K", net: "+4,217K", cum: "+4,189K", neg: false },
+                      { yr: "Year 4", ci: "11,799K", co: "3,492K", net: "+8,307K", cum: "+12,496K", neg: false },
+                      { yr: "Year 5", ci: "17,446K", co: "4,503K", net: "+12,943K", cum: "+25,439K", neg: false },
+                      { yr: "Year 6", ci: "24,275K", co: "5,825K", net: "+18,450K", cum: "+43,889K", neg: false },
                     ].map((row, ri) => (
                       <tr key={ri} style={{ borderBottom: `1px solid ${C.border}` }}>
                         <td className="px-2 py-2 font-semibold" style={{ color: C.text }}>{row.yr}</td>
@@ -1650,7 +1650,7 @@ export function FinancialPlan() {
                 </table>
               </div>
               <div className="mt-4 p-3 rounded-lg text-xs" style={{ background: C.greenLight, color: C.textSecondary }}>
-                With CHF 1.5M raised: covers Year 1-2 investment phase (CHF 985K reserve after Y1). Cumulative P&L positive from Year 3. Total 6-year EBITDA: CHF 43.6M.
+                With CHF 1.5M raised: covers Year 1 investment (-CHF 465K) with CHF 1.035M reserve. Cumulative P&L positive from Year 3. Total 6-year EBITDA: CHF 43.9M.
               </div>
             </DataCard>
           </div>
@@ -1788,7 +1788,7 @@ export function FinancialPlan() {
                 className="mt-4 p-3 rounded-lg text-xs"
                 style={{ background: C.greenLight, color: C.textSecondary }}
               >
-                Runway: CHF 1.5M covers Year 1 loss (-CHF 370K) with CHF 1.13M reserve to fund aggressive Year 2 expansion (4 hubs, 10 drones). Cash-positive from Year 2.
+                Runway: CHF 1.5M covers Year 1 loss (-CHF 465K) with CHF 1.035M reserve to fund aggressive Year 2 expansion (4 hubs, 10 drones). Cash-positive from Year 2.
               </div>
             </DataCard>
           </div>
