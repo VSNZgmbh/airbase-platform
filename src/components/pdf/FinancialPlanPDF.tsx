@@ -187,17 +187,17 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
         </Text>
 
         {/* Highlight KPIs */}
-        <View style={{ flexDirection: "row", gap: 8 }}>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {[
-            { label: "Year 6 Revenue", value: "CHF 24.1M", sub: "76% EBITDA margin" },
-            { label: "Contribution Margin", value: "82.7%", sub: "Per drone unit" },
+            { label: "Revenue Y6", value: "CHF 24.1M", sub: "76% EBITDA margin" },
+            { label: "Contribution Margin", value: "87.4%", sub: "Per drone unit" },
             { label: "Break-Even", value: "Year 2", sub: "Operational" },
             { label: "6-Yr Cumulative", value: "+CHF 43.9M", sub: "Cash flow" },
           ].map((kpi) => (
             <View
               key={kpi.label}
               style={{
-                flex: 1,
+                width: "48%",
                 borderWidth: 1,
                 borderColor: "rgba(255,255,255,0.1)",
                 borderRadius: 6,
@@ -1038,7 +1038,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
                 <Text
                   key={i}
                   style={[
-                    row.base && i === 2
+                    row.base && i === 1
                       ? { ...s.tCellAccent, fontSize: 8 }
                       : s.tCell,
                     { flex: 1, textAlign: "right" },
@@ -1050,7 +1050,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             </View>
           ))}
           <Text style={{ fontSize: 6, color: C.textMuted, marginTop: 4 }}>
-            * Base case: 200 days x CHF 4,000/day = CHF 24.0M
+            * Base case: 200 days x CHF 3,500/day = CHF 21.0M (own-ops DaaS)
           </Text>
         </View>
 

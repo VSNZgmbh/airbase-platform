@@ -750,7 +750,7 @@ function SensitivityGrid() {
                 </td>
                 {rates.map((r) => {
                   const key = `${d}-${r}`;
-                  const isBase = d === 200 && r === 4000;
+                  const isBase = d === 200 && r === 3500;
                   const isHovered = hoveredCell === key;
                   return (
                     <td
