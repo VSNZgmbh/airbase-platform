@@ -189,10 +189,10 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
         {/* Highlight KPIs */}
         <View style={{ flexDirection: "row", gap: 8 }}>
           {[
-            { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "77% EBITDA margin" },
+            { label: "Year 6 Revenue", value: "CHF 24.3M", sub: "76% EBITDA margin" },
             { label: "Contribution Margin", value: "82.7%", sub: "Per drone unit" },
             { label: "Break-Even", value: "Year 2", sub: "Operational" },
-            { label: "6-Yr Cumulative", value: "+CHF 44.7M", sub: "Cash flow" },
+            { label: "6-Yr Cumulative", value: "+CHF 43.6M", sub: "Cash flow" },
           ].map((kpi) => (
             <View
               key={kpi.label}
@@ -243,9 +243,9 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
         <View style={s.divider} />
         {[
           { num: "01", title: "Unit Economics", sub: "Per drone P&L -- CHF 700K revenue, 90% margin" },
-          { num: "02", title: "6-Year P&L", sub: "CHF 120K to CHF 24.3M with 77% EBITDA margin" },
+          { num: "02", title: "6-Year P&L", sub: "CHF 120K to CHF 24.3M with 76% EBITDA margin" },
           { num: "03", title: "Break-Even Analysis", sub: "Operational break-even Year 2" },
-          { num: "04", title: "Cash Flow", sub: "-CHF 460K to +CHF 44.4M cumulative" },
+          { num: "04", title: "Cash Flow", sub: "-CHF 515K to +CHF 43.6M cumulative" },
           { num: "05", title: "Use of Funds", sub: "CHF 1.5M across seven strategic pillars" },
           { num: "06", title: "Investor ROI", sub: "Convertible note returns by scenario" },
           { num: "07", title: "Franchise Economics", sub: "Partner P&L + HQ recurring revenue" },
@@ -347,7 +347,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             ["Average daily rate (blended)", "CHF 3,500"],
             ["Gross revenue per drone/year", "CHF 700,000"],
             ["Direct costs (crew, maintenance)", "CHF 12,900"],
-            ["Crew cost allocation (1 pilot)", "CHF 54,000"],
+            ["Crew cost allocation (1 pilot, salaried)", "CHF 75,000"],
           ].map((row, i) => (
             <View key={i} style={s.tRow}>
               <Text style={[s.tCell, { flex: 2 }]}>{row[0]}</Text>
@@ -356,7 +356,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           ))}
           <View style={[s.tRow, { backgroundColor: C.accent + "08" }]}>
             <Text style={[s.tCellAccent, { flex: 2 }]}>Contribution margin per drone</Text>
-            <Text style={[s.tCellAccent, { flex: 1, textAlign: "right" }]}>CHF 633,100 (90.4%)</Text>
+            <Text style={[s.tCellAccent, { flex: 1, textAlign: "right" }]}>CHF 612,100 (87.4%)</Text>
           </View>
         </View>
 
@@ -392,13 +392,13 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
         <Text style={s.sectionNum}>02</Text>
         <Text style={s.h2}>6-Year Profit & Loss</Text>
         <Text style={s.subtitle}>
-          From CHF 120K (Year 1) to CHF 24.3M (Year 6) with 77% EBITDA margin
+          From CHF 120K (Year 1) to CHF 24.3M (Year 6) with 76% EBITDA margin
         </Text>
 
         <View style={{ flexDirection: "row", gap: 6, marginBottom: 8 }}>
           {[
             { label: "Year 6 Revenue", value: "CHF 24.3M" },
-            { label: "Year 6 EBITDA", value: "CHF 18.6M" },
+            { label: "Year 6 EBITDA", value: "CHF 18.4M" },
             { label: "Own Drones (Y6)", value: "30 drones" },
             { label: "Franchise Partners", value: "35" },
           ].map((kpi) => (
@@ -494,7 +494,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           {[
             { label: "Drone CAPEX", vals: ["98K", "392K", "294K", "294K", "196K", "294K"] },
             { label: "Fleet OPEX", vals: ["26K", "130K", "208K", "286K", "338K", "390K"] },
-            { label: "Crew costs (1 pilot/drone)", vals: ["45K", "124K", "186K", "248K", "310K", "372K"] },
+            { label: "Crew costs (1 pilot/drone, salaried)", vals: ["75K", "150K", "225K", "300K", "375K", "450K"] },
             { label: "CEO salary", vals: ["60K", "100K", "100K", "150K", "180K", "200K"] },
             { label: "HQ Assistant", vals: ["55K", "57K", "59K", "61K", "63K", "65K"] },
             { label: "Safety Manager", vals: ["20K", "40K", "60K", "80K", "100K", "100K"] },
@@ -505,6 +505,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             { label: "Franchise ops", vals: ["0", "0", "180K", "360K", "600K", "900K"] },
             { label: "Marketing", vals: ["30K", "80K", "150K", "250K", "400K", "600K"] },
             { label: "Intl. expansion", vals: ["0", "0", "0", "200K", "400K", "600K"] },
+            { label: "Reserve (idle time, contingency)", vals: ["25K", "50K", "75K", "100K", "125K", "150K"] },
           ].map((row) => (
             <View key={row.label} style={s.tRow}>
               <Text style={[s.tCell, { width: 90 }]}>{row.label}</Text>
@@ -515,7 +516,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           ))}
           <View style={[s.tRow, { borderBottomWidth: 2, borderBottomColor: C.border }]}>
             <Text style={[s.tCellBold, { width: 90 }]}>TOTAL COSTS</Text>
-            {["580K", "1,657K", "2,347K", "3,390K", "4,363K", "5,647K"].map((v, i) => (
+            {["635K", "1,733K", "2,461K", "3,542K", "4,553K", "5,875K"].map((v, i) => (
               <Text key={i} style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>{v}</Text>
             ))}
           </View>
@@ -523,12 +524,12 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           <View style={[s.tRow, { backgroundColor: C.green + "10" }]}>
             <Text style={[s.tCellGreen, { width: 90, fontSize: 8 }]}>EBITDA</Text>
             {[
-              { v: "-460K", neg: true },
-              { v: "463K", neg: false },
-              { v: "4,281K", neg: false },
-              { v: "8,409K", neg: false },
-              { v: "13,083K", neg: false },
-              { v: "18,628K", neg: false },
+              { v: "-515K", neg: true },
+              { v: "387K", neg: false },
+              { v: "4,167K", neg: false },
+              { v: "8,257K", neg: false },
+              { v: "12,893K", neg: false },
+              { v: "18,400K", neg: false },
             ].map((item, i) => (
               <Text
                 key={i}
@@ -543,7 +544,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           </View>
           <View style={s.tRow}>
             <Text style={[s.tCell, { width: 90 }]}>EBITDA Margin</Text>
-            {["neg.", "22%", "65%", "71%", "75%", "77%"].map((v, i) => (
+            {["neg.", "18%", "63%", "70%", "74%", "76%"].map((v, i) => (
               <Text
                 key={i}
                 style={[
@@ -564,15 +565,15 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
         <Text style={s.sectionNum}>03</Text>
         <Text style={s.h2}>Break-Even Analysis</Text>
         <Text style={s.subtitle}>
-          Operational break-even at Month 8-9, full P&L break-even at Month 16
+          Operational break-even at Month 8-9, full P&L break-even at Month 26
         </Text>
 
         <View style={{ flexDirection: "row", gap: 6, marginBottom: 10 }}>
           {[
-            { label: "Monthly Fixed Costs", value: "CHF 27.6K", sub: "Year 1 lean launch" },
+            { label: "Monthly Fixed Costs", value: "CHF 30K", sub: "Year 1 incl. CEO, team" },
             { label: "Daily Contribution", value: "CHF 1,750", sub: "Per drone average" },
-            { label: "Operational B/E", value: "Month 8-9", sub: "~16 ops days/month" },
-            { label: "Full P&L B/E", value: "Month 16", sub: "Early Year 2" },
+            { label: "Operational B/E", value: "Month 8-9", sub: "~17 ops days/month" },
+            { label: "Full P&L B/E", value: "Month 26", sub: "Early Year 3" },
           ].map((kpi) => (
             <View key={kpi.label} style={s.kpiBox}>
               <Text style={[s.kpiValue, { fontSize: 13 }]}>{kpi.value}</Text>
@@ -591,8 +592,8 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             {[
               { month: "M1", label: "Launch", color: C.red },
               { month: "M8-9", label: "Ops B/E", color: C.gold },
-              { month: "M16", label: "Full B/E", color: C.green },
-              { month: "M24+", label: "Scale", color: C.green },
+              { month: "M26", label: "Full B/E", color: C.green },
+              { month: "M36+", label: "Scale", color: C.green },
             ].map((m) => (
               <View key={m.month} style={{ alignItems: "center" }}>
                 <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: m.color, marginBottom: 4 }} />
@@ -613,11 +614,11 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Value</Text>
           </View>
           {[
-            ["Monthly fixed costs (Year 1)", "CHF 27,600"],
+            ["Monthly fixed costs (Year 1)", "CHF 30,000"],
             ["Average daily contribution (1 drone)", "CHF 1,750"],
-            ["Break-even point", "~16 operational days/month"],
+            ["Break-even point", "~17 operational days/month"],
             ["Operational break-even", "Month 8-9"],
-            ["Full P&L break-even", "Month 16 (early Year 2)"],
+            ["Full P&L break-even", "Month 26 (early Year 3)"],
           ].map((row, i) => (
             <View key={i} style={s.tRow}>
               <Text style={[s.tCell, { flex: 2 }]}>{row[0]}</Text>
@@ -631,7 +632,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           <Text style={s.sectionNum}>04</Text>
           <Text style={s.h2}>Cash Flow & Runway</Text>
           <Text style={s.subtitle}>
-            Cumulative cash flow from -CHF 460K to +CHF 44.4M over 6 years
+            Cumulative cash flow from -CHF 515K to +CHF 43.6M over 6 years
           </Text>
         </View>
 
@@ -647,12 +648,12 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Cumulative</Text>
           </View>
           {[
-            { yr: "Year 1", ci: "120K", co: "580K", net: "-460K", cum: "-460K", neg: true },
-            { yr: "Year 2", ci: "2,120K", co: "1,657K", net: "+463K", cum: "+3K", neg: false },
-            { yr: "Year 3", ci: "6,628K", co: "2,347K", net: "+4,281K", cum: "+4,284K", neg: false },
-            { yr: "Year 4", ci: "11,799K", co: "3,390K", net: "+8,409K", cum: "+12,693K", neg: false },
-            { yr: "Year 5", ci: "17,446K", co: "4,363K", net: "+13,083K", cum: "+25,776K", neg: false },
-            { yr: "Year 6", ci: "24,275K", co: "5,647K", net: "+18,628K", cum: "+44,404K", neg: false },
+            { yr: "Year 1", ci: "120K", co: "635K", net: "-515K", cum: "-515K", neg: true },
+            { yr: "Year 2", ci: "2,120K", co: "1,733K", net: "+387K", cum: "-128K", neg: true },
+            { yr: "Year 3", ci: "6,628K", co: "2,461K", net: "+4,167K", cum: "+4,039K", neg: false },
+            { yr: "Year 4", ci: "11,799K", co: "3,542K", net: "+8,257K", cum: "+12,296K", neg: false },
+            { yr: "Year 5", ci: "17,446K", co: "4,553K", net: "+12,893K", cum: "+25,189K", neg: false },
+            { yr: "Year 6", ci: "24,275K", co: "5,875K", net: "+18,400K", cum: "+43,589K", neg: false },
           ].map((row) => (
             <View key={row.yr} style={s.tRow}>
               <Text style={[s.tCellBold, { width: 50 }]}>{row.yr}</Text>
@@ -665,7 +666,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
         </View>
 
         <Text style={{ fontSize: 7, color: C.textSecondary, marginTop: 4 }}>
-          With CHF 1.5M raised: covers Year 1 loss (-CHF 460K) with CHF 1.04M reserve to fund aggressive Year 2 expansion (4 hubs, 10 drones). Cash-positive from Year 2.
+          With CHF 1.5M raised: covers Year 1-2 investment phase (CHF 985K reserve after Y1). Cumulative P&L positive from Year 3. Total 6-year EBITDA: CHF 43.6M.
         </Text>
         <Footer page={5} total={TOTAL} />
       </Page>
