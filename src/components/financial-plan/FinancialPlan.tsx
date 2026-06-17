@@ -643,7 +643,7 @@ function ROICalculator() {
           </li>
           <li>
             2. <strong>Conversion discount:</strong> {DISCOUNT_RATE}% at next
-            qualified round (30% Early Bird for CHF 200K+ lead)
+            qualified round
           </li>
           <li>
             3. <strong>Pre-money valuation:</strong> CHF 8.5M
@@ -681,7 +681,7 @@ function SensitivityGrid() {
     "180-4500": "24.3M",
     "200-3000": "18.0M",
     "200-3500": "21.0M",
-    "200-4000": "22.2M",
+    "200-4000": "24.0M",
     "200-4500": "27.0M",
     "220-3000": "19.8M",
     "220-3500": "23.1M",
@@ -712,7 +712,7 @@ function SensitivityGrid() {
           </span>
         </div>
         <p className="text-xs ml-11" style={{ color: C.textMuted }}>
-          Utilisation days x daily rate &rarr; total platform revenue (125 drones, 35 partners)
+          Utilisation days x daily rate &rarr; own-ops DaaS revenue (30 own drones, Year 6)
         </p>
       </div>
       <div className="overflow-x-auto">
@@ -789,8 +789,8 @@ const cashFlowData = [
   { year: "Year 2", net: 437, cumulative: -28 },
   { year: "Year 3", net: 4217, cumulative: 4189 },
   { year: "Year 4", net: 8307, cumulative: 12496 },
-  { year: "Year 5", net: 12943, cumulative: 25439 },
-  { year: "Year 6", net: 18450, cumulative: 43889 },
+  { year: "Year 5", net: 13109, cumulative: 25605 },
+  { year: "Year 6", net: 18320, cumulative: 43925 },
 ];
 
 const fleetGrowthData = [
@@ -1278,7 +1278,7 @@ export function FinancialPlan() {
                   ["Operational days/year", "200"],
                   ["Average daily rate (blended)", "CHF 3,500"],
                   ["Gross revenue per drone/year", "CHF 700,000"],
-                  ["Direct costs (crew, maintenance)", "CHF 12,900"],
+                  ["Direct costs (maintenance, insurance)", "CHF 12,900"],
                   ["Crew cost allocation (1 pilot, salaried)", "CHF 75,000"],
                   ["Contribution margin per drone", "CHF 612,100"],
                   ["Contribution margin %", "87.4%"],
@@ -1294,7 +1294,7 @@ export function FinancialPlan() {
           <SectionHeader
             number="02"
             title="6-Year Profit & Loss"
-            subtitle="From CHF 120K revenue (Year 1) to CHF 24.3M (Year 6) with 76% EBITDA margin"
+            subtitle="From CHF 120K revenue (Year 1) to CHF 24.1M (Year 6) with 76% EBITDA margin"
             id="six-year-pl"
           />
 
@@ -1302,14 +1302,14 @@ export function FinancialPlan() {
           <Stagger className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
             <KpiCard
               label="Year 6 Revenue"
-              value={<CountUp end={24.3} prefix="CHF " suffix="M" decimals={1} />}
+              value={<CountUp end={24.1} prefix="CHF " suffix="M" decimals={1} />}
               sub="DaaS + Franchise"
               icon={DollarSign}
               color={C.green}
             />
             <KpiCard
               label="Year 6 EBITDA"
-              value={<CountUp end={18.5} prefix="CHF " suffix="M" decimals={1} />}
+              value={<CountUp end={18.3} prefix="CHF " suffix="M" decimals={1} />}
               sub="76% margin"
               icon={TrendingUp}
               color={C.accent}
@@ -1399,11 +1399,11 @@ export function FinancialPlan() {
                   <tr><td colSpan={7} className="px-2 sm:px-3 pt-3 pb-1"><span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: C.gold }}>Franchise Platform Revenue (International)</span></td></tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Franchise entry fees</td>
-                    {["\u2014", "\u2014", "175K", "245K", "350K", "455K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "\u2014", "175K", "245K", "420K", "385K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Hardware margin</td>
-                    {["\u2014", "\u2014", "150K", "210K", "300K", "390K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "\u2014", "150K", "210K", "360K", "330K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Royalties (9%)</td>
@@ -1411,7 +1411,7 @@ export function FinancialPlan() {
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>SaaS + LUC fees</td>
-                    {["\u2014", "\u2014", "90K", "216K", "396K", "630K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
+                    {["\u2014", "\u2014", "90K", "216K", "432K", "630K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono" style={{ color: C.textSecondary }}>{v}</td>)}
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}` }}>
                     <td className="px-2 sm:px-3 py-2" style={{ color: C.textSecondary }}>Marketing pool (2%)</td>
@@ -1419,13 +1419,13 @@ export function FinancialPlan() {
                   </tr>
                   <tr style={{ borderBottom: `1px solid ${C.border}`, background: C.goldLight }}>
                     <td className="px-2 sm:px-3 py-2 font-semibold" style={{ color: C.gold }}>Subtotal Franchise</td>
-                    {["\u2014", "\u2014", "1,108K", "3,179K", "6,326K", "10,715K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.gold }}>{v}</td>)}
+                    {["\u2014", "\u2014", "1,108K", "3,179K", "6,492K", "10,585K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-2 text-right font-mono font-semibold" style={{ color: C.gold }}>{v}</td>)}
                   </tr>
 
                   {/* Total Revenue */}
                   <tr style={{ borderBottom: `2px solid ${C.accent}`, background: C.accentLight }}>
                     <td className="px-2 sm:px-3 py-3 font-bold text-sm" style={{ color: C.accent }}>TOTAL airBASE AG REVENUE</td>
-                    {["120K", "2,120K", "6,628K", "11,799K", "17,446K", "24,275K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: C.accent }}>{v}</td>)}
+                    {["120K", "2,120K", "6,628K", "11,799K", "17,612K", "24,145K"].map((v, i) => <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: C.accent }}>{v}</td>)}
                   </tr>
 
                   {/* Costs section header */}
@@ -1464,8 +1464,8 @@ export function FinancialPlan() {
                       { v: "437K", neg: false },
                       { v: "4,217K", neg: false },
                       { v: "8,307K", neg: false },
-                      { v: "12,943K", neg: false },
-                      { v: "18,450K", neg: false },
+                      { v: "13,109K", neg: false },
+                      { v: "18,320K", neg: false },
                     ].map((item, i) => (
                       <td key={i} className="px-2 sm:px-3 py-3 text-right font-mono font-bold text-sm" style={{ color: item.neg ? C.red : C.green }}>
                         {item.v}
@@ -1635,8 +1635,8 @@ export function FinancialPlan() {
                       { yr: "Year 2", ci: "2,120K", co: "1,683K", net: "+437K", cum: "-28K", neg: true },
                       { yr: "Year 3", ci: "6,628K", co: "2,411K", net: "+4,217K", cum: "+4,189K", neg: false },
                       { yr: "Year 4", ci: "11,799K", co: "3,492K", net: "+8,307K", cum: "+12,496K", neg: false },
-                      { yr: "Year 5", ci: "17,446K", co: "4,503K", net: "+12,943K", cum: "+25,439K", neg: false },
-                      { yr: "Year 6", ci: "24,275K", co: "5,825K", net: "+18,450K", cum: "+43,889K", neg: false },
+                      { yr: "Year 5", ci: "17,612K", co: "4,503K", net: "+13,109K", cum: "+25,605K", neg: false },
+                      { yr: "Year 6", ci: "24,145K", co: "5,825K", net: "+18,320K", cum: "+43,925K", neg: false },
                     ].map((row, ri) => (
                       <tr key={ri} style={{ borderBottom: `1px solid ${C.border}` }}>
                         <td className="px-2 py-2 font-semibold" style={{ color: C.text }}>{row.yr}</td>
@@ -1957,7 +1957,7 @@ export function FinancialPlan() {
             <KpiCard
               label="HQ Take Rate"
               value={<CountUp end={25} suffix="%" />}
-              sub="CHF 24.3M of CHF 97.6M GMV"
+              sub="CHF 24.1M of CHF 97.6M GMV"
               icon={DollarSign}
               color={C.green}
               delay={0.1}
@@ -1997,7 +1997,7 @@ export function FinancialPlan() {
               className="mt-4 p-3 rounded-lg text-xs"
               style={{ background: C.accentLight, color: C.textSecondary }}
             >
-              Platform GMV represents the total gross transaction value flowing through the airBASE ecosystem. Own Ops (6 Swiss Hubs): CHF 13.6M (56% of airBASE AG revenue). Franchise Platform (35 Partners): CHF 10.7M (44%). Total airBASE AG Revenue: CHF 24.3M. Franchise Network GMV: ~CHF 84M (what partners earn total — airBASE keeps ~CHF 10.7M).
+              Platform GMV represents the total gross transaction value flowing through the airBASE ecosystem. Own Ops (6 Swiss Hubs): CHF 13.6M (56% of airBASE AG revenue). Franchise Platform (35 Partners): CHF 10.7M (44%). Total airBASE AG Revenue: CHF 24.1M. Franchise Network GMV: ~CHF 84M (what partners earn total — airBASE keeps ~CHF 10.7M).
             </div>
           </DataCard>
         </section>
