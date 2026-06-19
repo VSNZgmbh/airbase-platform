@@ -1795,7 +1795,15 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 If franchise partners earn CHF 496K net income, why not operate everything yourselves?
               </Text>
               <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
-                Capital efficiency, speed, and regulatory complexity. Scaling to 35+ regions ourselves would require CHF 5M+ CAPEX. Partners invest their own capital, bring local knowledge, and bear local risk. HQ earns ~14% recurring take rate with minimal incremental cost.
+                Heavy-lift drone logistics is inherently local -- success depends on regional relationships, cantonal knowledge, and proximity to customers. Building this internally across 35+ regions would require years and CHF 5M+ CAPEX. Our strategic priority is speed: becoming the dominant Swiss brand before competitors emerge. The franchise model achieves national coverage in 4 years; own-operations-only would take 8-10. Partners invest their own capital, bring local expertise, and bear local risk. HQ earns ~14% recurring take rate with minimal incremental cost.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                Do you have commercial traction or letters of intent?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                We have active interest from Swiss construction firms and the Swiss Civil Defense (Zivilschutz), awaiting our operational launch. The value proposition drives itself: drone transport at CHF 2,800-5,000 per day vs. helicopter at CHF 15,000-25,000 -- a 5-8x cost reduction with zero emissions. Enterprise contract negotiations begin upon operational readiness in Q3/Q4 2026.
               </Text>
             </View>
 
@@ -1807,7 +1815,15 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 How do you operate before the LUC is granted?
               </Text>
               <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
-                Through our partnership with Vertical Masters, an established Swiss drone operator. Their existing SORA approvals cover initial operations. Our franchise program launches in Year 3 -- after the planned LUC certification in late 2027.
+                Through our partnership with Vertical Masters, an established Swiss drone operator. Their existing SORA approvals cover initial operations. We proactively submit multiple SORA applications to cover a broad service spectrum. If the LUC is delayed 12-18 months, franchise partners can begin operations in SORA-approved areas under Vertical Masters. Government and military retainers scale with the LUC timeline -- our DaaS business is unaffected.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                How do you ensure safety compliance across franchise partners?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Every flight mission is planned by the airBASE AI platform and reviewed by a certified Safety Compliance officer before authorization. No drone launches without human sign-off. This dual-layer system (AI planning + human verification) ensures consistent compliance across all partners, regardless of location -- protecting both operational safety and our LUC certification.
               </Text>
             </View>
 
@@ -1819,7 +1835,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 What happens if Europe restricts DJI?
               </Text>
               <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
-                Our platform is hardware-agnostic. If restrictions emerge, we integrate alternative manufacturers. Our moat is the LUC certification, operational platform, and customer relationships -- not any specific drone brand. Switzerland currently has no DJI restrictions.
+                The DACH region has a distinctly different posture toward DJI than the US. DJI is the most trusted drone manufacturer in Switzerland, used by REGA and Swisscom. The BAZL actively works with DJI platforms, and established SORA/LUC certification pathways are optimized for DJI hardware. Our platform is hardware-agnostic by design -- if restrictions emerge, we integrate alternatives. But a Swiss DJI restriction is not on the current policy horizon.
               </Text>
             </View>
             <View style={[s.card, { marginBottom: 6 }]}>
@@ -1842,7 +1858,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 Are 200 operational days per year realistic in Switzerland?
               </Text>
               <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
-                200 days = 55% utilization, deliberately conservative. Switzerland averages 250-280 flyable days. Our sector mix (construction year-round, agriculture seasonal, government weather-independent) reduces concentration risk. The model remains profitable even at 150 days.
+                200 days = 55% utilization, deliberately conservative. Switzerland averages 250-280 flyable days. Unlike helicopters locked to fixed helipads, our drones can flexibly adjust departure points to avoid local weather systems. Non-operational days are used for maintenance, pilot training, and fleet servicing. Our sector mix (construction year-round, agriculture seasonal, government weather-independent) reduces concentration risk. The model remains profitable even at 150 days.
               </Text>
             </View>
             <View style={[s.card, { marginBottom: 6 }]}>
@@ -1850,7 +1866,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 Can you attract drone pilots for CHF 75K in Switzerland?
               </Text>
               <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
-                Drone piloting is a new profession without established salary benchmarks. Pilots come from adjacent fields (agriculture, surveying) at CHF 65-80K base. We offer DJI-certified training, increasing retention. Total employer cost including social contributions: ~CHF 87-90K.
+                The heavy-lift drone market is nascent -- there is no established talent pool to compete over. The path to becoming a licensed drone pilot is straightforward and accessible, unlike helicopter licenses requiring 150+ flight hours. airBASE trains pilots internally through DJI certification, creating the talent supply rather than competing for it. As the market grows, pilot supply will outpace demand due to low entry barriers. Even if salaries rise to CHF 95K, per-drone contribution margin drops from 87.4% to ~84.5% -- still highly profitable.
               </Text>
             </View>
 
@@ -1878,7 +1894,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
                 How do alpine conditions affect battery life?
               </Text>
               <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
-                Maintenance budget includes annual battery replacement (CHF 12.9K/drone/year). Even if replacement frequency doubles, contribution margin drops from 87.4% to ~86.9% -- not material.
+                The DJI FlyCart series undergoes extensive manufacturer testing for extreme conditions including alpine environments. Our maintenance budget of CHF 12.9K per drone per year includes annual battery replacement. Unlike helicopters, drone departure points can be flexibly adjusted to avoid weather systems. Even if battery replacement frequency doubles due to cold conditions, contribution margin drops from 87.4% to ~86.9% -- not material to the business case.
               </Text>
             </View>
           </View>
