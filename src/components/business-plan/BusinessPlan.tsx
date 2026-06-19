@@ -813,7 +813,7 @@ export function BusinessPlan() {
                 specs: [
                   { label: "Payload", value: "200 kg" },
                   { label: "Range (full load)", value: "10 km" },
-                  { label: "Swarm", value: "4 units = 600 kg" },
+                  { label: "Fleet capacity", value: "4 × T200 = 600 kg" },
                   { label: "Charge Time", value: "7 minutes" },
                 ],
                 color: C.gold,

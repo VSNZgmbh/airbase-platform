@@ -1230,7 +1230,7 @@ export function FinancialPlan() {
             <KpiCard
               label="CAPEX / Drone"
               value="CHF 49K"
-              sub="FC200 full set (base)"
+              sub="T100 full set (base)"
               icon={Wrench}
               delay={0.2}
             />
@@ -1248,7 +1248,7 @@ export function FinancialPlan() {
               <StyledTable
                 headers={["Item", "Conservative", "Base", "Optimistic"]}
                 rows={[
-                  ["Drone (FC200, full set)", "CHF 45,000", "CHF 40,000", "CHF 35,000"],
+                  ["Drone (T100, full set)", "CHF 45,000", "CHF 40,000", "CHF 35,000"],
                   ["Extra battery sets (3-4x)", "CHF 10,000", "CHF 9,000", "CHF 8,000"],
                   ["Total per drone", "CHF 55,000", "CHF 49,000", "CHF 43,000"],
                 ]}
@@ -2037,7 +2037,7 @@ export function FinancialPlan() {
                   },
                   {
                     risk: "Drone reliability",
-                    mitigation: "Backup drone strategy (Year 1: 2 drones, 1 operational + 1 redundancy)",
+                    mitigation: "Hub-level redundancy (2-3 drones per hub) + 24h rapid replacement from central fleet",
                     icon: Wrench,
                     color: C.textSecondary,
                   },

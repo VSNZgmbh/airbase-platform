@@ -1136,7 +1136,7 @@ export function InvestorPitchDeck() {
             style={{ color: "rgba(255,255,255,0.85)" }}
           >
             airBASE replaces helicopters, tractors, cranes, and trucks (LKWs)
-            with heavy-lift drone swarms capable of transporting up to
+            with heavy-lift drone fleets capable of transporting up to
             600&nbsp;kg per load — at 90% lower cost and zero emissions. We
             serve construction, agriculture, logistics, and emergency rescue
             across Switzerland and Austria as a fully solar-powered B2B &amp;
@@ -1434,10 +1434,10 @@ export function InvestorPitchDeck() {
                 </div>
                 <div className="space-y-2">
                   <ComparisonBar label="Helicopter" value={800} maxValue={800} unit="kg/flight" color={C.red} icon={Mountain} delay={0} displayValue="~800 kg/flight" />
-                  <ComparisonBar label="Drone Swarm" value={600} maxValue={800} unit="kg/flight" color={C.accent} icon={Zap} delay={0.1} displayValue="~600 kg/flight" highlight />
+                  <ComparisonBar label="Drone Fleet (4×T200)" value={600} maxValue={800} unit="kg/flight" color={C.accent} icon={Zap} delay={0.1} displayValue="~600 kg/flight" highlight />
                 </div>
                 <div className="text-[10px] mt-1.5 ml-32 sm:ml-40 md:ml-52" style={{ color: C.textMuted }}>
-                  4-unit FlyCart 200 swarm &middot; zero fuel cost &middot; deploys in minutes
+                  4-unit FlyCart T200 fleet &middot; zero fuel cost &middot; deploys in minutes
                 </div>
               </div>
 
@@ -1577,7 +1577,7 @@ export function InvestorPitchDeck() {
                 </div>
               </div>
               <div className="border-t" style={{ borderColor: C.border }} />
-              {/* FC200 */}
+              {/* T200 */}
               <div className="flex items-center gap-4 p-4 sm:p-5" style={{ background: `linear-gradient(135deg, ${C.bgAlt} 0%, ${C.accentLight} 100%)` }}>
                 <motion.img
                   src="/assets/flycart-100-cutout.png"
@@ -1591,7 +1591,7 @@ export function InvestorPitchDeck() {
                     Next-Gen <span className="text-[10px] font-normal px-1.5 py-0.5 rounded-full ml-1" style={{ background: C.accentGlow, color: C.accent }}>NEW</span>
                   </div>
                   <div className="text-base sm:text-lg font-bold" style={{ color: C.text }}>DJI FlyCart 200</div>
-                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload &middot; 10 km range (full load) &middot; Swarm: 4 units = 600 kg &middot; 7-min charge</div>
+                  <div className="text-xs mt-0.5" style={{ color: C.textMuted }}>200 kg payload &middot; 10 km range (full load) &middot; Fleet capacity: 4 × T200 = 600 kg &middot; 7-min charge</div>
                 </div>
               </div>
             </motion.div>
@@ -1600,7 +1600,7 @@ export function InvestorPitchDeck() {
           {/* Key stats */}
           <Stagger className="grid grid-cols-3 gap-3 sm:gap-6 mt-6 sm:mt-8" delay={0.6}>
             {[
-              { value: "85-200 kg", label: "Payload capacity", sub: "FC100 (85 kg) + FC200 (200 kg)" },
+              { value: "85-200 kg", label: "Payload capacity", sub: "T100 (85 kg) + T200 (200 kg)" },
               { value: "-85%", label: "Cost vs traditional", sub: "Helicopter / tractor / crane" },
               { value: "<30 min", label: "Deployment time", sub: "Order to takeoff" },
             ].map((stat, i) => (
@@ -2486,8 +2486,8 @@ export function InvestorPitchDeck() {
                 <ul className="space-y-1.5">
                   {[
                     "Rapid geographic scaling without capital drag",
-                    "Partners invest locally, we provide the platform + LUC sub-licence",
-                    "Recurring franchise royalties (12%) + setup fees",
+                    "Partners invest locally, we provide the platform + regulatory umbrella (LUC)",
+                    "Recurring franchise royalties (9%) + SaaS + marketing pool",
                     "Proven playbook: from 1 to 100 regions fast",
                   ].map((text, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs" style={{ color: C.textSecondary }}>
@@ -2572,7 +2572,7 @@ export function InvestorPitchDeck() {
                     <div>
                       <div className="text-sm font-bold mb-1" style={{ color: C.text }}>Franchise — From 1 to 100 Regions</div>
                       <p className="text-xs" style={{ color: C.textSecondary }}>
-                        Partners invest locally, we provide the platform + LUC sub-licence. Rapid geographic scaling with recurring franchise royalties. No capital drag.
+                        Partners invest locally, we provide the platform + regulatory umbrella (LUC). Rapid geographic scaling with recurring franchise royalties. No capital drag.
                       </p>
                     </div>
                   </div>
@@ -2665,8 +2665,8 @@ export function InvestorPitchDeck() {
               {
                 title: "Franchise Licensing",
                 sub: "Franchise — Scale Engine",
-                desc: "Partners acquire AIRBASE-branded drone kits + full service portfolio + LUC sub-licence. Our software + permits are the moat — near-impossible to replicate. Rapid geographic scaling without capital drag.",
-                metric: "CHF 85K setup + 12% royalty",
+                desc: "Partners acquire AIRBASE-branded drone kits + full service portfolio + LUC regulatory access. Our software + permits are the moat — near-impossible to replicate. Rapid geographic scaling without capital drag.",
+                metric: "CHF 35K entry + 9% royalty + platform fees",
                 revenue: "Recurring royalties + setup fees",
                 icon: Globe,
                 color: C.green,
@@ -3604,6 +3604,134 @@ export function InvestorPitchDeck() {
               <div className="pt-8 space-y-2">
                 <div className="text-xs font-mono" style={{ color: C.textMuted }}>
                   airbase.swiss &mdash; Confidential
+                </div>
+              </div>
+            </motion.div>
+          </Stagger>
+        </div>
+      </section>
+
+
+
+{/* ═══ SLIDE 15: DUE DILIGENCE / INVESTOR FAQ ═══ */}
+      <section
+        ref={setRef(15)}
+        className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-20"
+        style={{ scrollSnapAlign: "start", background: C.bgAlt }}
+      >
+        <div className="max-w-5xl mx-auto w-full">
+          <SlideLabel number="14" text="Due Diligence" />
+
+          <Stagger>
+            <motion.h2
+              variants={fadeUp}
+              className="text-xl sm:text-2xl md:text-5xl font-bold leading-tight mb-2"
+              style={{ color: C.text }}
+            >
+              Investor{" "}
+              <span style={{ color: C.accent }}>FAQ</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-xs sm:text-base md:text-lg mb-8 sm:mb-12"
+              style={{ color: C.textMuted }}
+            >
+              Substantive answers to the questions serious investors ask.
+            </motion.p>
+          </Stagger>
+
+          <Stagger className="space-y-6" delay={0.2}>
+            {/* Business Model */}
+            <motion.div variants={fadeUp}>
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3" style={{ color: C.accent }}>Business Model</div>
+              <div className="space-y-3">
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>How does airBASE achieve a 76% EBITDA margin?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    By Year 6, ~44% of revenue comes from our franchise platform (royalties, SaaS, marketing pool) at near-zero marginal cost. Own operations run at ~64% margin. Blended result: 76% &mdash; comparable to franchise-heavy models like McDonald&rsquo;s or Domino&rsquo;s, but with lower per-unit infrastructure.
+                  </p>
+                </div>
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>If franchise partners earn CHF 496K net income, why not operate everything yourselves?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Capital efficiency, speed, and regulatory complexity. Scaling to 35+ regions ourselves would require CHF 5M+ CAPEX. Partners invest their own capital, bring local knowledge, and bear local risk. HQ earns ~14% recurring take rate with minimal incremental cost.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Regulatory */}
+            <motion.div variants={fadeUp}>
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3" style={{ color: C.green }}>Regulatory</div>
+              <div className="space-y-3">
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>How do you operate before the LUC is granted?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Through our partnership with Vertical Masters, an established Swiss drone operator. Their existing SORA approvals cover initial operations. Our franchise program launches in Year 3 &mdash; after the planned LUC certification in late 2027.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Technology */}
+            <motion.div variants={fadeUp}>
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3" style={{ color: C.accent }}>Technology</div>
+              <div className="space-y-3">
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>What happens if Europe restricts DJI?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Our platform is hardware-agnostic. If restrictions emerge, we integrate alternative manufacturers. Our moat is the LUC certification, operational platform, and customer relationships &mdash; not any specific drone brand. Switzerland currently has no DJI restrictions.
+                  </p>
+                </div>
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>Is the FlyCart T200 (200 kg) available today?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Our Year 1 fleet uses the DJI FlyCart T100 (85 kg payload), which is commercially available and CE-certified. The T200 is next-generation potential &mdash; no seed capital depends on its availability.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Operations */}
+            <motion.div variants={fadeUp}>
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3" style={{ color: C.gold }}>Operations</div>
+              <div className="space-y-3">
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>Are 200 operational days per year realistic in Switzerland?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    200 days = 55% utilization, deliberately conservative. Switzerland averages 250&ndash;280 flyable days. Our sector mix (construction year-round, agriculture seasonal, government weather-independent) reduces concentration risk. The model remains profitable even at 150 days.
+                  </p>
+                </div>
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>Can you attract drone pilots for CHF 75K in Switzerland?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Drone piloting is a new profession without established salary benchmarks. Pilots come from adjacent fields (agriculture, surveying) at CHF 65&ndash;80K base. We offer DJI-certified training, increasing retention. Total employer cost including social contributions: ~CHF 87&ndash;90K.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Insurance & Risk */}
+            <motion.div variants={fadeUp}>
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3" style={{ color: C.red }}>Insurance &amp; Risk</div>
+              <div className="space-y-3">
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>Is CHF 60K enough for aviation insurance?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    The CHF 60K covers initial policy setup. Ongoing premiums are in our Fixed/R&amp;D/Insurance P&amp;L line (CHF 110K&rarr;410K over 6 years). Our company already holds a CHF 10M liability policy.
+                  </p>
+                </div>
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>What is the biggest risk?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Regulatory timing. If LUC certification is delayed, franchise launch shifts. However, own operations continue under Vertical Masters regardless. Year 1 is entirely self-funded and pre-LUC.
+                  </p>
+                </div>
+                <div className="rounded-xl border p-4 sm:p-5" style={{ borderColor: C.border, background: C.bgCard }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: C.text }}>How do alpine conditions affect battery life?</div>
+                  <p className="text-xs leading-relaxed" style={{ color: C.textSecondary }}>
+                    Maintenance budget includes annual battery replacement (CHF 12.9K/drone/year). Even if replacement frequency doubles, contribution margin drops from 87.4% to ~86.9% &mdash; not material.
+                  </p>
                 </div>
               </div>
             </motion.div>

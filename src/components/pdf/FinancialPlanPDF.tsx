@@ -290,7 +290,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
           {[
             { label: "Revenue / Drone", value: "CHF 700K", sub: "200 days x CHF 3,500/day" },
             { label: "Contribution Margin", value: "CHF 633K", sub: "90.4% margin" },
-            { label: "CAPEX / Drone", value: "CHF 49K", sub: "FC200 full set (base)" },
+            { label: "CAPEX / Drone", value: "CHF 49K", sub: "T100 full set (base)" },
             { label: "Annual OPEX", value: "CHF 12.9K", sub: "Maint + insurance + battery" },
           ].map((kpi) => (
             <View key={kpi.label} style={s.kpiBox}>
@@ -315,7 +315,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             <Text style={[s.tCellBold, { flex: 1, textAlign: "right" }]}>Optimistic</Text>
           </View>
           {[
-            ["Drone (FC200, full set)", "CHF 45,000", "CHF 40,000", "CHF 35,000"],
+            ["Drone (T100, full set)", "CHF 45,000", "CHF 40,000", "CHF 35,000"],
             ["Extra battery sets (3-4x)", "CHF 10,000", "CHF 9,000", "CHF 8,000"],
           ].map((row, i) => (
             <View key={i} style={s.tRow}>
@@ -1063,7 +1063,7 @@ export function FinancialPlanPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSr
             { risk: "Regulatory delay (LUC)", mitigation: "SORA enables commercial ops while LUC pending" },
             { risk: "Weather / utilisation", mitigation: "Gov retainers provide baseline revenue regardless of weather" },
             { risk: "Competition", mitigation: "LUC + AI moat = 18+ month head start; no Swiss competitor close" },
-            { risk: "Drone reliability", mitigation: "Backup drone strategy (2 drones, 1 operational + 1 redundancy)" },
+            { risk: "Drone reliability", mitigation: "Hub-level redundancy (2-3 drones per hub) + 24h rapid replacement" },
           ].map((item) => (
             <View key={item.risk} style={{ flexDirection: "row", gap: 6, marginBottom: 4 }}>
               <Text style={{ fontSize: 7, fontWeight: "bold", color: C.accent, width: 100 }}>

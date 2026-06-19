@@ -286,7 +286,7 @@ function SimpleBar({
   );
 }
 
-const TOTAL_PAGES = 15;
+const TOTAL_PAGES = 16;
 
 /* ═══════════════════════════════════════════════════════════════
    PITCHDECK PDF DOCUMENT
@@ -442,7 +442,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
             }}
           >
             airBASE replaces helicopters, tractors, cranes, and trucks with
-            heavy-lift drone swarms capable of transporting up to 600 kg per
+            heavy-lift drone fleets capable of transporting up to 600 kg per
             load -- at 90% lower cost and zero emissions. We serve construction,
             agriculture, logistics, and emergency rescue across Switzerland and
             Austria as a fully solar-powered B2B & B2C Drone-as-a-Service
@@ -714,7 +714,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
             </Text>
             <Text style={[s.h3]}>DJI FlyCart 200</Text>
             <Text style={s.body}>
-              200 kg payload . 10 km range (full load) . Swarm: 4 units = 600 kg . 7-min charge
+              200 kg payload . 10 km range (full load) . Fleet capacity: 4 × T200 = 600 kg . 7-min charge
             </Text>
           </View>
         </View>
@@ -722,7 +722,7 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
         {/* Key stats */}
         <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
           {[
-            { value: "85-200 kg", label: "Payload capacity", sub: "FC100 + FC200" },
+            { value: "85-200 kg", label: "Payload capacity", sub: "T100 + T200" },
             { value: "-85%", label: "Cost vs traditional", sub: "Helicopter / tractor / crane" },
             { value: "<30 min", label: "Deployment time", sub: "Order to takeoff" },
           ].map((stat) => (
@@ -1295,8 +1295,8 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
               bgColor: C.gold + "10",
               points: [
                 "Rapid geographic scaling without capital drag",
-                "Partners invest locally, we provide platform + LUC sub-licence",
-                "Recurring franchise royalties (12%) + setup fees",
+                "Partners invest locally, we provide platform + regulatory umbrella (LUC)",
+                "Recurring franchise royalties (9%) + SaaS + marketing pool",
                 "Proven playbook: from 1 to 100 regions fast",
               ],
             },
@@ -1374,10 +1374,10 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
             <Text style={[s.h3, { marginBottom: 4 }]}>Franchise Licensing</Text>
             <Text style={[s.body, { marginBottom: 6 }]}>
               Partners acquire AIRBASE-branded drone kits + full service
-              portfolio + LUC sub-licence. Our software + permits are the moat.
+              portfolio + LUC regulatory access. Our software + permits are the moat.
             </Text>
             <Text style={{ fontSize: 11, fontWeight: "bold", color: C.green }}>
-              CHF 85K setup + 12% royalty
+              CHF 35K entry + 9% royalty + platform fees
             </Text>
             <Text style={{ fontSize: 7, color: C.textMuted, marginTop: 2 }}>
               Recurring royalties + setup fees
@@ -1766,6 +1766,125 @@ export function PitchdeckPDF({ logoSrc = "/airbase-logo-pdf.png" }: { logoSrc?: 
           </Text>
         </View>
         <PageFooter pageNum={15} total={TOTAL_PAGES} />
+      </Page>
+
+      {/* ═══ SLIDE 15: DUE DILIGENCE / INVESTOR FAQ ═══ */}
+      <Page size="A4" orientation="landscape" style={s.page}>
+        <SlideLabel number="14" text="DUE DILIGENCE" />
+        <Text style={s.h2}>Investor FAQ</Text>
+        <Text style={[s.body, { marginBottom: 12 }]}>
+          Substantive answers to the questions serious investors ask.
+        </Text>
+
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          {/* Left column */}
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 7, color: C.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, fontWeight: "bold" }}>
+              Business Model
+            </Text>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                How does airBASE achieve a 76% EBITDA margin?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                By Year 6, ~44% of revenue comes from our franchise platform (royalties, SaaS, marketing pool) at near-zero marginal cost. Own operations run at ~64% margin. Blended result: 76% -- comparable to franchise-heavy models like McDonald's or Domino's, but with lower per-unit infrastructure.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                If franchise partners earn CHF 496K net income, why not operate everything yourselves?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Capital efficiency, speed, and regulatory complexity. Scaling to 35+ regions ourselves would require CHF 5M+ CAPEX. Partners invest their own capital, bring local knowledge, and bear local risk. HQ earns ~14% recurring take rate with minimal incremental cost.
+              </Text>
+            </View>
+
+            <Text style={{ fontSize: 7, color: C.green, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, fontWeight: "bold" }}>
+              Regulatory
+            </Text>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                How do you operate before the LUC is granted?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Through our partnership with Vertical Masters, an established Swiss drone operator. Their existing SORA approvals cover initial operations. Our franchise program launches in Year 3 -- after the planned LUC certification in late 2027.
+              </Text>
+            </View>
+
+            <Text style={{ fontSize: 7, color: C.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, fontWeight: "bold" }}>
+              Technology
+            </Text>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                What happens if Europe restricts DJI?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Our platform is hardware-agnostic. If restrictions emerge, we integrate alternative manufacturers. Our moat is the LUC certification, operational platform, and customer relationships -- not any specific drone brand. Switzerland currently has no DJI restrictions.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                Is the FlyCart T200 (200 kg) available today?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Our Year 1 fleet uses the DJI FlyCart T100 (85 kg payload), which is commercially available and CE-certified. The T200 is next-generation potential -- no seed capital depends on its availability.
+              </Text>
+            </View>
+          </View>
+
+          {/* Right column */}
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 7, color: C.gold, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, fontWeight: "bold" }}>
+              Operations
+            </Text>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                Are 200 operational days per year realistic in Switzerland?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                200 days = 55% utilization, deliberately conservative. Switzerland averages 250-280 flyable days. Our sector mix (construction year-round, agriculture seasonal, government weather-independent) reduces concentration risk. The model remains profitable even at 150 days.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                Can you attract drone pilots for CHF 75K in Switzerland?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Drone piloting is a new profession without established salary benchmarks. Pilots come from adjacent fields (agriculture, surveying) at CHF 65-80K base. We offer DJI-certified training, increasing retention. Total employer cost including social contributions: ~CHF 87-90K.
+              </Text>
+            </View>
+
+            <Text style={{ fontSize: 7, color: C.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, fontWeight: "bold" }}>
+              Insurance & Risk
+            </Text>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                Is CHF 60K enough for aviation insurance?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                The CHF 60K covers initial policy setup. Ongoing premiums are in our Fixed/R&D/Insurance P&L line (CHF 110K to 410K over 6 years). Our company already holds a CHF 10M liability policy.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                What is the biggest risk?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Regulatory timing. If LUC certification is delayed, franchise launch shifts. However, own operations continue under Vertical Masters regardless. Year 1 is entirely self-funded and pre-LUC.
+              </Text>
+            </View>
+            <View style={[s.card, { marginBottom: 6 }]}>
+              <Text style={{ fontSize: 8, fontWeight: "bold", color: C.text, marginBottom: 3 }}>
+                How do alpine conditions affect battery life?
+              </Text>
+              <Text style={{ fontSize: 7, color: C.textSecondary, lineHeight: 1.5 }}>
+                Maintenance budget includes annual battery replacement (CHF 12.9K/drone/year). Even if replacement frequency doubles, contribution margin drops from 87.4% to ~86.9% -- not material.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <PageFooter pageNum={16} total={TOTAL_PAGES} />
       </Page>
     </Document>
   );
